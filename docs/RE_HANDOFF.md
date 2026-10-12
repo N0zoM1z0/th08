@@ -74,6 +74,18 @@ retail/native VC7 frame comparison has identical playfield pixels and an equal
 25-field prefix over 6,166 calculations. Native reconstruction totals and the
 108-case replay acceptance remain unchanged.
 
+The follow-up [portable runtime review](PORTABLE_RUNTIME_REVIEW.md) confirms the
+same perspective defect in Stage 1, Stage 3, and Final B. It also reproduces a
+HOME screenshot defect: a flag-0 backbuffer lock reads stale CPU pixels, and its
+unlock causes the next presentation to overwrite the frame with that cache.
+`scripts/analysis/check-portable-display.py` captures the actual HOME key path.
+Fullscreen cropping is isolated to the tested Xvfb environment without a window
+manager; explicit windowed captures match the framebuffer exactly. Stage 5
+reaches frame 6,166 with the normal boss-name copy, which the frame tool now
+keeps by default. Local evidence is in `build/portable-runtime-audit-20261012/`.
+Production C++ remains unchanged; the bounded renderer and surface-lock repairs
+are the next implementation tasks.
+
 ## Native replay parity investigation
 
 The 2026-10-11 cold gate is recorded under `build/replay-cold-20261011/`.

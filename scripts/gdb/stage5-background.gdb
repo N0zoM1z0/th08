@@ -5,25 +5,24 @@ set debuginfod enabled off
 set print thread-events off
 set direct-call-timeout 10
 set unwind-on-timeout on
-break th08::Gui::CopyEnemyNameTexture(int)
-commands
-    silent
-    return
-    continue
-end
 python
 import gdb, json, os, pathlib, struct, subprocess
+if os.environ.get('TH08_BACKGROUND_SKIP_ENEMY_NAME') == '1':
+    gdb.execute('break th08::Gui::CopyEnemyNameTexture(int)')
+    gdb.execute('commands\nsilent\nreturn\ncontinue\nend')
 out = pathlib.Path(os.environ['TH08_BACKGROUND_CAPTURE_DIR'])
+stage = int(os.environ.get('TH08_BACKGROUND_STAGE', '5'))
+frame = int(os.environ.get('TH08_BACKGROUND_FRAME', '6166'))
 scene, draws = [], []
 def value(expression): return gdb.parse_and_eval(expression)
 def number(expression): return int(value(expression))
 def block(expression, size):
     return bytes(gdb.selected_inferior().read_memory(int(value(expression).address), size))
 def floats(expression, count): return list(struct.unpack('<%df' % count, block(expression, count*4)))
-def active(): return number('th08::g_GameManager.currentStage') == 5 and number('th08::g_GameManager.stageActiveFrames') == 6166
+def active(): return number('th08::g_GameManager.currentStage') == stage and number('th08::g_GameManager.stageActiveFrames') == frame
 class CameraExit(gdb.FinishBreakpoint):
     def stop(self):
-        item = {'stage':5, 'activeFrame':6166,
+        item = {'stage':stage, 'activeFrame':frame,
             'cameraCurrent':floats('th08::g_Background.cameraCurrent',19),
             'stagePosition':floats('th08::g_Background.stagePosition',3),
             'stageScriptTimerHex':block('th08::g_Background.stageScriptTimer',12).hex(),
@@ -82,9 +81,9 @@ class Presented(gdb.FinishBreakpoint):
     def stop(self): return True
 present = Present()
 class Arm(gdb.Breakpoint):
-    def __init__(self): super().__init__('src/modern/linux/render_audit.cpp:63',internal=True)
+    def __init__(self): super().__init__('th08::GameWindow::Present()',internal=True)
     def stop(self):
-        if number('th08::g_GameManager.currentStage') == 5 and number('th08::g_GameManager.stageActiveFrames') >= 6140:
+        if number('th08::g_GameManager.currentStage') == stage and number('th08::g_GameManager.stageActiveFrames') >= frame - 1:
             self.enabled = False
             camera.enabled = present.enabled = True
         return False
@@ -100,8 +99,8 @@ def screenshot():
     pixels=bytes(gdb.selected_inferior().read_memory(int(access['pixels']),pitch*height))
     gdb.execute('call free($background_access)')
     converter='from PIL import Image; import sys; Image.frombytes("RGB",(640,480),sys.stdin.buffer.read(),"raw","BGRX",2560,1).save(sys.argv[1])'
-    subprocess.run(['python3','-c',converter,str(out/'stage5-frame-6166.png')],input=pixels,check=True,timeout=15)
-    print('Captured Stage 5 frame 6166 with camera, matrices, and 3D draw evidence.')
+    subprocess.run(['python3','-c',converter,str(out/f'stage{stage}-frame-{frame}.png')],input=pixels,check=True,timeout=15)
+    print(f'Captured stage index {stage}, frame {frame}, with camera, matrices, and 3D draw evidence.')
 end
 run
 python screenshot()

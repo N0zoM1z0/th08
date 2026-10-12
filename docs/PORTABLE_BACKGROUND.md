@@ -25,7 +25,7 @@ The committed `lunatic-0-b` recording is `th8_ud2ce5.rpy`, credited to
 てーる in the [corpus](../tests/fixtures/replays/th08-1.00d/README.md).
 Its SHA-256 is
 `004f58e1b95655664087d6613780f3e6e16e25d0c55e5c17b2e2291d5446ae6b`.
-Every capture starts at Stage 5, follows normal life rules, disables audio,
+The default capture starts at Stage 5, follows normal life rules, disables audio,
 and stops at active frame 6,166. Portable captures run serially at accelerated
 and ordinary pacing; retail uses ordinary pacing. `--profiles fast` or
 `--profiles paced` selects one portable profile. Each invocation needs a fresh
@@ -38,16 +38,23 @@ clip `W` from the captured vertices and matrices. Logs and traces are compressed
 temporary runtimes, the owned Wine prefix, and experimental build intermediates
 are removed. The probe executable and its source variant remain available.
 
-Portable direct-stage capture skips the cosmetic boss-name texture copy through
-the existing external GDB procedure. Both portable profiles and the probe use
-the same setting. Retail gameplay memory and executable bytes remain read-only;
-its observers use hardware breakpoints.
+The tool keeps the normal boss-name texture copy. `--skip-enemy-name-copy`
+selects the earlier diagnostic bypass and records it in metadata. Retail
+gameplay memory and executable bytes remain read-only; its observers use
+hardware breakpoints. All captures use an explicit windowed configuration.
+
+`--fixture`, `--stage`, and `--frame` select another recording and calculation
+frame. The [runtime review](PORTABLE_RUNTIME_REVIEW.md) records additional
+Stage 1, Stage 3, and Final B comparisons, HOME screenshot behavior, and the
+fullscreen mismatch observed under Xvfb.
 
 ## Evidence
 
 The 2026-10-12 checkpoint uses source `59e239b4` and portable executable SHA-256
 `cc5e11da46bbdcb237d1b9218992432787aa085db78253112084f01bbcee5d07`.
 Local evidence is in `build/background-perspective-20261012/`.
+This initial checkpoint used the cosmetic boss-name copy bypass. The later
+runtime review also exercises the normal copy path.
 
 At frame 6,166:
 

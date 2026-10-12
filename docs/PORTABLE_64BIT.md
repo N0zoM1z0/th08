@@ -279,6 +279,11 @@ perspective difference. [PORTABLE_BACKGROUND.md](PORTABLE_BACKGROUND.md) records
 the camera/vertex investigation, the confirmed loss of clip `W`, and a reusable
 isolated experiment. The production rendering repair is pending.
 
+The [portable runtime review](PORTABLE_RUNTIME_REVIEW.md) extends that defect
+to Stage 1, Stage 3, and Final B, confirms stale HOME screenshots and next-frame
+overwrite, and isolates fullscreen cropping under Xvfb without a window manager.
+It provides reusable display and same-frame comparison commands.
+
 ### Deterministic replay render audit
 
 For regressions that are difficult to recognize from a crash log, the native

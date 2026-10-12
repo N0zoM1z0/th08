@@ -14,6 +14,8 @@ settings = ns['settings']
 observer = ns['observer']
 read = ns['read']
 gm = ns['GM']
+requested_stage = int(os.environ.get('TH08_BACKGROUND_STAGE', '5'))
+requested_frame = int(os.environ.get('TH08_BACKGROUND_FRAME', '6166'))
 capture_settings = json.loads((output.parent / 'native-capture-settings.json').read_text())[output.name]
 address = capture_settings['postPresentAddress']
 expected = bytes.fromhex(capture_settings['postPresentBytes'])
@@ -26,19 +28,19 @@ class Screenshot(gdb.Breakpoint):
         self.enabled = False
     def stop(self):
         stage, frame = read(gm + 0x3ddc4), read(gm + 0x3ddc0)
-        if stage != 5 or frame < 6166:
+        if stage != requested_stage or frame < requested_frame:
             return False
-        if frame != 6166:
+        if frame != requested_frame:
             (output / 'complete.json').write_text(json.dumps({'rows': observer.count,
                 'ended': False, 'diagnosticComplete': False,
-                'errors': ['Presentation skipped requested active frame 6166; observed %d.' % frame]}) + chr(10))
+                'errors': ['Presentation skipped requested active frame %d; observed %d.' % (requested_frame, frame)]}) + chr(10))
             self.enabled = False
             return True
         pid = gdb.selected_inferior().pid
         windows = subprocess.check_output(['xdotool', 'search', '--onlyvisible', '--pid', str(pid)], text=True).split()
         if len(windows) != 1:
             raise RuntimeError('Expected one visible game window: ' + str(windows))
-        image = output / 'stage5-frame-6166.png'
+        image = output / f'stage{requested_stage}-frame-{requested_frame}.png'
         geometry = subprocess.check_output(['xwininfo', '-id', windows[0]], text=False).decode('ascii', errors='replace')
         (output / 'window-geometry.txt').write_text(geometry)
         subprocess.run(['import', '-silent', '-window', windows[0], str(image)], check=True, timeout=15)
@@ -56,7 +58,7 @@ class Screenshot(gdb.Breakpoint):
         (output / 'complete.json').write_text(json.dumps({'rows': observer.count,
             'ended': False, 'diagnosticComplete': True, 'errors': [],
             'stage': stage, 'activeFrame': frame, 'screenshot': image.name}) + chr(10))
-        print('Captured %s Stage 5 active frame 6166.' % output.name)
+        print(f'Captured {output.name} stage index {stage}, active frame {frame}.')
         return False
 
 import struct
@@ -69,11 +71,11 @@ class Camera(gdb.Breakpoint):
         super().__init__('*0x%08X' % camera_exit,gdb.BP_HARDWARE_BREAKPOINT)
         self.enabled=False
     def stop(self):
-        if read(gm+0x3ddc4)!=5 or read(gm+0x3ddc0)!=6166:return False
+        if read(gm+0x3ddc4)!=requested_stage or read(gm+0x3ddc0)!=requested_frame:return False
         bg=capture_settings['background']
         sup=capture_settings['supervisor']
         floats=lambda addr,count:list(struct.unpack('<%df'%count,ns['block'](addr,count*4)))
-        item={'stage':5,'activeFrame':6166,'cameraCurrent':floats(bg+0x6394,19),'stagePosition':floats(bg+0x824,3),
+        item={'stage':requested_stage,'activeFrame':requested_frame,'cameraCurrent':floats(bg+0x6394,19),'stagePosition':floats(bg+0x824,3),
             'stageScriptTimerHex':ns['block'](bg+0x80c,12).hex(),'cameraInterpolationTimersHex':ns['block'](bg+0x63f4,60).hex(),
             'stageScriptInstructionIndex':read(bg+0x818),'frameCounter':read(bg+0x81c),'cameraMotionMode':ns['block'](bg+0x6474,1)[0],
             'view':floats(sup+0x48,16),'projection':floats(sup+0x88,16),
@@ -82,14 +84,16 @@ class Camera(gdb.Breakpoint):
         items=json.loads(path.read_text()) if path.exists() else []
         items.append(item);path.write_text(json.dumps(items,indent=2)+chr(10))
         self.enabled=False
-        print('Captured retail background camera and matrices at frame 6166.')
+        print(f'Captured retail background camera and matrices at frame {requested_frame}.')
         return False
 camera=Camera()
 screenshot = Screenshot()
 ordinary_stop = observer.stop
 def observe_and_arm(completion=False):
     result = ordinary_stop(completion=completion)
-    if observer.stage == 5 and read(gm + 0x3ddc0) >= 6150:
+    if observer.stage == requested_stage and read(gm + 0x3ddc0) >= max(1, requested_frame - 16):
+        # Final-stage completion polling otherwise consumes a fifth hardware slot.
+        observer.completion_observer.enabled = False
         screenshot.enabled = camera.enabled = True
     return result
 observer.stop = observe_and_arm

@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
-"""Inspect Stage 5 frame 6166 using the credited lunatic-0-b replay."""
+"""Compare a credited replay frame, camera state, and portable 3D draws."""
 from __future__ import annotations
 
 import argparse
+import importlib.util
 import gzip
 import hashlib
 import json
@@ -33,32 +34,39 @@ def compress(path):
     path.unlink()
 
 
-def capture_portable(binary, data, replay, output, fast):
+def capture_portable(binary, data, replay, output, fast, stage=5, frame=6166, skip_enemy_name_copy=False):
     output.mkdir()
     runtime = Path(tempfile.mkdtemp(prefix="background-capture.", dir=ROOT / "build"))
     metadata = dict(executableSha256=digest(binary), replaySha256=digest(replay),
+                    observerSha256=digest(ROOT / "scripts/gdb/stage5-background.gdb"),
                     gameDataSha256=digest(data / "th08.dat"), bgmDataSha256=digest(data / "thbgm.dat"),
-                    stage=5, activeFrame=6166, muted=True, fastReplay=fast,
-                    keepLives=False, cosmeticEnemyNameCopySuppressed=True)
+                    stage=stage, activeFrame=frame, muted=True, fastReplay=fast, windowed=True,
+                    keepLives=False, cosmeticEnemyNameCopySuppressed=skip_enemy_name_copy)
     try:
         for archive in ("th08.dat", "thbgm.dat"):
             (runtime / archive).symlink_to((data / archive).resolve())
+        spec = importlib.util.spec_from_file_location("capture_replay", ROOT / "scripts/capture-replay.py")
+        capture = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(capture)
+        (runtime / "th08.cfg").write_bytes(capture.muted_config())
         (runtime / "replay").mkdir()
         shutil.copyfile(replay, runtime / "replay/audit.rpy")
         environment = dict(os.environ, SDL_AUDIODRIVER="dummy", LIBGL_ALWAYS_SOFTWARE="1",
                            GALLIUM_DRIVER="llvmpipe", TH08_AUTOPLAY_REPLAY="./replay/audit.rpy",
-                           TH08_AUTOPLAY_STAGE="5", TH08_RENDER_AUDIT="1",
+                           TH08_AUTOPLAY_STAGE=str(stage), TH08_RENDER_AUDIT="1",
+                           TH08_BACKGROUND_STAGE=str(stage), TH08_BACKGROUND_FRAME=str(frame),
+                           TH08_BACKGROUND_SKIP_ENEMY_NAME="1" if skip_enemy_name_copy else "0",
                            TH08_RENDER_AUDIT_FAST="1" if fast else "0",
                            TH08_BACKGROUND_CAPTURE_DIR=str(output))
         command = ["xvfb-run", "-a", "-s", "-screen 0 1024x768x24", "timeout",
                    "--signal=TERM", "--kill-after=5s", "210s", "gdb", "--batch", "--quiet",
                    "-x", str(ROOT / "scripts/gdb/stage5-background.gdb"),
                    "--args", str(binary), "--data-dir", str(runtime)]
-        print("Capturing " + output.name + " Stage 5 frame 6166.", flush=True)
+        print(f"Capturing {output.name} stage index {stage}, active frame {frame}.", flush=True)
         with (output / "capture.log").open("w") as log:
             result = subprocess.run(command, env=environment, stdout=log, stderr=subprocess.STDOUT)
         metadata["runnerExitCode"] = result.returncode
-        if result.returncode or not (output / "camera.json").is_file() or not (output / "stage5-frame-6166.png").is_file():
+        if result.returncode or not (output / "camera.json").is_file() or not (output / f"stage{stage}-frame-{frame}.png").is_file():
             raise RuntimeError("Frame capture failed; inspect " + str(output / "capture.log.gz"))
     finally:
         for name in ("modern-enemy-render.csv", "modern-files.txt", "modern-crash.txt"):
@@ -74,7 +82,7 @@ def capture_portable(binary, data, replay, output, fast):
             compress(log)
 
 
-def capture_retail(target, data, replay, output):
+def capture_retail(target, data, replay, output, stage=5, frame=6166):
     from pe_image import PEImage
     image = PEImage(target)
     settings = dict(postPresentAddress=0x442082, cameraExitAddress=0x40B7E7,
@@ -85,14 +93,15 @@ def capture_retail(target, data, replay, output):
     (output.parent / "native-capture-settings.json").write_text(json.dumps({"retail": settings}, indent=2) + "\n")
     environment = dict(os.environ, TH08_STAGE5_REPOSITORY=str(ROOT),
                        TH08_STAGE5_NATIVE_OBSERVER=str(ROOT / "scripts/gdb/stage5-background-native.py"),
+                       TH08_BACKGROUND_STAGE=str(stage), TH08_BACKGROUND_FRAME=str(frame),
                        LIBGL_ALWAYS_SOFTWARE="1", GALLIUM_DRIVER="llvmpipe")
     prefix = output.parent / "native-wine"
     command = [sys.executable, str(Path(__file__).with_name("stage5-background-native-runner.py")),
                "--target", str(target), "--game-data", str((data / "th08.dat").resolve()),
                "--bgm-data", str((data / "thbgm.dat").resolve()), "--replay", str(replay),
-               "--start-stage", "5", "--playback-mode", "0", "--timeout", "240",
+               "--start-stage", str(stage), "--playback-mode", "0", "--timeout", "240",
                "--wine-prefix", str(prefix), "--output-dir", str(output)]
-    print("Capturing retail Stage 5 frame 6166.", flush=True)
+    print(f"Capturing retail stage index {stage}, active frame {frame}.", flush=True)
     try:
         with (output.parent / "retail-capture.log").open("w") as log:
             result = subprocess.run(command, env=environment, stdout=log, stderr=subprocess.STDOUT)
@@ -163,9 +172,9 @@ target_include_directories(th08-modern PRIVATE "${CMAKE_SOURCE_DIR}/src/modern/l
     return build_dir / "th08-modern"
 
 
-def summarize(output):
+def summarize(output, stage=5, frame=6166):
     from PIL import Image, ImageChops, ImageStat
-    report = dict(stage=5, activeFrame=6166, cameras={}, pixelComparisons=[], clipW=[])
+    report = dict(stage=stage, activeFrame=frame, cameras={}, pixelComparisons=[], clipW=[])
     names = [name for name in ("retail", "portable-fast", "portable-paced", "clip-w-probe")
              if (output / name / "camera.json").exists()]
     cameras = {name: json.loads((output / name / "camera.json").read_text())[0] for name in names}
@@ -176,7 +185,7 @@ def summarize(output):
         report["cameras"][name]["scriptStateEqual"] = all(cameras[reference][key] == cameras[name][key]
             for key in ("stageScriptTimerHex", "cameraInterpolationTimersHex",
                         "stageScriptInstructionIndex", "frameCounter", "cameraMotionMode"))
-        with Image.open(output / reference / "stage5-frame-6166.png") as a, Image.open(output / name / "stage5-frame-6166.png") as b:
+        with Image.open(output / reference / f"stage{stage}-frame-{frame}.png") as a, Image.open(output / name / f"stage{stage}-frame-{frame}.png") as b:
             if a.size != (640,480) or b.size != (640,480):
                 raise RuntimeError("Expected complete 640x480 images for the pixel comparison.")
             delta = ImageChops.difference(a.convert("RGB"), b.convert("RGB")).crop((32,16,416,464))
@@ -205,8 +214,13 @@ def main():
     parser.add_argument("--portable", type=Path, required=True, help="Native-layout portable Debug ELF with GDB symbols")
     parser.add_argument("--game-data-dir", type=Path, required=True)
     parser.add_argument("--output-dir", type=Path, required=True, help="Fresh directory under build/")
+    parser.add_argument("--fixture", default="lunatic-0-b", help="ID in config/replay-fixtures.json")
+    parser.add_argument("--stage", type=int, default=5, help="Internal stage index (0..8)")
+    parser.add_argument("--frame", type=int, default=6166, help="Active calculation frame to capture")
     parser.add_argument("--profiles", choices=("both", "fast", "paced"), default="both")
     parser.add_argument("--retail", action="store_true", help="Also capture the hash-attested retail image using Wine")
+    parser.add_argument("--skip-enemy-name-copy", action="store_true",
+                        help="Diagnostic: suppress the cosmetic boss-name copy through GDB")
     parser.add_argument("--clip-w-probe", action="store_true", help="Build and capture an isolated XYZ clip-W experiment")
     parser.add_argument("--target", type=Path, default=ROOT / "resources/th08.exe")
     args = parser.parse_args()
@@ -220,25 +234,32 @@ def main():
             parser.error("Original data archive is missing: " + archive)
     if args.retail and (not target.is_file() or target.stat().st_size != 840704 or digest(target) != "330fbdbf58a710829d65277b4f312cfbb38d5448b3df523e79350b879213d924"):
         parser.error("Retail input must be the canonical Japanese TH08 1.00d executable.")
-    fixture = next(item for item in json.loads((ROOT / "config/replay-fixtures.json").read_text())["fixtures"] if item["id"] == "lunatic-0-b")
+    fixture = next((item for item in json.loads((ROOT / "config/replay-fixtures.json").read_text())["fixtures"]
+                    if item["id"] == args.fixture), None)
+    if fixture is None:
+        parser.error("Unknown replay fixture: " + args.fixture)
+    if args.stage not in [item["index"] for item in fixture["stages"]] or args.frame < 2:
+        parser.error("Stage must be present in the fixture, and --frame must be at least 2.")
     replay = ROOT / "tests/fixtures/replays/th08-1.00d/accepted" / fixture["file"]
     verify_fixture(replay, fixture)
     output.mkdir(parents=True)
-    manifest = dict(fixture=fixture["id"], replaySha256=fixture["sha256"], stage=5, activeFrame=6166,
+    manifest = dict(fixture=fixture["id"], replaySha256=fixture["sha256"], stage=args.stage, activeFrame=args.frame, windowed=True,
                     sourceCommit=subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip(),
+                    runnerSha256=digest(Path(__file__)),
+                    workingTreeDirty=bool(subprocess.check_output(["git", "status", "--porcelain"], cwd=ROOT)),
                     portableSha256=digest(binary), profiles=args.profiles, retail=args.retail,
-                    clipWProbe=args.clip_w_probe,
+                    clipWProbe=args.clip_w_probe, cosmeticEnemyNameCopySuppressed=args.skip_enemy_name_copy,
                     observerScope="Bounded camera, 3D draw, and rendered-frame inspection")
     (output / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
     for name, fast in (("portable-fast", True), ("portable-paced", False)):
         if args.profiles == "both" or args.profiles == ("fast" if fast else "paced"):
-            capture_portable(binary, data, replay, output / name, fast)
+            capture_portable(binary, data, replay, output / name, fast, args.stage, args.frame, args.skip_enemy_name_copy)
     if args.retail:
-        capture_retail(target, data, replay, output / "retail")
+        capture_retail(target, data, replay, output / "retail", args.stage, args.frame)
     if args.clip_w_probe:
         probe = build_clip_w_probe(output)
         try:
-            capture_portable(probe, data, replay, output / "clip-w-probe", True)
+            capture_portable(probe, data, replay, output / "clip-w-probe", True, args.stage, args.frame, args.skip_enemy_name_copy)
         finally:
             if probe.is_file():
                 shutil.copy2(probe, output / "clip-w-probe.elf")
@@ -246,8 +267,8 @@ def main():
                     raise RuntimeError("Retained probe executable differs from its tested build.")
             shutil.rmtree(output / "probe-build")
             compress(output / "probe-build.log")
-    summarize(output)
-    print("Stage 5 background evidence retained in " + str(output), flush=True)
+    summarize(output, args.stage, args.frame)
+    print("Replay frame evidence retained in " + str(output), flush=True)
 
 
 if __name__ == "__main__":
