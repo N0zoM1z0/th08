@@ -52,39 +52,35 @@ coverage. Local evidence is in `build/replay-cold-20261011/portable-replays/`;
 build and smoke logs are compressed alongside it. The earlier v0.2.1 checkpoint
 is in [RE_HANDOFF_HISTORY.md](RE_HANDOFF_HISTORY.md). Web work remains deferred.
 
-## Portable Stage 5 rendering investigation
+## Portable rendering repairs
 
-Source `59e239b4` reproduces a Stage 5 background perspective difference against
-retail at active frame 6,166 of `lunatic-0-b`. Ordinary and accelerated portable
-playback have identical camera packets and playfield pixels. Retail camera
-inputs, script/timer state, and viewport agree; matrix differences are small
-floating-point rounding differences.
+The Linux backend now retains homogeneous clip `W` for XYZ and XYZRHW draws,
+aligns Direct3D/OpenGL pixel centers, refreshes flag-0 backbuffer reads, and
+commits writable unlocks immediately. Read-only unlocks preserve subsequent
+rendering. Fullscreen windows start at desktop dimensions, fixing the Xvfb
+size mismatch. Target-facing source, headers, and ledgers retain the native
+checkpoint.
 
-The portable renderer divides by clip `W` and then submits `glVertex3f`, losing
-the depth weights used for interpolation and clipping. A private XYZ-only
-`glVertex4f` experiment restores the corridor perspective without changing the
-camera packets; playfield mean absolute RGB error falls from 14.188657 to
-2.187907. Production source is unchanged. The next task is a bounded portable
-renderer repair with XYZRHW, 2D, clipping, texture, and fog regression coverage.
+Fresh x86_64 and i386 builds passed ownership/layout verification. Independent
+pixel contracts pass with the repaired backend and reproduce all four expected
+failures at source `9cf5eae8`. Actual HOME screenshots equal their presented
+frames in both windowed and fullscreen modes. Four retail frame comparisons
+pass; the mean RGB errors are 0.005193 (Stage 1), 0.004768 (Stage 3), 0.292928
+(Stage 5), and 0.323372 (Final B). Stage 5 ordinary/accelerated playfields and
+camera packets agree exactly.
 
-Use [PORTABLE_BACKGROUND.md](PORTABLE_BACKGROUND.md) and
-`scripts/analysis/check-stage5-background.py` to reproduce the study. Local
-packets and images are in `build/background-perspective-20261012/`. The earlier
-retail/native VC7 frame comparison has identical playfield pixels and an equal
-25-field prefix over 6,166 calculations. Native reconstruction totals and the
-108-case replay acceptance remain unchanged.
+All six muted replay windows pass with normal life rules and the normal
+boss-name copy, retaining 8,810 enemy-render samples. Nine Stage 5 color suspects
+remain heuristic observations. The 60-second sanitizer title/demo/Stage 5 smoke
+and 90-second direct Stage 5 sanitizer replay audit pass; the latter retains
+1,891 samples. Local evidence is in `build/portable-render-fix-20261012/`.
 
-The follow-up [portable runtime review](PORTABLE_RUNTIME_REVIEW.md) confirms the
-same perspective defect in Stage 1, Stage 3, and Final B. It also reproduces a
-HOME screenshot defect: a flag-0 backbuffer lock reads stale CPU pixels, and its
-unlock causes the next presentation to overwrite the frame with that cache.
-`scripts/analysis/check-portable-display.py` captures the actual HOME key path.
-Fullscreen cropping is isolated to the tested Xvfb environment without a window
-manager; explicit windowed captures match the framebuffer exactly. Stage 5
-reaches frame 6,166 with the normal boss-name copy, which the frame tool now
-keeps by default. Local evidence is in `build/portable-runtime-audit-20261012/`.
-Production C++ remains unchanged; the bounded renderer and surface-lock repairs
-are the next implementation tasks.
+Use [PORTABLE_RENDERING.md](PORTABLE_RENDERING.md) and
+`scripts/test-portable-rendering.py` for reproduction. The earlier
+[background study](PORTABLE_BACKGROUND.md) and
+[runtime review](PORTABLE_RUNTIME_REVIEW.md) preserve the pre-fix observations.
+The complete portable 108-recording state-parity run, remaining pixel
+differences, and AArch64 hardware gameplay are the next validation tasks.
 
 ## Native replay parity investigation
 

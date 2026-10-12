@@ -64,6 +64,8 @@ def main() -> int:
         run("Smoke-test portable replay repair CLI", [sys.executable, "scripts/test-portable-replay-repairs.py", "--help"])
         run("Smoke-test replay frame inspection CLI", [sys.executable, "scripts/analysis/check-stage5-background.py", "--help"])
         run("Smoke-test portable display inspection CLI", [sys.executable, "scripts/analysis/check-portable-display.py", "--help"])
+        run("Smoke-test portable renderer contract CLI", [sys.executable, "scripts/test-portable-renderer.py", "--help"])
+        run("Smoke-test portable rendering regression CLI", [sys.executable, "scripts/test-portable-rendering.py", "--help"])
         run(
             "Test render-audit checker contract",
             [sys.executable, "scripts/test-render-audit.py"],

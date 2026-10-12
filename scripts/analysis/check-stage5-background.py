@@ -234,6 +234,8 @@ def main():
             parser.error("Original data archive is missing: " + archive)
     if args.retail and (not target.is_file() or target.stat().st_size != 840704 or digest(target) != "330fbdbf58a710829d65277b4f312cfbb38d5448b3df523e79350b879213d924"):
         parser.error("Retail input must be the canonical Japanese TH08 1.00d executable.")
+    if args.clip_w_probe and "glVertex4f" in (ROOT / "src/modern/linux/d3d8_compat.cpp").read_text():
+        parser.error("The renderer already retains clip W. Reproduce the historical --clip-w-probe at commit 9cf5eae8.")
     fixture = next((item for item in json.loads((ROOT / "config/replay-fixtures.json").read_text())["fixtures"]
                     if item["id"] == args.fixture), None)
     if fixture is None:

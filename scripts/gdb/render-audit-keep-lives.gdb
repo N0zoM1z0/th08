@@ -4,16 +4,12 @@ set breakpoint pending on
 set debuginfod enabled off
 set print thread-events off
 
-# Direct replay starts can enter a later stage without the heap history on
-# which the original CopyEnemyNameTexture out-of-bounds read accidentally
-# relies.  The copied boss-name strip is unrelated to the enemy draw oracle;
-# suppress only that cosmetic copy in this external test harness.
-break th08::Gui::CopyEnemyNameTexture(int)
-commands
-    silent
-    printf "render-audit: suppressed direct-stage enemy-name texture copy\n"
-    return
-    continue
+# Keep the product boss-name copy; allow the historical bypass for diagnostics.
+python
+import gdb, os
+if os.environ.get('TH08_RENDER_AUDIT_SKIP_ENEMY_NAME') == '1':
+    gdb.execute('break th08::Gui::CopyEnemyNameTexture(int)')
+    gdb.execute('commands\nsilent\nprintf "render-audit: suppressed enemy-name texture copy\\n"\nreturn\ncontinue\nend')
 end
 
 break th08::GameManager::AddLives(int) if lives < 0

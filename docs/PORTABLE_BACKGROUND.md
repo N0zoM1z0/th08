@@ -1,9 +1,10 @@
 # Stage 5 background perspective
 
-The portable renderer loses homogeneous clip `W` when submitting 3D vertices.
-At Stage 5 frame 6,166, this distorts wall and floor textures and changes
-clipping near the camera. An isolated renderer variant that retains `W`
-restores the corridor perspective. The production renderer awaits a repair.
+The preceding portable renderer lost homogeneous clip `W` when submitting 3D
+vertices. At Stage 5 frame 6,166, this distorted wall and floor textures and
+changed clipping near the camera. The production repair preserves `W` and
+aligns pixel centers; [PORTABLE_RENDERING.md](PORTABLE_RENDERING.md) records its
+regression suite and measured results. This page preserves the original study.
 
 ## Reproduce the investigation
 
@@ -17,7 +18,7 @@ scripts/build-portable-linux.sh x86_64
 python3 scripts/analysis/check-stage5-background.py \
   --portable build/portable-linux-x86_64/th08-modern \
   --game-data-dir "/path/to/original/TH08 directory" \
-  --retail --clip-w-probe \
+  --retail \
   --output-dir build/stage5-background-check
 ```
 
@@ -37,6 +38,23 @@ The summary compares the playfield rectangle `(32, 16)`–`(416, 464)` and deriv
 clip `W` from the captured vertices and matrices. Logs and traces are compressed;
 temporary runtimes, the owned Wine prefix, and experimental build intermediates
 are removed. The probe executable and its source variant remain available.
+
+The command above captures the repaired renderer. To reproduce the original
+XYZ-only `--clip-w-probe` experiment, use its preceding source checkpoint:
+
+```bash
+git worktree add --detach build/clip-w-investigation 9cf5eae8
+build/clip-w-investigation/scripts/build-portable-linux.sh x86_64
+python3 build/clip-w-investigation/scripts/analysis/check-stage5-background.py \
+  --portable build/clip-w-investigation/build/portable-linux-x86_64/th08-modern \
+  --target resources/th08.exe \
+  --game-data-dir "/path/to/original/TH08 directory" \
+  --retail --clip-w-probe \
+  --output-dir build/clip-w-investigation/build/stage5-background-check
+```
+
+This creates an isolated checkout and leaves the active source intact. Remove
+its generated build directories and the worktree when the investigation is done.
 
 The tool keeps the normal boss-name texture copy. `--skip-enemy-name-copy`
 selects the earlier diagnostic bypass and records it in metadata. Retail

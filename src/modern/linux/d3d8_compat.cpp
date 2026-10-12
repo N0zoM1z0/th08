@@ -168,7 +168,7 @@ class LinuxSurface : public IDirect3DSurface8
   public:
     LinuxSurface(UINT width_, UINT height_, D3DFORMAT format_, bool backbuffer_, LinuxTexture *owner_)
         : refs(1), width(width_), height(height_), format(format_), backbuffer(backbuffer_), owner(owner_),
-          dirty(!backbuffer_)
+          dirty(!backbuffer_), locked(false), lockedReadOnly(false)
     {
         pitch = width * BytesPerPixel(format);
         pixels.resize(pitch * height);
@@ -186,21 +186,30 @@ class LinuxSurface : public IDirect3DSurface8
     }
     HRESULT LockRect(D3DLOCKED_RECT *locked, const RECT *rect, DWORD flags)
     {
-        if (locked == NULL) return E_INVALIDARG;
-        if (backbuffer && (flags & D3DLOCK_READONLY)) ReadBackbuffer();
+        if (locked == NULL || this->locked) return E_INVALIDARG;
         UINT left = rect != NULL && rect->left > 0 ? static_cast<UINT>(rect->left) : 0;
         UINT top = rect != NULL && rect->top > 0 ? static_cast<UINT>(rect->top) : 0;
         if (left >= width || top >= height) return E_INVALIDARG;
+        if (backbuffer) ReadBackbuffer();
+        this->locked = true;
+        lockedReadOnly = (flags & D3DLOCK_READONLY) != 0;
         locked->Pitch = pitch;
         locked->pBits = &pixels[top * pitch + left * BytesPerPixel(format)]; return S_OK;
     }
-    HRESULT UnlockRect() { dirty = true; return S_OK; }
+    HRESULT UnlockRect()
+    {
+        if (!locked) return E_INVALIDARG;
+        locked = false;
+        if (!lockedReadOnly) th08_linux_surface_changed(this);
+        return S_OK;
+    }
     HRESULT GetDC(HDC *dc)
     { if (dc == NULL) return E_INVALIDARG; *dc = CreateCompatibleDC(NULL); return *dc ? S_OK : E_FAIL; }
     HRESULT ReleaseDC(HDC dc) { return DeleteDC(dc) ? S_OK : E_FAIL; }
     void ReadBackbuffer()
     {
         if (!backbuffer || width == 0 || height == 0) return;
+        FlushBackbuffer();
         std::vector<BYTE> rgba(width * height * 4);
         glReadPixels(0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, &rgba[0]);
         const UINT bytes = BytesPerPixel(format);
@@ -223,6 +232,8 @@ class LinuxSurface : public IDirect3DSurface8
         glPushAttrib(GL_ALL_ATTRIB_BITS);
         glDisable(GL_ALPHA_TEST); glDisable(GL_BLEND); glDisable(GL_CULL_FACE);
         glDisable(GL_DEPTH_TEST); glDisable(GL_SCISSOR_TEST);
+        glDisable(GL_FOG); glDisable(GL_LIGHTING);
+        glViewport(0, 0, width, height);
         glDepthMask(GL_FALSE);
         glEnable(GL_TEXTURE_2D);
         glGenTextures(1, &name); glBindTexture(GL_TEXTURE_2D, name);
@@ -251,7 +262,7 @@ class LinuxSurface : public IDirect3DSurface8
     D3DFORMAT format;
     bool backbuffer;
     LinuxTexture *owner;
-    bool dirty;
+    bool dirty, locked, lockedReadOnly;
     std::vector<BYTE> pixels;
 };
 
@@ -280,7 +291,7 @@ class LinuxTexture : public IDirect3DTexture8
     HRESULT LockRect(UINT level, D3DLOCKED_RECT *locked, const RECT *rect, DWORD flags)
     { return level == 0 ? surface->LockRect(locked, rect, flags) : E_INVALIDARG; }
     HRESULT UnlockRect(UINT level)
-    { if (level != 0) return E_INVALIDARG; uploaded = false; return surface->UnlockRect(); }
+    { return level == 0 ? surface->UnlockRect() : E_INVALIDARG; }
     void Upload()
     {
         if (uploaded && !surface->dirty) return;
@@ -475,6 +486,7 @@ class LinuxDevice : public IDirect3DDevice8
         glPushAttrib(GL_ALL_ATTRIB_BITS);
         glDisable(GL_ALPHA_TEST); glDisable(GL_BLEND); glDisable(GL_CULL_FACE);
         glDisable(GL_DEPTH_TEST); glDisable(GL_LIGHTING); glDisable(GL_SCISSOR_TEST);
+        glDisable(GL_FOG);
         glDepthMask(GL_FALSE);
         glEnable(GL_TEXTURE_2D); glBindTexture(GL_TEXTURE_2D, renderColorTexture);
         glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
@@ -803,13 +815,15 @@ class LinuxDevice : public IDirect3DDevice8
         return true;
     }
     void TransformPosition(const float *position, bool transformed, float *xOut, float *yOut,
-                           float *zOut, float *fogCoordinateOut)
+                           float *zOut, float *wOut, float *fogCoordinateOut)
     {
         if (transformed)
         {
-            // D3D8 pre-transformed vertices use integer pixel centers, while
-            // OpenGL samples at half-integer centers.
-            *xOut = position[0] + 0.5f; *yOut = position[1] + 0.5f; *zOut = position[2];
+            const float w = position[3] != 0.0f ? 1.0f / position[3] : 1.0f;
+            *xOut = (position[0] + 0.5f) * w;
+            *yOut = (position[1] + 0.5f) * w;
+            *zOut = position[2] * w;
+            *wOut = w;
             *fogCoordinateOut = 0.0f;
             return;
         }
@@ -826,10 +840,13 @@ class LinuxDevice : public IDirect3DDevice8
             if (index == 1)
                 *fogCoordinateOut = fabsf(vector[2]);
         }
-        float reciprocal = fabsf(vector[3]) > 1.0e-8f ? 1.0f / vector[3] : 1.0f;
-        *xOut = viewport.X + (vector[0] * reciprocal + 1.0f) * viewport.Width * 0.5f;
-        *yOut = viewport.Y + (1.0f - vector[1] * reciprocal) * viewport.Height * 0.5f;
-        *zOut = viewport.MinZ + vector[2] * reciprocal * (viewport.MaxZ - viewport.MinZ);
+        // Keep homogeneous W through OpenGL interpolation and clipping.
+        // D3D8 pixel centers are integers; OpenGL samples half-integers.
+        const float w = vector[3];
+        *xOut = (viewport.X + 0.5f) * w + (vector[0] + w) * viewport.Width * 0.5f;
+        *yOut = (viewport.Y + 0.5f) * w + (w - vector[1]) * viewport.Height * 0.5f;
+        *zOut = viewport.MinZ * w + vector[2] * (viewport.MaxZ - viewport.MinZ);
+        *wOut = w;
     }
     void PrepareState()
     {
@@ -951,8 +968,8 @@ class LinuxDevice : public IDirect3DDevice8
         PrepareState(); glBegin(PrimitiveMode(type));
         for (UINT index = 0; index < count; ++index)
         {
-            const BYTE *vertex = data + index * stride; float x, y, z, fogCoordinate;
-            TransformPosition(reinterpret_cast<const float *>(vertex), transformed, &x, &y, &z,
+            const BYTE *vertex = data + index * stride; float x, y, z, w, fogCoordinate;
+            TransformPosition(reinterpret_cast<const float *>(vertex), transformed, &x, &y, &z, &w,
                               &fogCoordinate);
             D3DCOLOR color = hasDiffuse ? *reinterpret_cast<const D3DCOLOR *>(vertex + colorOffset) : 0xffffffffu;
             color = EffectiveColor(color);
@@ -970,7 +987,7 @@ class LinuxDevice : public IDirect3DDevice8
             glColor4ub((color >> 16) & 255, (color >> 8) & 255, color & 255, (color >> 24) & 255);
             if (g_fogCoordf != NULL)
                 g_fogCoordf(fogCoordinate);
-            glVertex3f(x, y, 1.0f - 2.0f * z);
+            glVertex4f(x, y, w - 2.0f * z, w);
         }
         glEnd(); return S_OK;
     }

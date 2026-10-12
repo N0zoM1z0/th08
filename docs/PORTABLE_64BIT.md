@@ -277,7 +277,8 @@ CSV records its texture, tint, geometry, and framebuffer delta.
 Same-frame retail comparison subsequently exposed a Stage 5 background
 perspective difference. [PORTABLE_BACKGROUND.md](PORTABLE_BACKGROUND.md) records
 the camera/vertex investigation, the confirmed loss of clip `W`, and a reusable
-isolated experiment. The production rendering repair is pending.
+isolated experiment. [PORTABLE_RENDERING.md](PORTABLE_RENDERING.md) records the
+production repair and its renderer, HOME, and same-frame regression suite.
 
 The [portable runtime review](PORTABLE_RUNTIME_REVIEW.md) extends that defect
 to Stage 1, Stage 3, and Final B, confirms stale HOME screenshots and next-frame

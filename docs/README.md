@@ -24,6 +24,7 @@ are available when you need to examine how a conclusion was reached.
 | Download and play on Linux | [Linux player guide](PLAY_LINUX.md) |
 | Build the Linux i386 executable from `main` | [Linux engineering guide](LINUX_PORTING.md#one-command-setup-and-play) |
 | Build or investigate the native 64-bit port | [`port/portable-64bit` documentation](https://github.com/N0zoM1z0/th08/blob/port/portable-64bit/docs/PORTABLE_64BIT.md) |
+| Check portable renderer and screenshot repairs | [Portable rendering regression checks](PORTABLE_RENDERING.md) |
 | Understand Windows or macOS release readiness | [Windows guide](PLAY_WINDOWS.md), [macOS guide](PLAY_MACOS.md) |
 | Play or develop the browser port | [TH08 Web project](https://github.com/N0zoM1z0/th08-web) |
 | Compare the developer build products | [Port scope and products](PORTING.md#scope-and-products), [VC7 build modes](BUILD_MATCHING.md#builds) |

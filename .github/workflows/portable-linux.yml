@@ -64,10 +64,13 @@ jobs:
           sudo apt-get install -y \
             ninja-build pkg-config \
             libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev \
-            libfontconfig1-dev libgl-dev
+            libfontconfig1-dev libgl-dev xvfb xauth
 
       - name: Build and verify native-layout ELF
         run: scripts/build-portable-linux.sh x86_64
+
+      - name: Check renderer pixel contracts without game assets
+        run: python3 scripts/test-portable-renderer.py
 
       - name: Create portable archive
         run: |

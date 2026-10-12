@@ -51,12 +51,18 @@ for command_name in xvfb-run timeout gdb; do
 done
 keep_lives="${TH08_RENDER_AUDIT_KEEP_LIVES:-1}"
 fast_replay="${TH08_RENDER_AUDIT_FAST:-1}"
+skip_enemy_name="${TH08_RENDER_AUDIT_SKIP_ENEMY_NAME:-0}"
 if [[ "${keep_lives}" != 0 && "${keep_lives}" != 1 ]]; then
     echo "TH08_RENDER_AUDIT_KEEP_LIVES must be 0 or 1: ${keep_lives}" >&2
     exit 2
 fi
 if [[ "${fast_replay}" != 0 && "${fast_replay}" != 1 ]]; then
     echo "TH08_RENDER_AUDIT_FAST must be 0 or 1: ${fast_replay}" >&2
+    exit 2
+fi
+
+if [[ "${skip_enemy_name}" != 0 && "${skip_enemy_name}" != 1 ]]; then
+    echo "TH08_RENDER_AUDIT_SKIP_ENEMY_NAME must be 0 or 1: ${skip_enemy_name}" >&2
     exit 2
 fi
 
@@ -92,6 +98,7 @@ env SDL_AUDIODRIVER=dummy LIBGL_ALWAYS_SOFTWARE=1 GALLIUM_DRIVER=llvmpipe \
     TH08_AUTOPLAY_STAGE="${stage_index}" \
     TH08_RENDER_AUDIT=1 \
     TH08_RENDER_AUDIT_FAST="${fast_replay}" \
+    TH08_RENDER_AUDIT_SKIP_ENEMY_NAME="${skip_enemy_name}" \
     xvfb-run -a -s '-screen 0 1024x768x24' \
     timeout --signal=TERM --kill-after=5s "${duration}s" \
     "${runtime_command[@]}" >"${runtime_dir}/audit-runtime.log" 2>&1
@@ -108,13 +115,17 @@ if grep -Eq 'received signal SIG[A-Z0-9]+' "${runtime_dir}/audit-runtime.log"; t
     sed -n '1,160p' "${runtime_dir}/audit-runtime.log" >&2
     exit 1
 fi
+if grep -Eq 'ERROR: AddressSanitizer|SUMMARY: AddressSanitizer' "${runtime_dir}/audit-runtime.log"; then
+    echo "Render audit reported a sanitizer error." >&2
+    exit 1
+fi
 if [[ ${status} -ne 0 && ${status} -ne 124 ]]; then
     echo "Portable runtime exited before the ${duration}-second audit window (status ${status})." >&2
     sed -n '1,160p' "${runtime_dir}/audit-runtime.log" >&2
     exit 1
 fi
 if [[ ${status} -eq 0 ]] &&
-   ! grep -Eq 'exited normally|exited with code 0' "${runtime_dir}/audit-runtime.log"; then
+   ! grep -Eq '(exited normally|exited with code 0)(]|[[:space:]]|$)' "${runtime_dir}/audit-runtime.log"; then
     echo "Debugger exited without a clean inferior exit or timeout." >&2
     sed -n '1,160p' "${runtime_dir}/audit-runtime.log" >&2
     exit 1
