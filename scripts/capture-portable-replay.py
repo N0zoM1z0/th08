@@ -68,6 +68,12 @@ def main():
     parser.add_argument("--watch-item", type=int, help="GDB: record this item pool slot")
     parser.add_argument("--watch-item-start", type=int, default=1, help="GDB: first input frame for item motion records")
     parser.add_argument("--watch-enemy", type=int, help="GDB: record this enemy pool slot")
+    parser.add_argument("--watch-rng", action="store_true", help="GDB: record RNG callers in a bounded frame window")
+    parser.add_argument("--watch-normalization", action="store_true", help="GDB: record camera particle normalization in a bounded window")
+    parser.add_argument("--watch-effect-pool", action="store_true", help="GDB: record effect pool allocation and occupancy")
+    parser.add_argument("--detail-stage", type=int, help="GDB: internal stage index for RNG diagnostics")
+    parser.add_argument("--detail-start", type=int, help="GDB: first input frame for RNG diagnostics")
+    parser.add_argument("--detail-end", type=int, help="GDB: exclusive end frame for RNG diagnostics")
     args = parser.parse_args()
     output = args.output_dir.resolve()
     if not output.is_relative_to(ROOT / "build") or output.exists():
@@ -82,6 +88,14 @@ def main():
         parser.error("Item motion records require --backend gdb, a slot from 0 to 2096, and a positive start frame")
     if args.watch_enemy is not None and (args.backend != "gdb" or not 0 <= args.watch_enemy < 480):
         parser.error("Enemy motion records require --backend gdb and a slot from 0 to 479")
+    if args.watch_effect_pool and args.backend != "gdb":
+        parser.error("Effect pool diagnostics require --backend gdb")
+    detail = (args.detail_stage, args.detail_start, args.detail_end)
+    if args.watch_rng or args.watch_normalization or any(value is not None for value in detail):
+        if not (args.watch_rng or args.watch_normalization) or args.backend != "gdb" or any(value is None for value in detail):
+            parser.error("Call diagnostics require --watch-rng or --watch-normalization, --backend gdb, and all three --detail-* options")
+        if not 0 <= args.detail_stage <= 8 or not 1 <= args.detail_start < args.detail_end:
+            parser.error("RNG diagnostics require stage 0..8 and 1 <= start < end")
     target, candidate, data, reference = [path.resolve(strict=True) for path in
                                          (args.target, args.candidate, args.game_data_dir, args.reference)]
     if target.stat().st_size != 840704 or sha(target) != "330fbdbf58a710829d65277b4f312cfbb38d5448b3df523e79350b879213d924":
@@ -110,7 +124,9 @@ def main():
     (output / "metadata.json").write_text(json.dumps(retained, indent=2) + "\n")
     settings = dict(reference=str(reference), replay=replay, playbackMode=metadata["playbackMode"],
                     maxCalculations=args.max_calculations, watchScoreStage=args.watch_score_stage, watchScoreFrame=args.watch_score_frame,
-                    startStage=start_stage, watchItem=args.watch_item, watchItemStart=args.watch_item_start, watchEnemy=args.watch_enemy)
+                    startStage=start_stage, watchItem=args.watch_item, watchItemStart=args.watch_item_start, watchEnemy=args.watch_enemy,
+                    watchRng=args.watch_rng, watchNormalization=args.watch_normalization, watchEffectPool=args.watch_effect_pool,
+                    detailStage=args.detail_stage, detailStart=args.detail_start, detailEnd=args.detail_end)
     (output / "settings.json").write_text(json.dumps(settings, indent=2) + "\n")
     runtime = Path(tempfile.mkdtemp(prefix="portable-state.", dir=ROOT / "build"))
     try:

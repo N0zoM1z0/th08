@@ -19,6 +19,7 @@ while True:
         break
 pending_reference = first
 stream = gzip.open(output / "rows.jsonl.gz", "wt", compresslevel=6)
+pool_stream = gzip.open(output / "effect-pool.jsonl.gz", "wt") if settings.get("watchEffectPool") else None
 
 
 def address(expression):
@@ -56,6 +57,28 @@ def pointer(location):
     return struct.unpack(pointer_format, block(location, pointer_size))[0]
 
 
+def save_state(name):
+    snapshot = {}
+    for symbol in ("g_Player", "g_Spellcard", "g_BulletManager", "g_EnemyManager", "g_ItemManager", "g_EffectManager", "g_Background"):
+        value = gdb.parse_and_eval("th08::" + symbol)
+        snapshot[symbol] = block(int(value.address), value.type.sizeof).hex()
+    snapshot.update(globals=block(pointer(gm + gm_offsets["globals"]), gdb.lookup_type("th08::ZunGlobals").sizeof).hex(),
+                    gameManager=block(gm + gm_begin, gm_end - gm_begin).hex(),
+                    rng=block(rng, gdb.lookup_type("th08::Rng").sizeof).hex())
+    snapshot["floatingPointState"] = gdb.execute("info float", to_string=True)
+    snapshot["sseControl"] = str(gdb.parse_and_eval("$mxcsr"))
+    snapshot["layouts"] = {}
+    for type_name in ("Player", "PlayerShot", "PlayerCollisionRegion", "Enemy", "EnemyManager", "Item", "ItemManager",
+                      "Bullet", "BulletManager", "Effect", "EffectManager", "Background", "BackgroundCamera", "AnmVm", "AnmVmBase"):
+        try:
+            snapshot["layouts"][type_name] = [dict(name=field.name, offset=field.bitpos // 8,
+                bytes=field.type.sizeof, type=str(field.type)) for field in gdb.lookup_type("th08::" + type_name).fields()]
+        except gdb.error:
+            pass
+    with gzip.open(output / name, "wt") as handle:
+        json.dump(snapshot, handle)
+
+
 class Observer(gdb.Breakpoint):
     def __init__(self):
         super().__init__("th08::ReplayManager::ControlPlaybackFrameAdvance", internal=True)
@@ -72,6 +95,8 @@ class Observer(gdb.Breakpoint):
             return True
         self.finished = True
         errors = [error] if error else []
+        if diagnostic and pool_stream:
+            save_state("window-state.json.gz")
         expected = [entry["index"] for entry in settings["replay"]["stages"]]
         if not diagnostic and not error:
             if reference.readline():
@@ -90,6 +115,8 @@ class Observer(gdb.Breakpoint):
                     errors.append(f"Stage {key} score differs from the recording")
         stream.close()
         reference.close()
+        if pool_stream:
+            pool_stream.close()
         (output / "complete.json").write_text(json.dumps(dict(
             rows=self.count, ended=not errors and not diagnostic, diagnosticComplete=diagnostic,
             errors=errors, stages=self.stages, stageFrames=self.stage_frames,
@@ -112,6 +139,22 @@ class Observer(gdb.Breakpoint):
                 return False
             stage, frame = gm32("currentStage"), u32(block(manager, 4))
             key = str(stage)
+            if pool_stream:
+                manager_value = gdb.parse_and_eval("th08::g_EffectManager")
+                layout = offsets("th08::EffectManager")
+                effect_layout = offsets("th08::Effect")
+                size = gdb.lookup_type("th08::Effect").sizeof
+                raw = block(int(manager_value.address), manager_value.type.sizeof)
+                slots = bytes(value for slot in range(512) for value in
+                              raw[layout["effects"] + slot * size + effect_layout["active"]:
+                                  layout["effects"] + slot * size + effect_layout["active"] + 2])
+                pool_stream.write(json.dumps(dict(stage=stage, frame=frame,
+                    nextIndex=u32(raw, layout["nextEffectIndex"]), activeCount=u32(raw, layout["activeCount"]),
+                    slots=slots.hex())) + "\n")
+            rng_events.enabled = bool(settings.get("watchRng") and stage == settings["detailStage"]
+                                      and settings["detailStart"] - 1 <= frame < settings["detailEnd"])
+            normalization_events.enabled = bool(settings.get("watchNormalization") and stage == settings["detailStage"]
+                                                and settings["detailStart"] - 1 <= frame < settings["detailEnd"])
             if settings.get("watchEnemy") is not None:
                 slot = settings["watchEnemy"]
                 enemy = gdb.parse_and_eval(f"th08::g_EnemyManager.enemies[{slot}]")
@@ -177,22 +220,7 @@ class Observer(gdb.Breakpoint):
                     differingFields=[field for field, a, b in zip(fields, expected or [], row) if a != b],
                     reference=dict(zip(fields, expected or [])), candidate=dict(zip(fields, row)), previous=self.previous)
                 (output / "first-difference.json").write_text(json.dumps(difference, indent=2) + "\n")
-                snapshot = {}
-                for name in ("g_Player", "g_Spellcard", "g_BulletManager", "g_EnemyManager", "g_ItemManager", "g_EffectManager"):
-                    value = gdb.parse_and_eval("th08::" + name)
-                    snapshot[name] = block(int(value.address), value.type.sizeof).hex()
-                snapshot.update(globals=globals_data.hex(), gameManager=state.hex(), rng=rng_data.hex())
-                snapshot["floatingPointState"] = gdb.execute("info float", to_string=True)
-                snapshot["sseControl"] = str(gdb.parse_and_eval("$mxcsr"))
-                snapshot["layouts"] = {}
-                for name in ("Player", "PlayerShot", "Enemy", "EnemyManager", "Item", "ItemManager", "Bullet", "BulletManager", "AnmVm"):
-                    try:
-                        snapshot["layouts"][name] = [dict(name=field.name, offset=field.bitpos // 8,
-                            bytes=field.type.sizeof, type=str(field.type)) for field in gdb.lookup_type("th08::" + name).fields()]
-                    except gdb.error:
-                        pass
-                with gzip.open(output / "first-difference-state.json.gz", "wt") as handle:
-                    json.dump(snapshot, handle)
+                save_state("first-difference-state.json.gz")
                 return self.finish("Replay diverged; see first-difference.json")
             self.previous = (self.previous + [dict(zip(fields, row))])[-2:]
             if self.count % 10000 == 0:
@@ -320,3 +348,55 @@ class ItemSpawn(gdb.Breakpoint):
 
 
 item_spawn = ItemSpawn()
+
+
+class RngEvents(gdb.Breakpoint):
+    def __init__(self):
+        super().__init__("th08::Rng::GetRandomU16", internal=True)
+        self.enabled = False
+
+    def stop(self):
+        data = block(rng, gdb.lookup_type("th08::Rng").sizeof)
+        record = dict(stage=u32(block(gm + gm_offsets["currentStage"], 4)),
+                      frame=u32(block(pointer(manager_pointer), 4)),
+                      seed=struct.unpack_from("<H", data, rng_offsets["seed"])[0],
+                      generation=u32(data, rng_offsets["generationCount"]), callers=[])
+        caller = gdb.newest_frame().older()
+        for _ in range(7):
+            if caller is None:
+                break
+            record["callers"].append(dict(name=caller.name(), pc=hex(caller.pc())))
+            caller = caller.older()
+        with (output / "rng-events.jsonl").open("a") as handle:
+            handle.write(json.dumps(record) + "\n")
+        return False
+
+
+rng_events = RngEvents()
+
+
+class NormalizationEvents(gdb.Breakpoint):
+    def __init__(self):
+        super().__init__("D3DXVec3Dot", internal=True)
+        self.enabled = False
+
+    def stop(self):
+        frame = gdb.newest_frame()
+        caller = frame.older()
+        if caller.name() != "th08::UpdateTintedBossTrackingCameraParticle":
+            return False
+        effect = caller.read_var("effect")
+        camera = gdb.parse_and_eval("th08::g_Background.cameraCurrent")
+        record = dict(stage=u32(block(gm + gm_offsets["currentStage"], 4)),
+                      frame=u32(block(pointer(manager_pointer), 4)),
+                      slot=int(effect - gdb.parse_and_eval("&th08::g_EffectManager.effects[0]")),
+                      position=list(struct.unpack("<3I", block(int(effect["position"].address), 12))),
+                      camera=list(struct.unpack("<3I", block(int(camera["position"].address), 12))),
+                      normalized=list(struct.unpack("<3I", block(int(frame.read_var("right")), 12))),
+                      forward=list(struct.unpack("<3I", block(int(frame.read_var("left")), 12))))
+        with (output / "normalization-events.jsonl").open("a") as handle:
+            handle.write(json.dumps(record) + "\n")
+        return False
+
+
+normalization_events = NormalizationEvents()

@@ -39,7 +39,9 @@ def observer_config(candidate, map_path):
                     stageStartBoundary=0x00439BC7, deleteReplay=0x00453080,
                     itemManager=0x01653648, spawnItem=0x004400A0,
                     bulletManager=0x00F54E90,
-                    effectManager=0x004ECE60, anmExecute=0x0045EA00,
+                    effectManager=0x004ECE60, background=0x004E4030, anmExecute=0x0045EA00,
+                    normalizeDispatch=0x004C872C,
+                    normalizationBoundary=0x00426586,
                     releaseEffects=0x0042A820,
                     enemyManager=0x00577F20, addScore=0x004181F0, randomU16=0x0043ECC0,
                     boundary=0x00452490, attestAddress=0x00452490,
@@ -75,10 +77,11 @@ def observer_config(candidate, map_path):
                 stageStartBoundary=address("OnUpdate@GameManager"), deleteReplay=address("DeleteReplayManager@ReplayManager"),
                 input=address("g_GuiMessageInputCurrent"), itemManager=address("g_ItemManager"), spawnItem=address("SpawnItem@ItemManager"),
                 bulletManager=address("g_BulletManager"),
-                effectManager=address("g_EffectManager"), anmExecute=address("ExecuteScript@AnmManager"),
+                effectManager=address("g_EffectManager"), background=address("g_Background"), anmExecute=address("ExecuteScript@AnmManager"),
                 releaseEffects=address("ReleaseAttachedEffects@Enemy"),
                 enemyManager=address("g_EnemyManager"), addScore=address("AddScore@GameManager"),
                 randomU16=address("GetRandomU16@Rng"),
+                normalizationBoundary=address("UpdateTintedBossTrackingCameraParticle") + 0x96,
                 boundary=frame_control, attestAddress=frame_control,
                 attestBytes=image.read_rva(frame_control - image.image_base, 13).hex(),
                 completionBoundary=call + 5, completionAttestAddress=attest,
@@ -123,6 +126,8 @@ def main():
     parser.add_argument("--watch-score", action="store_true", help="Trace score writes during an external diagnostic window (GDB)")
     parser.add_argument("--watch-item", type=int, action="append", default=[], help="Read this item pool slot during an external diagnostic window")
     parser.add_argument("--watch-enemy", type=int, action="append", default=[], help="Read this enemy pool slot during an external diagnostic window")
+    parser.add_argument("--watch-effect-pool", action="store_true", help="Record external replay effect pool allocation and occupancy")
+    parser.add_argument("--watch-normalization", action="store_true", help="Record camera particle normalization in an external diagnostic window")
     parser.add_argument("--watch-effect", type=int, action="append", default=[],
                         help="Trace this effect ID's lifetime, including inactive slots; repeat as needed")
     parser.add_argument("--display", help="Existing X display; default: a private Xvfb display")
@@ -147,6 +152,10 @@ def main():
         parser.error("The ptrace backend currently captures external replay files")
     if args.reference_trace and not replay:
         parser.error("--reference-trace requires --replay")
+    if args.watch_effect_pool and not replay:
+        parser.error("--watch-effect-pool requires --replay")
+    if args.watch_normalization and (not replay or not args.detail_start):
+        parser.error("--watch-normalization requires an external diagnostic window")
     if replay and args.watch_effect:
         parser.error("Use an external diagnostic window to record attached-effect release events")
     if replay and args.detail_start and args.detail_stage is None:
@@ -187,7 +196,8 @@ def main():
     executable = args.candidate or args.target
     observer_settings = observer_config(args.candidate, args.map_path)
     observer_settings.update(detailStart=args.detail_start, detailEnd=args.detail_end, watchScore=args.watch_score, watchItems=args.watch_item, demoIndexes=demos,
-                             watchEffects=args.watch_effect, watchEnemies=args.watch_enemy)
+                             watchEffects=args.watch_effect, watchEnemies=args.watch_enemy, watchEffectPool=args.watch_effect_pool,
+                             watchNormalization=args.watch_normalization)
     if replay:
         observer_settings.update(replay=replay, startStage=args.start_stage, playbackMode=args.playback_mode,
                                  detailStage=args.detail_stage)
@@ -197,6 +207,15 @@ def main():
         observer_settings["extraAttestations"] = [dict(address=observer_settings[name],
             bytes=observer_image.read_rva(observer_settings[name] - observer_image.image_base, 13).hex())
             for name in ("stageStartBoundary", "deleteReplay")]
+        if args.watch_normalization:
+            boundary = observer_settings["normalizationBoundary"]
+            expected = b"\x8d\x55\xf4\xb9" + struct.pack("<I", observer_settings["background"] + 0x63b8) + b"\xe8"
+            if observer_image.read_rva(boundary - observer_image.image_base, len(expected)) != expected:
+                raise ValueError("Camera-particle normalization boundary has an unsupported instruction shape")
+            if observer_image.read_rva(boundary - 0x96 - observer_image.image_base, 9) != b"\x55\x8b\xec\x83\xec\x44\x89\x4d\xbc":
+                raise ValueError("Camera-particle normalization stack layout differs from the attested function")
+            observer_settings["extraAttestations"].append(dict(address=boundary,
+                bytes=observer_image.read_rva(boundary - observer_image.image_base, 13).hex()))
         (runtime / "replay").mkdir()
         shutil.copyfile(args.replay, runtime / "replay" / "th8_01.rpy")
     shutil.copyfile(executable, runtime / "th08.exe")

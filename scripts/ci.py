@@ -66,6 +66,8 @@ def main() -> int:
         run("Smoke-test portable replay capture CLI", [sys.executable, "scripts/capture-portable-replay.py", "--help"])
         run("Smoke-test portable replay suite CLI", [sys.executable, "scripts/test-portable-replay-suite.py", "--help"])
         run("Smoke-test portable vector precision CLI", [sys.executable, "scripts/test-portable-math.py", "--help"])
+        run("Smoke-test portable normalization CLI", [sys.executable, "scripts/test-portable-normalization.py", "--help"])
+        run("Smoke-test effect pool comparison CLI", [sys.executable, "scripts/analysis/compare-effect-pools.py", "--help"])
         run("Smoke-test replay frame inspection CLI", [sys.executable, "scripts/analysis/check-stage5-background.py", "--help"])
         run("Smoke-test portable display inspection CLI", [sys.executable, "scripts/analysis/check-portable-display.py", "--help"])
         run("Smoke-test portable renderer contract CLI", [sys.executable, "scripts/test-portable-renderer.py", "--help"])

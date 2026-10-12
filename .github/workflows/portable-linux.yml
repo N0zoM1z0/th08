@@ -82,6 +82,7 @@ jobs:
           cmake --build build/portable-replay-ci --parallel 1
           scripts/verify-portable-linux.sh build/portable-replay-ci/th08-modern x86_64
           python3 scripts/test-portable-math.py --candidate build/portable-replay-ci/th08-modern
+          python3 scripts/test-portable-normalization.py --candidate build/portable-replay-ci/th08-modern
           rm -rf build/portable-replay-ci
 
       - name: Create portable archive

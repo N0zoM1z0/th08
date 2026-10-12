@@ -96,7 +96,8 @@ Stage 4A frame 14,564: internal score +12. Modern C++ selected the float
 the original double path. Two Float3 helpers also retain trigonometric precision
 through multiplication. The native branches preserve their preceding emission.
 
-The repaired x86_64 recorder passes six full recordings and 667,371 calculations,
+The vector-precision checkpoint at `5b537b4c` passed six full x86_64 recordings
+and 667,371 calculations,
 including all recorded end scores and natural replay exits. The Stage 4A GDB
 prefix passes 14,566 calculations; 14,463 enemy motion observations agree with
 retail. Asset-free math contracts pass and reproduce the earlier failures.
@@ -104,12 +105,23 @@ The accepted VC7 ledger passes all 1,106 units from a cold build.
 
 Use [PORTABLE_REPLAY_TESTING.md](PORTABLE_REPLAY_TESTING.md) for the full suite
 and [PORTABLE_VECTOR_PRECISION.md](PORTABLE_VECTOR_PRECISION.md) for diagnosis
-and controls. Evidence is in `build/portable-state-20261012/`. Continue the
-108-recording x86_64 batch from `matrix-fixed/`; it is running with the six
-completed cases revalidated. `build/portable-state-20261012/full-suite.log`
-records progress. It is not yet a full-corpus portable pass.
+and controls. Evidence is in `build/portable-state-20261012/`. The next batch
+completed 29 recordings and found three differences before it was paused.
+`matrix-fixed/` retains that candidate's results. Border Team Normal Stage 1
+traced to [D3DX normalization rounding](PORTABLE_NORMALIZATION.md); the repaired
+recording passes all 100,979 calculations. Ordinary GDB playback passes its
+2,517-calculation prefix. Solo Youmu Easy and Normal still diverge at Stage 2
+frames 6,825 and 11,573 respectively. Continue with those failures before
+restarting the full corpus using the new candidate in `matrix-normalization/`.
 
-The ordinary build independently passes the 14,566-calculation Stage 4A prefix.
+The i386 normalization contracts and fixed-layout ownership verifier pass.
+Its full Border Team run now reaches calculation 60,796 before diverging at
+Stage 5 frame 3,789: score +4 and four extra RNG generations. Evidence is in
+`i386-matrix-normalization/`. Keep that investigation separate from the two
+x86_64 Solo Youmu failures. The x86_64 and i386 compiler trees were removed
+after their tested binaries and provenance were retained.
+
+At that checkpoint the ordinary build passed the 14,566-calculation Stage 4A prefix.
 All four retail frame/camera checks pass after the math repair, and Stage 5
 ordinary/accelerated playfields remain identical. Fresh normal/bugfix links
 and their owner/data/callee checks pass. Repository CI and the remote i386,

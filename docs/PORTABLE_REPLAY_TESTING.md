@@ -99,7 +99,8 @@ the retail fingerprint.
 
 ## Coverage
 
-The repaired x86_64 recorder passes six complete recordings over **667,371
+The vector-precision checkpoint at `5b537b4c` passed six complete x86_64
+recordings over **667,371
 calculations**, with all 25 fields, recorded stage-end scores, and natural replay
 completion equal to retail. These cover Border Team Easy/Lunatic Final B,
 Solo Yukari Easy Final B, Magic Team Lunatic Final A, Ghost Team Lunatic Final B,
@@ -107,8 +108,9 @@ and Scarlet Team Extra: all nine internal stage indexes. The batch is in
 `build/portable-state-20261012/matrix-fixed/`.
 
 The initial GDB/recorder comparison agrees over 1,000 calculations, and the
-repaired Stage 4A GDB diagnostic agrees over 14,566 calculations. The full
-108-recording portable batch is running with validated resume. Follow
+repaired Stage 4A GDB diagnostic agrees over 14,566 calculations. The next
+108-recording batch completed 29 recordings and found three differences
+before it was paused for diagnosis. Follow
 `build/portable-state-20261012/full-suite.log` and `matrix-fixed/suite.json`.
 The completed native 108-recording result remains a separate product checkpoint.
 
@@ -116,6 +118,12 @@ The first complete batch exposed a modern math-overload difference in Magic
 Team Stage 4A. [The vector precision investigation](PORTABLE_VECTOR_PRECISION.md)
 records the score, item, and enemy motion evidence and the repaired diagnostic
 window.
+
+Border Team Normal Stage 1 traced to
+[D3DX normalization rounding](PORTABLE_NORMALIZATION.md); its repaired full
+recording passes 100,979 calculations. Solo Youmu Easy and Normal remain
+under investigation. `matrix-fixed/` retains the preceding candidate's
+results; `matrix-normalization/` records the new candidate's checks.
 
 State parity covers the selected recordings and fields. Use the
 [rendering gate](PORTABLE_RENDERING.md) for frame comparisons, HOME screenshots,

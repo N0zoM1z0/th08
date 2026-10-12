@@ -21,6 +21,7 @@ events = (output / "rng-events.jsonl").open("w")
 releases = (output / "effect-events.jsonl").open("w")
 score_events = (output / "score-events.jsonl").open("w")
 item_events = (output / "item-events.jsonl").open("w")
+pool_stream = gzip.open(output / "effect-pool.jsonl.gz", "wt") if settings.get("watchEffectPool") else None
 GM = settings["gameManager"]
 
 
@@ -36,10 +37,12 @@ def snapshot():
     state = {name: block(settings[name], size).hex() for name, size in (
         ("player", 0xe2b30), ("spellcard", 0x2644), ("bulletManager", 0x6ba578),
         ("enemyManager", 0x9dcf10), ("itemManager", 0x17b094),
-        ("effectManager", 0x8b05c)
+        ("effectManager", 0x8b05c), ("background", 0x6600)
     )}
     if hasattr(gdb, "execute"):
         state["floatingPointState"] = gdb.execute("info float", to_string=True)
+    if settings.get("normalizeDispatch"):
+        state["normalizeImplementation"] = hex(read(settings["normalizeDispatch"]))
     return state
 
 
@@ -81,6 +84,8 @@ class Observer(gdb.Breakpoint):
         menu_log.close()
         score_events.close()
         item_events.close()
+        if pool_stream:
+            pool_stream.close()
         if self.reference_stream:
             if not error and self.reference_stream.readline():
                 error = "Candidate ended before the retail trace"
@@ -175,11 +180,20 @@ class Observer(gdb.Breakpoint):
                     subprocess.run(["xdotool", "keyup", self.key], check=True)
                     self.key = None
             frame = read(manager)
+            if pool_stream:
+                data = block(settings["effectManager"], 0x8b05c)
+                slots = bytes(value for slot in range(512) for value in
+                              data[0x1c + slot * 0x360 + 0x350:0x1c + slot * 0x360 + 0x352])
+                pool_stream.write(json.dumps(dict(stage=stage, frame=frame,
+                    nextIndex=struct.unpack_from("<I", data)[0], activeCount=struct.unpack_from("<I", data, 8)[0],
+                    slots=slots.hex())) + "\n")
             if self.stage_frames.get(str(stage)) == frame:
                 begin_observer.enabled = True
             if settings.get("detailStart") and stage == settings["detailStage"]:
                 if frame == settings["detailStart"] - 1:
-                    if settings.get("watchScore"):
+                    if settings.get("watchNormalization"):
+                        self.diagnostic_breakpoints = [NormalizationObserver()]
+                    elif settings.get("watchScore"):
                         self.diagnostic_breakpoints = [ScoreObserver(), ItemSpawnObserver()]
                     elif not (settings.get("watchItems") or settings.get("watchEnemies")):
                         self.diagnostic_breakpoints = [RngObserver(), ReleaseObserver()]
@@ -188,6 +202,8 @@ class Observer(gdb.Breakpoint):
                         json.dump(snapshot(), state_stream)
                     for handle in (stream, menu_log, events, releases, score_events, item_events):
                         handle.close()
+                    if pool_stream:
+                        pool_stream.close()
                     (output / "complete.json").write_text(json.dumps(dict(rows=self.count, ended=False,
                         diagnosticComplete=True, stage=stage, frame=frame, errors=[])) + "\n")
                     self.enabled = False
@@ -299,6 +315,25 @@ class DeleteObserver(gdb.Breakpoint):
 
 begin_observer = BeginStageObserver()
 delete_observer = DeleteObserver()
+
+
+class NormalizationObserver(gdb.Breakpoint):
+    def __init__(self):
+        super().__init__(f"*0x{settings['normalizationBoundary']:08X}", gdb.BP_HARDWARE_BREAKPOINT)
+
+    def stop(self):
+        bp = int(gdb.parse_and_eval("$ebp"))
+        effect = read(bp - 0x44)
+        camera = settings["background"] + 0x6394
+        record = dict(stage=read(GM + 0x3ddc4), frame=read(read(settings["replayManager"])),
+                      slot=(effect - settings["effectManager"] - 0x1c) // 0x360,
+                      position=struct.unpack("<3I", block(effect + 0x2a4, 12)),
+                      camera=struct.unpack("<3I", block(camera, 12)),
+                      normalized=struct.unpack("<3I", block(bp - 0xc, 12)),
+                      forward=struct.unpack("<3I", block(camera + 36, 12)))
+        with (output / "normalization-events.jsonl").open("a") as handle:
+            handle.write(json.dumps(record) + "\n")
+        return False
 
 
 class RngObserver(gdb.Breakpoint):
