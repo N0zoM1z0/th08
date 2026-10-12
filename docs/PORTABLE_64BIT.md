@@ -261,6 +261,9 @@ use a new output directory for each run.
 
 These windows establish bounded portable replay/render coverage. The full
 108-case, 25-field parity claim belongs to the separate VC7 replay gate.
+Use [PORTABLE_REPLAY_TESTING.md](PORTABLE_REPLAY_TESTING.md) for the complete
+portable state gate and [PORTABLE_VECTOR_PRECISION.md](PORTABLE_VECTOR_PRECISION.md)
+for the Stage 4A math-overload repair found by that gate.
 
 The 2026-10-12 run at source commit `2c253eb2` passed all six windows, with
 5,231 samples. Fresh x86_64 ownership checks, normal and AddressSanitizer

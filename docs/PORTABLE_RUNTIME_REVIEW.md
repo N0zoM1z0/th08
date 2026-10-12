@@ -7,6 +7,11 @@ fullscreen mismatch under Xvfb. All three now have production repairs. See
 results; the following sections preserve observations from the preceding
 x86_64 Linux renderer with llvmpipe software rendering.
 
+Complete replay-state testing subsequently found an `atan2` overload difference
+that changed a Magic Team Stage 4A item award. The
+[vector precision investigation](PORTABLE_VECTOR_PRECISION.md) records the
+first differing calculation, the enemy/item trajectory, and the repair.
+
 ## HOME screenshots
 
 Pressing HOME during replay saved an old loading image. The next presented frame

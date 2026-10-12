@@ -32,8 +32,8 @@ struct Float3
     void FromAngleMagnitude(float angle, float magnitude)
     {
 #ifdef TH08_MODERN_PORT
-        this->x = cosf(angle) * magnitude;
-        this->y = sinf(angle) * magnitude;
+        this->x = static_cast<f32>(cos(static_cast<double>(angle)) * magnitude);
+        this->y = static_cast<f32>(sin(static_cast<double>(angle)) * magnitude);
 #else
         __asm
         {
@@ -51,8 +51,8 @@ struct Float3
     void FromRotatedVec2(float angle, float vecX, float vecY)
     {
 #ifdef TH08_MODERN_PORT
-        this->x = cosf(angle) * vecX;
-        this->y = sinf(angle) * vecY;
+        this->x = static_cast<f32>(cos(static_cast<double>(angle)) * vecX);
+        this->y = static_cast<f32>(sin(static_cast<double>(angle)) * vecY);
 #else
         __asm
         {

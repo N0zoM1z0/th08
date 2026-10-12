@@ -121,6 +121,8 @@ def main():
     parser.add_argument("--detail-end", type=int, default=0, help="Last frame for item/point-value diagnostics")
     parser.add_argument("--detail-stage", type=int, help="Internal stage index for an external replay RNG diagnostic window")
     parser.add_argument("--watch-score", action="store_true", help="Trace score writes during an external diagnostic window (GDB)")
+    parser.add_argument("--watch-item", type=int, action="append", default=[], help="Read this item pool slot during an external diagnostic window")
+    parser.add_argument("--watch-enemy", type=int, action="append", default=[], help="Read this enemy pool slot during an external diagnostic window")
     parser.add_argument("--watch-effect", type=int, action="append", default=[],
                         help="Trace this effect ID's lifetime, including inactive slots; repeat as needed")
     parser.add_argument("--display", help="Existing X display; default: a private Xvfb display")
@@ -151,6 +153,10 @@ def main():
         parser.error("External diagnostic windows require --detail-stage")
     if args.watch_score and (not replay or not args.detail_start):
         parser.error("--watch-score requires an external diagnostic window")
+    if args.watch_item and (not replay or not args.detail_start or any(not 0 <= slot <= 2096 for slot in args.watch_item)):
+        parser.error("--watch-item requires an external diagnostic window and item slots from 0 to 2096")
+    if args.watch_enemy and (not replay or not args.detail_start or any(not 0 <= slot < 480 for slot in args.watch_enemy)):
+        parser.error("--watch-enemy requires an external diagnostic window and enemy slots from 0 to 479")
     if args.start_stage is not None and not replay:
         parser.error("--start-stage requires --replay")
     if replay:
@@ -180,8 +186,8 @@ def main():
     runtime.mkdir()
     executable = args.candidate or args.target
     observer_settings = observer_config(args.candidate, args.map_path)
-    observer_settings.update(detailStart=args.detail_start, detailEnd=args.detail_end, watchScore=args.watch_score, demoIndexes=demos,
-                             watchEffects=args.watch_effect)
+    observer_settings.update(detailStart=args.detail_start, detailEnd=args.detail_end, watchScore=args.watch_score, watchItems=args.watch_item, demoIndexes=demos,
+                             watchEffects=args.watch_effect, watchEnemies=args.watch_enemy)
     if replay:
         observer_settings.update(replay=replay, startStage=args.start_stage, playbackMode=args.playback_mode,
                                  detailStage=args.detail_stage)

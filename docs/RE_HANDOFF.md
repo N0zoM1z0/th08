@@ -80,7 +80,33 @@ Use [PORTABLE_RENDERING.md](PORTABLE_RENDERING.md) and
 [background study](PORTABLE_BACKGROUND.md) and
 [runtime review](PORTABLE_RUNTIME_REVIEW.md) preserve the pre-fix observations.
 The complete portable 108-recording state-parity run, remaining pixel
-differences, and AArch64 hardware gameplay are the next validation tasks.
+differences, and AArch64 hardware gameplay remain separate validation tasks.
+
+## Portable replay state gate
+
+The serial portable runner now compares the credited corpus against validated
+retail traces, using the same 25-field schema and published fingerprints as
+the native gate. Its optional compiled recorder reads typed fields and exits
+through normal shutdown after natural replay deletion. A GDB backend provides
+independent checks and bounded enemy/item motion diagnostics.
+
+The first batch exposed a Magic Team Lunatic Final A score difference at
+Stage 4A frame 14,564: internal score +12. Modern C++ selected the float
+`atan2` overload in `VectorAngle @ 0x0040C7B0`; the portable branch now selects
+the original double path. Two Float3 helpers also retain trigonometric precision
+through multiplication. The native branches preserve their preceding emission.
+
+The repaired x86_64 recorder passes six full recordings and 667,371 calculations,
+including all recorded end scores and natural replay exits. The Stage 4A GDB
+prefix passes 14,566 calculations; 14,463 enemy motion observations agree with
+retail. Asset-free math contracts pass and reproduce the earlier failures.
+The accepted VC7 ledger passes all 1,106 units from a cold build.
+
+Use [PORTABLE_REPLAY_TESTING.md](PORTABLE_REPLAY_TESTING.md) for the full suite
+and [PORTABLE_VECTOR_PRECISION.md](PORTABLE_VECTOR_PRECISION.md) for diagnosis
+and controls. Evidence is in `build/portable-state-20261012/`. Continue the
+108-recording x86_64 batch from `matrix-fixed/`; it is not yet a full-corpus
+portable pass. Web work remains deferred.
 
 ## Native replay parity investigation
 
