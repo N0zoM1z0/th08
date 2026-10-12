@@ -52,6 +52,28 @@ coverage. Local evidence is in `build/replay-cold-20261011/portable-replays/`;
 build and smoke logs are compressed alongside it. The earlier v0.2.1 checkpoint
 is in [RE_HANDOFF_HISTORY.md](RE_HANDOFF_HISTORY.md). Web work remains deferred.
 
+## Portable Stage 5 rendering investigation
+
+Source `59e239b4` reproduces a Stage 5 background perspective difference against
+retail at active frame 6,166 of `lunatic-0-b`. Ordinary and accelerated portable
+playback have identical camera packets and playfield pixels. Retail camera
+inputs, script/timer state, and viewport agree; matrix differences are small
+floating-point rounding differences.
+
+The portable renderer divides by clip `W` and then submits `glVertex3f`, losing
+the depth weights used for interpolation and clipping. A private XYZ-only
+`glVertex4f` experiment restores the corridor perspective without changing the
+camera packets; playfield mean absolute RGB error falls from 14.188657 to
+2.187907. Production source is unchanged. The next task is a bounded portable
+renderer repair with XYZRHW, 2D, clipping, texture, and fog regression coverage.
+
+Use [PORTABLE_BACKGROUND.md](PORTABLE_BACKGROUND.md) and
+`scripts/analysis/check-stage5-background.py` to reproduce the study. Local
+packets and images are in `build/background-perspective-20261012/`. The earlier
+retail/native VC7 frame comparison has identical playfield pixels and an equal
+25-field prefix over 6,166 calculations. Native reconstruction totals and the
+108-case replay acceptance remain unchanged.
+
 ## Native replay parity investigation
 
 The 2026-10-11 cold gate is recorded under `build/replay-cold-20261011/`.

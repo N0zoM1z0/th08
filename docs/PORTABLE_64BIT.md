@@ -274,6 +274,11 @@ sprite. The checker reports isolated suspects and fails structural errors or
 repeated zero-pixel draws. This sample needs visual confirmation; the retained
 CSV records its texture, tint, geometry, and framebuffer delta.
 
+Same-frame retail comparison subsequently exposed a Stage 5 background
+perspective difference. [PORTABLE_BACKGROUND.md](PORTABLE_BACKGROUND.md) records
+the camera/vertex investigation, the confirmed loss of clip `W`, and a reusable
+isolated experiment. The production rendering repair is pending.
+
 ### Deterministic replay render audit
 
 For regressions that are difficult to recognize from a crash log, the native
