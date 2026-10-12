@@ -105,8 +105,16 @@ The accepted VC7 ledger passes all 1,106 units from a cold build.
 Use [PORTABLE_REPLAY_TESTING.md](PORTABLE_REPLAY_TESTING.md) for the full suite
 and [PORTABLE_VECTOR_PRECISION.md](PORTABLE_VECTOR_PRECISION.md) for diagnosis
 and controls. Evidence is in `build/portable-state-20261012/`. Continue the
-108-recording x86_64 batch from `matrix-fixed/`; it is not yet a full-corpus
-portable pass. Web work remains deferred.
+108-recording x86_64 batch from `matrix-fixed/`; it is running with the six
+completed cases revalidated. `build/portable-state-20261012/full-suite.log`
+records progress. It is not yet a full-corpus portable pass.
+
+The ordinary build independently passes the 14,566-calculation Stage 4A prefix.
+All four retail frame/camera checks pass after the math repair, and Stage 5
+ordinary/accelerated playfields remain identical. Fresh normal/bugfix links
+and their owner/data/callee checks pass. Repository CI and the remote i386,
+x86_64, and AArch64 build jobs pass at `5b537b4c`. This checkpoint is pushed;
+Web work remains deferred.
 
 ## Native replay parity investigation
 

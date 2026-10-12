@@ -108,8 +108,9 @@ and Scarlet Team Extra: all nine internal stage indexes. The batch is in
 
 The initial GDB/recorder comparison agrees over 1,000 calculations, and the
 repaired Stage 4A GDB diagnostic agrees over 14,566 calculations. The full
-108-recording portable batch is the next gate. The completed native
-108-recording result remains a separate product checkpoint.
+108-recording portable batch is running with validated resume. Follow
+`build/portable-state-20261012/full-suite.log` and `matrix-fixed/suite.json`.
+The completed native 108-recording result remains a separate product checkpoint.
 
 The first complete batch exposed a modern math-overload difference in Magic
 Team Stage 4A. [The vector precision investigation](PORTABLE_VECTOR_PRECISION.md)
