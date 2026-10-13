@@ -91,9 +91,14 @@ on both products. The direct-stage 14,500-calculation portable prefix passes
 all 25 fields. See [the laser workflow](PORTABLE_LASER_VISUALS.md) for commands
 and retained evidence. Missing-beam controls suppress 170 Stage 3 and 10
 Stage 4B submissions, preserve raw state, and detect omissions in all eight
-frames. Next, localize the remaining image differences and add later-boss
-cases. Issue #20
-remains open; the reporter has not identified the original scene.
+frames. Error localization finds a dark bias from Linux 5/6-bit color
+conversion and separate Stage 3 title glyph differences. A private codec
+counterfactual passes five of eight strict image checks, preserves all raw
+laser packets, and matches 297 Wine D3D8 color/copy/blend samples; production
+differs on 59 color samples. Production renderer source is unchanged. Next,
+validate and ship the codec repair, measure font selection/metrics, and inspect
+the 49-pixel horizontal-edge residual at Stage 3 frame 12,900. Later-boss cases
+remain to be added. Issue #20 remains open; its original scene is unspecified.
 
 For runtime work, select a concrete remaining visual or hardware scenario and
 retain the stage, route, recording, frame, and comparison evidence. For exact

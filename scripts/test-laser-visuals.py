@@ -13,6 +13,9 @@ from PIL import Image
 spec = importlib.util.spec_from_file_location("laser_visuals", Path(__file__).parent / "analysis/compare-laser-visuals.py")
 visuals = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(visuals)
+spec = importlib.util.spec_from_file_location("laser_errors", Path(__file__).parent / "analysis/analyze-laser-errors.py")
+errors = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(errors)
 
 
 def bits(value):
@@ -178,6 +181,46 @@ class CaseManifestTests(unittest.TestCase):
                 for entry in case["frames"]:
                     self.assertTrue(entry["phase"])
                     self.assertIn(entry["expectedLaserState"], (0, 1, 2))
+
+
+class ErrorPartitionTests(unittest.TestCase):
+    def laser(self):
+        return {"state": 0, "speed": bits(0), "startOffset": bits(0), "hideCapDuringStartup": True,
+                "bodyVm.flagsWord": 3, "bodyVm.color1.d3dColor": 0xffffffff,
+                "bodyVm.scale": [bits(1), bits(1)], "bodyVm.spriteSize": [bits(12), bits(40)],
+                "bodyVm.pos": [bits(200), bits(240), bits(0.06)], "bodyVm.rotation": [0, 0, 0]}
+
+    def test_regions_preserve_the_complete_original_error(self):
+        laser = self.laser()
+        normal = Image.new("RGB", (640, 480), (9, 6, 3))
+        black = Image.new("RGB", (640, 480))
+        regions = errors.partition(black, normal, black, dict(lasers=[laser]))
+        pixels = visuals.geometry_mask([laser])[0].histogram()[255]
+        self.assertEqual(sum(region["pixels"] for region in regions.values()), pixels)
+        self.assertEqual(sum(region["absoluteRgbSum"] for region in regions.values()), pixels * 18)
+        self.assertEqual(regions["influencedBeam"]["pixels"], pixels)
+        self.assertEqual(regions["influencedBeam"]["meanSignedRgbError"], [9, 6, 3])
+
+    def test_header_overlapping_a_cap_is_counted_once(self):
+        laser = self.laser()
+        laser["bodyVm.pos"] = [bits(200), bits(40), bits(0.06)]
+        laser["hideCapDuringStartup"] = False
+        laser.update({key.replace("bodyVm.", "startCapVm."): value for key, value in tuple(laser.items())
+                      if key.startswith("bodyVm.")})
+        normal = Image.new("RGB", (640, 480), (9, 6, 3))
+        black = Image.new("RGB", (640, 480))
+        regions = errors.partition(black, normal, black, dict(lasers=[laser]))
+        pixels = visuals.geometry_mask([laser])[0].histogram()[255]
+        self.assertEqual(regions["header"]["pixels"], pixels)
+        self.assertEqual(sum(region["pixels"] for name, region in regions.items() if name != "header"), 0)
+
+    def test_unchanged_control_pixels_are_not_attributed_to_beam_omission(self):
+        normal = Image.new("RGB", (640, 480), (9, 6, 3))
+        black = Image.new("RGB", (640, 480))
+        regions = errors.partition(black, normal, normal, dict(lasers=[self.laser()]))
+        self.assertEqual(regions["influencedBeam"]["pixels"], 0)
+        self.assertGreater(regions["remainder"]["pixels"], 0)
+        self.assertEqual(regions["remainder"]["errorSharePercent"], 100)
 
 
 if __name__ == "__main__":

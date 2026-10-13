@@ -68,9 +68,9 @@ capture.
 
 The strict 1.0 limit fails in all four frames. Initial image review shows the
 corresponding beams; difference images highlight spell-title text and smaller
-background and cap-region differences. Beam geometry overlaps those regions,
-so these measurements need further localization before attributing an error
-to laser rendering. These observations cover selected frames; later bosses,
+background and cap-region differences. Beam geometry overlaps those regions;
+the [localization below](#error-localization) identifies the color-conversion
+contribution and remaining title/edge pixels. These observations cover selected frames; later bosses,
 other routes and difficulties, and Linux i386 images remain to be checked.
 
 Local evidence is in `build/laser-visual-20261013/stage3-aligned/`. The existing
@@ -96,8 +96,9 @@ Both `lasers.json` files have SHA-256
 | 18,210 | 4 | 10,200 | 1.657255 | Different |
 
 Corresponding colored and moving beams are visible in the paired images.
-The despawn frame passes the strict pixel limit; the remaining three require
-further localization. Evidence is in
+The despawn frame passes the strict pixel limit; the
+[color experiment](#error-localization) accounts for the other three failures.
+Evidence is in
 `build/laser-visual-20261013/stage4b-marisa/`. To reproduce this selection, use
 `--case stage4b-marisa` with the capture command above.
 
@@ -105,6 +106,99 @@ The paired missing-beam control omits 10 on-screen quad submissions while
 preserving the identical laser-state packet. Beam-region errors rise to
 42.524421, 39.223917, 61.727536, and 63.994869; all four omission checks pass.
 Control evidence is in `build/laser-visual-20261013/stage4b-control/`.
+
+## Error localization
+
+The seven production pixel failures contain two measured differences. The
+Stage 3 title/header band accounts for 29.4%–64.6% of the original error.
+Stage 4B's three failing beam masks avoid that band, and their pixels show a
+small, consistent dark bias. Cap regions contribute 12.2%–33.0% of those
+Stage 4B errors; visible beam regions and background inside the quads account
+for the remainder.
+
+The Linux color codecs expand 5/6-bit channels with integer division and pack
+them with another truncated division. The Wine D3D8 API probe expands those
+channels by bit replication: five-bit value 4 becomes 33, while the production
+decoder yields 32. The D3DX surface-copy path also decodes through RGBA and
+re-encodes pixels, allowing a same-format copy to lose channel bits.
+
+A private build uses bit replication for expansion and keeps the high bits
+when packing. It changes both Linux pixel converters and keeps repository
+production source intact. The standalone Wine/portable probe measures 297
+samples: production differs on 15 of 32 A1R5G5B5 samples and 44 of 64 R5G6B5
+samples; the private decoder matches all 297. A4R4G4B4, 32-bit textures,
+identical-format D3D8 copies, and nine untextured alpha-blend samples agree
+in production too. The separate portable D3DX copy probe changes 92 of 144
+raw pixel words during identical-format copies: 30 A1R5G5B5 samples and 62
+R5G6B5 samples. The private codecs preserve all 144. This probe exercises
+platform APIs; the paired game frames
+below supply the TH08 evidence.
+
+| Stage | Frame | Production beam error | Private color-conversion error | Private pixel result |
+| --- | ---: | ---: | ---: | --- |
+| 3 | 12,900 | 2.831371 | 1.484770 | Different |
+| 3 | 14,130 | 2.609911 | 1.244176 | Different |
+| 3 | 14,310 | 1.324700 | 0.293679 | Equal |
+| 3 | 14,490 | 2.085793 | 1.292878 | Different |
+| 4B | 13,140 | 3.084492 | 0.004278 | Equal |
+| 4B | 13,260 | 2.222010 | 0.001907 | Equal |
+| 4B | 15,360 | 0.003865 | 0.003865 | Equal |
+| 4B | 18,210 | 1.657255 | 0.021046 | Equal |
+
+All eight private-build laser and VM packets retain their published retail
+hashes. The unchanged strict gate passes five frames. Stage 4B's reduction
+localizes its failures to color conversion; the corresponding beams remain
+present in both builds.
+
+After the color change, the header accounts for 98.5% and 98.8% of the remaining
+error in Stage 3 frames 14,130 and 14,490. Their beam-mask errors outside the
+header are 0.019959 and 0.017975. The title glyphs differ between Wine GDI and
+SDL_ttf, with exact font selection and metrics still to be measured. Frame
+12,900 has 60.0% of its remaining error in the header and a small horizontal
+beam-edge residual: 49 pixels with mean RGB error above 32 within
+`(201, 236)`–`(247, 244)`. Its outside-header mean error is 0.650546. Vertex
+and sampling evidence is still needed to explain that residual.
+
+The source correction is currently a private counterfactual. The production
+results above remain seven failures; replay and renderer gates are required
+before shipping a change. Local color-probe and private replay evidence is
+under `build/laser-visual-20261013/`.
+
+### Reproduce the decomposition and color experiment
+
+Given the normal and missing-beam captures above:
+
+```bash
+python3 scripts/analysis/analyze-laser-errors.py \
+  --reference build/laser-stage3/retail \
+  --normal build/laser-stage3 \
+  --control build/laser-stage3-control \
+  --output build/laser-stage3/error-regions.json
+```
+
+Regions partition the original beam mask once, in this order: header, cap
+quads, pixels influenced by portable beam omission, and remainder. The header
+rectangle is `(32, 16)`–`(416, 64)`; influence requires a maximum channel change
+of at least 8. The tool retains every pixel's contribution and the original
+strict result. This partition is a diagnostic over composite images.
+
+The asset-free color experiment additionally needs MinGW's i686 compiler:
+
+```bash
+python3 scripts/analysis/probe-texture-colors.py \
+  --wine --counterfactual --build-game \
+  --output-dir build/texture-color-experiment
+```
+
+The optional private game build uses `g++-8` by default; select another compiler
+with `--game-compiler`. Builds and probes run serially. The command removes its
+Wine prefix and game compiler tree, retaining source hashes, samples, reports,
+and `th08-color-counterfactual`.
+
+Capture `--case stage4b-marisa` with that executable using the existing laser
+runner, then compare against a fresh normal capture's `retail/`. Use
+`--case stage3-keine` for the Stage 3 comparison. The captures require the same
+original archives as the normal procedure.
 
 ## Read and verify the evidence
 
