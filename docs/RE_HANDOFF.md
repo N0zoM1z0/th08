@@ -155,7 +155,16 @@ Its complete `lunatic-1-a` recording and retained-evidence check pass 119,685
 calculations on all 25 fields, recorded end scores and natural exit.
 Native bugfix SHA-256 is
 `1b8e217a7fe48b74304b1cbf01600385e78f13273e63a6b90bcc1c32436e45f4`.
-Native visual confirmation is tracked as RT-014. Next refresh the new products'
+RT-014 is closed after native Final A repetition: four default-profile playfields
+are pixel-identical to retail, and frame 15,090 becomes pixel-identical in paired
+`csmt=0` captures. Its default screenshot lagged despite exact laser packets and
+all 22,590 recorded calculations. The explicit Wine scheduling control resolves
+that capture failure; both profiles and the failed image remain retained.
+The native complete `lunatic-1-a` recording passes 119,685 calculations on all
+25 fields, end scores and natural exit at clock rate 128 without rasterization.
+Native evidence is under `build/laser-native-20261014/`. The runner supports
+`--native-map` and paired `--wine-csmt 0`; the comparator requires matching Wine
+settings and completed mapped-observer evidence. Next refresh the new products'
 complete recordings, i386, Final B and Extra visual cases. Evidence is under
 `build/laser-background-owner-20261014/` and `build/laser-stage4a-20261014/`; see the
 [Final A observation](PORTABLE_LASER_VISUALS.md#final-a-observation-october-14-2026).

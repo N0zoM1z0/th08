@@ -28,7 +28,7 @@ Status meanings:
 | RT-011 | closed | A full main-run replay diverged after entering Stage 2, generating duplicate spell rewards. | `CutChain` selected standalone storage instead of `g_Spellcard.lifetimeObject`, leaving an old update callback registered. The field expression preserves target bytes and fixes the duplicated update. After the RT-012 repair, the complete six-stage route agrees with retail for all 25 recorded fields. |
 | RT-012 | closed | The same full-run replay lost 156 score units when Stage 3 lasers were cancelled. | The native `fsincos` helper was empty, leaving laser direction outputs uninitialized. A C++ sin/cos implementation restores the star positions and scoring. All 25 recorded fields now agree through the complete 107,296-calculation route. The helper's separate library exact status remains unchanged. |
 | RT-013 | closed | Solo Yukari's Easy replay lost 7 score units and delayed two shot hits by one frame in Stage 3. | The homing option read physical keyboard input instead of the replay-fed gameplay word. A relocation override concealed the wrong source global. The corrected expression matches the target; binding and linked-image guards reject the old implementation. The complete six-stage replay now agrees for all 25 fields over 132,629 calculations. |
-| RT-014 | fixed / confirmation pending | Incorrect spell-background script selection after dialogue. | `g_GuiMessageStageMode @ 0x004E4B64` is the interior `Background::spellVmScriptBase @ +0xB34`. The retained native link allocates it separately from Background; dialogue and spell-practice writes therefore miss the spell-start reader. All writers now use the field, seven relocation entries keep the canonical base/addend, and cold exact replay plus fresh normal/bugfix link checks pass. Five portable Final A image cases recover the retail background and pass their original limits. Native image confirmation, Final B and Extra remain to be repeated. |
+| RT-014 | closed | Incorrect spell-background script selection after dialogue. | `g_GuiMessageStageMode @ 0x004E4B64` is the interior `Background::spellVmScriptBase @ +0xB34`. The retained native link allocates it separately from Background; dialogue and spell-practice writes therefore miss the spell-start reader. All writers now use the field, seven relocation entries keep the canonical base/addend, and cold exact replay plus fresh normal/bugfix link checks pass. Five portable Final A image cases recover the retail background and pass their original limits. Native Final A images recover exact retail pixels across the default and paired CSMT=0 profiles; its complete 119,685-calculation recording passes all 25 fields. Final B and Extra remain coverage extensions. |
 
 <a id="rt-014"></a>
 
@@ -50,8 +50,12 @@ pass a linked guard covering all seven writes and the spell-start read; the
 guard rejects the old native artifact. Bugfix executable SHA-256 is
 `1b8e217a7fe48b74304b1cbf01600385e78f13273e63a6b90bcc1c32436e45f4`.
 The five portable Final A frames pass the unchanged image limit and keep exact
-retail laser packets. Native images and later-route coverage remain the next
-runtime checks. See the [laser investigation](PORTABLE_LASER_VISUALS.md#spell-background-script-owner-repair)
+retail laser packets. Native repetition gives four pixel-identical default-profile
+playfields; the remaining frame is pixel-identical in paired CSMT=0 captures.
+Its default failure comes from Wine/debugger image synchronization while its
+laser state and calculation records agree. The complete native recording passes
+119,685 calculations on all 25 fields, stage-end scores and natural exit.
+Final B and Extra remain coverage extensions. See the [laser investigation](PORTABLE_LASER_VISUALS.md#spell-background-script-owner-repair)
 for the frames, build identities and reproduction commands.
 
 <a id="rt-013"></a>

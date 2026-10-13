@@ -5086,3 +5086,14 @@ The final x86_64 product `34bcdd33…` independently repeats all five image pass
 and keeps the initial repair's playfield pixels. Its complete `lunatic-1-a`
 recording and retained-evidence verification pass 119,685 calculations on all
 25 fields, recorded end scores and natural exit.
+
+
+Native follow-up uses the same `1b8e217a…` bugfix product. Four default-profile
+Final A playfields equal retail pixels; frame 15,090 also equals retail in paired
+CSMT=0 captures. Its default screenshot mismatch retains equal laser packets
+and calculation state, and is isolated to Wine/debugger presentation timing.
+The complete native `lunatic-1-a` recording and cached-evidence check pass
+119,685 calculations, all 25 fields, stage-end scores and natural exit.
+RT-014 is closed for the repaired field path; later routes and the refreshed
+full corpus remain coverage extensions. The [native capture guide](PORTABLE_LASER_VISUALS.md#native-windows-image-capture)
+records both profiles and reproduction commands.

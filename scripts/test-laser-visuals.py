@@ -237,6 +237,32 @@ class LaserVisualTests(unittest.TestCase):
         self.assertEqual(result["result"], "equal")
         self.assertGreater(result["frames"][0]["laserGeometryPixels"], 50)
 
+    def test_native_images_require_mapped_observer_and_completed_frames(self):
+        self.portable.update(product="native-vc7-bugfix", clockRate=1, targetSha256=visuals.TARGET_SHA256,
+                             nativeMapSha256="a" * 64, laserCapture=self.common["laserCapture"])
+        complete = dict(errors=[], diagnosticComplete=True, capturedFrames=[100])
+        self.write(self.candidate, "complete.json", complete)
+        self.metadata()
+        self.assertEqual(self.compare()["result"], "equal")
+        complete["capturedFrames"] = [101]
+        self.write(self.candidate, "complete.json", complete)
+        with self.assertRaisesRegex(ValueError, "Native laser capture"):
+            self.compare()
+        complete["capturedFrames"] = [100]
+        self.write(self.candidate, "complete.json", complete)
+        self.portable["nativeMapSha256"] = ""
+        self.metadata()
+        with self.assertRaisesRegex(ValueError, "Native laser capture"):
+            self.compare()
+        self.portable["nativeMapSha256"] = "a" * 64
+        self.common["wineCsmt"] = self.portable["wineCsmt"] = 0
+        self.metadata()
+        self.assertEqual(self.compare()["result"], "equal")
+        self.portable["wineCsmt"] = 1
+        self.metadata()
+        with self.assertRaisesRegex(ValueError, "Native laser capture"):
+            self.compare()
+
     def test_experimental_render_input_cannot_pass_the_ordinary_gate(self):
         self.portable["renderInputControl"] = True
         self.metadata()

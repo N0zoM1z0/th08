@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Compare retail and portable laser state and pixels inside attested beam geometry."""
+"""Compare retail and reconstructed laser state and pixels inside attested beam geometry."""
 import argparse
 import hashlib
 import json
@@ -63,14 +63,29 @@ def compare(reference, candidate, maximum_error=1.0, normal_candidate=None):
                         ("bgmDataSha256", "bgmDataSha256")):
         if ref_meta[left] != got_meta[right]:
             raise ValueError("Laser capture identities differ: " + left)
-    if ref_meta.get("product") != "retail" or got_meta.get("product") != "portable-linux" or not ref_meta.get("muted") or not got_meta.get("muted"):
-        raise ValueError("Expected muted retail and portable captures")
+    native = got_meta.get("product") == "native-vc7-bugfix"
+    if ref_meta.get("product") != "retail" or got_meta.get("product") not in ("portable-linux", "native-vc7-bugfix") or not ref_meta.get("muted") or not got_meta.get("muted"):
+        raise ValueError("Expected muted retail and reconstructed captures")
     if ref_meta.get("executableSha256") != TARGET_SHA256 or ref_meta.get("targetSha256") != TARGET_SHA256:
         raise ValueError("Reference is not the canonical Japanese TH08 1.00d target")
     for key, expected in (("rasterization", True), ("scout", False), ("keepLives", False), ("runnerExitCode", 0),
                           ("temporaryRuntimeRemoved", True), ("frameCounter", FRAME_COUNTER), ("playbackMode", 0)):
         if got_meta.get(key) != expected:
-            raise ValueError("Invalid portable capture profile: " + key)
+            raise ValueError("Invalid candidate capture profile: " + key)
+    if native:
+        provenance = got_meta.get("laserCapture", {})
+        complete = json.loads((candidate / "complete.json").read_text())
+        map_hash = got_meta.get("nativeMapSha256", "")
+        if (got_meta.get("clockRate") != 1 or got_meta.get("targetSha256") != TARGET_SHA256
+                or got_meta.get("wineCsmt", "default") != ref_meta.get("wineCsmt", "default")
+                or got_meta.get("legacyOpenGL") or got_meta.get("suppressLaserBodies")
+                or len(map_hash) != 64 or any(c not in "0123456789abcdef" for c in map_hash)
+                or provenance.get("frameCounter") != FRAME_COUNTER
+                or provenance.get("frames") != got_meta.get("frames")
+                or not provenance.get("gameplayMemoryReadOnly") or not provenance.get("executableBytesUnmodified")
+                or complete.get("errors") or not complete.get("diagnosticComplete")
+                or complete.get("capturedFrames") != got_meta.get("frames")):
+            raise ValueError("Native laser capture provenance or completion differs")
     if got_meta.get("renderInputControl"):
         raise ValueError("Experimental render-input control cannot support an ordinary image gate")
     if got_meta.get("legacyOpenGL"):
@@ -131,6 +146,7 @@ def compare(reference, candidate, maximum_error=1.0, normal_candidate=None):
                            stateDifferences=differences,
                            result="equal" if not differences and error <= maximum_error else "different"))
     result = dict(result="equal" if all(x["result"] == "equal" for x in frames) else "different",
+                candidateProduct=got_meta["product"],
                 floatStateComparison="exact IEEE-754 bits", maximumLaserMeanRgbError=maximum_error,
                 referenceExecutableSha256=ref_meta["executableSha256"], candidateExecutableSha256=got_meta["executableSha256"],
                 replaySha256=got_meta["replaySha256"], comparatorSha256=digest(Path(__file__)),

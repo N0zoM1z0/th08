@@ -727,6 +727,67 @@ samples and records its counter gaps. Both complete within their frame limits;
 their reports are in `scout-every-frame/` and `finala-scout/` under the same
 evidence directory. The earlier Stage 4A report predates gap accounting.
 
+## Native Windows image capture
+
+Use the fresh VC7 `bugfix` executable and its matching linker map. The runner
+derives the laser-pool base and hardware-breakpoint addresses from that map;
+it attests the mapped instructions against the supplied executable before
+reading state. The canonical Japanese 1.00d target remains the retail reference.
+
+```bash
+python3 scripts/analysis/check-laser-visuals.py \
+  --candidate build/th08.exe --native-map build/th08.map \
+  --game-data-dir "/path/to/original/TH08 directory" \
+  --case finala-eirin --retail --output-dir build/native-finala
+```
+
+Native captures use ordinary pacing, normal life rules, muted audio and
+read-only gameplay observations. `--watch-quads` also records sprite vertices.
+Linux draw/font probes, scout mode and beam-omission controls remain portable
+features. The comparator validates native map identity, completed frame coverage
+and observer provenance before applying the same 1.0 beam-region image limit.
+
+The first native Final A capture, executable `1b8e217a…`, matches all five
+retail laser/VM packets and the 22,590-calculation direct-stage prefix on all
+25 fields. Four complete playfields are pixel-identical to retail. Frame
+15,090 retains a large image difference, with beam-region mean 51.444637 and
+playfield mean 19.197831; its displayed score differs while its recorded score
+agrees. Evidence is under `build/laser-native-20261014/finala-repaired-v2/`.
+The default native image gate therefore remains four of five.
+
+Wine 9.0 enables its multithreaded command stream by default and reads the
+`csmt` override from `WINE_D3D_CONFIG`; see the
+[pinned Wine source](https://raw.githubusercontent.com/wine-mirror/wine/wine-9.0/dlls/wined3d/wined3d_main.c).
+A paired `--wine-csmt 0` capture tests whether stopping the rendering worker
+at the post-Present breakpoint leaves an older window image. This is a backend
+scheduling control, recorded separately from the default profile. Native
+comparisons require the same CSMT setting in both captures.
+
+The paired `csmt=0` test recovers a pixel-identical full playfield at frame
+15,090, zero beam-region error, identical laser/VM packets and all 25 fields
+over its 15,090 calculations. The native image also equals the retained default
+retail image at that frame. A live process check observes `WINE_D3D_CONFIG=csmt=0`
+and three threads. Changing only command-stream scheduling resolves the image
+failure while the gameplay records remain equal, locating this failure in
+the Wine/debugger capture path. The default failure remains retained.
+Control evidence is in
+`build/laser-native-20261014/frame15090-csmt0-paired/`; the whole five-frame
+selection under this uniform profile remains a follow-up gate.
+
+The repaired native product also passes the complete `lunatic-1-a` recording:
+119,685 calculations on all 25 fields, all recorded stage-end scores and natural
+exit. This full-run gate reuses the validated retail reference at clock rate
+128 with rasterization disabled; images above use clock rate 1 with rasterization.
+Evidence is under `build/laser-native-20261014/full-state128/`.
+
+```bash
+python3 scripts/analysis/check-laser-visuals.py \
+  --candidate build/th08.exe --native-map build/th08.map \
+  --game-data-dir "/path/to/original/TH08 directory" \
+  --fixture lunatic-1-a --stage 6 --frames 15090 --wine-csmt 0 --retail \
+  --output-dir build/native-finala-csmt0
+```
+
 ## Read and verify the evidence
 
 `comparison.json` records the executable and replay identities, raw laser-state

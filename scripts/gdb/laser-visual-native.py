@@ -1,4 +1,4 @@
-"""Capture retail laser state and images using attested read-only breakpoints."""
+"""Capture Windows laser state and images using attested read-only breakpoints."""
 import gdb
 import json
 import os
@@ -21,7 +21,7 @@ if ns["block"](address, len(expected)) != expected:
     raise RuntimeError("Retail post-Present instructions differ from the canonical target")
 
 # TH08 1.00d: BulletManager::OnDraw 0x432B50 walks +0x660938 with stride 0x59C.
-base = 0x00F54E90 + 0x660938
+base = ns["settings"]["bulletManager"] + 0x660938
 stride = 0x59C
 fields = {"position": (0x548, "3I"), "angle": (0x554, "I"),
           "startOffset": (0x558, "I"), "endOffset": (0x55C, "I"),
@@ -39,7 +39,7 @@ for vm, start in (("bodyVm", 0), ("startCapVm", 0x2A4)):
                                    ("activeSpriteIndex", 0x214, "h"), ("anmFileIndex", 0x216, "h"),
                                    ("scriptIndex", 0x21A, "h")):
         fields[vm + "." + field] = (start + offset, format_)
-(output / "retail-layout.json").write_text(json.dumps(dict(
+(output / settings.get("layoutFile", "retail-layout.json")).write_text(json.dumps(dict(
     base=base, stride=stride, offsets={name: item[0] for name, item in fields.items()}), indent=2) + "\n")
 
 

@@ -158,42 +158,63 @@ def capture_portable(candidate, data, replay, output, settings):
             compress(output / name)
 
 
-def capture_retail(target, data, replay, output, stage, frames, watch_text_fonts=False, watch_quads=False):
+def capture_retail(target, data, replay, output, stage, frames, watch_text_fonts=False, watch_quads=False,
+                   candidate=None, map_path=None, wine_csmt=None):
     from pe_image import PEImage
     if target.stat().st_size != 840704 or sha(target) != TARGET_SHA256:
         raise ValueError("Retail input must be the canonical Japanese TH08 1.00d executable")
-    image = PEImage(target)
-    settings = dict(stage=stage, frames=frames, postPresentAddress=0x442082,
-                    postPresentBytes=image.read_rva(0x442082 - image.image_base, 13).hex())
+    image = PEImage(candidate or target)
+    if image.machine != 0x14C:
+        raise ValueError("Windows laser capture requires an x86 PE32 executable")
+    label = "native" if candidate else "retail"
+    post_present, quad_address = 0x442082, 0x462F10
+    if candidate:
+        owners = module("native_owners", ROOT / "scripts/analysis/verify-windows-i386-runtime-data.py")
+        publics = owners.parse_publics(map_path)
+        post_present = owners.public_va(publics, "Present@GameWindow") + 0x22
+        quad_address = owners.public_va(publics, "AddSpriteToDrawBuffer@AnmManager")
+        if image.read_rva(post_present - image.image_base, 6) != bytes.fromhex("85c07d308b0d"):
+            raise ValueError("Native post-Present boundary differs from the target instruction shape")
+    settings = dict(stage=stage, frames=frames, postPresentAddress=post_present,
+                    postPresentBytes=image.read_rva(post_present - image.image_base, 13).hex(),
+                    layoutFile=label + "-layout.json")
     if watch_text_fonts:
         settings.update(watchTextFonts=True, fontCreatedAddress=0x43FA12,
                         fontCreatedBytes=image.read_rva(0x43FA12 - image.image_base, 11).hex())
     if watch_quads:
-        settings.update(watchQuads=True, quadAddress=0x462F10,
-                        quadBytes=image.read_rva(0x462F10 - image.image_base, 12).hex())
+        settings.update(watchQuads=True, quadAddress=quad_address,
+                        quadBytes=image.read_rva(quad_address - image.image_base, 12).hex())
     provenance = dict(source_identity(), observerSha256=sha(ROOT / "scripts/gdb/laser-visual-native.py"),
                       baseObserverSha256=sha(ROOT / "scripts/replay-external-observer.py"),
                       frameCounter=FRAME_COUNTER, frames=frames,
                       gameplayMemoryReadOnly=True, executableBytesUnmodified=True)
     provenance["watchQuads"] = watch_quads
-    settings_path = output.parent / "retail-settings.json"
+    stem = output.name + "-native" if candidate else "retail"
+    settings_path = output.parent / (stem + "-settings.json")
     settings_path.write_text(json.dumps(settings, indent=2) + "\n")
     environment = dict(os.environ, TH08_STAGE5_REPOSITORY=str(ROOT),
                        TH08_STAGE5_NATIVE_OBSERVER=str(ROOT / "scripts/gdb/laser-visual-native.py"),
                        TH08_LASER_SETTINGS=str(settings_path), LIBGL_ALWAYS_SOFTWARE="1",
                        GALLIUM_DRIVER="llvmpipe", LP_NUM_THREADS="0")
     environment.pop("LP_NO_RAST", None)
-    prefix = output.parent / "retail-wine"
+    environment.pop("WINE_D3D_CONFIG", None)
+    if wine_csmt is not None:
+        environment["WINE_D3D_CONFIG"] = "csmt=" + str(wine_csmt)
+    prefix = output.parent / (stem + "-wine")
     command = [sys.executable, str(ROOT / "scripts/analysis/stage5-background-native-runner.py"),
                "--target", str(target), "--game-data", str((data / "th08.dat").resolve()),
                "--bgm-data", str((data / "thbgm.dat").resolve()), "--replay", str(replay),
                "--start-stage", str(stage), "--playback-mode", "0", "--timeout", "900",
                "--wine-prefix", str(prefix), "--output-dir", str(output)]
+    if candidate:
+        command.extend(["--candidate", str(candidate), "--map", str(map_path)])
     if watch_text_fonts:
         command.append("--trace-fonts")
     try:
-        with (output.parent / "retail.log").open("w") as stream:
-            subprocess.run(command, env=environment, stdout=stream, stderr=subprocess.STDOUT, check=True)
+        with (output.parent / (stem + ".log")).open("w") as stream:
+            result = subprocess.run(command, env=environment, stdout=stream, stderr=subprocess.STDOUT)
+        if result.returncode:
+            raise RuntimeError(f"{label.capitalize()} laser capture exited with code {result.returncode}; see {stem}.log.gz")
         complete = json.loads((output / "complete.json").read_text())
         if complete.get("capturedFrames") != frames or not complete.get("diagnosticComplete") or complete.get("errors"):
             raise RuntimeError("Retail laser frames did not complete")
@@ -206,6 +227,12 @@ def capture_retail(target, data, replay, output, stage, frames, watch_text_fonts
         metadata_path = output / "metadata.json"
         metadata = json.loads(metadata_path.read_text())
         metadata["laserCapture"] = provenance
+        metadata["wineCsmt"] = "default" if wine_csmt is None else wine_csmt
+        if candidate:
+            metadata.update(replaySha256=sha(replay), stage=stage, frames=frames, scout=False,
+                            keepLives=False, runnerExitCode=0, temporaryRuntimeRemoved=not (output / "runtime").exists(),
+                            frameCounter=FRAME_COUNTER, suppressLaserBodies=False,
+                            nativeMapSha256=sha(map_path))
         metadata_path.write_text(json.dumps(metadata, indent=2) + "\n")
     finally:
         if prefix.exists():
@@ -223,7 +250,9 @@ def capture_retail(target, data, replay, output, stage, frames, watch_text_fonts
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--candidate", type=Path, required=True, help="Portable Linux Debug ELF")
+    parser.add_argument("--candidate", type=Path, required=True, help="Portable Debug ELF or native VC7 bugfix PE32 with --native-map")
+    parser.add_argument("--native-map", type=Path, help="VC7 linker map; capture the Windows candidate at ordinary pacing")
+    parser.add_argument("--wine-csmt", type=int, choices=(0, 1), help="Native/retail Wine command-stream threading control")
     parser.add_argument("--game-data-dir", type=Path, required=True)
     parser.add_argument("--case", help="ID in config/laser-visual-fixtures.json")
     parser.add_argument("--fixture", help="ID in config/replay-fixtures.json; default: lunatic-1-a")
@@ -245,6 +274,11 @@ def main():
     parser.add_argument("--target", type=Path, default=ROOT / "resources/th08.exe")
     parser.add_argument("--output-dir", type=Path, required=True, help="Fresh directory under build/")
     args = parser.parse_args()
+    if args.wine_csmt is not None and not args.native_map:
+        parser.error("--wine-csmt requires --native-map")
+    if args.native_map and (args.scout or args.legacy_gl or args.font or args.watch_text_fonts or args.watch_draws
+                            or args.draw_colors_from or args.suppress_laser_bodies):
+        parser.error("Native captures support ordinary images and --watch-quads")
     if args.sample_interval < 1:
         parser.error("Sample interval must be positive")
     case = None
@@ -294,12 +328,15 @@ def main():
     replay = ROOT / "tests/fixtures/replays/th08-1.00d/accepted" / fixture["file"]
     verify_fixture(replay, fixture)
     candidate, data = args.candidate.resolve(strict=True), args.game_data_dir.resolve(strict=True)
-    if args.retail and (args.target.stat().st_size != 840704 or sha(args.target) != TARGET_SHA256):
+    if (args.retail or args.native_map) and (args.target.stat().st_size != 840704 or sha(args.target) != TARGET_SHA256):
         parser.error("Retail input must be the canonical Japanese TH08 1.00d executable")
     for name in ("th08.dat", "thbgm.dat"):
         if not (data / name).is_file():
             parser.error("Original archive is missing: " + name)
-    output.mkdir(parents=True)
+    if args.native_map:
+        output.parent.mkdir(parents=True, exist_ok=True)
+    else:
+        output.mkdir(parents=True)
     color_capture = None
     if args.draw_colors_from:
         color_capture = args.draw_colors_from.resolve(strict=True)
@@ -317,10 +354,17 @@ def main():
                     drawColorIndex=args.draw_color_index,
                     legacyOpenGL=args.legacy_gl,
                     fontOverride=str(args.font.resolve(strict=True)) if args.font else None)
-    if case:
+    if case and not args.native_map:
         (output / "case.json").write_text(json.dumps(case, indent=2) + "\n")
     print(f"Reading laser scene: {fixture['id']}, stage index {args.stage}", flush=True)
-    capture_portable(candidate, data, replay, output, settings)
+    if args.native_map:
+        capture_retail(args.target.resolve(strict=True), data, replay, output, args.stage, frames,
+                       watch_quads=args.watch_quads, candidate=candidate, map_path=args.native_map.resolve(strict=True),
+                       wine_csmt=args.wine_csmt)
+        if case:
+            (output / "case.json").write_text(json.dumps(case, indent=2) + "\n")
+    else:
+        capture_portable(candidate, data, replay, output, settings)
     records = json.loads((output / "lasers.json").read_text())
     if case:
         for sample, expected in zip(records, case["frames"]):
@@ -330,7 +374,7 @@ def main():
     if args.retail:
         print("Capturing retail laser frames with ordinary pacing and rasterization", flush=True)
         capture_retail(args.target.resolve(strict=True), data, replay, output / "retail", args.stage, frames,
-                       args.watch_text_fonts, args.watch_quads)
+                       args.watch_text_fonts, args.watch_quads, wine_csmt=args.wine_csmt)
         comparator = module("laser_comparison", ROOT / "scripts/analysis/compare-laser-visuals.py")
         report = comparator.compare(output / "retail", output)
         (output / "comparison.json").write_text(json.dumps(report, indent=2) + "\n")
