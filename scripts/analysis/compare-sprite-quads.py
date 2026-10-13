@@ -34,15 +34,21 @@ def load_quads(folder, frames):
     return rows
 
 
-def select_region(quads, roi):
+def select_region(quads, roi, selection="thin-horizontal"):
     selected = []
     for index, quad in enumerate(quads):
         xs, ys = ([floating(vertex[axis]) for vertex in quad] for axis in (0, 1))
         bounds = [min(xs), min(ys), max(xs), max(ys)]
-        # Thin horizontal sprites crossing the suspected edge, including every such submission.
-        if (bounds[2] - bounds[0] > 30 and 0 < bounds[3] - bounds[1] <= 16
-                and bounds[0] < roi[2] and bounds[2] >= roi[0]
-                and bounds[1] < roi[3] and bounds[3] >= roi[1]):
+        if selection == "covering-bounds":
+            matches = (bounds[0] <= roi[0] and bounds[1] <= roi[1]
+                       and bounds[2] >= roi[2] and bounds[3] >= roi[3])
+        elif selection == "thin-horizontal":
+            matches = (bounds[2] - bounds[0] > 30 and 0 < bounds[3] - bounds[1] <= 16
+                       and bounds[0] < roi[2] and bounds[2] >= roi[0]
+                       and bounds[1] < roi[3] and bounds[3] >= roi[1])
+        else:
+            raise ValueError("Unknown quad selection: " + selection)
+        if matches:
             selected.append((index, quad, bounds))
     return selected
 
@@ -59,7 +65,7 @@ def differences(left, right):
     return result
 
 
-def compare(reference, candidate, roi):
+def compare(reference, candidate, roi, selection="thin-horizontal"):
     spec = importlib.util.spec_from_file_location("laser_visuals", ROOT / "scripts/analysis/compare-laser-visuals.py")
     visuals = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(visuals)
@@ -70,12 +76,13 @@ def compare(reference, candidate, roi):
     left, right = load_quads(reference, frames), load_quads(candidate, frames)
     report = dict(evidenceClass="Observed AddSpriteToDrawBuffer inputs; target bytes and gameplay memory unmodified",
                   vertexLayout=list(FIELDS), vertexBytes=28, roi=list(roi),
-                  selector="thin horizontal sprite quads intersecting ROI in submission order",
+                  selector=("sprite quads with bounds covering ROI in submission order" if selection == "covering-bounds"
+                            else "thin horizontal sprite quads intersecting ROI in submission order"),
                   imageComparison=image_report, frames=[])
     for a, b in zip(left, right):
         if a["stage"] != b["stage"]:
             raise ValueError("Submitted-quad stage differs")
-        selected_a, selected_b = select_region(a["quads"], roi), select_region(b["quads"], roi)
+        selected_a, selected_b = select_region(a["quads"], roi, selection), select_region(b["quads"], roi, selection)
         if not selected_a or len(selected_a) != len(selected_b):
             raise ValueError("Region quad coverage is absent or cannot be paired in submission order")
         pairs = []
@@ -93,12 +100,14 @@ def main():
     parser.add_argument("--reference", type=Path, required=True)
     parser.add_argument("--candidate", type=Path, required=True)
     parser.add_argument("--roi", default="201,236,248,245", help="x0,y0,x1,y1; default: Stage 3 horizontal-edge region")
+    parser.add_argument("--selection", choices=("thin-horizontal", "covering-bounds"), default="thin-horizontal",
+                        help="Select thin edges or sprites whose bounds cover the ROI")
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     roi = tuple(int(value) for value in args.roi.split(","))
     if len(roi) != 4 or not (0 <= roi[0] < roi[2] <= 640 and 0 <= roi[1] < roi[3] <= 480):
         parser.error("ROI must be a nonempty rectangle inside the 640x480 frame")
-    report = compare(args.reference, args.candidate, roi)
+    report = compare(args.reference, args.candidate, roi, args.selection)
     report["comparatorSha256"] = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
     args.output.write_text(json.dumps(report, indent=2) + "\n")
     for row in report["frames"]:

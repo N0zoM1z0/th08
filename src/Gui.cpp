@@ -25,7 +25,7 @@ DIFFABLE_STATIC(Gui, g_Gui);
 DIFFABLE_STATIC(ChainElem, g_GuiCalcChain);
 DIFFABLE_STATIC(ChainElem, g_GuiDrawChain);
 DIFFABLE_STATIC(i32, g_GuiFullPowerModeFrames);
-DIFFABLE_STATIC(i32, g_GuiMessageStageMode);
+C_ASSERT(offsetof(Background, spellVmScriptBase) == 0xB34);
 DIFFABLE_STATIC(u16, g_GuiMessageInputCurrent);
 DIFFABLE_STATIC(u16, g_GuiMessageInputPrevious);
 #ifdef TH08_PORTABLE_NATIVE_LAYOUT
@@ -141,14 +141,14 @@ void GuiImpl::StartMessage(i32 messageIndex)
             Gui::CopyEnemyNameTexture(22);
             break;
         case STAGE6A:
-            g_GuiMessageStageMode = 2;
+            g_Background.spellVmScriptBase = 2;
             break;
         case STAGE6B:
         {
             AnmLoaded *tmp = g_Spellcard.enemyFaceAnm0;
             g_Spellcard.enemyFaceAnm0 = g_Spellcard.enemyFaceAnm1;
             g_Spellcard.enemyFaceAnm1 = tmp;
-            g_GuiMessageStageMode = 2;
+            g_Background.spellVmScriptBase = 2;
             Gui::CopyEnemyNameTexture(24);
             break;
         }
@@ -157,7 +157,7 @@ void GuiImpl::StartMessage(i32 messageIndex)
             AnmLoaded *tmp = g_Spellcard.enemyFaceAnm0;
             g_Spellcard.enemyFaceAnm0 = g_Spellcard.enemyFaceAnm1;
             g_Spellcard.enemyFaceAnm1 = tmp;
-            g_GuiMessageStageMode = 2;
+            g_Background.spellVmScriptBase = 2;
             Gui::CopyEnemyNameTexture(25);
             break;
         }

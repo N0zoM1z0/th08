@@ -164,6 +164,17 @@ class QuadEvidenceTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "layout"):
                 quads.load_quads(folder, [100])
 
+    def test_background_selection_uses_bounds_and_preserves_submission_order(self):
+        body = self.quad()
+        rotated = [[bits(x), bits(y), *vertex[2:]] for vertex, (x, y) in zip(body,
+                   [(300, 650), (-185, 325), (635, 155), (140, -170)])]
+        partial = [[bits(x), bits(y), *vertex[2:]] for vertex, (x, y) in zip(body,
+                   [(40, 0), (640, 0), (40, 480), (640, 480)])]
+        rows = quads.select_region([body, rotated, partial, rotated], (32, 16, 416, 464), "covering-bounds")
+        self.assertEqual([row[0] for row in rows], [1, 3])
+        with self.assertRaisesRegex(ValueError, "Unknown quad selection"):
+            quads.select_region([rotated], (32, 16, 416, 464), "unknown")
+
     def test_grid_control_preserves_depth_color_and_uv_words(self):
         vertices = self.quad()
         vertices[0][0] = bits(200.00001525878906)

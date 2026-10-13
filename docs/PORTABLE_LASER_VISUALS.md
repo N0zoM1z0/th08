@@ -15,8 +15,8 @@ records the current executable and complete-recording check.
 Font rasterization and synthetic texture sampling retain measurable differences.
 The [i386 refresh](#i386-refresh-october-14-2026) passes the same selected frames
 in both context profiles. The [Final A investigation](#final-a-observation-october-14-2026)
-adds five failing image cases with identical laser/VM packets and a visible
-spell-background difference. Other bosses and the full corpus for the revised
+finds a split spell-background script field; its owner repair passes the five
+added x86_64 image cases with identical laser/VM packets. Other bosses and the full corpus for the revised
 binaries remain separate checks. The dated sections below preserve the baseline
 and each repair's evidence.
 
@@ -647,6 +647,77 @@ The retained paired evidence is under
 inputs are in `finala-paced-draws/`, with `finala-pacing-comparison.json` in the
 parent directory. The manifest pins all five frames and their retail state hash,
 including the failing image cases.
+
+### Spell-background script owner repair
+
+Canonical `Background @ 0x004E4030 + spellVmScriptBase @ 0xB34` is
+`0x004E4B64`. `GuiImpl::StartMessage @ 0x0043396D` writes 2 there for Final A,
+Final B and Extra; `EffectManager::LoadEffectResources @ 0x004284B0` resets it
+to 0. Spell-practice setup also selects 2 for the later boss paths.
+`Spellcard::StartSpell @ 0x004152A0` reads the same word to choose the ANM scripts.
+The target write at `0x004339E6` and read at `0x004154DD` attest this connection.
+
+Source instead gave the writers standalone `g_GuiMessageStageMode` storage.
+Both x86_64 portable and the retained native link split it from the Background field.
+Portable therefore selected scripts 0/1 after the dialogue selected 2/3 in
+retail. At frame 9,570, the first two retail background quads are axis-aligned;
+the old portable quads rotate. Their positions and UVs differ in 22 words.
+The repaired portable submissions match all words of those two retail quads.
+
+All writers now use `g_Background.spellVmScriptBase`. The standalone global
+and its fixed-layout alias are removed. Seven VC7 relocation entries now name
+`g_Background @ 0x004E4030` with addend `0xB34`; all three affected functions
+have zero non-relocation differences. The cold replay of all 1,106 accepted
+units passes. Fresh normal and bugfix links pass the expanded runtime-owner
+verifier, which checks all seven writes and the spell-start read and rejects
+the pre-repair native product.
+
+The initial repaired x86_64 product `c421597e…` passes all five original limits:
+
+| Frame | Baseline beam-region error | Repaired beam-region error |
+| ---: | ---: | ---: |
+| 9,570 | 17.589088 | 0.015086 |
+| 14,490 | 20.909872 | 0.151220 |
+| 14,550 | 14.604154 | 0.076219 |
+| 15,090 | 15.289389 | 0.862803 |
+| 22,590 | 12.120407 | 0.003248 |
+
+Its laser/VM packet retains the pinned retail hash. Evidence is under
+`build/laser-background-owner-20261014/finala-repaired/`; build identities are
+in `production-portable-bridge/`. The final shared-owner x86_64 product has
+SHA-256 `34bcdd33b2d31a52e418e9f806314fb00c68ac2fd5cea2bad8259f6a5de9fab9`.
+Its allocated ELF sections equal the initial repaired product, with debug
+sections and the GNU build ID excluded. All five fresh captures in `finala-final/`
+pass the same image limits and have pixel-identical playfields to the initial
+repair captures. The final product's complete `lunatic-1-a` recording passes
+119,685 calculations on all 25 fields, all recorded end scores and natural exit;
+retained-evidence verification passes too. Its suite is in `x64-suite/`.
+Remaining checks cover Final B, Extra, refreshed i386, native images and the
+full corpus for the revised products. The original eight Stage 3/4B results
+remain scoped to their earlier binaries.
+
+Repeat the background vertex diagnosis using a single selected frame:
+
+```bash
+python3 scripts/analysis/check-laser-visuals.py \
+  --candidate build/portable-linux-x86_64/th08-modern \
+  --game-data-dir "/path/to/original/TH08 directory" \
+  --fixture lunatic-1-a --stage 6 --frames 9570 --watch-quads --retail \
+  --output-dir build/finala-quads
+python3 scripts/analysis/compare-sprite-quads.py \
+  --reference build/finala-quads/retail --candidate build/finala-quads \
+  --selection covering-bounds --roi 32,16,415,463 \
+  --output build/finala-quads/background-quads.json
+```
+
+The selector compares all submissions whose bounds contain the stated region,
+in submission order. The interior pixel coordinates include the target's
+half-pixel-adjusted background edges. The ordinary image mask and threshold
+stay the same. The older i386 product already aliases both names at
+`0x004E4B64` through its fixed-layout linker script; refreshed i386 testing
+checks the explicit owner after retiring that alias. Native link reproduction uses
+`python3 scripts/analysis/verify-windows-i386-runtime-data.py` after each fresh
+normal/bugfix build; the [Windows guide](WINDOWS_I386_RUNTIME.md) gives the order.
 
 A separate Stage 4A survey of this recording observes 22,947 presented gameplay
 counter samples at interval 1, with no active laser slots. This describes the

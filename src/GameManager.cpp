@@ -81,7 +81,6 @@ DIFFABLE_STATIC(ChainElem, g_GameManagerCalcChain);
 DIFFABLE_STATIC(ChainElem, g_GameManagerDrawChain);
 
 i32 InitializeScoreData();
-extern i32 g_GuiMessageStageMode;
 
 // FUNCTION: th08 0x439829
 ZunBool GameManager::IsStageClearedWithoutRetries(i32 stage, i32 character, i32 difficulty)
@@ -1002,16 +1001,16 @@ void __fastcall GameManager::GameplaySetupThread(void *unused)
             break;
         case STAGE6A:
             if (!g_GameManager.IsSpellNumberInRange(119, 122))
-                g_GuiMessageStageMode = 2;
+                g_Background.spellVmScriptBase = 2;
             break;
         case STAGE6B:
             if (!g_GameManager.IsSpellNumberInRange(147, 150))
-                g_GuiMessageStageMode = 2;
+                g_Background.spellVmScriptBase = 2;
             break;
         case EXTRASTAGE:
             if (!g_GameManager.IsSpellNumberInRange(191, 193) &&
                 !g_GameManager.IsSpellNumberEqualTo(213))
-                g_GuiMessageStageMode = 2;
+                g_Background.spellVmScriptBase = 2;
             break;
         }
     }

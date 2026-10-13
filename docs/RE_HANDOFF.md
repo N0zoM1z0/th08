@@ -25,7 +25,7 @@ and macOS runtime work have their own platform guides.
 
 ## Completed replay validation
 
-The native VC7, Linux x86_64, and Linux i386 products each pass all 108 credited
+The published baseline native VC7, Linux x86_64, and Linux i386 products each pass all 108 credited
 recordings and 12,311,460 calculations. All 25 fields, recorded stage-end
 scores, natural replay exits, and published fingerprints agree with retail.
 The native gate used fresh cold builds and fresh paired captures. Both portable
@@ -83,11 +83,11 @@ new replay output directory.
 ## Next bounded work
 
 Laser image work is active on `test/portable-laser-visual-regression`.
-The current x86_64 Debug recorder has SHA-256
+The preceding x86_64 Debug recorder has SHA-256
 `62386854ab8e486a8ad742c97f27b7f2063d39e008aefc4af8600dd083b9aecc`,
 with build identities under `build/laser-legacy-20261014/production/`.
 Earlier 108-recording gates remain scoped to their published binaries.
-The current binary's complete `lunatic-0-b` recording passes 113,221
+That binary's complete `lunatic-0-b` recording passes 113,221
 calculations on all 25 fields with a natural replay exit; retained-evidence
 verification passes.
 
@@ -134,14 +134,30 @@ target also writes alpha only in its far-fog branches; reconstruction behavior
 is preserved. Experimental controls remain separate from ordinary image gates.
 
 The Magic Team Lunatic Final A case `finala-eirin` adds five paired frames.
-All laser/VM packets match retail exactly, but all five image checks fail the
-unchanged 1.0 limit, with beam-region means 12.120407–20.909872. Paired images
-show a large spell-background difference. At frame 9,570, ordinary-paced and
-accelerated portable captures have identical playfields and laser packets;
-the paced capture also retains 30 draw calls. Next compare retail and portable
-background quad/texture inputs and measure background versus beam contributions.
-The manifest pins the failing selection and retail state hash. Evidence is under
-`build/laser-stage4a-20261014/`; see the
+The five baseline failures lead to a shared-owner repair: target address
+`0x004E4B64` is `Background::spellVmScriptBase @ +0xB34`, previously split into
+standalone `g_GuiMessageStageMode` storage in native and portable. All production
+and probe writers now use the field. Seven relocation entries migrate to the
+canonical Background base with their `0xB34` addend; masked instruction bytes
+remain equal. The cold gate passes all 1,106 accepted units. Fresh normal and
+bugfix links pass the new seven-write/one-read owner guard; the retained older
+native image fails that guard.
+
+The initial repaired x86_64 product `c421597e…` passes all five original image
+limits, with means 0.003248–0.862803 and the pinned retail laser/VM hash. At
+frame 9,570, the two background submissions now match retail words exactly;
+the baseline differed in 22 position/UV words. The final x86_64 recorder is
+`34bcdd33b2d31a52e418e9f806314fb00c68ac2fd5cea2bad8259f6a5de9fab9`, with build
+identity under `build/laser-background-owner-20261014/production/`. Its allocated
+ELF sections match the initial repaired product. All five final captures pass
+the original limits and retain pixel-identical playfields to the initial repair.
+Its complete `lunatic-1-a` recording and retained-evidence check pass 119,685
+calculations on all 25 fields, recorded end scores and natural exit.
+Native bugfix SHA-256 is
+`1b8e217a7fe48b74304b1cbf01600385e78f13273e63a6b90bcc1c32436e45f4`.
+Native visual confirmation is tracked as RT-014. Next refresh the new products'
+complete recordings, i386, Final B and Extra visual cases. Evidence is under
+`build/laser-background-owner-20261014/` and `build/laser-stage4a-20261014/`; see the
 [Final A observation](PORTABLE_LASER_VISUALS.md#final-a-observation-october-14-2026).
 The scout now supports interval 1, samples at Present entry, records counter
 gaps, and enforces a 32 MiB snapshot capacity. This recording's Stage 4A survey

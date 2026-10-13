@@ -23,7 +23,6 @@ SECTIONS
     _ZN4th0831g_AsciiManagerDrawChainHighPrioE = 0x004e3ff0;
     _ZN4th0829g_BackgroundDrawChainHighPrioE = 0x004e4010;
     _ZN4th0812g_BackgroundE = 0x004e4030;
-    _ZN4th0821g_GuiMessageStageModeE = 0x004e4b64;
     _ZN4th0828g_BackgroundDrawChainLowPrioE = 0x004ea630;
     _ZN4th0821g_BackgroundCalcChainE = 0x004ea650;
 
