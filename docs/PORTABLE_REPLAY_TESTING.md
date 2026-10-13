@@ -46,6 +46,24 @@ Repeat the command to resume: completed captures are revalidated, and failed
 attempts remain under their case directory. A changed executable, observer,
 asset set, schema, or playback profile requires a fresh output directory.
 
+Revalidate a completed suite without launching the game or changing retained
+evidence:
+
+```bash
+python3 scripts/test-portable-replay-suite.py \
+  --candidate build/portable-replay/th08-modern \
+  --game-data-dir /path/to/original-game-data \
+  --reference-dir build/replay-cold-20261011/matrix \
+  --output-dir build/portable-replay-suite \
+  --verify-only
+```
+
+This mode requires every capture and saved comparison to exist. It checks the
+candidate, target, DAT/BGM, observer, schema, fixture, playback profile, natural
+exit, all 25 trace fields, and the published calculation count and fingerprint.
+It also recomputes each comparison and requires the result to match the saved
+case report and suite ledger.
+
 ## Resource use and cleanup
 
 Build with `--parallel 1` and run one suite at a time. The suite captures one
@@ -146,20 +164,27 @@ resets the death count in a recording that reaches it with two deaths.
 
 ## Coverage
 
-The x86_64 recorder build at gameplay source `af9cb1d3` passes all **108
-recordings and 12,311,460 calculations**. Every calculation agrees on all 25
-fields, including exact floating-point bits. Each recording reaches its
+The x86_64 and i386 recorder builds at gameplay source `af9cb1d3` each pass all
+**108 recordings and 12,311,460 calculations**. Every calculation agrees on all
+25 fields, including exact floating-point bits. Each recording reaches its
 recorded stage-end scores and natural replay exit, and reproduces the published
-retail trace fingerprint. A second validation pass checks the retained traces,
-capture identities, and completion records.
+retail trace fingerprint. Separate `--verify-only` passes recompute every
+comparison and check the retained traces, capture identities, completion
+records, case reports, and suite ledgers.
 
 The corpus covers four teams and eight solo characters at all four story
 difficulties, each with Final A and Final B, plus 12 Extra recordings: all nine
 internal stage indexes. Run the corpus command above to reproduce this result.
-Local evidence is in `build/portable-state-20261012/matrix-final/`; the tested executable has
-SHA-256 `d74a574ac983d2df7c7a52cd421a868a01b90c34471881802ed83cea9e5b802f`.
-The accelerated, muted suite took 4 hours 14 minutes on this host and recorded
-a maximum resident set size of 240 MiB.
+Local evidence is in `build/portable-state-20261012/matrix-final/` and
+`build/portable-state-20261012/i386-matrix-fpu/`. The tested x86_64 executable
+has SHA-256
+`d74a574ac983d2df7c7a52cd421a868a01b90c34471881802ed83cea9e5b802f`;
+the i386 executable has SHA-256
+`34a358542feb2188304ce91c7b02b60d2a463a167f74f8f698add8d96296b9af`.
+The accelerated, muted x86_64 suite took 4 hours 14 minutes and peaked at 240
+MiB resident memory. The serial i386 suite took 5 hours 21 minutes 59 seconds
+and peaked at 205 MiB. The independent retained-evidence passes took 10 minutes
+51 seconds on x86_64 and 11 minutes 5 seconds on i386; each peaked at 53 MiB.
 
 Replay comparisons found and repaired differences in
 [vector angles](PORTABLE_VECTOR_PRECISION.md),
@@ -167,15 +192,11 @@ Replay comparisons found and repaired differences in
 [polar motion](PORTABLE_POLAR_MOTION.md). Those pages retain the original
 failures, target evidence, negative controls, and independent GDB checks.
 
-The serial i386 corpus is now running in
-`build/portable-state-20261012/i386-matrix-fpu/`.
-Its [device precision repair](PORTABLE_I386_FLOATING_POINT.md) passes a complete
-Border Team Normal recording and an independent 60,797-calculation GDB prefix.
-The queue, per-case ledgers, and `i386-full-suite.log` record further progress.
-The i386 candidate also passes 36 complete Easy, Normal, and Hard Final B
-recordings over 4,479,937 calculations. All 25 fields, stage-end scores,
-natural exits, and published fingerprints agree. Its serial batch continues
-with Lunatic, Extra, and Final A recordings.
+The i386 [device precision repair](PORTABLE_I386_FLOATING_POINT.md) also has a
+focused negative control and an independent 60,797-calculation GDB prefix that
+records retail's `0x007F` x87 control word. The complete corpus establishes the
+result across every route, difficulty, team, solo character, and stage in the
+fixture set.
 
 State parity covers the selected recordings and fields. Use the
 [rendering gate](PORTABLE_RENDERING.md) for frame comparisons, HOME screenshots,

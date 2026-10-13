@@ -79,8 +79,8 @@ Use [PORTABLE_RENDERING.md](PORTABLE_RENDERING.md) and
 `scripts/test-portable-rendering.py` for reproduction. The earlier
 [background study](PORTABLE_BACKGROUND.md) and
 [runtime review](PORTABLE_RUNTIME_REVIEW.md) preserve the pre-fix observations.
-The x86_64 state suite passes all 108 recordings. The i386 corpus, remaining
-pixel differences, and AArch64 hardware gameplay remain separate validation tasks.
+The x86_64 and i386 state suites each pass all 108 recordings. Remaining pixel
+differences and AArch64 hardware gameplay remain separate validation tasks.
 
 ## Portable replay state gate
 
@@ -129,23 +129,23 @@ reproduces every report and checks retained capture identities and completion
 records. The candidate uses gameplay source `af9cb1d3` and executable SHA-256
 `d74a574ac983d2df7c7a52cd421a868a01b90c34471881802ed83cea9e5b802f`.
 The full run took 4 hours 14 minutes and peaked at 240 MiB resident size.
+Its `--verify-only` pass took 10 minutes 51 seconds and peaked at 53 MiB.
 `build/portable-state-20261012/final-full-suite.log` records its result.
 
-The detached serial queue now runs all 108 i386 recordings, reusing the
-completed Border Team check in `i386-matrix-fpu/`. Its status is in
-`build/portable-state-20261012/serial-replay-queue.json`; `i386-full-suite.log`
-and the case ledger record progress. Captures remain serial.
-
 The i386 [device precision repair](PORTABLE_I386_FLOATING_POINT.md) resolves
-the Stage 5 frame 3,789 drift. Its full Border Team recording passes 100,979
-calculations in `i386-matrix-fpu/`; GDB independently passes 60,797 calculations
-and records retail's `0x007F` control word. Asset-free device defaults and
-FPU-preservation contracts pass and reproduce the old backend's failure.
-The complete i386 corpus is running after the successful x86_64 batch.
-The i386 candidate also passes 36 complete Easy, Normal, and Hard Final B
-recordings over 4,479,937 calculations. All 25 fields, stage-end scores,
-natural exits, and published fingerprints agree. Its serial batch continues
-with Lunatic, Extra, and Final A recordings.
+the Stage 5 frame 3,789 drift. The final i386 build passes all 108 recordings
+over 12,311,460 calculations in `i386-matrix-fpu/`, including all 25 fields,
+stage-end scores, natural replay exits, and published fingerprints. A separate
+retained-evidence pass recomputes every comparison and checks each capture,
+report, and ledger entry. The candidate executable has SHA-256
+`34a358542feb2188304ce91c7b02b60d2a463a167f74f8f698add8d96296b9af`.
+The serial suite took 5 hours 21 minutes 59 seconds and peaked at 205 MiB;
+revalidation took 11 minutes 5 seconds and peaked at 53 MiB. GDB independently
+passes 60,797 calculations and records retail's `0x007F` control word.
+Asset-free device defaults and FPU-preservation contracts pass and reproduce
+the old backend's failure. Use `--verify-only` as documented in
+[PORTABLE_REPLAY_TESTING.md](PORTABLE_REPLAY_TESTING.md) to reproduce the
+retained-evidence checks without launching the game.
 
 The accepted VC7 ledger passes all 1,106 units from a new cold build after
 the motion repair. Fresh normal/bugfix links and their owner/data/callee

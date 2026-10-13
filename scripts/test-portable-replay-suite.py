@@ -63,6 +63,8 @@ def main():
     parser.add_argument("--timeout", type=int, default=1800, help="Deadline per portable or retail capture, seconds")
     parser.add_argument("--paced", action="store_true", help="Use ordinary portable pacing and rasterization")
     parser.add_argument("--keep-going", action="store_true", help="Record failures and continue the remaining fixtures")
+    parser.add_argument("--verify-only", action="store_true",
+                        help="Revalidate a completed suite without launching or changing captures")
     args = parser.parse_args()
     output = args.output_dir.resolve()
     if not output.is_relative_to(ROOT / "build"):
@@ -86,14 +88,20 @@ def main():
                     schemaSha256=sha(ROOT / "scripts/replay-external-schema.json"))
     if identity["targetSha256"] != "330fbdbf58a710829d65277b4f312cfbb38d5448b3df523e79350b879213d924" or args.target.stat().st_size != 840704:
         parser.error("Target must be the canonical Japanese TH08 1.00d executable")
+    if args.verify_only and not output.is_dir():
+        parser.error("--verify-only requires an existing output directory")
     output.mkdir(parents=True, exist_ok=True)
     ledger_path = output / "suite.json"
+    if args.verify_only and not ledger_path.is_file():
+        parser.error("--verify-only requires an existing suite.json")
     ledger = json.loads(ledger_path.read_text()) if ledger_path.exists() else dict(version=1, cases={})
     if any(ledger.get("identity", identity).get(field) != value for field, value in identity.items()):
         parser.error("Suite identity changed; use a fresh output directory")
     ledger["identity"] = identity
     wine = output / "wine"
     failed = False
+    verified = 0
+    verified_calculations = 0
     try:
         for index, fixture in enumerate(fixtures, 1):
             case_id = fixture["id"]
@@ -101,9 +109,13 @@ def main():
             replay = CORPUS / "accepted" / fixture["file"]
             verify_fixture(replay, fixture)
             case = output / case_id
+            if args.verify_only and not case.is_dir():
+                raise ValueError("Completed portable case is missing: " + case_id)
             case.mkdir(exist_ok=True)
             reference = args.reference_dir.resolve() / case_id / "reference" if args.reference_dir else case / "reference"
             if not reference.exists():
+                if args.verify_only:
+                    raise ValueError("Completed retail reference is missing: " + case_id)
                 reference = case / "reference"
                 command = [sys.executable, str(ROOT / "scripts/capture-replay.py"), "--target", str(args.target.resolve()),
                            "--replay", str(replay), "--game-data", str(data / "th08.dat"), "--bgm-data", str(data / "thbgm.dat"),
@@ -117,9 +129,17 @@ def main():
                         with path.open("rb") as source, gzip.open(str(path) + ".gz", "wb") as destination:
                             shutil.copyfileobj(source, destination)
                         path.unlink()
-            result = dict(fixtureSha256=fixture["sha256"], reference=str(reference), result="running")
-            ledger["cases"][case_id] = result
-            write_json(ledger_path, ledger)
+            previous = ledger["cases"].get(case_id, {})
+            if args.verify_only:
+                if previous.get("result") != "equal" or previous.get("fixtureSha256") != fixture["sha256"]:
+                    raise ValueError("Completed suite result is missing or changed: " + case_id)
+                if Path(previous.get("reference", "")).resolve() != reference.resolve():
+                    raise ValueError("Completed suite reference changed: " + case_id)
+                result = previous
+            else:
+                result = dict(fixtureSha256=fixture["sha256"], reference=str(reference), result="running")
+                ledger["cases"][case_id] = result
+                write_json(ledger_path, ledger)
             capture = case / "candidate"
             try:
                 observer_path = ROOT / ("scripts/gdb/portable-replay-observer.py" if args.backend == "gdb"
@@ -139,7 +159,10 @@ def main():
                         raise ValueError("Completed portable observer identity differs")
                     complete_path = capture / "complete.json"
                     complete = json.loads(complete_path.read_text()) if complete_path.exists() else {}
-                    if not complete.get("ended") or complete.get("errors"):
+                    if (not complete.get("ended") or complete.get("errors") or
+                            not complete.get("naturalReplayExit")):
+                        if args.verify_only:
+                            raise ValueError("Completed portable capture is incomplete: " + case_id)
                         attempt = 1
                         while (case / f"attempt-{attempt}").exists():
                             attempt += 1
@@ -147,6 +170,8 @@ def main():
                     elif metadata.get("runnerExitCode") != 0 or not metadata.get("temporaryRuntimeRemoved"):
                         raise ValueError("Completed portable runner failed or retained its runtime")
                 if not capture.exists():
+                    if args.verify_only:
+                        raise ValueError("Completed portable capture is missing: " + case_id)
                     command = [sys.executable, str(ROOT / "scripts/capture-portable-replay.py"), "--candidate", str(candidate),
                                "--target", str(args.target.resolve()), "--game-data-dir", str(data), "--replay", str(replay),
                                "--reference", str(reference), "--output-dir", str(capture), "--backend", args.backend,
@@ -162,10 +187,21 @@ def main():
                     raise ValueError("Portable executable or observer identity differs")
                 if metadata["fixture"] != fixture["sha256"] or metadata["product"] != "portable-linux":
                     raise ValueError("Portable fixture/product identity differs")
-                write_json(case / "comparison.json", report)
-                share_equal_trace(reference, capture)
-                result.update(result=report["result"], comparedFrames=report["comparedFrames"],
-                              traceSha256=report["candidateTraceSha256"])
+                if len(metadata["schema"]["fields"]) != 25:
+                    raise ValueError("Portable trace does not contain the expected 25 fields")
+                if args.verify_only:
+                    if report != json.loads((case / "comparison.json").read_text()):
+                        raise ValueError("Saved comparison report changed: " + case_id)
+                    if (result.get("comparedFrames") != report["comparedFrames"] or
+                            result.get("traceSha256") != report["candidateTraceSha256"]):
+                        raise ValueError("Completed suite ledger changed: " + case_id)
+                    verified += 1
+                    verified_calculations += report["comparedFrames"]
+                else:
+                    write_json(case / "comparison.json", report)
+                    share_equal_trace(reference, capture)
+                    result.update(result=report["result"], comparedFrames=report["comparedFrames"],
+                                  traceSha256=report["candidateTraceSha256"])
                 print(f"  {report['result']}: {report['comparedFrames']} calculations", flush=True)
             except (OSError, ValueError, KeyError, subprocess.CalledProcessError) as error:
                 failed = True
@@ -174,12 +210,17 @@ def main():
                 if difference_path.exists():
                     result.update(result="different", firstDifference=json.loads(difference_path.read_text()))
                 print(f"  {result['result']}: {error}", flush=True)
-            write_json(ledger_path, ledger)
+            if not args.verify_only:
+                write_json(ledger_path, ledger)
             if failed and not args.keep_going:
                 break
     finally:
-        if wine.exists() and (wine / ".th08-replay-owned").exists():
+        if not args.verify_only and wine.exists() and (wine / ".th08-replay-owned").exists():
             shutil.rmtree(wine)
+    if args.verify_only:
+        print(f"Verified {verified}/{len(fixtures)} portable recordings; "
+              f"{verified_calculations} equal calculations", flush=True)
+        return 1 if failed or verified != len(fixtures) else 0
     results = [ledger["cases"].get(entry["id"], {}) for entry in fixtures]
     passed = sum(result.get("result") == "equal" for result in results)
     calculations = sum(result.get("comparedFrames", 0) for result in results if result.get("result") == "equal")
