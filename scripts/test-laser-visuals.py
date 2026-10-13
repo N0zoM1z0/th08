@@ -155,6 +155,18 @@ class LaserVisualTests(unittest.TestCase):
         self.assertEqual(result["result"], "equal")
         self.assertGreater(result["frames"][0]["laserGeometryPixels"], 50)
 
+    def test_legacy_profile_requires_observed_context_evidence(self):
+        self.portable["legacyOpenGL"] = True
+        for renderer in ({}, dict(version="2.1 Mesa test", clipControlLoaded=True),
+                         dict(version="4.5 Mesa test", clipControlLoaded=False)):
+            self.portable["environment"] = dict(openGL=renderer)
+            self.metadata()
+            with self.assertRaisesRegex(ValueError, "Legacy OpenGL evidence"):
+                self.compare()
+        self.portable["environment"] = dict(openGL=dict(version="2.1 Mesa test", clipControlLoaded=False))
+        self.metadata()
+        self.assertEqual(self.compare()["result"], "equal")
+
     def test_missing_beam_is_detected(self):
         Image.new("RGB", (640, 480)).save(self.candidate / "frame-100.png")
         self.portable["suppressLaserBodies"] = True

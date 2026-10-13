@@ -5,6 +5,7 @@
 #include <string.h>
 #ifdef TH08_MODERN_LINUX
 #include <SDL.h>
+#include <SDL_opengl.h>
 #endif
 struct Vertex { float x,y,z,w; DWORD color; float u,v; };
 static void check(HRESULT h) { if(FAILED(h)) { fprintf(stderr,"D3D call failed: %08lx\n",(unsigned long)h);exit(1); } }
@@ -22,6 +23,14 @@ int main(int argc,char **argv) {
  IDirect3D8 *api=Direct3DCreate8(D3D_SDK_VERSION);IDirect3DDevice8 *device;
  D3DPRESENT_PARAMETERS p;memset(&p,0,sizeof(p));p.Windowed=TRUE;p.hDeviceWindow=window;p.BackBufferWidth=640;p.BackBufferHeight=480;p.BackBufferCount=1;p.BackBufferFormat=D3DFMT_X8R8G8B8;p.SwapEffect=D3DSWAPEFFECT_COPY;p.Flags=D3DPRESENTFLAG_LOCKABLE_BACKBUFFER;
  check(api->CreateDevice(0,D3DDEVTYPE_HAL,window,D3DCREATE_SOFTWARE_VERTEXPROCESSING,&p,&device));
+#ifdef TH08_MODERN_LINUX
+ const char *version=reinterpret_cast<const char *>(glGetString(GL_VERSION));
+ const bool clipControl=SDL_GL_ExtensionSupported("GL_ARB_clip_control")!=SDL_FALSE;
+ printf("OpenGL: %s; ARB_clip_control: %s\n",version,clipControl?"available":"unavailable");
+ if(getenv("TH08_RENDERER_REQUIRE_LEGACY_GL")&&(clipControl||strncmp(version,"2.1 ",4))) {
+  fprintf(stderr,"Legacy probe requires OpenGL 2.1 without clip control\n");return 6;
+ }
+#endif
  check(device->SetVertexShader(D3DFVF_XYZRHW|D3DFVF_DIFFUSE|D3DFVF_TEX1));
  check(device->SetRenderState(D3DRS_ZENABLE,FALSE));check(device->SetRenderState(D3DRS_LIGHTING,FALSE));check(device->SetRenderState(D3DRS_CULLMODE,D3DCULL_NONE));
  check(device->SetRenderState(D3DRS_ALPHABLENDENABLE,FALSE));

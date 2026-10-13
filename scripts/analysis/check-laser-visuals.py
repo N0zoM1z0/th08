@@ -85,6 +85,7 @@ def capture_portable(candidate, data, replay, output, settings):
                                      font=selected_font),
                     muted=True, keepLives=False, suppressLaserBodies=settings["suppressLaserBodies"])
     metadata["watchQuads"] = settings.get("watchQuads", False)
+    metadata["legacyOpenGL"] = settings.get("legacyOpenGL", False)
     try:
         for archive in ("th08.dat", "thbgm.dat"):
             (runtime / archive).symlink_to((data / archive).resolve())
@@ -100,6 +101,8 @@ def capture_portable(candidate, data, replay, output, settings):
         for name in ("TH08_REPLAY_TRACE_REFERENCE", "TH08_REPLAY_TRACE_ROWS", "TH08_REPLAY_TRACE_COMPLETION", "TH08_REPLAY_TRACE_MAXIMUM"):
             environment.pop(name, None)
         environment.pop("LP_NO_RAST", None)
+        if settings.get("legacyOpenGL"):
+            environment.update(MESA_GL_VERSION_OVERRIDE="2.1", MESA_EXTENSION_OVERRIDE="-GL_ARB_clip_control")
         if settings.get("fontOverride"):
             environment["TH08_FONT"] = settings["fontOverride"]
         if settings["scout"]:
@@ -126,6 +129,11 @@ def capture_portable(candidate, data, replay, output, settings):
             quads = json.loads((output / "quads.json").read_text())
             if [row["frame"] for row in quads] != settings["frames"] or any(not row["quads"] for row in quads):
                 raise RuntimeError("Portable quad coverage differs from the requested frames")
+        if settings.get("legacyOpenGL"):
+            renderer = json.loads((output / "renderer.json").read_text())
+            if renderer["clipControlLoaded"] or not renderer["version"].startswith("2.1 "):
+                raise RuntimeError("Legacy capture did not exercise OpenGL 2.1 without clip control")
+            metadata["environment"]["openGL"] = renderer
     finally:
         for name in ("modern-crash.txt", "modern-files.txt"):
             path = runtime / name
@@ -212,6 +220,7 @@ def main():
     parser.add_argument("--frames", help="Comma-separated active frame numbers")
     parser.add_argument("--scout", action="store_true", help="Read laser state every 30 frames without rasterization")
     parser.add_argument("--paced", action="store_true", help="Capture portable images with ordinary pacing")
+    parser.add_argument("--legacy-gl", action="store_true", help="Capture portable through Mesa OpenGL 2.1 without clip control")
     parser.add_argument("--font", type=Path, help="Portable font override; recorded with its file hash")
     parser.add_argument("--watch-text-fonts", action="store_true", help="Record bold text parameters and retail font diagnostics")
     parser.add_argument("--watch-quads", action="store_true", help="Read every submitted sprite quad in the selected frames")
@@ -247,6 +256,8 @@ def main():
         parser.error("Scout mode does not capture retail images or run missing-laser controls")
     if args.scout and args.watch_text_fonts:
         parser.error("Text-font diagnostics require rasterized frame captures")
+    if args.scout and args.legacy_gl:
+        parser.error("Legacy OpenGL validation requires rasterized frame captures")
     if args.watch_quads and (args.scout or args.watch_text_fonts or args.suppress_laser_bodies):
         parser.error("Quad diagnostics require an ordinary frame capture, separate from font and omission probes")
     if args.retail and args.suppress_laser_bodies:
@@ -272,6 +283,7 @@ def main():
                     maximumFrame=maximum, paced=args.paced, suppressLaserBodies=args.suppress_laser_bodies,
                     watchTextFonts=args.watch_text_fonts,
                     watchQuads=args.watch_quads,
+                    legacyOpenGL=args.legacy_gl,
                     fontOverride=str(args.font.resolve(strict=True)) if args.font else None)
     if case:
         (output / "case.json").write_text(json.dumps(case, indent=2) + "\n")

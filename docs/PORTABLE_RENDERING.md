@@ -54,7 +54,29 @@ This compiles the production Linux backend and exercises rendered pixels through
 its D3D8 API. Checks cover flag-0 reads, read-only locks, immediate partial writes,
 subsequent draws, XYZ and XYZRHW texture interpolation, pixel centers, negative-W
 clipping, depth testing, linear fog, and viewport-independent CPU uploads.
+The six groups also check top/left edge inclusion, bottom/right exclusion,
+asymmetric viewport clears, framebuffer audit coordinates, and actual Xvfb
+window pixels after presentation. The window check uses X11 readback and needs
+the `x11` development package alongside SDL2 and OpenGL.
 The x86_64 GitHub build runs these checks without copyrighted game data.
+
+Exercise the OpenGL 2.1 path without clip control:
+
+```bash
+python3 scripts/test-portable-renderer.py --legacy-gl
+python3 scripts/test-portable-renderer.py --legacy-gl \
+  --baseline-ref da521dcf --cases edges --expect-failures \
+  --output-dir build/portable-renderer-legacy-baseline
+```
+
+The runner forces Mesa's 2.1 profile and disables `GL_ARB_clip_control`.
+Each contract reports the actual context version and extension availability.
+`report.json` retains source and binary hashes, compiler identity, and each
+contract's output and exit status. Linux CI runs both profiles and uploads the
+reports.
+The second command reproduces the pre-repair top-edge failure. The repaired
+legacy renderer stores the logical top at the bottom of its OpenGL FBO, then
+maps readback, CPU writes, clears, audit regions, and presentation consistently.
 
 Confirm the tests detect the preceding defects:
 

@@ -215,6 +215,12 @@ class Presented(gdb.FinishBreakpoint):
 
 def screenshot(frame):
     gdb.execute("set scheduler-locking off")
+    if settings.get("legacyOpenGL"):
+        renderer = dict(version=value("(const char *)glGetString(0x1F02)").string(),
+                        clipControlLoaded=number("(unsigned long)'(anonymous namespace)::g_clipControl'") != 0)
+        (output / "renderer.json").write_text(json.dumps(renderer, indent=2) + "\n")
+        if renderer["clipControlLoaded"] or not renderer["version"].startswith("2.1 "):
+            raise RuntimeError("Expected OpenGL 2.1 without a loaded clip-control function")
     gdb.execute("set $laser_access = (LinuxSurfaceAccess*)malloc(sizeof(LinuxSurfaceAccess))")
     gdb.execute("call th08_linux_surface_access($laser_device->backbuffer, $laser_access, true)")
     access = value("*$laser_access")

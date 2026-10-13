@@ -71,6 +71,10 @@ def compare(reference, candidate, maximum_error=1.0, normal_candidate=None):
                           ("temporaryRuntimeRemoved", True), ("frameCounter", FRAME_COUNTER), ("playbackMode", 0)):
         if got_meta.get(key) != expected:
             raise ValueError("Invalid portable capture profile: " + key)
+    if got_meta.get("legacyOpenGL"):
+        renderer = got_meta.get("environment", {}).get("openGL", {})
+        if renderer.get("clipControlLoaded") is not False or not renderer.get("version", "").startswith("2.1 "):
+            raise ValueError("Legacy OpenGL evidence requires version 2.1 and an unloaded clip-control function")
     if (ref_meta.get("playbackMode") != 0 or not ref_meta.get("rasterization") or ref_meta.get("clockRate") != 1
             or ref_meta.get("configSha256") != got_meta.get("configSha256")
             or ref_meta.get("startStage") != got_meta.get("startStage")):

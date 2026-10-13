@@ -13,7 +13,7 @@ horizontal edge coverage. The [edge regression](#horizontal-edge-regression-octo
 records the current executable and complete-recording check.
 
 Font rasterization and synthetic texture sampling retain measurable differences.
-Later bosses, the legacy OpenGL context path, refreshed i386 images, and the
+Later bosses, refreshed i386 images, and the
 full corpus for the revised binaries remain separate checks. The dated sections
 below preserve the baseline and each repair's evidence.
 
@@ -389,8 +389,9 @@ cases different; an upper-left clip-origin experiment matches all 34.
 The Linux renderer now selects the upper-left clip origin when
 `GL_ARB_clip_control` is available. Its projection retains the existing image
 orientation. Presentation and CPU backbuffer uploads use their lower-left
-blit convention explicitly. The legacy path remains for contexts without
-clip-control support; that path still needs a separate edge gate. See the
+blit convention explicitly. The first repair kept the older path for contexts
+without clip control; the [legacy gate below](#legacy-opengl-coverage-october-14-2026)
+covers its follow-up repair. See the
 [Direct3D filling convention](https://learn.microsoft.com/en-us/windows/win32/direct3d9/rasterization-rules)
 for terminology and [ARB_clip_control](https://registry.khronos.org/OpenGL/extensions/ARB/ARB_clip_control.txt)
 for the OpenGL origin mapping. The measured oracle is Wine D3D8.
@@ -497,6 +498,59 @@ leaves game source and captured vertices unchanged. Current region measurements
 and the private viewport experiments are under `build/laser-sampling-20261014/`;
 `repro-grid-control/` contains the reproducible Wine/portable control images;
 `repro-observed-inputs/` repeats the unmodified 53/68 result with the same runner.
+
+## Legacy OpenGL coverage, October 14, 2026
+
+Disabling `GL_ARB_clip_control` reproduces the pre-repair top-edge failure at
+source checkpoint `da521dcf`. The renderer now stores the logical top at the
+lowest FBO row in this mode. Readback, CPU writes, viewport clears, framebuffer
+audit regions, and presentation use the same mapping. The clip-control path
+keeps its existing orientation.
+
+Both default and forced OpenGL 2.1 contexts pass six asset-free renderer
+contract groups, including asymmetric clears and actual Xvfb window pixels.
+The legacy observed-quad API probe matches all 34 solid-material images and
+52/68 total images; its old-source control differs in all 68. Sixteen textured
+images retain sampling differences.
+
+Fresh legacy game captures pass all eight original 1.0 image limits. Their
+laser/VM packet hashes remain the published Stage 3 and Stage 4B hashes.
+
+| Stage | Frames | Beam-region mean RGB errors |
+| --- | --- | --- |
+| 3 | 12,900; 14,130; 14,310; 14,490 | 0.786679; 0.323592; 0.003074; 0.763161 |
+| 4B | 13,140; 13,260; 15,360; 18,210 | 0.004278; 0.001998; 0.003865; 0.021176 |
+
+Frame 12,900's outside-header mean is 0.003639, with no pixels above mean RGB
+error 32. The context observed through GDB is `2.1 Mesa 25.2.8-0ubuntu0.24.04.2`,
+with a null clip-control function pointer. The tested x86_64 Debug recorder has
+SHA-256 `62386854ab8e486a8ad742c97f27b7f2063d39e008aefc4af8600dd083b9aecc`.
+Its build identity, captures, and API controls are under
+`build/laser-legacy-20261014/`.
+The same binary's complete `lunatic-0-b` recording passes 113,221 calculations
+on all 25 fields with a natural replay exit. Retained-evidence verification
+passes. Forced-profile checks also match all 297 color samples and preserve all
+144 D3DX copies and 196,608 exhaustive copies. These adapter changes leave the
+native VC7 source and accepted-unit ledgers unchanged.
+
+Repeat the game capture and independent API control:
+
+```bash
+python3 scripts/analysis/check-laser-visuals.py \
+  --candidate build/portable-linux-x86_64/th08-modern \
+  --game-data-dir "/path/to/original/TH08 directory" \
+  --case stage3-keine --legacy-gl --retail \
+  --output-dir build/laser-stage3-legacy
+python3 scripts/analysis/probe-subpixel-quads.py \
+  --capture build/laser-quads --legacy-gl --baseline-ref da521dcf --check-coverage \
+  --output-dir build/subpixel-legacy-api
+```
+
+`--legacy-gl` changes the portable context only. Game captures record the
+observed version and function pointer; retained comparisons reject missing or
+incompatible legacy-context evidence. Renderer contract reports retain source
+and binary hashes, compiler identity, exact assertions, and process results.
+The Linux CI workflow runs both context profiles and uploads those reports.
 
 ## Read and verify the evidence
 

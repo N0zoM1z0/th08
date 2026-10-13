@@ -83,47 +83,39 @@ new replay output directory.
 ## Next bounded work
 
 Laser image work is active on `test/portable-laser-visual-regression`.
-Eight Stage 3 and Stage 4B frames retain identical retail laser/VM packets.
-The color repair passes 297 Wine D3D8 samples, 144 D3DX copy samples, and
-196,608 exhaustive 16-bit copies; its complete `lunatic-0-b` recording passes
-113,221 calculations on all 25 fields. Earlier 108-recording gates remain
-scoped to their published binaries.
+The current x86_64 Debug recorder has SHA-256
+`62386854ab8e486a8ad742c97f27b7f2063d39e008aefc4af8600dd083b9aecc`,
+with build identities under `build/laser-legacy-20261014/production/`.
+Earlier 108-recording gates remain scoped to their published binaries.
+The current binary's complete `lunatic-0-b` recording passes 113,221
+calculations on all 25 fields with a natural replay exit; retained-evidence
+verification passes.
 
-The original-game font capture now confirms Droid Sans Fallback, GDI height
+Both default and forced OpenGL 2.1 contexts pass six asset-free renderer
+groups. The legacy path now inverts its FBO and maps CPU/GPU reads, writes,
+clears, audit regions, and presentation consistently. Its eight Stage 3 and
+Stage 4B frames pass the unchanged 1.0 image limit, retaining exact retail
+laser/VM packets. GDB observes OpenGL 2.1 and a null clip-control pointer.
+Frame 12,900's 49 high-error edge pixels disappear. The legacy API probe
+matches all 34 solid images and 52/68 total images; the old-source control
+differs in all 68. All 297 color samples, 144 D3DX copies, and 196,608 exhaustive
+copies pass in the forced legacy profile. See
+[the laser workflow](PORTABLE_LASER_VISUALS.md) for captures, source controls,
+and the `--legacy-gl` reproduction commands.
+
+The original-game font evidence confirms Droid Sans Fallback, GDI height
 28 mapped to 21 ppem, and 81 bold-text parameter records equal to portable.
-The Linux height/baseline repair uses OpenType Windows metrics. Fresh Stage 3
-captures pass three of four strict image checks with both the default VL Gothic
-and matched Droid fonts. Stage 4B passes all four. The tested Debug recorder
-is `75f785111922b27bedb71a2d8142a23b71f6c98cd0ac854a47d5b978539fc566`;
-its complete `lunatic-0-b` recording passes 113,221 calculations and all
-25 fields with a natural exit, under `build/laser-font-20261014/`.
-Retained-evidence verification, renderer contracts, and texture/copy gates pass.
-The completed compiler tree and owned Wine prefixes have been removed.
+The Linux height/baseline repair uses OpenType Windows metrics. Remaining
+bold-width/grayscale differences need separate font rasterization measurements.
 
-The horizontal-edge capture observes 16 region quads with all 448 vertex
-words identical. The independent API probe localizes the difference to edge
-coverage: the old renderer omits the top row and includes the bottom row.
-The upper-left clip-origin repair passes all 34 solid cases and 53/68 total
-synthetic image cases. Fresh game captures now pass all eight strict pixel
-checks with unchanged raw laser/VM packets. Frame 12,900's outside-header mean
-falls to 0.003603 and its 49 high-error pixels disappear. The tested recorder
-is `f0138506b35e9849a2877ee6a8ebe6df66c933534b1375b40c35944af2d653d6`;
-its complete `lunatic-0-b` recording and retained-evidence verification pass
-113,221 calculations and all 25 fields under `build/laser-vertices-20261014/`.
-CI and the named edge contract/failure control pass.
-
-Fifteen synthetic striped-material cases retain sampling differences. Font
-bold-width/grayscale differences, the legacy context path without clip control,
-later-boss laser cases, and refreshed i386 gates remain to be checked.
-The sampling follow-up keeps all solid cases exact. An XY grid control passes
-59/68 images; its nine remaining first-row differences coincide with Wine's
-offset-viewport sensitivity. Private viewport mapping does not resolve them.
-Evidence is under `build/laser-sampling-20261014/`; use the subpixel runner's
-`--position-grid 256` option to reproduce the control. Summaries now distinguish
-the seven October 13 baseline failures from the current eight-frame pass.
-See [the laser workflow](PORTABLE_LASER_VISUALS.md) for observed quad capture,
-API replay, and the named old-source edge failure control. Issue #20 remains
-open; its original scene is unspecified.
+The earlier clip-control API probe retains 15 striped-material sampling
+differences; the legacy probe retains 16. An XY grid control passes 59/68
+images, with nine first-row differences coinciding with Wine's offset-viewport
+sensitivity. Private viewport mapping does not resolve them. Its evidence
+is under `build/laser-sampling-20261014/`; `--position-grid 256` reproduces
+the control. Later-boss laser cases, refreshed i386 images, and the full corpus
+for the revised products remain to be checked. Issue #20 remains open; its
+original scene is unspecified.
 
 For runtime work, select a concrete remaining visual or hardware scenario and
 retain the stage, route, recording, frame, and comparison evidence. For exact

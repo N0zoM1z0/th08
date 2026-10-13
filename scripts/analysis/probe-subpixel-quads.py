@@ -55,6 +55,7 @@ def main():
     parser.add_argument("--frame", type=int, default=12900)
     parser.add_argument("--position-grid", type=int,
                         help="Synthetic control: snap X/Y to this many grid steps per pixel in both APIs")
+    parser.add_argument("--legacy-gl", action="store_true", help="Exercise the portable Mesa OpenGL 2.1 path without clip control")
     parser.add_argument("--baseline-ref", help="Also exercise an immutable pre-repair renderer")
     parser.add_argument("--check-coverage", action="store_true", help="Require exact pixels in every solid-material case")
     parser.add_argument("--output-dir", type=Path, required=True, help="Fresh directory under build/")
@@ -122,6 +123,7 @@ def main():
     report = dict(evidenceClass="Wine D3D8 API and portable synthetic materials with identified input transformations",
                   quadCaptureSha256=sha(args.capture / "quads.json"), inputSha256=sha(output / "input.bin"),
                   observedInputSha256=observed_input_sha, inputTransformation=transformation,
+                  legacyOpenGL=args.legacy_gl,
                   frame=args.frame, selectedIndices=[index for index, _, _ in selected], baselineCommit=baseline,
                   probeSha256=sha(source), runnerSha256=sha(Path(__file__)),
                   rendererSha256={name: sha(path) for name, path in sources.items()}, variants={})
@@ -130,6 +132,10 @@ def main():
                                                     ("nativeCompiler", ["i686-w64-mingw32-g++", "--version"]),
                                                     ("wine", ["wine", "--version"]))}
     for name, renderer in sources.items():
+        portable_environment = dict(environment)
+        if args.legacy_gl:
+            portable_environment.update(MESA_GL_VERSION_OVERRIDE="2.1", MESA_EXTENSION_OVERRIDE="-GL_ARB_clip_control",
+                                        TH08_RENDERER_REQUIRE_LEGACY_GL="1")
         folder = output / name
         folder.mkdir()
         binary = output / ("subpixel-" + name)
@@ -144,7 +150,7 @@ def main():
         try:
             with (folder / "capture.log").open("w") as log:
                 subprocess.run(["xvfb-run", "-a", "timeout", "60s", str(binary), str(output / "input.bin"),
-                                str(folder)], env=environment, stdout=log, stderr=subprocess.STDOUT, check=True)
+                                str(folder)], env=portable_environment, stdout=log, stderr=subprocess.STDOUT, check=True)
             compact(folder)
         finally:
             binary.unlink()
