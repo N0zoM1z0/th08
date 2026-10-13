@@ -172,6 +172,10 @@ The serial i386 corpus is now running in
 Its [device precision repair](PORTABLE_I386_FLOATING_POINT.md) passes a complete
 Border Team Normal recording and an independent 60,797-calculation GDB prefix.
 The queue, per-case ledgers, and `i386-full-suite.log` record further progress.
+The i386 candidate also passes 36 complete Easy, Normal, and Hard Final B
+recordings over 4,479,937 calculations. All 25 fields, stage-end scores,
+natural exits, and published fingerprints agree. Its serial batch continues
+with Lunatic, Extra, and Final A recordings.
 
 State parity covers the selected recordings and fields. Use the
 [rendering gate](PORTABLE_RENDERING.md) for frame comparisons, HOME screenshots,

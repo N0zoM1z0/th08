@@ -142,6 +142,10 @@ calculations in `i386-matrix-fpu/`; GDB independently passes 60,797 calculations
 and records retail's `0x007F` control word. Asset-free device defaults and
 FPU-preservation contracts pass and reproduce the old backend's failure.
 The complete i386 corpus is running after the successful x86_64 batch.
+The i386 candidate also passes 36 complete Easy, Normal, and Hard Final B
+recordings over 4,479,937 calculations. All 25 fields, stage-end scores,
+natural exits, and published fingerprints agree. Its serial batch continues
+with Lunatic, Extra, and Final A recordings.
 
 The accepted VC7 ledger passes all 1,106 units from a new cold build after
 the motion repair. Fresh normal/bugfix links and their owner/data/callee
