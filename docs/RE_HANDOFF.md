@@ -164,7 +164,16 @@ The native complete `lunatic-1-a` recording passes 119,685 calculations on all
 25 fields, end scores and natural exit at clock rate 128 without rasterization.
 Native evidence is under `build/laser-native-20261014/`. The runner supports
 `--native-map` and paired `--wine-csmt 0`; the comparator requires matching Wine
-settings and completed mapped-observer evidence. Next refresh the new products'
+settings and completed mapped-observer evidence.
+The current native 108-recording refresh is active under
+`build/laser-native-20261014/full-state128/`, using clock rate 128, no rasterization,
+ptrace observations and one shared prefix at `full-state128-wine/` in the parent
+directory. Read the live ledger rather than treating dated counts as current.
+Use `report-replay-suite.py --resources --wine-prefix ...` to inspect progress,
+live game RSS and retained artifacts. Resume with the same binary, map and
+profile; a changed identity requires a new output directory.
+
+Next refresh the new products'
 complete recordings, i386, Final B and Extra visual cases. Evidence is under
 `build/laser-background-owner-20261014/` and `build/laser-stage4a-20261014/`; see the
 [Final A observation](PORTABLE_LASER_VISUALS.md#final-a-observation-october-14-2026).
