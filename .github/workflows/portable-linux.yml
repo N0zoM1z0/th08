@@ -64,10 +64,26 @@ jobs:
           sudo apt-get install -y \
             ninja-build pkg-config \
             libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev \
-            libfontconfig1-dev libgl-dev
+            libfontconfig1-dev libgl-dev xvfb xauth gdb
 
       - name: Build and verify native-layout ELF
         run: scripts/build-portable-linux.sh x86_64
+
+      - name: Check renderer pixel contracts without game assets
+        run: python3 scripts/test-portable-renderer.py
+
+      - name: Check vector precision without game assets
+        run: python3 scripts/test-portable-math.py
+
+      - name: Build optional replay recorder
+        run: |
+          cmake -S . -B build/portable-replay-ci -G Ninja \
+            -DCMAKE_BUILD_TYPE=Debug -DTH08_ENABLE_REPLAY_TRACE=ON
+          cmake --build build/portable-replay-ci --parallel 1
+          scripts/verify-portable-linux.sh build/portable-replay-ci/th08-modern x86_64
+          python3 scripts/test-portable-math.py --candidate build/portable-replay-ci/th08-modern
+          python3 scripts/test-portable-normalization.py --candidate build/portable-replay-ci/th08-modern
+          rm -rf build/portable-replay-ci
 
       - name: Create portable archive
         run: |

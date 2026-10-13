@@ -167,7 +167,7 @@ def main():
                     capture = reference if product == "reference" else case / product
                     if capture.exists():
                         try:
-                            meta, _ = comparison.load(capture)
+                            meta, _, _ = comparison.summarize(capture)
                             comparison.verify_suite_capture(meta, identity, fixture["sha256"], product == "candidate")
                         except (OSError, ValueError, KeyError):
                             if capture != case / product:

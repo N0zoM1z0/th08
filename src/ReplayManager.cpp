@@ -1,4 +1,7 @@
 #include "th_pch.h"
+#ifdef TH08_ENABLE_REPLAY_TRACE
+#include "modern/linux/replay_trace.hpp"
+#endif
 
 #include "Global.hpp"
 #include "EnemyManager.hpp"
@@ -361,6 +364,10 @@ ChainCallbackResult ReplayManager::RecordInputAndFps(ReplayManager *replayManage
 
 ChainCallbackResult ReplayManager::ControlPlaybackFrameAdvance(ReplayManager *replayManager)
 {
+#ifdef TH08_ENABLE_REPLAY_TRACE
+    if (modern::ReplayTraceRecord(replayManager))
+        return CHAIN_CALLBACK_RESULT_EXIT_GAME_SUCCESS;
+#endif
     if (!g_GameManager.flags.replayInputEnabled)
     {
         return CHAIN_CALLBACK_RESULT_CONTINUE;
@@ -710,6 +717,9 @@ ZunResult ReplayManager::BeginPlaybackStage(ReplayManager *replayManager)
 
 ZunResult ReplayManager::DeleteReplayManager(ReplayManager *replayManager)
 {
+#ifdef TH08_ENABLE_REPLAY_TRACE
+    modern::ReplayTraceFinish();
+#endif
     if (replayManager->playbackFrameControlChain != NULL)
     {
         g_Chain.Cut(replayManager->playbackFrameControlChain);

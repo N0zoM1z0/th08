@@ -261,6 +261,9 @@ use a new output directory for each run.
 
 These windows establish bounded portable replay/render coverage. The full
 108-case, 25-field parity claim belongs to the separate VC7 replay gate.
+Use [PORTABLE_REPLAY_TESTING.md](PORTABLE_REPLAY_TESTING.md) for the complete
+portable state gate and [PORTABLE_VECTOR_PRECISION.md](PORTABLE_VECTOR_PRECISION.md)
+for the Stage 4A math-overload repair found by that gate.
 
 The 2026-10-12 run at source commit `2c253eb2` passed all six windows, with
 5,231 samples. Fresh x86_64 ownership checks, normal and AddressSanitizer
@@ -273,6 +276,17 @@ enemy 14, sprite 77, alongside 72 `ok` samples for the same animation/script/
 sprite. The checker reports isolated suspects and fails structural errors or
 repeated zero-pixel draws. This sample needs visual confirmation; the retained
 CSV records its texture, tint, geometry, and framebuffer delta.
+
+Same-frame retail comparison subsequently exposed a Stage 5 background
+perspective difference. [PORTABLE_BACKGROUND.md](PORTABLE_BACKGROUND.md) records
+the camera/vertex investigation, the confirmed loss of clip `W`, and a reusable
+isolated experiment. [PORTABLE_RENDERING.md](PORTABLE_RENDERING.md) records the
+production repair and its renderer, HOME, and same-frame regression suite.
+
+The [portable runtime review](PORTABLE_RUNTIME_REVIEW.md) extends that defect
+to Stage 1, Stage 3, and Final B, confirms stale HOME screenshots and next-frame
+overwrite, and isolates fullscreen cropping under Xvfb without a window manager.
+It provides reusable display and same-frame comparison commands.
 
 ### Deterministic replay render audit
 

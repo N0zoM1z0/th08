@@ -7,6 +7,9 @@
 #include <math.h>
 #include <string.h>
 #include <vector>
+#if defined(__i386__) || defined(__x86_64__)
+#include <xmmintrin.h>
+#endif
 
 namespace
 {
@@ -225,12 +228,35 @@ FLOAT D3DXVec3Dot(const D3DXVECTOR3 *left, const D3DXVECTOR3 *right)
 FLOAT D3DXVec3LengthSq(const D3DXVECTOR3 *value) { return D3DXVec3Dot(value, value); }
 FLOAT D3DXVec3Length(const D3DXVECTOR3 *value) { return sqrtf(D3DXVec3LengthSq(value)); }
 
+#if defined(__i386__) || defined(__x86_64__)
+__attribute__((target("sse")))
+#endif
 D3DXVECTOR3 *D3DXVec3Normalize(D3DXVECTOR3 *out, const D3DXVECTOR3 *value)
 {
     if (out == NULL || value == NULL) return NULL;
-    FLOAT length = D3DXVec3Length(value);
-    if (length > 1.0e-8f) { D3DXVECTOR3 copy = *value; *out = copy / length; }
-    else out->x = out->y = out->z = 0.0f;
+    const D3DXVECTOR3 copy = *value;
+#if defined(__i386__) || defined(__x86_64__)
+    const __m128 x = _mm_set_ss(copy.x), y = _mm_set_ss(copy.y), z = _mm_set_ss(copy.z);
+    const __m128 square = _mm_add_ss(_mm_add_ss(_mm_mul_ss(x, x), _mm_mul_ss(y, y)), _mm_mul_ss(z, z));
+    if (_mm_cvtss_f32(square) < 1.4210854715202004e-14f)
+        out->x = out->y = out->z = 0.0f;
+    else
+    {
+        // Retail D3DX refines RSQRT once, rounding each SSE operation to float.
+        const __m128 estimate = _mm_rsqrt_ss(square);
+        const __m128 correction = _mm_sub_ss(_mm_set_ss(3.0f), _mm_mul_ss(_mm_mul_ss(square, estimate), estimate));
+        const __m128 scale = _mm_mul_ss(_mm_mul_ss(_mm_set_ss(0.5f), estimate), correction);
+        out->x = _mm_cvtss_f32(_mm_mul_ss(scale, x));
+        out->y = _mm_cvtss_f32(_mm_mul_ss(scale, y));
+        out->z = _mm_cvtss_f32(_mm_mul_ss(scale, z));
+    }
+#else
+    const FLOAT square = D3DXVec3LengthSq(&copy);
+    if (square < 1.4210854715202004e-14f)
+        out->x = out->y = out->z = 0.0f;
+    else
+        *out = copy / sqrtf(square);
+#endif
     return out;
 }
 

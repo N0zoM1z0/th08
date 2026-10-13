@@ -17,6 +17,9 @@
 #include "ScreenEffect.hpp"
 #include "SoundPlayer.hpp"
 #include "Spellcard.hpp"
+#ifdef TH08_ENABLE_REPLAY_TRACE
+#include "modern/linux/replay_trace.hpp"
+#endif
 
 namespace th08
 {
@@ -284,6 +287,9 @@ ChainCallbackResult GameManager::OnUpdate(GameManager *gameManager)
     u32 value;
     u32 antiTamperIdx;
 
+#ifdef TH08_ENABLE_REPLAY_TRACE
+    modern::ReplayTraceBeginCalculation();
+#endif
     g_GameManager.playtimeFrames++;
 
     if (gameManager->flags.stageTransitionState != 0)

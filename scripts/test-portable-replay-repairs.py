@@ -52,9 +52,9 @@ def main():
                   sourceCommit=subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT).decode().strip(),
                   sourceDirty=bool(subprocess.check_output(["git", "status", "--porcelain"], cwd=ROOT)),
                   gameDataSha256=sha(data / "th08.dat"), bgmDataSha256=sha(data / "thbgm.dat"),
-                  muted=True, keepLives=False, fastReplay=True, windows=[])
+                  muted=True, keepLives=False, fastReplay=True, cosmeticEnemyNameCopySuppressed=False, windows=[])
     environment = dict(os.environ, TH08_RENDER_AUDIT_KEEP_LIVES="0", TH08_RENDER_AUDIT_FAST="1",
-                       TH08_KEEP_RENDER_AUDIT_DIR="1")
+                       TH08_KEEP_RENDER_AUDIT_DIR="1", TH08_RENDER_AUDIT_SKIP_ENEMY_NAME="0")
     for index, (name, case, stage, seconds) in enumerate(windows, 1):
         fixture = fixtures[case]
         replay = CORPUS / "accepted" / fixture["file"]

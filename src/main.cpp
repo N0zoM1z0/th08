@@ -1,6 +1,9 @@
 #define _WIN32_WINNT 0x0500
 
 #include "th_pch.h"
+#ifdef TH08_ENABLE_REPLAY_TRACE
+#include "modern/linux/replay_trace.hpp"
+#endif
 
 #include "AnmManager.hpp"
 #include "Background.hpp"
@@ -307,6 +310,13 @@ stop:
 RenderResult GameWindow::Render()
 {
     i32 calcChainResult;
+#ifdef TH08_ENABLE_REPLAY_TRACE
+    if (modern::ReplayTraceShouldExit())
+    {
+        g_Supervisor.ThreadClose();
+        return RENDER_RESULT_EXIT_SUCCESS;
+    }
+#endif
 
     this->curTimestamp = this->GetTimestamp();
 

@@ -52,6 +52,113 @@ coverage. Local evidence is in `build/replay-cold-20261011/portable-replays/`;
 build and smoke logs are compressed alongside it. The earlier v0.2.1 checkpoint
 is in [RE_HANDOFF_HISTORY.md](RE_HANDOFF_HISTORY.md). Web work remains deferred.
 
+## Portable rendering repairs
+
+The Linux backend now retains homogeneous clip `W` for XYZ and XYZRHW draws,
+aligns Direct3D/OpenGL pixel centers, refreshes flag-0 backbuffer reads, and
+commits writable unlocks immediately. Read-only unlocks preserve subsequent
+rendering. Fullscreen windows start at desktop dimensions, fixing the Xvfb
+size mismatch. Target-facing source, headers, and ledgers retain the native
+checkpoint.
+
+Fresh x86_64 and i386 builds passed ownership/layout verification. Independent
+pixel contracts pass with the repaired backend and reproduce all four expected
+failures at source `9cf5eae8`. Actual HOME screenshots equal their presented
+frames in both windowed and fullscreen modes. Four retail frame comparisons
+pass; the mean RGB errors are 0.005193 (Stage 1), 0.004768 (Stage 3), 0.292928
+(Stage 5), and 0.323372 (Final B). Stage 5 ordinary/accelerated playfields and
+camera packets agree exactly.
+
+All six muted replay windows pass with normal life rules and the normal
+boss-name copy, retaining 8,810 enemy-render samples. Nine Stage 5 color suspects
+remain heuristic observations. The 60-second sanitizer title/demo/Stage 5 smoke
+and 90-second direct Stage 5 sanitizer replay audit pass; the latter retains
+1,891 samples. Local evidence is in `build/portable-render-fix-20261012/`.
+
+Use [PORTABLE_RENDERING.md](PORTABLE_RENDERING.md) and
+`scripts/test-portable-rendering.py` for reproduction. The earlier
+[background study](PORTABLE_BACKGROUND.md) and
+[runtime review](PORTABLE_RUNTIME_REVIEW.md) preserve the pre-fix observations.
+The x86_64 and i386 state suites each pass all 108 recordings. Remaining pixel
+differences and AArch64 hardware gameplay remain separate validation tasks.
+
+## Portable replay state gate
+
+The serial portable runner now compares the credited corpus against validated
+retail traces, using the same 25-field schema and published fingerprints as
+the native gate. Its optional compiled recorder reads typed fields and exits
+through normal shutdown after natural replay deletion. A GDB backend provides
+independent checks and bounded enemy/item motion diagnostics.
+
+Trace validation and comparison now stream rows. Revalidation of all 108
+retained retail/native pairs reproduces their preceding reports and published
+fingerprints over 12,311,460 calculations. The `easy-1-b` comparison's peak
+resident size falls from 227 MiB to 17.5 MiB; 29 comparison tests, seven
+reference-identity tests, and repository CI pass. Reproduction and cleanup
+commands are in [PORTABLE_REPLAY_TESTING.md](PORTABLE_REPLAY_TESTING.md).
+This revalidation checks the comparator; it reuses the completed cold captures.
+
+The first batch exposed a Magic Team Lunatic Final A score difference at
+Stage 4A frame 14,564: internal score +12. Modern C++ selected the float
+`atan2` overload in `VectorAngle @ 0x0040C7B0`; the portable branch now selects
+the original double path. Two Float3 helpers also retain trigonometric precision
+through multiplication. The native branches preserve their preceding emission.
+
+The vector-precision checkpoint at `5b537b4c` passed six full x86_64 recordings
+and 667,371 calculations,
+including all recorded end scores and natural replay exits. The Stage 4A GDB
+prefix passes 14,566 calculations; 14,463 enemy motion observations agree with
+retail. Asset-free math contracts pass and reproduce the earlier failures.
+The accepted VC7 ledger passes all 1,106 units from a cold build.
+
+Use [PORTABLE_REPLAY_TESTING.md](PORTABLE_REPLAY_TESTING.md) for the full suite
+and [PORTABLE_VECTOR_PRECISION.md](PORTABLE_VECTOR_PRECISION.md) for diagnosis
+and controls. Evidence is in `build/portable-state-20261012/`. The next batch
+completed 29 recordings and found three differences before it was paused.
+`matrix-fixed/` retains that candidate's results. Border Team Normal Stage 1
+traced to [D3DX normalization rounding](PORTABLE_NORMALIZATION.md); the repaired
+recording passes all 100,979 calculations. Ordinary GDB playback passes its
+2,517-calculation prefix. The two Solo Youmu failures traced to
+[polar motion precision](PORTABLE_POLAR_MOTION.md). The latest x86_64 candidate
+passes all three complete recordings over 358,140 calculations. Its GDB
+Youmu Easy prefix passes 6,826 calculations and 6,824 shared enemy-motion
+records. The final x86_64 build passes all 108 recordings over 12,311,460
+calculations in `matrix-final/`, including all 25 fields, stage-end scores,
+natural replay exits, and published fingerprints. A second validation pass
+reproduces every report and checks retained capture identities and completion
+records. The candidate uses gameplay source `af9cb1d3` and executable SHA-256
+`d74a574ac983d2df7c7a52cd421a868a01b90c34471881802ed83cea9e5b802f`.
+The full run took 4 hours 14 minutes and peaked at 240 MiB resident size.
+Its `--verify-only` pass took 10 minutes 51 seconds and peaked at 53 MiB.
+`build/portable-state-20261012/final-full-suite.log` records its result.
+
+The i386 [device precision repair](PORTABLE_I386_FLOATING_POINT.md) resolves
+the Stage 5 frame 3,789 drift. The final i386 build passes all 108 recordings
+over 12,311,460 calculations in `i386-matrix-fpu/`, including all 25 fields,
+stage-end scores, natural replay exits, and published fingerprints. A separate
+retained-evidence pass recomputes every comparison and checks each capture,
+report, and ledger entry. The candidate executable has SHA-256
+`34a358542feb2188304ce91c7b02b60d2a463a167f74f8f698add8d96296b9af`.
+The serial suite took 5 hours 21 minutes 59 seconds and peaked at 205 MiB;
+revalidation took 11 minutes 5 seconds and peaked at 53 MiB. GDB independently
+passes 60,797 calculations and records retail's `0x007F` control word.
+Asset-free device defaults and FPU-preservation contracts pass and reproduce
+the old backend's failure. Use `--verify-only` as documented in
+[PORTABLE_REPLAY_TESTING.md](PORTABLE_REPLAY_TESTING.md) to reproduce the
+retained-evidence checks without launching the game.
+
+The accepted VC7 ledger passes all 1,106 units from a new cold build after
+the motion repair. Fresh normal/bugfix links and their owner/data/callee
+checks pass. All four retail frame checks pass after the motion repair.
+Retain tested binaries and provenance when removing owned compiler trees.
+
+At that checkpoint the ordinary build passed the 14,566-calculation Stage 4A prefix.
+All four retail frame/camera checks pass after the math repair, and Stage 5
+ordinary/accelerated playfields remain identical. Fresh normal/bugfix links
+and their owner/data/callee checks pass. Repository CI and the remote i386,
+x86_64, and AArch64 build jobs pass at `5b537b4c`. This checkpoint is pushed;
+Web work remains deferred.
+
 ## Native replay parity investigation
 
 The 2026-10-11 cold gate is recorded under `build/replay-cold-20261011/`.

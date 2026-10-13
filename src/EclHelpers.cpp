@@ -28,12 +28,20 @@ void __fastcall ConfigurePolarMotion(Enemy *enemy, EclRawInstruction *instructio
 {
     f32 angle = AddNormalizeAngle(ReadFloat(enemy, instruction, 2), 0.0f);
 
+#ifdef TH08_MODERN_PORT
+    // VC7's sinf/cosf wrappers retain the wide x87 result in ST(0).
+    f32 xSpeed = static_cast<f32>(cos(static_cast<f64>(angle)) * ReadFloat(enemy, instruction, 3));
+    enemy->movementInterpolationDelta.x = static_cast<f32>(static_cast<f64>(xSpeed) * ReadInt(enemy, instruction, 0));
+    f32 ySpeed = static_cast<f32>(sin(static_cast<f64>(angle)) * ReadFloat(enemy, instruction, 3));
+    enemy->movementInterpolationDelta.y = static_cast<f32>(static_cast<f64>(ySpeed) * ReadInt(enemy, instruction, 0));
+#else
     enemy->movementInterpolationDelta.x = cosf(angle) *
                                  ReadFloat(enemy, instruction, 3) *
                                  ReadInt(enemy, instruction, 0);
     enemy->movementInterpolationDelta.y = sinf(angle) *
                                  ReadFloat(enemy, instruction, 3) *
                                  ReadInt(enemy, instruction, 0);
+#endif
     enemy->movementInterpolationDelta.z = 0.0f;
     *D3DXVECTOR3_PTR(
         &enemy->movementInterpolationOrigin) =

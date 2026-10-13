@@ -269,6 +269,9 @@ class Rng
     f32 GetRandomF32Signed();
 
     void ResetGenerationCount();
+#ifdef TH08_ENABLE_REPLAY_TRACE
+    u32 ReplayTraceGenerationCount() const { return generationCount; }
+#endif
     void SetSeed(u16 newSeed);
     u16 GetSeed();
 

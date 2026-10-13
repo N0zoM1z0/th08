@@ -43,10 +43,9 @@ Normal gameplay pays no probe or readback cost because the feature is disabled
 unless `TH08_RENDER_AUDIT=1` is present. `TH08_LINUX_RENDER_AUDIT=1` remains a
 compatibility alias for early local scripts.
 
-The test launcher uses GDB to isolate two test-only actions from the product.
-It skips a cosmetic enemy-name texture copy when starting directly in a later
-stage; that original routine reads outside the stage-local sprite allocation
-and otherwise depends on prior heap history. By default GDB also returns
+The test launcher keeps the product's boss-name texture copy. The historical
+bypass is available through `TH08_RENDER_AUDIT_SKIP_ENEMY_NAME=1` for diagnostics;
+the current six-window gate runs the normal copy path. By default GDB returns
 immediately from negative `GameManager::AddLives` calls so a replay captured
 during no-life-decrement testing reaches its later scenes. Set
 `TH08_RENDER_AUDIT_KEEP_LIVES=0` to retain normal life rules. Neither action

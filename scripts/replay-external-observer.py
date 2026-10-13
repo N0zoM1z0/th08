@@ -21,6 +21,7 @@ events = (output / "rng-events.jsonl").open("w")
 releases = (output / "effect-events.jsonl").open("w")
 score_events = (output / "score-events.jsonl").open("w")
 item_events = (output / "item-events.jsonl").open("w")
+pool_stream = gzip.open(output / "effect-pool.jsonl.gz", "wt") if settings.get("watchEffectPool") else None
 GM = settings["gameManager"]
 
 
@@ -33,11 +34,16 @@ def read(address):
 
 
 def snapshot():
-    return {name: block(settings[name], size).hex() for name, size in (
+    state = {name: block(settings[name], size).hex() for name, size in (
         ("player", 0xe2b30), ("spellcard", 0x2644), ("bulletManager", 0x6ba578),
         ("enemyManager", 0x9dcf10), ("itemManager", 0x17b094),
-        ("effectManager", 0x8b05c)
+        ("effectManager", 0x8b05c), ("background", 0x6600)
     )}
+    if hasattr(gdb, "execute"):
+        state["floatingPointState"] = gdb.execute("info float", to_string=True)
+    if settings.get("normalizeDispatch"):
+        state["normalizeImplementation"] = hex(read(settings["normalizeDispatch"]))
+    return state
 
 
 for address_key, bytes_key in (("attestAddress", "attestBytes"),
@@ -78,6 +84,8 @@ class Observer(gdb.Breakpoint):
         menu_log.close()
         score_events.close()
         item_events.close()
+        if pool_stream:
+            pool_stream.close()
         if self.reference_stream:
             if not error and self.reference_stream.readline():
                 error = "Candidate ended before the retail trace"
@@ -172,17 +180,30 @@ class Observer(gdb.Breakpoint):
                     subprocess.run(["xdotool", "keyup", self.key], check=True)
                     self.key = None
             frame = read(manager)
+            if pool_stream:
+                data = block(settings["effectManager"], 0x8b05c)
+                slots = bytes(value for slot in range(512) for value in
+                              data[0x1c + slot * 0x360 + 0x350:0x1c + slot * 0x360 + 0x352])
+                pool_stream.write(json.dumps(dict(stage=stage, frame=frame,
+                    nextIndex=struct.unpack_from("<I", data)[0], activeCount=struct.unpack_from("<I", data, 8)[0],
+                    slots=slots.hex())) + "\n")
             if self.stage_frames.get(str(stage)) == frame:
                 begin_observer.enabled = True
             if settings.get("detailStart") and stage == settings["detailStage"]:
                 if frame == settings["detailStart"] - 1:
-                    self.diagnostic_breakpoints = ([ScoreObserver(), ItemSpawnObserver()] if settings.get("watchScore")
-                                                   else [RngObserver(), ReleaseObserver()])
+                    if settings.get("watchNormalization"):
+                        self.diagnostic_breakpoints = [NormalizationObserver()]
+                    elif settings.get("watchScore"):
+                        self.diagnostic_breakpoints = [ScoreObserver(), ItemSpawnObserver()]
+                    elif not (settings.get("watchItems") or settings.get("watchEnemies")):
+                        self.diagnostic_breakpoints = [RngObserver(), ReleaseObserver()]
                 if frame == settings["detailEnd"]:
                     with gzip.open(output / "window-state.json.gz", "wt") as state_stream:
                         json.dump(snapshot(), state_stream)
                     for handle in (stream, menu_log, events, releases, score_events, item_events):
                         handle.close()
+                    if pool_stream:
+                        pool_stream.close()
                     (output / "complete.json").write_text(json.dumps(dict(rows=self.count, ended=False,
                         diagnosticComplete=True, stage=stage, frame=frame, errors=[])) + "\n")
                     self.enabled = False
@@ -192,6 +213,27 @@ class Observer(gdb.Breakpoint):
                         breakpoint.enabled = False
                     return False
             recorded = next(s for s in settings["replay"]["stages"] if s["index"] == stage)
+            if settings.get("watchEnemies") and stage == settings["detailStage"] and settings["detailStart"] <= frame < settings["detailEnd"]:
+                for slot in settings["watchEnemies"]:
+                    raw = block(settings["enemyManager"] + (slot + 1) * 0x53d0, 0x53d0)
+                    motion = dict(stage=stage, frame=frame, slot=slot, flags1=read(settings["enemyManager"] + (slot + 1) * 0x53d0 + 0x3324))
+                    for name, offset, count in (("position", 0x2d34, 3), ("positionOffset", 0x2d40, 3),
+                        ("velocity", 0x2d4c, 3), ("previousPosition", 0x2d58, 3),
+                        ("worldPosition", 0x2d88, 3), ("movementAngle", 0x2d94, 1),
+                        ("angularVelocity", 0x2d98, 1), ("speed", 0x2da8, 1), ("acceleration", 0x2dac, 1)):
+                        motion[name] = list(struct.unpack_from("<" + "I" * count, raw, offset))
+                    with (output / "enemy-motion.jsonl").open("a") as handle:
+                        handle.write(json.dumps(motion) + "\n")
+            if settings.get("watchItems") and stage == settings["detailStage"] and settings["detailStart"] <= frame < settings["detailEnd"]:
+                for slot in settings["watchItems"]:
+                    raw = block(settings["itemManager"] + slot * 0x2e4, 0x2e4)
+                    motion = dict(stage=stage, frame=frame, slot=slot,
+                        position=list(struct.unpack_from("<3I", raw, 0x2a4)),
+                        velocity=list(struct.unpack_from("<3I", raw, 0x2b0)),
+                        timer=list(struct.unpack_from("<3I", raw, 0x2c8)), flags=list(raw[0x2d4:0x2d9]),
+                        player=list(struct.unpack("<3I", block(settings["player"] + 0x2b4, 12))))
+                    with (output / "item-motion.jsonl").open("a") as handle:
+                        handle.write(json.dumps(motion) + "\n")
             if frame > recorded["inputRecords"]:
                 raise RuntimeError(f"Stage {stage} read beyond its recorded input at frame {frame}")
             globals_data = block(read(GM + 8), 0xa0)
@@ -273,6 +315,25 @@ class DeleteObserver(gdb.Breakpoint):
 
 begin_observer = BeginStageObserver()
 delete_observer = DeleteObserver()
+
+
+class NormalizationObserver(gdb.Breakpoint):
+    def __init__(self):
+        super().__init__(f"*0x{settings['normalizationBoundary']:08X}", gdb.BP_HARDWARE_BREAKPOINT)
+
+    def stop(self):
+        bp = int(gdb.parse_and_eval("$ebp"))
+        effect = read(bp - 0x44)
+        camera = settings["background"] + 0x6394
+        record = dict(stage=read(GM + 0x3ddc4), frame=read(read(settings["replayManager"])),
+                      slot=(effect - settings["effectManager"] - 0x1c) // 0x360,
+                      position=struct.unpack("<3I", block(effect + 0x2a4, 12)),
+                      camera=struct.unpack("<3I", block(camera, 12)),
+                      normalized=struct.unpack("<3I", block(bp - 0xc, 12)),
+                      forward=struct.unpack("<3I", block(camera + 36, 12)))
+        with (output / "normalization-events.jsonl").open("a") as handle:
+            handle.write(json.dumps(record) + "\n")
+        return False
 
 
 class RngObserver(gdb.Breakpoint):

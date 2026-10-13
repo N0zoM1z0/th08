@@ -327,7 +327,12 @@ void __fastcall UpdateFantasyOrbBomb(Player *player)
 // FUNCTION: th08 0x40c7b0
 f32 VectorAngle(f32 y, f32 x)
 {
+#ifdef TH08_MODERN_PORT
+    // The retail CRT uses the double atan2 path before the float result.
+    return static_cast<f32>(atan2(static_cast<f64>(y), static_cast<f64>(x)));
+#else
     return (f32)atan2(y, x);
+#endif
 }
 
 // FUNCTION: th08 0x40c7d0
