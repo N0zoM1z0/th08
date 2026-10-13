@@ -119,6 +119,12 @@ Stage 5 ordinary/accelerated playfields and camera packets agree exactly.
 The [rendering report](https://github.com/N0zoM1z0/th08/blob/port/portable-64bit/docs/PORTABLE_RENDERING.md)
 records the limits, negative controls, and sanitizer checks.
 
+The [laser visual investigation](https://github.com/N0zoM1z0/th08/blob/port/portable-64bit/docs/PORTABLE_LASER_VISUALS.md)
+adds selected boss frames and a missing-beam control. Initial Stage 3 laser and
+VM packets agree exactly, while the strict beam-region pixel check reports
+differences. Those observations are recorded separately from the complete
+gameplay trace passes.
+
 ## Reproduce the results
 
 Use the [native replay procedure](REPLAY_TESTING.md#reproduce-published-results)

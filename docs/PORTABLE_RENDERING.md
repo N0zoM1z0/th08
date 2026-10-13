@@ -90,6 +90,11 @@ Small pixel differences remain, including in text regions; their causes need
 separate measurement. The initial Stage 5 comparison used the diagnostic
 boss-name bypass; repaired captures keep the normal copy.
 
+The [laser visual check](PORTABLE_LASER_VISUALS.md) adds four later Stage 3
+frames with matching raw laser and VM state. Its strict beam-region pixel gate
+currently reports differences; the page records the measurements and the
+missing-beam control procedure.
+
 All six existing replay windows pass with normal life rules and boss-name copying,
 retaining 8,810 enemy-render samples. The Stage 5 window records nine heuristic
 color suspects; their status remains unconfirmed. The recorded samples and

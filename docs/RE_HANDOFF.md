@@ -82,6 +82,17 @@ new replay output directory.
 
 ## Next bounded work
 
+Laser image work is active on `test/portable-laser-visual-regression`. Four
+Stage 3 retail/portable frames have identical raw laser and VM packets; the
+strict beam-region pixel errors remain above 1.0. The initial scout used
+`stageActiveFrames` on portable; corrected captures use `gameplayFrameCounter`
+on both products. The direct-stage 14,500-calculation portable prefix passes
+all 25 fields. See [the laser workflow](PORTABLE_LASER_VISUALS.md) for commands
+and retained evidence. The missing-beam control suppresses 170 submissions,
+preserves raw state, and detects omissions in all four frames. Next, localize
+the remaining image differences and add Stage 4B and later-boss cases. Issue #20
+remains open; the reporter has not identified the original scene.
+
 For runtime work, select a concrete remaining visual or hardware scenario and
 retain the stage, route, recording, frame, and comparison evidence. For exact
 reconstruction, resume the authored near match or one bounded whole-link/library

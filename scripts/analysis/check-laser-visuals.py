@@ -1,0 +1,247 @@
+#!/usr/bin/env python3
+"""Discover and capture laser scenes from credited replays, with bounded resources."""
+import argparse
+import gzip
+import hashlib
+import importlib.util
+import json
+import os
+from pathlib import Path
+import platform
+import shutil
+import subprocess
+import sys
+import tempfile
+
+ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT / "scripts"))
+from replay_file import verify_fixture
+
+TARGET_SHA256 = "330fbdbf58a710829d65277b4f312cfbb38d5448b3df523e79350b879213d924"
+FRAME_COUNTER = "GameManager.gameplayFrameCounter after Present"
+
+
+def sha(path):
+    with path.open("rb") as stream:
+        return hashlib.file_digest(stream, "sha256").hexdigest()
+
+
+def module(name, path):
+    spec = importlib.util.spec_from_file_location(name, path)
+    result = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(result)
+    return result
+
+
+def compress(path):
+    if not path.exists():
+        return
+    with path.open("rb") as source, gzip.open(str(path) + ".gz", "wb", compresslevel=9) as destination:
+        shutil.copyfileobj(source, destination)
+    with gzip.open(str(path) + ".gz", "rb") as stream:
+        if hashlib.file_digest(stream, "sha256").hexdigest() != sha(path):
+            raise RuntimeError("Compressed evidence differs: " + str(path))
+    path.unlink()
+
+
+def source_identity():
+    return dict(sourceCommit=subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip(),
+                sourceTreeDirty=bool(subprocess.check_output(["git", "status", "--porcelain"], cwd=ROOT)),
+                runnerSha256=sha(Path(__file__)))
+
+
+def capture_portable(candidate, data, replay, output, settings):
+    observer = ROOT / "scripts/gdb/laser-visual-observer.py"
+    runtime = Path(tempfile.mkdtemp(prefix="laser-visual.", dir=ROOT / "build"))
+    settings_path = output / "settings.json"
+    settings_path.write_text(json.dumps(dict(settings, output=str(output)), indent=2) + "\n")
+    native = module("native_capture", ROOT / "scripts/capture-replay.py")
+    configuration = native.muted_config()
+    metadata = dict(source_identity(), product="portable-linux", executableSha256=sha(candidate),
+                    replaySha256=sha(replay), gameDataSha256=sha(data / "th08.dat"),
+                    bgmDataSha256=sha(data / "thbgm.dat"), observerSha256=sha(observer),
+                    stage=settings["stage"], frames=settings["frames"], scout=settings["scout"],
+                    frameCounter=FRAME_COUNTER, startStage=settings["stage"], playbackMode=0,
+                    configSha256=hashlib.sha256(configuration).hexdigest(),
+                    fastPortableClock=not settings["paced"], rasterization=not settings["scout"],
+                    environment=dict(host=platform.platform(),
+                                     gdb=subprocess.check_output(["gdb", "--version"], text=True).splitlines()[0]),
+                    muted=True, keepLives=False, suppressLaserBodies=settings["suppressLaserBodies"])
+    try:
+        for archive in ("th08.dat", "thbgm.dat"):
+            (runtime / archive).symlink_to((data / archive).resolve())
+        (runtime / "th08.cfg").write_bytes(configuration)
+        (runtime / "replay").mkdir()
+        shutil.copyfile(replay, runtime / "replay/audit.rpy")
+        environment = dict(os.environ, SDL_AUDIODRIVER="dummy", LIBGL_ALWAYS_SOFTWARE="1",
+                           GALLIUM_DRIVER="llvmpipe", LP_NUM_THREADS="0",
+                           TH08_AUTOPLAY_REPLAY="./replay/audit.rpy",
+                           TH08_AUTOPLAY_STAGE=str(settings["stage"]),
+                           TH08_RENDER_AUDIT_FAST="0" if settings["paced"] else "1", TH08_RENDER_AUDIT="0",
+                           TH08_LASER_SETTINGS=str(settings_path))
+        for name in ("TH08_REPLAY_TRACE_REFERENCE", "TH08_REPLAY_TRACE_ROWS", "TH08_REPLAY_TRACE_COMPLETION", "TH08_REPLAY_TRACE_MAXIMUM"):
+            environment.pop(name, None)
+        environment.pop("LP_NO_RAST", None)
+        if settings["scout"]:
+            environment["LP_NO_RAST"] = "1"
+        command = ["xvfb-run", "-a", "-s", "-screen 0 1024x768x24", "timeout",
+                   "--signal=TERM", "--kill-after=5s", "900s", "gdb", "--batch", "--quiet",
+                   "-x", str(observer), "--args", str(candidate), "--data-dir", str(runtime)]
+        with (output / "capture.log").open("w") as stream:
+            result = subprocess.run(command, env=environment, stdout=stream, stderr=subprocess.STDOUT)
+        metadata["runnerExitCode"] = result.returncode
+        if result.returncode or not (output / "lasers.json").is_file():
+            raise RuntimeError("Laser capture failed: " + str(output / "capture.log.gz"))
+        if settings["scout"]:
+            summary = json.loads((output / "scout-summary.json").read_text())
+            if not summary.get("complete"):
+                raise RuntimeError("Laser scout did not reach its requested boundary")
+        if not settings["scout"]:
+            for frame in settings["frames"]:
+                if not (output / f"frame-{frame}.png").is_file():
+                    raise RuntimeError("Requested laser image is missing")
+    finally:
+        for name in ("modern-crash.txt", "modern-files.txt"):
+            path = runtime / name
+            if path.exists():
+                shutil.copyfile(path, output / name)
+        shutil.rmtree(runtime)
+        metadata["temporaryRuntimeRemoved"] = True
+        (output / "metadata.json").write_text(json.dumps(metadata, indent=2) + "\n")
+        compress(output / "capture.log")
+        for name in ("modern-files.txt", "modern-crash.txt"):
+            compress(output / name)
+
+
+def capture_retail(target, data, replay, output, stage, frames):
+    from pe_image import PEImage
+    if target.stat().st_size != 840704 or sha(target) != TARGET_SHA256:
+        raise ValueError("Retail input must be the canonical Japanese TH08 1.00d executable")
+    image = PEImage(target)
+    settings = dict(stage=stage, frames=frames, postPresentAddress=0x442082,
+                    postPresentBytes=image.read_rva(0x442082 - image.image_base, 13).hex())
+    provenance = dict(source_identity(), observerSha256=sha(ROOT / "scripts/gdb/laser-visual-native.py"),
+                      baseObserverSha256=sha(ROOT / "scripts/replay-external-observer.py"),
+                      frameCounter=FRAME_COUNTER, frames=frames,
+                      gameplayMemoryReadOnly=True, executableBytesUnmodified=True)
+    settings_path = output.parent / "retail-settings.json"
+    settings_path.write_text(json.dumps(settings, indent=2) + "\n")
+    environment = dict(os.environ, TH08_STAGE5_REPOSITORY=str(ROOT),
+                       TH08_STAGE5_NATIVE_OBSERVER=str(ROOT / "scripts/gdb/laser-visual-native.py"),
+                       TH08_LASER_SETTINGS=str(settings_path), LIBGL_ALWAYS_SOFTWARE="1",
+                       GALLIUM_DRIVER="llvmpipe", LP_NUM_THREADS="0")
+    environment.pop("LP_NO_RAST", None)
+    prefix = output.parent / "retail-wine"
+    command = [sys.executable, str(ROOT / "scripts/analysis/stage5-background-native-runner.py"),
+               "--target", str(target), "--game-data", str((data / "th08.dat").resolve()),
+               "--bgm-data", str((data / "thbgm.dat").resolve()), "--replay", str(replay),
+               "--start-stage", str(stage), "--playback-mode", "0", "--timeout", "900",
+               "--wine-prefix", str(prefix), "--output-dir", str(output)]
+    try:
+        with (output.parent / "retail.log").open("w") as stream:
+            subprocess.run(command, env=environment, stdout=stream, stderr=subprocess.STDOUT, check=True)
+        complete = json.loads((output / "complete.json").read_text())
+        if complete.get("capturedFrames") != frames or not complete.get("diagnosticComplete") or complete.get("errors"):
+            raise RuntimeError("Retail laser frames did not complete")
+        metadata_path = output / "metadata.json"
+        metadata = json.loads(metadata_path.read_text())
+        metadata["laserCapture"] = provenance
+        metadata_path.write_text(json.dumps(metadata, indent=2) + "\n")
+    finally:
+        if prefix.exists():
+            if not (prefix / ".th08-replay-owned").is_file():
+                raise RuntimeError("Refusing to remove an unowned Wine prefix")
+            cleanup = dict(environment, WINEPREFIX=str(prefix), WINEARCH="win32")
+            subprocess.run(["wineserver", "-k"], env=cleanup, timeout=15, check=False)
+            subprocess.run(["wineserver", "-w"], env=cleanup, timeout=15, check=False)
+            shutil.rmtree(prefix)
+        for folder in (output.parent, output):
+            if folder.exists():
+                for path in list(folder.glob("*.log")) + list(folder.glob("*.jsonl")):
+                    compress(path)
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--candidate", type=Path, required=True, help="Portable Linux Debug ELF")
+    parser.add_argument("--game-data-dir", type=Path, required=True)
+    parser.add_argument("--case", help="ID in config/laser-visual-fixtures.json")
+    parser.add_argument("--fixture", help="ID in config/replay-fixtures.json; default: lunatic-1-a")
+    parser.add_argument("--stage", type=int, help="Internal stage index, 0 through 8")
+    parser.add_argument("--frames", help="Comma-separated active frame numbers")
+    parser.add_argument("--scout", action="store_true", help="Read laser state every 30 frames without rasterization")
+    parser.add_argument("--paced", action="store_true", help="Capture portable images with ordinary pacing")
+    parser.add_argument("--maximum-frame", type=int, default=30000)
+    parser.add_argument("--suppress-laser-bodies", action="store_true", help="Isolated missing-laser negative control")
+    parser.add_argument("--retail", action="store_true", help="Also capture the original executable at the same frames")
+    parser.add_argument("--target", type=Path, default=ROOT / "resources/th08.exe")
+    parser.add_argument("--output-dir", type=Path, required=True, help="Fresh directory under build/")
+    args = parser.parse_args()
+    case = None
+    if args.case:
+        config = json.loads((ROOT / "config/laser-visual-fixtures.json").read_text())
+        case = next((entry for entry in config["cases"] if entry["id"] == args.case), None)
+        if case is None or config.get("frameCounter") != FRAME_COUNTER:
+            parser.error("Unknown laser case or incompatible frame counter")
+        if args.fixture is not None or args.stage is not None or args.frames is not None or args.scout:
+            parser.error("--case supplies --fixture, --stage and --frames")
+        args.fixture, args.stage = case["fixture"], case["stage"]
+        args.frames = ",".join(str(entry["frame"]) for entry in case["frames"])
+    args.fixture = args.fixture or "lunatic-1-a"
+    if args.stage is None or not 0 <= args.stage <= 8:
+        parser.error("Select --case or a --stage index from 0 through 8")
+    output = args.output_dir.resolve()
+    if output.exists() or not output.is_relative_to(ROOT / "build"):
+        parser.error("Output must be a fresh directory under build/")
+    try:
+        frames = sorted(set(int(value) for value in (args.frames or "").split(",") if value))
+    except ValueError:
+        parser.error("--frames must contain comma-separated integers")
+    if not args.scout and (not frames or min(frames) < 1):
+        parser.error("Capture requires positive --frames")
+    if args.scout and (args.retail or args.suppress_laser_bodies or args.paced):
+        parser.error("Scout mode does not capture retail images or run missing-laser controls")
+    if args.retail and args.suppress_laser_bodies:
+        parser.error("Compare a missing-laser control against separate normal and retail captures")
+    fixture = next((entry for entry in json.loads((ROOT / "config/replay-fixtures.json").read_text())["fixtures"]
+                    if entry["id"] == args.fixture), None)
+    if fixture is None or args.stage not in [entry["index"] for entry in fixture["stages"]]:
+        parser.error("Fixture is unknown or does not contain the requested stage")
+    header = next(entry for entry in fixture["stages"] if entry["index"] == args.stage)
+    maximum = min(args.maximum_frame, header["inputRecords"] - 8)
+    if maximum < 1 or any(frame > header["inputRecords"] - 8 for frame in frames):
+        parser.error("Requested frame is outside the recording's complete gameplay range")
+    replay = ROOT / "tests/fixtures/replays/th08-1.00d/accepted" / fixture["file"]
+    verify_fixture(replay, fixture)
+    candidate, data = args.candidate.resolve(strict=True), args.game_data_dir.resolve(strict=True)
+    if args.retail and (args.target.stat().st_size != 840704 or sha(args.target) != TARGET_SHA256):
+        parser.error("Retail input must be the canonical Japanese TH08 1.00d executable")
+    for name in ("th08.dat", "thbgm.dat"):
+        if not (data / name).is_file():
+            parser.error("Original archive is missing: " + name)
+    output.mkdir(parents=True)
+    settings = dict(stage=args.stage, frames=frames, scout=args.scout,
+                    maximumFrame=maximum, paced=args.paced, suppressLaserBodies=args.suppress_laser_bodies)
+    if case:
+        (output / "case.json").write_text(json.dumps(case, indent=2) + "\n")
+    print(f"Reading laser scene: {fixture['id']}, stage index {args.stage}", flush=True)
+    capture_portable(candidate, data, replay, output, settings)
+    records = json.loads((output / "lasers.json").read_text())
+    if case:
+        for sample, expected in zip(records, case["frames"]):
+            if expected["expectedLaserState"] not in {laser["state"] for laser in sample["lasers"]}:
+                raise RuntimeError("Selected laser phase is missing at frame " + str(expected["frame"]))
+    print(f"Captured {len(records)} laser samples in {output}", flush=True)
+    if args.retail:
+        print("Capturing retail laser frames with ordinary pacing and rasterization", flush=True)
+        capture_retail(args.target.resolve(strict=True), data, replay, output / "retail", args.stage, frames)
+        comparator = module("laser_comparison", ROOT / "scripts/analysis/compare-laser-visuals.py")
+        report = comparator.compare(output / "retail", output)
+        (output / "comparison.json").write_text(json.dumps(report, indent=2) + "\n")
+        print("Laser visual comparison: " + report["result"], flush=True)
+        if report["result"] != "equal":
+            raise SystemExit(1)
+
+
+if __name__ == "__main__":
+    main()

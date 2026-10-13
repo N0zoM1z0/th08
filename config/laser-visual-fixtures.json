@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "frameCounter": "GameManager.gameplayFrameCounter after Present",
+  "cases": [
+    {
+      "id": "stage3-keine",
+      "fixture": "lunatic-0-b",
+      "stage": 2,
+      "boss": "Keine",
+      "retailLaserStateSha256": "be8ce47843f9e3d55141c4de2279e2d80beb63393cf16b8c5fa30a14ad74c8d9",
+      "frames": [
+        { "frame": 12900, "phase": "moving beams", "expectedLaserState": 1 },
+        { "frame": 14130, "phase": "stationary startup", "expectedLaserState": 0 },
+        { "frame": 14310, "phase": "stationary active", "expectedLaserState": 1 },
+        { "frame": 14490, "phase": "stationary despawn", "expectedLaserState": 2 }
+      ]
+    }
+  ]
+}
