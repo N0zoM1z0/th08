@@ -91,9 +91,10 @@ separate measurement. The initial Stage 5 comparison used the diagnostic
 boss-name bypass; repaired captures keep the normal copy.
 
 The [laser visual check](PORTABLE_LASER_VISUALS.md) adds four later Stage 3
-frames with matching raw laser and VM state. Its strict beam-region pixel gate
-currently reports differences; the page records the measurements and the
-missing-beam control procedure.
+frames and four Marisa Stage 4B frames with matching raw laser and VM state.
+One Stage 4B despawn frame passes the strict beam-region pixel gate; the other
+seven report differences. The page records measurements and the missing-beam
+control procedure.
 
 All six existing replay windows pass with normal life rules and boss-name copying,
 retaining 8,810 enemy-render samples. The Stage 5 window records nine heuristic

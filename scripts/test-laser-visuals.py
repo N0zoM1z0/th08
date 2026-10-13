@@ -94,6 +94,14 @@ class LaserVisualTests(unittest.TestCase):
             image.save(self.candidate / "frame-100.png")
         self.assertEqual(self.compare()["result"], "equal")
 
+    def test_negative_scale_anchors_follow_signed_target_dimensions(self):
+        laser = dict(self.laser, **{"bodyVm.flagsWord": 3 | (1 << 11),
+                                   "bodyVm.scale": [bits(-1), bits(1)]})
+        mask, visible = visuals.geometry_mask([laser])
+        self.assertEqual(visible, 1)
+        self.assertEqual(mask.getpixel((189, 240)), 255)
+        self.assertEqual(mask.getpixel((210, 240)), 0)
+
     def test_empty_frame_list_cannot_pass(self):
         self.portable["frames"] = []
         self.metadata()
@@ -140,7 +148,8 @@ class LaserVisualTests(unittest.TestCase):
 
     def test_absent_or_offscreen_lasers_are_not_evidence(self):
         for laser in (None, dict(self.laser, **{"bodyVm.pos": [bits(900), bits(900), bits(0.06)]}),
-                      dict(self.laser, **{"bodyVm.color1.d3dColor": 0x00ffffff})):
+                      dict(self.laser, **{"bodyVm.color1.d3dColor": 0x00ffffff}),
+                      dict(self.laser, **{"bodyVm.flagsWord": 3 | (1 << 17), "bodyVm.color2.d3dColor": 0x00ffffff})):
             with self.subTest(laser=laser):
                 rows = [dict(stage=2, frame=100, lasers=[] if laser is None else [laser])]
                 for folder in (self.reference, self.candidate):

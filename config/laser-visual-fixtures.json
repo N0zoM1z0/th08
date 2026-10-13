@@ -14,6 +14,19 @@
         { "frame": 14310, "phase": "stationary active", "expectedLaserState": 1 },
         { "frame": 14490, "phase": "stationary despawn", "expectedLaserState": 2 }
       ]
+    },
+    {
+      "id": "stage4b-marisa",
+      "fixture": "lunatic-0-b",
+      "stage": 4,
+      "boss": "Marisa",
+      "retailLaserStateSha256": "adea4722edaf1f07fd87199e04c2bf4f32d9ac3b872d093973f959b1b470e503",
+      "frames": [
+        { "frame": 13140, "phase": "colored stationary startup", "expectedLaserState": 0 },
+        { "frame": 13260, "phase": "colored stationary active", "expectedLaserState": 1 },
+        { "frame": 15360, "phase": "colored stationary despawn", "expectedLaserState": 2 },
+        { "frame": 18210, "phase": "moving beams", "expectedLaserState": 1 }
+      ]
     }
   ]
 }

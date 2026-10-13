@@ -30,18 +30,21 @@ def geometry_mask(lasers):
         flags = laser["bodyVm.flagsWord"]
         if flags & 3 != 3 or laser["bodyVm.color1.d3dColor"] >> 24 == 0:
             continue
+        if flags & (1 << 17) and laser["bodyVm.color2.d3dColor"] >> 24 == 0:
+            continue
         sx, sy = (floating(word) for word in laser["bodyVm.scale"])
         width, height = (floating(word) for word in laser["bodyVm.spriteSize"])
         x, y, _ = (floating(word) for word in laser["bodyVm.pos"])
         angle = floating(laser["bodyVm.rotation"][2])
-        half_x, half_y = abs(width * sx) / 2, abs(height * sy) / 2
+        signed_half_x, signed_half_y = width * sx / 2, height * sy / 2
+        half_x, half_y = abs(signed_half_x), abs(signed_half_y)
         if not all(math.isfinite(v) for v in (x, y, angle, half_x, half_y)):
             raise ValueError("Laser geometry is not finite")
         if half_x <= 0 or half_y <= 0:
             continue
         anchor = (flags >> 11) & 3
-        x += half_x if anchor & 1 else 0
-        y += half_y if anchor & 2 else 0
+        x += signed_half_x if anchor & 1 else 0
+        y += signed_half_y if anchor & 2 else 0
         sine, cosine = math.sin(angle), math.cos(angle)
         polygon = [(dx * cosine - dy * sine + x, dx * sine + dy * cosine + y)
                    for dx, dy in ((-half_x, -half_y), (half_x, -half_y),

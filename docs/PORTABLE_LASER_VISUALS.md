@@ -23,6 +23,12 @@ alongside the Linux build dependencies. `resources/th08.exe` must match the
 canonical 1.00d hash. Recordings come from the
 [credited corpus](../tests/fixtures/replays/th08-1.00d/CREDITS.md).
 
+Keep the font environment with image evidence: portable uses `TH08_FONT` when
+supplied, otherwise Fontconfig's Japanese monospace fallback; retail uses Wine
+GDI font substitution. Glyph differences can affect beam-region errors where
+text overlays a laser. The recorded host selects VL Gothic for portable;
+retail's exact substituted face has not yet been measured.
+
 The runner captures portable first and retail second. Both run muted with
 normal life rules and playback mode 0. Retail uses ordinary pacing; portable
 uses the accelerated clock with rasterization enabled. Add `--paced` to use
@@ -64,8 +70,8 @@ The strict 1.0 limit fails in all four frames. Initial image review shows the
 corresponding beams; difference images highlight spell-title text and smaller
 background and cap-region differences. Beam geometry overlaps those regions,
 so these measurements need further localization before attributing an error
-to laser rendering. This case provides selected-frame evidence; other bosses,
-routes, difficulties, and Linux i386 images remain to be checked.
+to laser rendering. These observations cover selected frames; later bosses,
+other routes and difficulties, and Linux i386 images remain to be checked.
 
 Local evidence is in `build/laser-visual-20261013/stage3-aligned/`. The existing
 x86_64 Debug recorder artifact has SHA-256
@@ -73,6 +79,32 @@ x86_64 Debug recorder artifact has SHA-256
 recorder hooks were inactive for these GDB captures. The tested gameplay source
 is the previously validated `af9cb1d3` checkpoint. No gameplay or renderer source
 changed in this investigation.
+
+## Stage 4B observation, October 13, 2026
+
+Case `stage4b-marisa` uses the same Border Team Lunatic recording. It captures
+colored stationary startup, active and despawning beams, then moving beams in
+a later Marisa attack. All four raw laser and VM packets match retail exactly.
+Both `lasers.json` files have SHA-256
+`adea4722edaf1f07fd87199e04c2bf4f32d9ac3b872d093973f959b1b470e503`.
+
+| Frame | Active slots | Beam-geometry pixels | Beam-region mean RGB error | Strict pixel result |
+| ---: | ---: | ---: | ---: | --- |
+| 13,140 | 5 | 935 | 3.084492 | Different |
+| 13,260 | 10 | 3,671 | 2.222010 | Different |
+| 15,360 | 10 | 1,035 | 0.003865 | Equal |
+| 18,210 | 4 | 10,200 | 1.657255 | Different |
+
+Corresponding colored and moving beams are visible in the paired images.
+The despawn frame passes the strict pixel limit; the remaining three require
+further localization. Evidence is in
+`build/laser-visual-20261013/stage4b-marisa/`. To reproduce this selection, use
+`--case stage4b-marisa` with the capture command above.
+
+The paired missing-beam control omits 10 on-screen quad submissions while
+preserving the identical laser-state packet. Beam-region errors rise to
+42.524421, 39.223917, 61.727536, and 63.994869; all four omission checks pass.
+Control evidence is in `build/laser-visual-20261013/stage4b-control/`.
 
 ## Read and verify the evidence
 
@@ -102,7 +134,9 @@ that statistic on portable and was discarded as a visual comparison.
 
 Retail reads the laser pool at `g_BulletManager + 0x660938`, stride `0x59C`,
 attested by `BulletManager::OnDraw @ 0x00432B50`. VM dimensions and rotation
-follow `AnmManager::Draw2D @ 0x00463210`. The post-Present hardware breakpoint
+follow `AnmManager::Draw2D @ 0x00463210`; signed scales determine anchor shifts.
+`DrawInner @ 0x004628B0` selects the diffuse color through VM flag 17. The mask
+excludes zero-alpha selections. The post-Present hardware breakpoint
 at `0x00442082` checks its bytes against the canonical executable before use.
 Retail gameplay memory and executable bytes remain unmodified. Portable
 layout offsets come from the candidate's GDB types, supporting both Linux
