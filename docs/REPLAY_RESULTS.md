@@ -121,9 +121,13 @@ records the limits, negative controls, and sanitizer checks.
 
 The [laser visual investigation](PORTABLE_LASER_VISUALS.md)
 adds eight selected Stage 3 and Stage 4B boss frames and a missing-beam control.
-All laser and VM packets agree exactly. One frame passes the strict beam-region
-pixel gate; seven report differences. Those observations are recorded separately
-from the complete gameplay trace passes.
+All laser and VM packets agree exactly. The October 13 baseline passed one
+strict beam-region image check and failed seven. After the Linux color, font
+height, and edge-coverage repairs, all eight pass the unchanged 1.0 mean RGB
+error limit. Font rasterization and synthetic texture-sampling differences
+remain documented in that investigation. The revised x86_64 product also passes
+the complete 113,221-calculation `lunatic-0-b` recording; the earlier full-corpus
+results above retain their published executable identities.
 
 ## Reproduce the results
 

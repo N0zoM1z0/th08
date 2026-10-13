@@ -115,6 +115,12 @@ CI and the named edge contract/failure control pass.
 Fifteen synthetic striped-material cases retain sampling differences. Font
 bold-width/grayscale differences, the legacy context path without clip control,
 later-boss laser cases, and refreshed i386 gates remain to be checked.
+The sampling follow-up keeps all solid cases exact. An XY grid control passes
+59/68 images; its nine remaining first-row differences coincide with Wine's
+offset-viewport sensitivity. Private viewport mapping does not resolve them.
+Evidence is under `build/laser-sampling-20261014/`; use the subpixel runner's
+`--position-grid 256` option to reproduce the control. Summaries now distinguish
+the seven October 13 baseline failures from the current eight-frame pass.
 See [the laser workflow](PORTABLE_LASER_VISUALS.md) for observed quad capture,
 API replay, and the named old-source edge failure control. Issue #20 remains
 open; its original scene is unspecified.

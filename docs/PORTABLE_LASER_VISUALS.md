@@ -4,6 +4,19 @@ Compare the original Japanese TH08 1.00d and Linux portable images at selected
 laser frames. The [replay results](REPLAY_RESULTS.md) establish gameplay trace
 equality; this check adds laser-pool state and images from the presented frame.
 
+## Current result, October 14, 2026
+
+All eight selected x86_64 frames pass the original 1.0 beam-region mean RGB
+error limit, with identical raw laser/VM packets. The seven baseline failures
+led to repairs in packed-color conversion, GDI font-height mapping, and
+horizontal edge coverage. The [edge regression](#horizontal-edge-regression-october-14-2026)
+records the current executable and complete-recording check.
+
+Font rasterization and synthetic texture sampling retain measurable differences.
+Later bosses, the legacy OpenGL context path, refreshed i386 images, and the
+full corpus for the revised binaries remain separate checks. The dated sections
+below preserve the baseline and each repair's evidence.
+
 ## Capture a recorded case
 
 Build the x86_64 Debug product, supply the original executable and archives, and
@@ -442,6 +455,48 @@ verification and target-independent CI also pass. The refreshed whole corpus
 and i386 images remain separate gates.
 The renderer's five contract groups and all 297 texture-color samples and
 196,608 surface copies pass after the origin change.
+
+### Remaining sampling and title error
+
+Rechecking the retained game frames places 99.6%, 94.6%, and 98.0% of the
+remaining Stage 3 beam-mask error inside the title band at frames 12,900,
+14,130, and 14,490. The band is `(32, 16)`–`(416, 64)`, with exclusive right
+and bottom bounds. Outside it, the four frame means are 0.003603, 0.018719,
+0.002726, and 0.017620. One pixel exceeds mean RGB error 32, at `(35, 197)`
+in frame 14,130. Stage 4B's four beam masks avoid the title band; all their
+means remain below 0.022. These are spatial measurements; the font API and
+original-game text captures above supply the font evidence.
+
+All 15 remaining striped-material probe differences lie on the first covered
+row, at game Y=236. A private experiment maps OpenGL to the actual D3D
+viewport as well as using the upper-left clip origin. It retains all 34 solid
+passes and 15 textured differences, so viewport mapping alone does not resolve
+the sampling discrepancy.
+
+The reusable synthetic control snaps only X/Y to a 1/256-pixel grid in both
+APIs. It changes 109 words by at most 0.0001220703125 pixels and preserves
+depth, reciprocal W, color, and UV. With these inputs, all 34 solid images and
+all 17 full-viewport textured images match exactly. Nine offset-viewport
+textured images still differ on the first row. Wine's textured output changes
+between the two viewports in exactly those nine images; portable's does not.
+Applying the private viewport mapping to this control leaves the same result.
+This narrows the remaining discrepancy to boundary-sensitive texture sampling;
+the interpolation precision responsible for it still needs measurement.
+
+Reproduce the grid control separately from the unmodified-input probe:
+
+```bash
+python3 scripts/analysis/probe-subpixel-quads.py \
+  --capture build/laser-quads --position-grid 256 --check-coverage \
+  --output-dir build/subpixel-grid-control
+```
+
+The report identifies the observed and transformed input hashes, changed-word
+count, maximum coordinate change, and compiler/Wine versions. The control
+leaves game source and captured vertices unchanged. Current region measurements
+and the private viewport experiments are under `build/laser-sampling-20261014/`;
+`repro-grid-control/` contains the reproducible Wine/portable control images;
+`repro-observed-inputs/` repeats the unmodified 53/68 result with the same runner.
 
 ## Read and verify the evidence
 

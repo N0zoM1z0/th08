@@ -31,14 +31,36 @@ def compact(folder):
         path.unlink()
 
 
+def snap_positions(data, grid):
+    """Build a synthetic XY control while preserving every other vertex word."""
+    if grid <= 0:
+        raise ValueError("Position grid must be positive")
+    result = bytearray(data)
+    changed = 0
+    maximum = 0.0
+    for vertex in range(4, len(data), 28):
+        for offset in (vertex, vertex + 4):
+            before = struct.unpack_from("<f", data, offset)[0]
+            struct.pack_into("<f", result, offset, round(before * grid) / grid)
+            after = struct.unpack_from("<f", result, offset)[0]
+            changed += result[offset:offset + 4] != data[offset:offset + 4]
+            maximum = max(maximum, abs(after - before))
+    return bytes(result), dict(kind="synthetic XY grid control", stepsPerPixel=grid,
+                               changedWords=changed, maximumPositionDelta=maximum)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--capture", type=Path, required=True, help="Completed laser capture with --watch-quads")
     parser.add_argument("--frame", type=int, default=12900)
+    parser.add_argument("--position-grid", type=int,
+                        help="Synthetic control: snap X/Y to this many grid steps per pixel in both APIs")
     parser.add_argument("--baseline-ref", help="Also exercise an immutable pre-repair renderer")
     parser.add_argument("--check-coverage", action="store_true", help="Require exact pixels in every solid-material case")
     parser.add_argument("--output-dir", type=Path, required=True, help="Fresh directory under build/")
     args = parser.parse_args()
+    if args.position_grid is not None and args.position_grid <= 0:
+        parser.error("Position grid must be positive")
     output = args.output_dir.resolve()
     if output.exists() or not output.is_relative_to(ROOT / "build"):
         parser.error("Output must be a fresh directory under build/")
@@ -59,6 +81,10 @@ def main():
     output.mkdir(parents=True)
     data = struct.pack("<I", len(selected)) + b"".join(struct.pack("<7I", *vertex)
                                                      for _, quad, _ in selected for vertex in quad)
+    observed_input_sha = hashlib.sha256(data).hexdigest()
+    transformation = dict(kind="unmodified observed vertex words")
+    if args.position_grid is not None:
+        data, transformation = snap_positions(data, args.position_grid)
     (output / "input.bin").write_bytes(data)
     source = ROOT / "tests/subpixel-quad-probe.cpp"
     native = output / "native"
@@ -93,11 +119,16 @@ def main():
         sources["baseline"] = path
     flags = shlex.split(subprocess.check_output(["pkg-config", "--cflags", "--libs", "sdl2", "SDL2_image",
                                                 "SDL2_ttf", "fontconfig", "gl"], text=True))
-    report = dict(evidenceClass="Wine D3D8 API and portable synthetic materials using observed vertex inputs",
+    report = dict(evidenceClass="Wine D3D8 API and portable synthetic materials with identified input transformations",
                   quadCaptureSha256=sha(args.capture / "quads.json"), inputSha256=sha(output / "input.bin"),
+                  observedInputSha256=observed_input_sha, inputTransformation=transformation,
                   frame=args.frame, selectedIndices=[index for index, _, _ in selected], baselineCommit=baseline,
                   probeSha256=sha(source), runnerSha256=sha(Path(__file__)),
                   rendererSha256={name: sha(path) for name, path in sources.items()}, variants={})
+    report["toolVersions"] = {name: subprocess.check_output(command, text=True).splitlines()[0]
+                              for name, command in (("portableCompiler", ["g++", "--version"]),
+                                                    ("nativeCompiler", ["i686-w64-mingw32-g++", "--version"]),
+                                                    ("wine", ["wine", "--version"]))}
     for name, renderer in sources.items():
         folder = output / name
         folder.mkdir()

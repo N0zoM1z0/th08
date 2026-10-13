@@ -92,9 +92,10 @@ boss-name bypass; repaired captures keep the normal copy.
 
 The [laser visual check](PORTABLE_LASER_VISUALS.md) adds four later Stage 3
 frames and four Marisa Stage 4B frames with matching raw laser and VM state.
-One Stage 4B despawn frame passes the strict beam-region pixel gate; the other
-seven report differences. The page records measurements and the missing-beam
-control procedure.
+The October 13 baseline failed seven strict beam-region image checks. All eight
+pass after the Linux color, font-height, and edge-coverage repairs, using the
+original 1.0 mean RGB error limit. The page records each repair, remaining font
+and synthetic sampling differences, and the missing-beam control procedure.
 
 All six existing replay windows pass with normal life rules and boss-name copying,
 retaining 8,810 enemy-render samples. The Stage 5 window records nine heuristic

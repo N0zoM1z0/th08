@@ -24,6 +24,9 @@ spec.loader.exec_module(capture)
 spec = importlib.util.spec_from_file_location("sprite_quads", Path(__file__).parent / "analysis/compare-sprite-quads.py")
 quads = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(quads)
+spec = importlib.util.spec_from_file_location("subpixel_probe", Path(__file__).parent / "analysis/probe-subpixel-quads.py")
+subpixel = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(subpixel)
 
 
 def bits(value):
@@ -89,6 +92,22 @@ class QuadEvidenceTests(unittest.TestCase):
             path.write_text(json.dumps([dict(stage=2, frame=100, quads=[[self.quad()[0]]])]))
             with self.assertRaisesRegex(ValueError, "layout"):
                 quads.load_quads(folder, [100])
+
+    def test_grid_control_preserves_depth_color_and_uv_words(self):
+        vertices = self.quad()
+        vertices[0][0] = bits(200.00001525878906)
+        vertices[0][1] = bits(235.99989318847656)
+        data = struct.pack("<I", 1) + b"".join(struct.pack("<7I", *v) for v in vertices)
+        result, evidence = subpixel.snap_positions(data, 256)
+        self.assertEqual(result[:4], data[:4])
+        for vertex in range(4, len(data), 28):
+            self.assertEqual(result[vertex + 8:vertex + 28], data[vertex + 8:vertex + 28])
+        self.assertEqual(struct.unpack_from("<2f", result, 4), (200, 236))
+        self.assertEqual(evidence["changedWords"], 2)
+        self.assertGreater(evidence["maximumPositionDelta"], 0)
+        self.assertEqual(evidence["kind"], "synthetic XY grid control")
+        with self.assertRaises(ValueError):
+            subpixel.snap_positions(data, 0)
 
 
 class LaserVisualTests(unittest.TestCase):
