@@ -39,6 +39,37 @@ static DWORD draw(IDirect3DTexture8 *texture, DWORD diffuse, DWORD background, b
     require(surface->UnlockRect(), "unlock"); surface->Release();
     return pixel & 0xffffff;
 }
+#ifdef TH08_MODERN_LINUX
+static void exhaustiveCopies() {
+    const D3DFORMAT formats[]={D3DFMT_A1R5G5B5,D3DFMT_R5G6B5,D3DFMT_A4R4G4B4};
+    const char *names[]={"A1R5G5B5","R5G6B5","A4R4G4B4"};
+    printf("[\n");
+    for (int kind=0;kind<3;++kind) {
+        IDirect3DSurface8 *source,*destination;
+        require(device->CreateImageSurface(256,256,formats[kind],&source),"exhaustive source");
+        require(device->CreateImageSurface(256,256,formats[kind],&destination),"exhaustive destination");
+        D3DLOCKED_RECT locked;
+        require(source->LockRect(&locked,NULL,0),"exhaustive source lock");
+        for (unsigned value=0;value<65536;++value) {
+            WORD pixel=static_cast<WORD>(value);
+            memcpy((char *)locked.pBits+(value/256)*locked.Pitch+(value%256)*2,&pixel,2);
+        }
+        require(source->UnlockRect(),"exhaustive source unlock");
+        require(D3DXLoadSurfaceFromSurface(destination,NULL,NULL,source,NULL,NULL,3,0),"exhaustive D3DX copy");
+        require(destination->LockRect(&locked,NULL,D3DLOCK_READONLY),"exhaustive destination lock");
+        unsigned mismatches=0;
+        for (unsigned value=0;value<65536;++value) {
+            WORD pixel;
+            memcpy(&pixel,(char *)locked.pBits+(value/256)*locked.Pitch+(value%256)*2,2);
+            if (pixel!=value) ++mismatches;
+        }
+        require(destination->UnlockRect(),"exhaustive destination unlock");
+        printf("%s{\"format\":\"%s\",\"words\":65536,\"mismatches\":%u}",kind?",\n":"",names[kind],mismatches);
+        source->Release();destination->Release();
+    }
+    printf("\n]\n");
+}
+#endif
 int main(int argc, char **argv) {
     HWND window;
 #ifdef TH08_MODERN_LINUX
@@ -59,6 +90,11 @@ int main(int argc, char **argv) {
     parameters.BackBufferFormat=D3DFMT_X8R8G8B8; parameters.BackBufferCount=1;
     parameters.SwapEffect=D3DSWAPEFFECT_COPY; parameters.Flags=D3DPRESENTFLAG_LOCKABLE_BACKBUFFER;
     require(api->CreateDevice(0,D3DDEVTYPE_HAL,window,D3DCREATE_SOFTWARE_VERTEXPROCESSING,&parameters,&device),"device");
+#ifdef TH08_MODERN_LINUX
+    if (argc>1 && strcmp(argv[1],"exhaustive-copies")==0) {
+        exhaustiveCopies();device->Release();api->Release();return 0;
+    }
+#endif
     device->SetRenderState(D3DRS_ZENABLE,FALSE); device->SetRenderState(D3DRS_LIGHTING,FALSE);
     device->SetRenderState(D3DRS_CULLMODE,D3DCULL_NONE); device->SetRenderState(D3DRS_ALPHATESTENABLE,FALSE);
     device->SetRenderState(D3DRS_SRCBLEND,D3DBLEND_SRCALPHA); device->SetRenderState(D3DRS_DESTBLEND,D3DBLEND_INVSRCALPHA);

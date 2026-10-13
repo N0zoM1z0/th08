@@ -26,8 +26,10 @@ canonical 1.00d hash. Recordings come from the
 Keep the font environment with image evidence: portable uses `TH08_FONT` when
 supplied, otherwise Fontconfig's Japanese monospace fallback; retail uses Wine
 GDI font substitution. Glyph differences can affect beam-region errors where
-text overlays a laser. The recorded host selects VL Gothic for portable;
-retail's exact substituted face has not yet been measured.
+text overlays a laser. The recorded host selects VL Gothic for portable. An
+isolated Wine API probe selects Droid Sans Fallback for the game's requested
+face; the original game process's selected font still needs to be captured
+directly.
 
 The runner captures portable first and retail second. Both run muted with
 normal life rules and playback mode 0. Retail uses ordinary pacing; portable
@@ -77,8 +79,8 @@ Local evidence is in `build/laser-visual-20261013/stage3-aligned/`. The existing
 x86_64 Debug recorder artifact has SHA-256
 `d74a574ac983d2df7c7a52cd421a868a01b90c34471881802ed83cea9e5b802f`;
 recorder hooks were inactive for these GDB captures. The tested gameplay source
-is the previously validated `af9cb1d3` checkpoint. No gameplay or renderer source
-changed in this investigation.
+is the previously validated `af9cb1d3` checkpoint. These October 13 baseline
+captures precede the color repair described below.
 
 ## Stage 4B observation, October 13, 2026
 
@@ -109,32 +111,32 @@ Control evidence is in `build/laser-visual-20261013/stage4b-control/`.
 
 ## Error localization
 
-The seven production pixel failures contain two measured differences. The
+The seven baseline pixel failures contain two measured differences. The
 Stage 3 title/header band accounts for 29.4%–64.6% of the original error.
 Stage 4B's three failing beam masks avoid that band, and their pixels show a
 small, consistent dark bias. Cap regions contribute 12.2%–33.0% of those
 Stage 4B errors; visible beam regions and background inside the quads account
 for the remainder.
 
-The Linux color codecs expand 5/6-bit channels with integer division and pack
-them with another truncated division. The Wine D3D8 API probe expands those
+The baseline Linux color codecs expand 5/6-bit channels with integer division
+and pack them with another truncated division. The Wine D3D8 API probe expands those
 channels by bit replication: five-bit value 4 becomes 33, while the production
-decoder yields 32. The D3DX surface-copy path also decodes through RGBA and
+decoder yields 32. The baseline D3DX surface-copy path also decodes through RGBA and
 re-encodes pixels, allowing a same-format copy to lose channel bits.
 
-A private build uses bit replication for expansion and keeps the high bits
-when packing. It changes both Linux pixel converters and keeps repository
-production source intact. The standalone Wine/portable probe measures 297
-samples: production differs on 15 of 32 A1R5G5B5 samples and 44 of 64 R5G6B5
-samples; the private decoder matches all 297. A4R4G4B4, 32-bit textures,
+A private experiment used bit replication for expansion and kept the high bits
+when packing. It changed both Linux pixel converters in a separate build.
+The standalone Wine/portable probe measures 297 samples: the baseline differs
+on 15 of 32 A1R5G5B5 samples and 44 of 64 R5G6B5 samples; the repaired decoder
+matches all 297. A4R4G4B4, 32-bit textures,
 identical-format D3D8 copies, and nine untextured alpha-blend samples agree
-in production too. The separate portable D3DX copy probe changes 92 of 144
+in the baseline too. The separate baseline D3DX copy probe changes 92 of 144
 raw pixel words during identical-format copies: 30 A1R5G5B5 samples and 62
-R5G6B5 samples. The private codecs preserve all 144. This probe exercises
+R5G6B5 samples. The repaired codecs preserve all 144. This probe exercises
 platform APIs; the paired game frames
 below supply the TH08 evidence.
 
-| Stage | Frame | Production beam error | Private color-conversion error | Private pixel result |
+| Stage | Frame | Baseline beam error | Repaired beam error | Repaired pixel result |
 | --- | ---: | ---: | ---: | --- |
 | 3 | 12,900 | 2.831371 | 1.484770 | Different |
 | 3 | 14,130 | 2.609911 | 1.244176 | Different |
@@ -153,16 +155,93 @@ present in both builds.
 After the color change, the header accounts for 98.5% and 98.8% of the remaining
 error in Stage 3 frames 14,130 and 14,490. Their beam-mask errors outside the
 header are 0.019959 and 0.017975. The title glyphs differ between Wine GDI and
-SDL_ttf, with exact font selection and metrics still to be measured. Frame
+SDL_ttf, with selection and metrics examined by the isolated probe below. Frame
 12,900 has 60.0% of its remaining error in the header and a small horizontal
 beam-edge residual: 49 pixels with mean RGB error above 32 within
 `(201, 236)`–`(247, 244)`. Its outside-header mean error is 0.650546. Vertex
 and sampling evidence is still needed to explain that residual.
 
-The source correction is currently a private counterfactual. The production
-results above remain seven failures; replay and renderer gates are required
-before shipping a change. Local color-probe and private replay evidence is
-under `build/laser-visual-20261013/`.
+The counterfactual evidence is retained under `build/laser-visual-20261013/`.
+The following checks exercise the repair in repository source.
+
+### Production color repair, October 14, 2026
+
+Both Linux converters now expand packed channels by bit replication and pack
+their high bits. A fresh Wine comparison matches all 297 color, D3D8-copy,
+and blend samples. All 144 D3DX copy samples preserve their raw words. Exhaustive
+copies preserve every one of the 65,536 words in each of A1R5G5B5, R5G6B5,
+and A4R4G4B4, including alpha bits: 196,608 checks in total.
+
+The pre-repair commit `2ddf6afd` supplies a failure control. It reproduces
+59 color-sample differences and 92 lossy D3DX copy samples; exhaustive copies
+alter 65,520 words in each of A1R5G5B5 and R5G6B5. A4R4G4B4 remains unchanged.
+Renderer lock, perspective, clipping, and fog contracts also pass after the
+repair. Fresh production Stage 4B captures pass all four strict image checks,
+with errors 0.004278, 0.001907, 0.003865, and 0.021046. Raw laser and VM
+packets retain the published retail hash. Stage 3 errors are 1.484770, 1.244176,
+0.293679, and 1.292878: one passes and three retain the title/edge differences
+localized above. All eight beam masks match the counterfactual RGB pixels,
+preserving that error decomposition. The unchanged strict gate
+passes five of eight frames. The complete `lunatic-0-b` recording, which
+supplies both laser cases, also passes 113,221 calculations on all 25 gameplay
+fields, with a natural replay exit. These adapter changes leave the native
+VC7 implementation untouched. The earlier 108-recording gates apply to their
+published binaries in [the replay results](REPLAY_RESULTS.md).
+
+The tested x86_64 Debug recorder has SHA-256
+`f7be8742dd9e7edd4d5a4a161e5b94fde0aba7fa238b49e639493838d9e18fd7`.
+Its executable, source hashes, compiler identity, and build configuration are
+retained in `build/laser-codec-repair-20261014/production-x86_64/`; completed
+compiler outputs were removed. The images and comparisons are in
+`stage3-keine/` and `stage4b-marisa/` under the same investigation directory.
+The full-recording evidence is in `x86_64-suite/lunatic-0-b/`; use
+`scripts/test-portable-replay-suite.py --cases lunatic-0-b` with the portable
+replay guide's normal capture and retained-evidence commands.
+
+An isolated font API probe uses the game's Japanese face name and semibold,
+Shift-JIS, antialiased, fixed-pitch parameters. In a fresh Wine32 prefix it
+selects Droid Sans Fallback; portable selects VL Gothic. At requested height
+30, Wine reports ascent/descent 24/6 and a 151-pixel width for `Stage 3`;
+portable reports 26/4 and 126 pixels. This measures font substitution and
+metrics independently of the game. It supports the title-region diagnosis;
+the original game process's selected font and title parameters remain to be
+captured. The initial probe source and measurements are in `font-metrics/`;
+the committed runner reproduces all six heights in `final-font-metrics/`
+under the same investigation directory.
+
+Repeat the isolated measurement with the committed probe:
+
+```bash
+python3 scripts/analysis/probe-font-metrics.py \
+  --output-dir build/font-metrics
+```
+
+It needs SDL2_ttf, Fontconfig, MinGW's i686 compiler, Wine32, and Xvfb. It
+records the portable font file and hash, API parameters, locale, source hashes,
+and compiler/Wine versions. `TH08_FONT` selects the portable font as it does in the
+game. The temporary Wine prefix and probe executable are removed after use.
+
+Local evidence is in `build/laser-codec-repair-20261014/color-contracts/`,
+`final-color-contracts/`, and `renderer-contracts/`. Run the asset-free
+regression gate:
+
+```bash
+python3 scripts/analysis/probe-texture-colors.py --check \
+  --output-dir build/texture-color-check
+```
+
+This uses the Wine-verified expected samples and runs the portable backend.
+Add a fresh Wine reference and the old-source failure control with:
+
+```bash
+python3 scripts/analysis/probe-texture-colors.py --wine --check \
+  --baseline-ref 2ddf6afd --expect-baseline-failure \
+  --output-dir build/texture-color-paired
+```
+
+The Wine command additionally needs MinGW's i686 compiler and Wine32. The
+Linux CI job runs the asset-free gate; `--check` returns a failure if a color
+sample or any exhaustive copy differs.
 
 ### Reproduce the decomposition and color experiment
 
@@ -186,7 +265,7 @@ The asset-free color experiment additionally needs MinGW's i686 compiler:
 
 ```bash
 python3 scripts/analysis/probe-texture-colors.py \
-  --wine --counterfactual --build-game \
+  --wine --baseline-ref 2ddf6afd --counterfactual --build-game \
   --output-dir build/texture-color-experiment
 ```
 

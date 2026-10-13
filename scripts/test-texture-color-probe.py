@@ -47,6 +47,13 @@ class ProbeCoverageTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "JSON is missing"):
             probe.decode(self.path)
 
+    def test_pinned_contract_covers_each_probe_input(self):
+        expected = probe.expected_samples()
+        self.assertEqual([(row["kind"], row["value"]) for row in expected],
+                         [(row["kind"], row["value"]) for row in self.rows])
+        self.assertEqual(expected[8]["rgb"], 0x212121)
+        self.assertEqual(expected[9]["rgb"], 0x9084)
+
 
 if __name__ == "__main__":
     unittest.main()

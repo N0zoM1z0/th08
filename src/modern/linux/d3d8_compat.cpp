@@ -103,6 +103,17 @@ UINT BytesPerPixel(D3DFORMAT format)
     }
 }
 
+// D3D8 expands packed channels by copying their high bits into the low bits.
+BYTE Expand5(UINT value)
+{
+    return static_cast<BYTE>((value << 3) | (value >> 2));
+}
+
+BYTE Expand6(UINT value)
+{
+    return static_cast<BYTE>((value << 2) | (value >> 4));
+}
+
 void DecodePixel(const BYTE *source, D3DFORMAT format, BYTE *rgba)
 {
     WORD pixel;
@@ -112,15 +123,15 @@ void DecodePixel(const BYTE *source, D3DFORMAT format, BYTE *rgba)
         rgba[0] = source[2]; rgba[1] = source[1]; rgba[2] = source[0]; rgba[3] = 255; break;
     case D3DFMT_R5G6B5:
         memcpy(&pixel, source, sizeof(pixel));
-        rgba[0] = static_cast<BYTE>(((pixel >> 11) & 31) * 255 / 31);
-        rgba[1] = static_cast<BYTE>(((pixel >> 5) & 63) * 255 / 63);
-        rgba[2] = static_cast<BYTE>((pixel & 31) * 255 / 31); rgba[3] = 255; break;
+        rgba[0] = Expand5((pixel >> 11) & 31);
+        rgba[1] = Expand6((pixel >> 5) & 63);
+        rgba[2] = Expand5(pixel & 31); rgba[3] = 255; break;
     case D3DFMT_X1R5G5B5:
     case D3DFMT_A1R5G5B5:
         memcpy(&pixel, source, sizeof(pixel));
-        rgba[0] = static_cast<BYTE>(((pixel >> 10) & 31) * 255 / 31);
-        rgba[1] = static_cast<BYTE>(((pixel >> 5) & 31) * 255 / 31);
-        rgba[2] = static_cast<BYTE>((pixel & 31) * 255 / 31);
+        rgba[0] = Expand5((pixel >> 10) & 31);
+        rgba[1] = Expand5((pixel >> 5) & 31);
+        rgba[2] = Expand5(pixel & 31);
         rgba[3] = format == D3DFMT_A1R5G5B5 && !(pixel & 0x8000) ? 0 : 255; break;
     case D3DFMT_A4R4G4B4:
         memcpy(&pixel, source, sizeof(pixel));
@@ -142,14 +153,14 @@ void EncodePixel(BYTE *destination, D3DFORMAT format, const BYTE *rgba)
     case D3DFMT_R8G8B8:
         destination[0] = rgba[2]; destination[1] = rgba[1]; destination[2] = rgba[0]; break;
     case D3DFMT_R5G6B5:
-        pixel = static_cast<WORD>(((rgba[0] * 31 / 255) << 11) |
-                                  ((rgba[1] * 63 / 255) << 5) | (rgba[2] * 31 / 255));
+        pixel = static_cast<WORD>(((rgba[0] >> 3) << 11) |
+                                  ((rgba[1] >> 2) << 5) | (rgba[2] >> 3));
         memcpy(destination, &pixel, sizeof(pixel)); break;
     case D3DFMT_X1R5G5B5:
     case D3DFMT_A1R5G5B5:
         pixel = static_cast<WORD>(((format == D3DFMT_X1R5G5B5 || rgba[3] >= 128) ? 0x8000 : 0) |
-                                  ((rgba[0] * 31 / 255) << 10) |
-                                  ((rgba[1] * 31 / 255) << 5) | (rgba[2] * 31 / 255));
+                                  ((rgba[0] >> 3) << 10) |
+                                  ((rgba[1] >> 3) << 5) | (rgba[2] >> 3));
         memcpy(destination, &pixel, sizeof(pixel)); break;
     case D3DFMT_A4R4G4B4:
         pixel = static_cast<WORD>(((rgba[3] >> 4) << 12) | ((rgba[0] >> 4) << 8) |

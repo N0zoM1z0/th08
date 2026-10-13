@@ -32,6 +32,35 @@ def decode(path):
     return rows
 
 
+def expected_samples():
+    """Pinned input/output contract, independently checked against Wine D3D8."""
+    rows = []
+    for kind, count in ((0, 32), (1, 64), (2, 16), (3, 32)):
+        for value in range(count):
+            low5 = value & 31
+            expanded5 = (low5 << 3) | (low5 >> 2)
+            if kind == 0:
+                rgb = expanded5 * 0x010101
+                word = 0x8000 | (value << 10) | (value << 5) | value
+            elif kind == 1:
+                expanded6 = (value << 2) | (value >> 4)
+                rgb = (expanded5 << 16) | (expanded6 << 8) | expanded5
+                word = (low5 << 11) | (value << 5) | low5
+            elif kind == 2:
+                rgb = value * 17 * 0x010101
+                word = 0xf000 | (value << 8) | (value << 4) | value
+            else:
+                rgb = value * 8 * 0x010101
+                word = 0xff000000 | rgb
+            rows.extend((dict(kind=kind, value=value, rgb=rgb), dict(kind=kind + 10, value=value, rgb=word)))
+    # Observed Wine/llvmpipe values include separate source/destination rounding.
+    for alpha, rgb in ((1, 0x8040f0), (17, 0x8041ee), (31, 0x8142ed), (64, 0x8244e9),
+                       (127, 0x8448e2), (128, 0x8549e3), (191, 0x874ddc),
+                       (254, 0x8951d5), (255, 0x8951d5)):
+        rows.append(dict(kind=4, value=alpha, rgb=rgb))
+    return rows
+
+
 def counterfactual(source):
     """Keep high bits when packing and replicate those bits when expanding."""
     replacements = {
@@ -110,6 +139,9 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output-dir", type=Path, required=True, help="Fresh directory under build/")
     parser.add_argument("--wine", action="store_true", help="Also compile and run a Windows D3D8 reference probe")
+    parser.add_argument("--baseline-ref", help="Also observe the codecs at this immutable Git revision")
+    parser.add_argument("--check", action="store_true", help="Require production API samples and exhaustive copies to pass")
+    parser.add_argument("--expect-baseline-failure", action="store_true", help="Require old 5/6-bit expansion and copy defects")
     parser.add_argument("--counterfactual", action="store_true", help="Also test private corrected codecs; production source stays unchanged")
     parser.add_argument("--build-game", action="store_true", help="Build the private game counterfactual with one compiler job")
     parser.add_argument("--game-compiler", default="g++-8", help="Game compiler; default: the recorded GCC 8")
@@ -119,6 +151,10 @@ def main():
         parser.error("Output must be a fresh directory under build/")
     if args.build_game and not args.counterfactual:
         parser.error("--build-game requires --counterfactual")
+    if args.expect_baseline_failure and not args.baseline_ref:
+        parser.error("--expect-baseline-failure requires --baseline-ref")
+    if args.counterfactual and not args.baseline_ref:
+        parser.error("--counterfactual requires the pre-repair --baseline-ref")
     for command in ("g++", "pkg-config", "xvfb-run", "timeout", *( ("i686-w64-mingw32-g++", "wine", "wineserver") if args.wine else ())):
         if not shutil.which(command):
             parser.error("Required command is missing: " + command)
@@ -136,17 +172,32 @@ def main():
     observations = {}
     if args.wine:
         observations["native"] = run_native(output, environment)
+        if observations["native"] != expected_samples():
+            raise SystemExit("Wine D3D8 samples differ from the pinned color contract")
+    else:
+        observations["native"] = expected_samples()
     sources = {"production": ROOT / "src/modern/linux/d3d8_compat.cpp"}
+    baseline = None
+    if args.baseline_ref:
+        baseline = subprocess.check_output(["git", "rev-parse", "--verify", "--end-of-options",
+                                            args.baseline_ref + "^{commit}"], cwd=ROOT, text=True).strip()
+        for stem in ("d3d8", "d3dx8"):
+            path = output / f"baseline-{stem}.cpp"
+            path.write_bytes(subprocess.check_output(["git", "show", baseline + f":src/modern/linux/{stem}_compat.cpp"], cwd=ROOT))
+        sources["baseline"] = output / "baseline-d3d8.cpp"
     if args.counterfactual:
         for stem in ("d3d8", "d3dx8"):
-            source, _ = counterfactual((ROOT / f"src/modern/linux/{stem}_compat.cpp").read_text())
+            source, _ = counterfactual((output / f"baseline-{stem}.cpp").read_text())
             path = output / f"corrected-{stem}.cpp"
             path.write_text(source)
             if stem == "d3d8":
                 sources["counterfactual"] = path
+    copy_sources = {}
     for name, source in sources.items():
         binary = output / ("color-probe-" + name)
-        d3dx = output / "corrected-d3dx8.cpp" if name == "counterfactual" else ROOT / "src/modern/linux/d3dx8_compat.cpp"
+        d3dx = (output / "corrected-d3dx8.cpp" if name == "counterfactual" else
+                output / "baseline-d3dx8.cpp" if name == "baseline" else ROOT / "src/modern/linux/d3dx8_compat.cpp")
+        copy_sources[name] = d3dx
         command = ["g++", "-std=gnu++98", "-O2", "-fno-strict-aliasing", "-pthread",
                    "-DTH08_MODERN_PORT", "-DTH08_MODERN_LINUX", "-DTH08_PORTABLE_NATIVE_LAYOUT",
                    "-D_FILE_OFFSET_BITS=64", "-D_TIME_BITS=64", "-Isrc", "-Isrc/modern/linux/include",
@@ -170,20 +221,47 @@ def main():
             evidenceClass="Portable identical-format D3DX copies compared with bit-preserving D3D8 copies",
             samples=sum(row["kind"] >= 10 for row in rows), differences=copies), indent=2) + "\n")
         print(f"{name} D3DX copies: {len(copies)} differing raw words out of 144")
+        with (output / (name + "-exhaustive.stdout")).open("w") as stdout:
+            subprocess.run(["xvfb-run", "-a", "timeout", "30s", str(binary), "exhaustive-copies"],
+                           env=environment, stdout=stdout, stderr=subprocess.STDOUT, check=True)
+        exhaustive = json.loads((output / (name + "-exhaustive.stdout")).read_text())
+        if [(entry["format"], entry["words"]) for entry in exhaustive] != [
+                ("A1R5G5B5", 65536), ("R5G6B5", 65536), ("A4R4G4B4", 65536)]:
+            raise ValueError("Exhaustive copy coverage differs")
+        (output / (name + "-exhaustive.json")).write_text(json.dumps(exhaustive, indent=2) + "\n")
         binary.unlink()
-    report = dict(evidenceClass="Wine D3D8 API and portable backend probes; no TH08 target execution",
+    report = dict(evidenceClass="Portable backend probes against Wine D3D8 samples; no TH08 target execution",
                   host=platform.platform(), probeSha256=sha(ROOT / "tests/texture-color-probe.cpp"),
-                  runnerSha256=sha(Path(__file__)), productionSourceChanged=False,
-                  backendSha256={name: sha(path) for name, path in sources.items()}, comparisons={})
+                  runnerSha256=sha(Path(__file__)), runnerModifiesProductionSource=False,
+                  compiler=subprocess.check_output(["g++", "--version"], text=True).splitlines()[0],
+                  baselineCommit=baseline,
+                  backendSha256={name: sha(path) for name, path in sources.items()},
+                  surfaceCopyBackendSha256={name: sha(path) for name, path in copy_sources.items()}, comparisons={})
+    report["referenceMethod"] = "fresh Wine D3D8 API samples" if args.wine else "pinned Wine-verified color contract"
+    for name in sources:
+        differences = [dict(reference=a, candidate=b) for a, b in zip(observations["native"], observations[name]) if a != b]
+        report["comparisons"][name] = dict(samples=len(observations[name]), differences=differences)
+        print(f"{name}: {len(differences)} differing samples out of {len(observations[name])}")
     if args.wine:
-        for name in sources:
-            differences = [dict(reference=a, candidate=b) for a, b in zip(observations["native"], observations[name]) if a != b]
-            report["comparisons"][name] = dict(samples=len(observations[name]), differences=differences)
-            print(f"{name}: {len(differences)} differing samples out of {len(observations[name])}")
         (output / "color-probe.exe").unlink()
     if args.build_game:
         report["privateGame"] = build_game(output, args.game_compiler, environment)
     (output / "report.json").write_text(json.dumps(report, indent=2) + "\n")
+    if args.check:
+        production_copies = json.loads((output / "production-d3dx.json").read_text())
+        production_exhaustive = json.loads((output / "production-exhaustive.json").read_text())
+        if (report["comparisons"]["production"]["differences"] or production_copies["differences"]
+                or any(entry["mismatches"] for entry in production_exhaustive)):
+            raise SystemExit("Production texture-color contracts failed")
+        print("PASS: production texture colors and 196608 identical-format copies")
+    if args.expect_baseline_failure:
+        failed = report["comparisons"].get("baseline", {}).get("differences", [])
+        copies = json.loads((output / "baseline-d3dx.json").read_text())
+        exhaustive = json.loads((output / "baseline-exhaustive.json").read_text())
+        if (len(failed) != 59 or len(copies["differences"]) != 92
+                or not exhaustive[0]["mismatches"] or not exhaustive[1]["mismatches"] or exhaustive[2]["mismatches"]):
+            raise SystemExit("Baseline did not reproduce the named 5/6-bit defects")
+        print("PASS: baseline 5/6-bit expansion and lossy-copy defects reproduced")
 
 
 if __name__ == "__main__":

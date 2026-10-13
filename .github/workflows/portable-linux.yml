@@ -72,6 +72,11 @@ jobs:
       - name: Check renderer pixel contracts without game assets
         run: python3 scripts/test-portable-renderer.py
 
+      - name: Check texture colors and exhaustive surface copies without game assets
+        run: |
+          python3 scripts/analysis/probe-texture-colors.py --check \
+            --output-dir build/texture-color-ci
+
       - name: Check vector precision without game assets
         run: python3 scripts/test-portable-math.py
 

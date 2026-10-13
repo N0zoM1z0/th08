@@ -95,8 +95,20 @@ frames. Error localization finds a dark bias from Linux 5/6-bit color
 conversion and separate Stage 3 title glyph differences. A private codec
 counterfactual passes five of eight strict image checks, preserves all raw
 laser packets, and matches 297 Wine D3D8 color/copy/blend samples; production
-differs on 59 color samples. Production renderer source is unchanged. Next,
-validate and ship the codec repair, measure font selection/metrics, and inspect
+baseline differs on 59 color samples. The production Linux converters now include the
+codec repair. Fresh Wine samples, 144 D3DX copy samples, all 196,608 exhaustive
+16-bit copies, and the four renderer contract groups pass. The old-source
+failure control reproduces the measured defects. Fresh production Stage 4B
+passes all four strict image checks with unchanged raw state; Stage 3 passes
+one and retains three title/edge differences. All eight beam masks equal the
+localized counterfactual pixels. The complete `lunatic-0-b` recording passes
+113,221 calculations and all 25 fields with a natural exit. New evidence is
+under `build/laser-codec-repair-20261014/`; the earlier 108-recording gates
+remain scoped to their published binaries.
+An isolated font API probe selects Droid Sans Fallback in fresh Wine and VL
+Gothic in portable, with different text widths and baselines. Reusable color
+and font API probes are committed with their workflow. Next, capture the
+original game's selected font/title parameters and inspect
 the 49-pixel horizontal-edge residual at Stage 3 frame 12,900. Later-boss cases
 remain to be added. Issue #20 remains open; its original scene is unspecified.
 
