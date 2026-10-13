@@ -111,3 +111,5 @@ at calculation 60,796, Stage 5 frame 3,789: internal score +4 and four extra
 RNG generations. The subsequent
 [i386 device precision repair](PORTABLE_I386_FLOATING_POINT.md) resolves it.
 AArch64 hardware gameplay is pending; ARM retains scalar normalization.
+The subsequent [complete state gates](REPLAY_RESULTS.md) pass all 108 recordings
+and 12,311,460 calculations on both Linux x86_64 and i386.

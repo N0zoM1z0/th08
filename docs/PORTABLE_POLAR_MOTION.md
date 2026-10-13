@@ -49,12 +49,17 @@ python3 scripts/capture-portable-replay.py \
   --game-data-dir /path/to/original-game-data \
   --replay tests/fixtures/replays/th08-1.00d/accepted/th8_ud2bff.rpy \
   --reference build/retail-suite/easy-11-b/reference \
-  --backend gdb --start-stage 1 --max-calculations 6826 --watch-enemy 1 \
+  --backend gdb --max-calculations 17870 --watch-enemy 1 \
   --output-dir build/portable-youmu-motion
 ```
 
+This starts at the first recorded stage and retains its cumulative state.
+Calculation 17,870 reaches Stage 2 frame 6,826 in the full reference.
+The recorded 6,826-calculation stage-only diagnostic used a separate retail
+reference that also started at Stage 2.
+
 For retail, use `scripts/capture-replay.py` with the same replay and archives,
-`--start-stage 1 --detail-stage 1 --detail-start 1 --detail-end 6825
+`--detail-stage 1 --detail-start 1 --detail-end 6825
 --watch-enemy 1`. The [native procedure](REPLAY_TESTING.md) describes the
 remaining arguments. Both tools write `enemy-motion.jsonl` with the same
 field names and exact float bits. Compare records by `(stage, frame)`.
@@ -80,6 +85,7 @@ All 25 fields, stage-end scores, natural exits, and published fingerprints
 agree with retail. All four retail frame comparisons also pass after the
 motion repair. After the separate
 [i386 device precision repair](PORTABLE_I386_FLOATING_POINT.md), the final
-x86_64 build is running the full 108-recording gate in `matrix-final/`.
+x86_64 and i386 builds each pass the full 108-recording gate over 12,311,460
+calculations. The [validation results](REPLAY_RESULTS.md) record the complete gates.
 Evidence is in `build/portable-state-20261012/matrix-polar/`, the
 `youmu-easy-*` diagnostics, and `polar-rendering-regression/`.

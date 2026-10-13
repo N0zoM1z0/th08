@@ -145,8 +145,10 @@ This A/B path is stronger than treating one backend as visually self-consistent:
 it can expose a native-layout field error that still points to a valid but wrong
 sprite, color, or UV region.
 
-Replay arithmetic can legitimately diverge between floating-point ABIs before
-the requested scene. Treat a low overlap or broad geometry mismatch as a real
+The [complete replay gates](REPLAY_RESULTS.md) establish equal gameplay state
+on the validated x86_64 and i386 builds. Earlier floating-point differences
+changed trajectories before a requested scene and required precision repairs.
+Treat a low overlap or broad geometry mismatch as a real
 diagnostic result, not a reason to lower thresholds until the reports pass.
 For a bounded compiler/runtime fix, a before/after report from the same
 architecture is the strongest alignment; use the other architecture to show

@@ -115,8 +115,9 @@ portable executable has SHA-256
 The `lunatic-0-b` fixture is pinned and credited in the
 [replay corpus](../tests/fixtures/replays/th08-1.00d/README.md).
 
-The existing six bounded render windows and 60-second sanitizer smoke remain
-useful runtime coverage. The complete 108-recording, 25-field parity result is
-for the VC7 product. Portable needs its own complete state-parity run, longer
-sanitizer replay checks, and runtime testing on AArch64 hardware. Audio behavior
-also needs a separate pass because these replay investigations run muted.
+Subsequent checks passed all 108 recordings on both Linux x86_64 and i386,
+with all 25 fields equal over 12,311,460 calculations per product. The
+[validation results](REPLAY_RESULTS.md) summarize those complete gates.
+The repaired renderer's six-window gate and 90-second Stage 5 sanitizer audit
+are recorded in [PORTABLE_RENDERING.md](PORTABLE_RENDERING.md). AArch64 hardware
+gameplay and audio output remain separate checks; these investigations ran muted.

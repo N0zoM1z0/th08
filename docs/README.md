@@ -48,6 +48,7 @@ The [conceptual guide](PROJECT_GUIDE.md) is available for orientation.
 | Which command answers my question? | [Tool recipes](TOOLS.md#choose-the-command-by-question) |
 | How do names and types get accepted? | [Semantic reconstruction policy](SEMANTIC_RECONSTRUCTION.md) |
 | How do I reproduce the native Windows prerequisite? | [Windows i386 runtime procedure](WINDOWS_I386_RUNTIME.md) |
+| What do the complete replay checks establish? | [Replay validation results](REPLAY_RESULTS.md) |
 | How do I compare native replay behavior with retail? | [Unattended replay comparison](REPLAY_TESTING.md), [recordings and credits](../tests/fixtures/replays/th08-1.00d/README.md) |
 | Where are reusable compiler and link lessons? | [Knowledge map](KNOWLEDGE_BASE.md#existing-subject-index) |
 
@@ -76,6 +77,7 @@ This route provides the operating instructions for a fresh engineering session.
 | Authored mappings and source selection | [mapping.csv](../config/mapping.csv), [implemented.csv](../config/implemented.csv) |
 | Authored comparison definitions and accepted results | [match-units.toml](../config/match-units.toml), [matches.csv](../config/matches.csv) |
 | Target-linked library provenance and results | [library-provenance.toml](../config/library-provenance.toml), [library-match-units.toml](../config/library-match-units.toml), [library-matches.csv](../config/library-matches.csv) |
+| Verified replay results and published expectations | [Replay validation results](REPLAY_RESULTS.md), [fixture manifest](../config/replay-fixtures.json) |
 | Generated progress views | [Authored progress](PROGRESS.md), [library progress](LIBRARY_PROGRESS.md) |
 
 Use the [status reporter](TOOLS.md#choose-the-command-by-question) for live

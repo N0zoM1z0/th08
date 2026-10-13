@@ -7,15 +7,20 @@ serially and checks the same 25 fields used by the
 RNG state, replay input, and stage counters. Floating-point fields use exact
 IEEE-754 bits.
 
+The [validation results](REPLAY_RESULTS.md) record the complete native,
+x86_64, and i386 passes, their tested artifacts, and coverage.
+
 ## Run the corpus
 
-Install the [Linux build dependencies](PORTABLE_64BIT.md) and `xvfb`, `xauth`,
-and `gdb`. Keep your original `th08.dat` and `thbgm.dat` in a separate data
-directory. The runner creates isolated saves and settings under `build/`.
+Install the [Linux build dependencies](PORTABLE_64BIT.md), Python 3.11 or later,
+and `xvfb`, `xauth`, and `gdb`. Capturing retail references also needs the
+[native capture dependencies](REPLAY_TESTING.md#run-the-comparison), including
+Wine32 and `xdotool`. Keep your original `th08.dat` and `thbgm.dat` in a separate
+data directory. The runner creates isolated saves and settings under `build/`.
 SDL's dummy audio driver keeps playback muted after the replay restores its
 recorded configuration.
 
-Build the optional recorder:
+On an x86_64 host, build the optional recorder:
 
 ```bash
 cmake -S . -B build/portable-replay -G Ninja \
@@ -23,6 +28,21 @@ cmake -S . -B build/portable-replay -G Ninja \
 cmake --build build/portable-replay --parallel 1
 scripts/verify-portable-linux.sh build/portable-replay/th08-modern x86_64
 ```
+
+For i386, install the [multilib development dependencies](PORTING.md#linux)
+and select the 32-bit toolchain and package metadata:
+
+```bash
+PKG_CONFIG_LIBDIR=/usr/lib/i386-linux-gnu/pkgconfig:/usr/share/pkgconfig \
+  cmake -S . -B build/i386-replay -G Ninja \
+    -DCMAKE_TOOLCHAIN_FILE=cmake/linux-i386-toolchain.cmake \
+    -DCMAKE_BUILD_TYPE=Debug -DTH08_ENABLE_REPLAY_TRACE=ON
+cmake --build build/i386-replay --parallel 1
+scripts/verify-modern-linux.sh build/i386-replay/th08-modern
+```
+
+Use that executable as `--candidate` in the same suite commands, with a separate
+output directory for each architecture.
 
 Run every accepted recording:
 
@@ -164,40 +184,11 @@ resets the death count in a recording that reaches it with two deaths.
 
 ## Coverage
 
-The x86_64 and i386 recorder builds at gameplay source `af9cb1d3` each pass all
-**108 recordings and 12,311,460 calculations**. Every calculation agrees on all
-25 fields, including exact floating-point bits. Each recording reaches its
-recorded stage-end scores and natural replay exit, and reproduces the published
-retail trace fingerprint. Separate `--verify-only` passes recompute every
-comparison and check the retained traces, capture identities, completion
-records, case reports, and suite ledgers.
+The Linux x86_64 and i386 builds each pass the complete 108-recording corpus:
+12,311,460 calculations, all 25 fields, recorded stage-end scores, natural exits,
+and published fingerprints. Both retained-evidence passes also succeed.
 
-The corpus covers four teams and eight solo characters at all four story
-difficulties, each with Final A and Final B, plus 12 Extra recordings: all nine
-internal stage indexes. Run the corpus command above to reproduce this result.
-Local evidence is in `build/portable-state-20261012/matrix-final/` and
-`build/portable-state-20261012/i386-matrix-fpu/`. The tested x86_64 executable
-has SHA-256
-`d74a574ac983d2df7c7a52cd421a868a01b90c34471881802ed83cea9e5b802f`;
-the i386 executable has SHA-256
-`34a358542feb2188304ce91c7b02b60d2a463a167f74f8f698add8d96296b9af`.
-The accelerated, muted x86_64 suite took 4 hours 14 minutes and peaked at 240
-MiB resident memory. The serial i386 suite took 5 hours 21 minutes 59 seconds
-and peaked at 205 MiB. The independent retained-evidence passes took 10 minutes
-51 seconds on x86_64 and 11 minutes 5 seconds on i386; each peaked at 53 MiB.
-
-Replay comparisons found and repaired differences in
-[vector angles](PORTABLE_VECTOR_PRECISION.md),
-[D3DX normalization](PORTABLE_NORMALIZATION.md), and
-[polar motion](PORTABLE_POLAR_MOTION.md). Those pages retain the original
-failures, target evidence, negative controls, and independent GDB checks.
-
-The i386 [device precision repair](PORTABLE_I386_FLOATING_POINT.md) also has a
-focused negative control and an independent 60,797-calculation GDB prefix that
-records retail's `0x007F` x87 control word. The complete corpus establishes the
-result across every route, difficulty, team, solo character, and stage in the
-fixture set.
-
-State parity covers the selected recordings and fields. Use the
-[rendering gate](PORTABLE_RENDERING.md) for frame comparisons, HOME screenshots,
-and renderer contracts. Hardware gameplay on AArch64 remains a separate check.
+[Replay validation results](REPLAY_RESULTS.md) records the full coverage grid,
+artifact identities, native and portable repairs, image checks, resource
+measurements, and evidence locations. The focused precision investigations
+retain target observations, negative controls, and independent GDB diagnostics.
