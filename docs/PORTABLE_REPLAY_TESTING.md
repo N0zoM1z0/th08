@@ -146,44 +146,32 @@ resets the death count in a recording that reaches it with two deaths.
 
 ## Coverage
 
-The vector-precision checkpoint at `5b537b4c` passed six complete x86_64
-recordings over **667,371
-calculations**, with all 25 fields, recorded stage-end scores, and natural replay
-completion equal to retail. These cover Border Team Easy/Lunatic Final B,
-Solo Yukari Easy Final B, Magic Team Lunatic Final A, Ghost Team Lunatic Final B,
-and Scarlet Team Extra: all nine internal stage indexes. The batch is in
-`build/portable-state-20261012/matrix-fixed/`.
+The x86_64 recorder build at gameplay source `af9cb1d3` passes all **108
+recordings and 12,311,460 calculations**. Every calculation agrees on all 25
+fields, including exact floating-point bits. Each recording reaches its
+recorded stage-end scores and natural replay exit, and reproduces the published
+retail trace fingerprint. A second validation pass checks the retained traces,
+capture identities, and completion records.
 
-The initial GDB/recorder comparison agrees over 1,000 calculations, and the
-repaired Stage 4A GDB diagnostic agrees over 14,566 calculations. The next
-108-recording batch completed 29 recordings and found three differences
-before it was paused for diagnosis. Follow
-`build/portable-state-20261012/full-suite.log` and `matrix-fixed/suite.json`.
-The completed native 108-recording result remains a separate product checkpoint.
+The corpus covers four teams and eight solo characters at all four story
+difficulties, each with Final A and Final B, plus 12 Extra recordings: all nine
+internal stage indexes. Run the corpus command above to reproduce this result.
+Local evidence is in `build/portable-state-20261012/matrix-final/`; the tested executable has
+SHA-256 `d74a574ac983d2df7c7a52cd421a868a01b90c34471881802ed83cea9e5b802f`.
+The accelerated, muted suite took 4 hours 14 minutes on this host and recorded
+a maximum resident set size of 240 MiB.
 
-The first complete batch exposed a modern math-overload difference in Magic
-Team Stage 4A. [The vector precision investigation](PORTABLE_VECTOR_PRECISION.md)
-records the score, item, and enemy motion evidence and the repaired diagnostic
-window.
+Replay comparisons found and repaired differences in
+[vector angles](PORTABLE_VECTOR_PRECISION.md),
+[D3DX normalization](PORTABLE_NORMALIZATION.md), and
+[polar motion](PORTABLE_POLAR_MOTION.md). Those pages retain the original
+failures, target evidence, negative controls, and independent GDB checks.
 
-Border Team Normal Stage 1 traced to
-[D3DX normalization rounding](PORTABLE_NORMALIZATION.md); its repaired full
-recording passes 100,979 calculations. The two Solo Youmu failures traced to
-[polar motion precision](PORTABLE_POLAR_MOTION.md). The latest candidate
-passes all three full recordings over 358,140 calculations.
-`matrix-fixed/` and `matrix-normalization/` retain the preceding candidates;
-`matrix-polar/` records that checkpoint.
-
-The [i386 device precision repair](PORTABLE_I386_FLOATING_POINT.md) passes the
-complete Border Team Normal recording and an independent 60,797-calculation
-GDB prefix. The final x86_64 build is running all 108 recordings in
-`matrix-final/`; `final-full-suite.log` records progress. Previous candidates'
-results remain separate checkpoints.
-The current x86_64 candidate passes all 25 fields for 48 Final B recordings
-over 5,995,059 calculations, including stage-end scores and natural exits.
-These cover all four story difficulties and 12 shot choices. The candidate
-uses gameplay source `af9cb1d3`. All 12 Extra recordings also pass over
-599,995 calculations; the batch now runs the Final A recordings.
+The serial i386 corpus is now running in
+`build/portable-state-20261012/i386-matrix-fpu/`.
+Its [device precision repair](PORTABLE_I386_FLOATING_POINT.md) passes a complete
+Border Team Normal recording and an independent 60,797-calculation GDB prefix.
+The queue, per-case ledgers, and `i386-full-suite.log` record further progress.
 
 State parity covers the selected recordings and fields. Use the
 [rendering gate](PORTABLE_RENDERING.md) for frame comparisons, HOME screenshots,
