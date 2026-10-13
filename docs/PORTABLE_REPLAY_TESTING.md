@@ -29,7 +29,7 @@ cmake --build build/portable-replay --parallel 1
 scripts/verify-portable-linux.sh build/portable-replay/th08-modern x86_64
 ```
 
-For i386, install the [multilib development dependencies](PORTING.md#linux)
+For i386, install the [multilib development dependencies](PORTING.md#native-linux)
 and select the 32-bit toolchain and package metadata:
 
 ```bash

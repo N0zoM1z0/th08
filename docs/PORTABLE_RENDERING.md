@@ -60,6 +60,30 @@ window pixels after presentation. The window check uses X11 readback and needs
 the `x11` development package alongside SDL2 and OpenGL.
 The x86_64 GitHub build runs these checks without copyrighted game data.
 
+For an i386 host build, select the multilib package directory and a compiler
+wrapper that supplies `-m32`. Include `fpu` to check the device's x87 precision
+and `D3DCREATE_FPU_PRESERVE` behavior:
+
+```bash
+mkdir -p build
+cat > build/renderer-cxx-i386 <<'SH'
+#!/bin/sh
+exec g++ -m32 "$@"
+SH
+chmod +x build/renderer-cxx-i386
+PKG_CONFIG_LIBDIR=/usr/lib/i386-linux-gnu/pkgconfig:/usr/share/pkgconfig \
+  python3 scripts/test-portable-renderer.py \
+    --compiler build/renderer-cxx-i386 \
+    --cases locks,perspective,clipping,fog,edges,orientation,fpu \
+    --output-dir build/renderer-i386
+```
+
+Add `--legacy-gl` with a separate output directory for the older context.
+`--pkg-config` selects an alternative package-metadata command when the compiler
+uses a container or sysroot. Keep the compiler and package metadata on the same
+architecture. The test executable runs on the host; reports identify the actual
+compiler and OpenGL context.
+
 Exercise the OpenGL 2.1 path without clip control:
 
 ```bash

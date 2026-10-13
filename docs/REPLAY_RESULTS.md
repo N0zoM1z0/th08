@@ -184,7 +184,11 @@ the evidence. Original game assets and generated reports are kept outside Git.
 | Render repairs and subsequent frame regression | `portable-render-fix-20261012/`, `portable-state-20261012/polar-rendering-regression/` |
 
 The portable runs used an x86_64 WSL2 Linux host, Xvfb, and Mesa llvmpipe.
-The candidate compiler was Ubuntu GCC 8.4.0; native captures used Wine 9.0.
+The x86_64 candidate used Ubuntu GCC 8.4.0; the i386 candidate used Debian
+GCC 12.2.0 in the pinned multilib container. Native captures used Wine 9.0.
+The retained i386 provenance originally labeled its compiler as GCC 8.4.0.
+Its build log and ELF `.comment` identify GCC 12.2.0; a local correction
+addendum preserves the original record and both evidence hashes.
 Per-capture metadata preserves host, backend, source, hashes, and playback
 settings. Retain that metadata, `complete.json`, `comparison.json`, `suite.json`,
 compressed rows, the candidate, and build provenance for an independent audit.

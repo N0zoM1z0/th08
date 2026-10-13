@@ -228,7 +228,7 @@ def screenshot(frame):
     if int(access["format"]) != 22 or (width, height, pitch) != (640, 480, 2560):
         raise RuntimeError("Unexpected laser capture framebuffer format")
     pixels = bytes(gdb.selected_inferior().read_memory(int(access["pixels"]), pitch * height))
-    gdb.execute("call free($laser_access)")
+    gdb.execute("call (void)free($laser_access)")
     converter = ('from PIL import Image; import sys; Image.frombytes("RGB",(640,480),'
                  'sys.stdin.buffer.read(),"raw","BGRX",2560,1).save(sys.argv[1])')
     subprocess.run(["python3", "-c", converter, str(output / f"frame-{frame}.png")],

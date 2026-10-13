@@ -15,6 +15,7 @@ ROOT = Path(__file__).resolve().parents[1]
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--compiler", default="g++")
+    parser.add_argument("--pkg-config", default="pkg-config", help="Package metadata command for the compiler's target architecture")
     parser.add_argument("--output-dir", type=Path, default=ROOT / "build/portable-renderer-test")
     parser.add_argument("--baseline-ref", help="Compile the renderer from a repository commit for a regression control")
     parser.add_argument("--expect-failures", action="store_true", help="Require selected baseline assertions to fail; default: the four original groups")
@@ -26,7 +27,7 @@ def main():
         parser.error("--output-dir must be under this repository's build/.")
     if args.expect_failures and not args.baseline_ref:
         parser.error("--expect-failures requires --baseline-ref.")
-    for command in (args.compiler, "pkg-config", "xvfb-run", "timeout"):
+    for command in (args.compiler, args.pkg_config, "xvfb-run", "timeout"):
         if not shutil.which(command):
             parser.error("Required command is missing: " + command)
     output.mkdir(parents=True, exist_ok=True)
@@ -35,9 +36,8 @@ def main():
         environment.update(MESA_GL_VERSION_OVERRIDE="2.1", MESA_EXTENSION_OVERRIDE="-GL_ARB_clip_control",
                            TH08_RENDERER_REQUIRE_LEGACY_GL="1")
     environment.setdefault("PKG_CONFIG_LIBDIR", "/usr/lib/x86_64-linux-gnu/pkgconfig:/usr/share/pkgconfig")
-    flags = shlex.split(subprocess.check_output(
-        ["pkg-config", "--cflags", "--libs", "sdl2", "SDL2_image", "SDL2_ttf", "fontconfig", "gl", "x11"],
-        env=environment, text=True))
+    package_command = [args.pkg_config, "--cflags", "--libs", "sdl2", "SDL2_image", "SDL2_ttf", "fontconfig", "gl", "x11"]
+    flags = shlex.split(subprocess.check_output(package_command, env=environment, text=True))
     binary = output / "portable-renderer-test"
     source = ROOT / "src/modern/linux/d3d8_compat.cpp"
     commit = None
@@ -58,6 +58,7 @@ def main():
                   "probe": ROOT / "tests/portable-renderer.cpp", "runner": Path(__file__)}
     report = dict(result="running", baselineCommit=commit, legacyOpenGL=args.legacy_gl,
                   expectedFailures=args.expect_failures, compileCommand=command,
+                  packageMetadataCommand=package_command,
                   compiler=subprocess.check_output([args.compiler, "--version"], text=True).splitlines()[0],
                   binarySha256=hashlib.sha256(binary.read_bytes()).hexdigest(),
                   sourceSha256={name: hashlib.sha256(path.read_bytes()).hexdigest() for name, path in identities.items()},

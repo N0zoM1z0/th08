@@ -13,9 +13,10 @@ horizontal edge coverage. The [edge regression](#horizontal-edge-regression-octo
 records the current executable and complete-recording check.
 
 Font rasterization and synthetic texture sampling retain measurable differences.
-Later bosses, refreshed i386 images, and the
-full corpus for the revised binaries remain separate checks. The dated sections
-below preserve the baseline and each repair's evidence.
+The [i386 refresh](#i386-refresh-october-14-2026) passes the same selected frames
+in both context profiles. Later bosses and the full corpus for the revised
+binaries remain separate checks. The dated sections below preserve the baseline
+and each repair's evidence.
 
 ## Capture a recorded case
 
@@ -551,6 +552,52 @@ observed version and function pointer; retained comparisons reject missing or
 incompatible legacy-context evidence. Renderer contract reports retain source
 and binary hashes, compiler identity, exact assertions, and process results.
 The Linux CI workflow runs both context profiles and uploads those reports.
+
+## i386 refresh, October 14, 2026
+
+The revised i386 Debug recorder was built with Debian GCC 12.2.0 in the
+repository's [32-bit container](../containers/linux32.Dockerfile). Its SHA-256
+is `a82e7155eb7c71e5db645df9294cd5316e895df5f35dcbce696946ba4ba9de27`.
+The fixed target-owned layout check passes. Both context profiles pass the six
+renderer groups and the extra x87 precision/`FPU_PRESERVE` group on the host's
+Mesa 25.2.8 runtime.
+
+All eight selected frames pass the original image limit in each profile:
+16 captures, with identical retail laser/VM packet hashes.
+
+| Profile | Stage | Beam-region mean RGB errors, in manifest frame order |
+| --- | --- | --- |
+| Clip control | 3 | 0.786645; 0.324227; 0.003113; 0.766607 |
+| Clip control | 4B | 0.004278; 0.001907; 0.003865; 0.021046 |
+| OpenGL 2.1 | 3 | 0.786679; 0.323592; 0.003074; 0.763161 |
+| OpenGL 2.1 | 4B | 0.004278; 0.001998; 0.003865; 0.021176 |
+
+Seven playfields per profile are pixel-identical to the retained x86_64
+captures. Stage 4B frame 15,360 has small background-shading differences:
+cross-product playfield means are 0.073440 with clip control and 0.074393 in
+the legacy profile. The first comparison changes 7,587 pixels, with a maximum
+channel difference of 9 and no pixel above mean RGB error 32. Difference
+images place these changes on the background's thin columns. The cause still
+needs input-transform and renderer-state evidence; the default-profile x86_64
+reference also precedes the legacy source repair.
+
+Evidence is under `build/laser-i386-20261014/`: the four named stage/profile
+directories retain images, raw state and comparisons; `renderer-default-final/`
+and `renderer-legacy-final/` retain the seven-group API results. Build provenance records
+the container image, actual compiler, ELF `.comment`, configuration and source
+hashes. Capturing on i386 also exposed a GDB call with an unknown `free` return
+type; the observer now declares its void return explicitly. This changes the
+capture tool only.
+
+The same i386 binary's complete `lunatic-0-b` recording passes 113,221
+calculations on all 25 fields with a natural replay exit and the published
+trace fingerprint. Retained-evidence verification passes. The full corpus for
+the revised binary remains a separate gate.
+
+Use the same capture commands with the i386 recorder. Add `--legacy-gl` and a
+fresh output directory for the second profile. See the
+[i386 renderer command](PORTABLE_RENDERING.md#pixel-contracts-without-game-assets)
+for architecture-specific compiler and package-metadata selection.
 
 ## Read and verify the evidence
 

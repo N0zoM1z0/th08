@@ -113,9 +113,20 @@ differences; the legacy probe retains 16. An XY grid control passes 59/68
 images, with nine first-row differences coinciding with Wine's offset-viewport
 sensitivity. Private viewport mapping does not resolve them. Its evidence
 is under `build/laser-sampling-20261014/`; `--position-grid 256` reproduces
-the control. Later-boss laser cases, refreshed i386 images, and the full corpus
+the control. Later-boss laser cases and the full corpus
 for the revised products remain to be checked. Issue #20 remains open; its
 original scene is unspecified.
+
+The refreshed i386 recorder is
+`a82e7155eb7c71e5db645df9294cd5316e895df5f35dcbce696946ba4ba9de27`.
+Both context profiles pass seven renderer/FPU groups and the same eight laser
+frames each. Its complete `lunatic-0-b` recording and retained-evidence gate
+pass 113,221 calculations on all 25 fields. Evidence is under
+`build/laser-i386-20261014/`. The actual i386 compiler is Debian GCC 12.2.0;
+the older provenance's GCC 8.4.0 label has a preserved correction addendum.
+Seven playfields per profile equal the retained x86_64 pixels. Stage 4B frame
+15,360 retains a small background-shading difference, with means 0.073440 and
+0.074393. Capture input transforms and renderer state before assigning a cause.
 
 For runtime work, select a concrete remaining visual or hardware scenario and
 retain the stage, route, recording, frame, and comparison evidence. For exact
