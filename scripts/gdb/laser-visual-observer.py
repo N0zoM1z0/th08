@@ -1,6 +1,8 @@
 """Read typed laser state and select or capture bounded replay frames."""
 import gdb
 import json
+import hashlib
+import importlib.util
 import os
 from pathlib import Path
 import struct
@@ -141,6 +143,94 @@ class Present(gdb.Breakpoint):
 
 text_fonts = []
 quad_frames = {}
+draw_frames = {}
+texture_cache = {}
+color_control = dict(modifiedCalls=0, restoredCalls=0, changedWords=0)
+color_source = None
+if settings.get("drawColorsFrom"):
+    folder = Path(settings["drawColorsFrom"])
+    color_source = json.loads((folder / "draws.json").read_text())[0]
+    color_control["referenceDrawSha256"] = hashlib.sha256((folder / "draws.json").read_bytes()).hexdigest()
+    color_control["drawIndex"] = settings["drawColorIndex"]
+    spec = importlib.util.spec_from_file_location("draw_comparison", Path(__file__).parents[1] / "analysis/compare-portable-draws.py")
+    draw_comparison = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(draw_comparison)
+
+
+class RestoreDrawColors(gdb.FinishBreakpoint):
+    def __init__(self, pointer, original):
+        super().__init__(internal=True)
+        self.pointer, self.original = pointer, original
+
+    def stop(self):
+        gdb.selected_inferior().write_memory(self.pointer, self.original)
+        color_control["restoredCalls"] += 1
+        return False
+
+
+def words(field):
+    size = field.type.sizeof
+    if size % 4:
+        raise RuntimeError("Draw field does not use complete 32-bit words")
+    raw = bytes(gdb.selected_inferior().read_memory(int(field.address), size))
+    return list(struct.unpack("<" + "I" * (size // 4), raw))
+
+
+class Draw(gdb.Breakpoint):
+    def __init__(self):
+        super().__init__("'(anonymous namespace)::LinuxDevice::Draw'", internal=True)
+        self.enabled = False
+
+    def stop(self):
+        selected_stage, frame = current()
+        if selected_stage != stage or frame not in frames:
+            raise RuntimeError("Draw observer was armed outside its selected frame")
+        kind, primitives, stride = (number(name) for name in ("type", "primitiveCount", "stride"))
+        count = primitives if kind == 1 else primitives * 2 if kind == 2 else primitives + 1 if kind == 3 else primitives * 3 if kind == 4 else primitives + 2
+        rows = draw_frames.setdefault(frame, [])
+        if not 0 < count <= 30000 or not 0 < stride <= 256 or stride % 4 or len(rows) >= 10000:
+            raise RuntimeError("Draw capture exceeds its bounded vertex layout")
+        raw = bytes(gdb.selected_inferior().read_memory(number("data"), count * stride))
+        device = value("*this")
+        texture = None
+        if int(device["texture"]):
+            selected = device["texture"].dereference()
+            surface = selected["surface"].dereference()
+            key = (frame, int(selected.address))
+            if key not in texture_cache or bool(surface["dirty"]) or not bool(selected["uploaded"]):
+                width, height, pitch = (int(surface[name]) for name in ("width", "height", "pitch"))
+                size = height * pitch
+                if not 0 < size <= 16 * 1024 * 1024:
+                    raise RuntimeError("Draw texture exceeds its bounded byte capacity")
+                pointer = int(surface["pixels"]["_M_impl"]["_M_start"])
+                pixels = bytes(gdb.selected_inferior().read_memory(pointer, size))
+                texture_cache[key] = dict(width=width, height=height, pitch=pitch, format=int(surface["format"]),
+                                          sha256=hashlib.sha256(pixels).hexdigest())
+            texture = texture_cache[key]
+        inputs = dict(primitiveType=kind, primitiveCount=primitives, stride=stride, fvf=int(device["fvf"]),
+                      vertices=list(struct.unpack("<" + "I" * (len(raw) // 4), raw)), texture=texture)
+        for name in ("world", "view", "projection", "textureTransform", "viewport", "renderStates", "textureStates"):
+            inputs[name] = words(device[name])
+        rows.append(dict(inputs=inputs, cpuFloatingPoint=dict(x87=number("$fctrl"), mxcsr=number("$mxcsr"))))
+        if color_source is not None and len(rows) - 1 == settings["drawColorIndex"]:
+            reference = color_source["draws"][settings["drawColorIndex"]]["inputs"]
+            replacement, changed = draw_comparison.borrow_transparent_rgb(inputs, reference)
+            if changed:
+                gdb.selected_inferior().write_memory(number("data"), struct.pack("<" + "I" * len(replacement), *replacement))
+                RestoreDrawColors(number("data"), raw)
+                color_control["modifiedCalls"] += 1
+                color_control["changedWords"] += len(changed)
+        return False
+
+
+class ArmDraws(gdb.Breakpoint):
+    def __init__(self):
+        super().__init__("th08::AnmManager::ClearVertexBuffer()", internal=True)
+
+    def stop(self):
+        selected_stage, frame = current()
+        draw.enabled = selected_stage == stage and frame in frames
+        return False
 
 
 class Quad(gdb.Breakpoint):
@@ -204,6 +294,11 @@ class Presented(gdb.FinishBreakpoint):
     def stop(self):
         frame = current()[1]
         records.append(dict(stage=stage, frame=frame, lasers=laser_state()))
+        if settings.get("watchDraws"):
+            draw.enabled = False
+            (output / "draws.json").write_text(json.dumps([
+                dict(stage=stage, frame=row["frame"], draws=draw_frames.get(row["frame"], []))
+                for row in records], indent=2) + "\n")
         if settings.get("watchQuads"):
             quad.enabled = False
             (output / "quads.json").write_text(json.dumps([
@@ -298,6 +393,9 @@ if scout:
     Scout()
 else:
     Present()
+    if settings.get("watchDraws"):
+        draw = Draw()
+        ArmDraws()
     if settings.get("watchQuads"):
         quad = Quad()
         ArmQuads()
@@ -321,6 +419,7 @@ if not scout:
             break
         gdb.execute("continue")
 save_records()
+(output / "draw-color-control.json").write_text(json.dumps(color_control, indent=2) + "\n")
 (output / "control.json").write_text(json.dumps(suppression, indent=2) + "\n")
 gdb.execute("kill")
 print("Laser scout completed" if scout else "All requested laser frames captured")

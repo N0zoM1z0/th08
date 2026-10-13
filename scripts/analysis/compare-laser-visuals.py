@@ -71,6 +71,8 @@ def compare(reference, candidate, maximum_error=1.0, normal_candidate=None):
                           ("temporaryRuntimeRemoved", True), ("frameCounter", FRAME_COUNTER), ("playbackMode", 0)):
         if got_meta.get(key) != expected:
             raise ValueError("Invalid portable capture profile: " + key)
+    if got_meta.get("renderInputControl"):
+        raise ValueError("Experimental render-input control cannot support an ordinary image gate")
     if got_meta.get("legacyOpenGL"):
         renderer = got_meta.get("environment", {}).get("openGL", {})
         if renderer.get("clipControlLoaded") is not False or not renderer.get("version", "").startswith("2.1 "):

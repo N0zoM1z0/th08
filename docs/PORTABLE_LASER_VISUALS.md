@@ -577,9 +577,11 @@ captures. Stage 4B frame 15,360 has small background-shading differences:
 cross-product playfield means are 0.073440 with clip control and 0.074393 in
 the legacy profile. The first comparison changes 7,587 pixels, with a maximum
 channel difference of 9 and no pixel above mean RGB error 32. Difference
-images place these changes on the background's thin columns. The cause still
-needs input-transform and renderer-state evidence; the default-profile x86_64
-reference also precedes the legacy source repair.
+images place these changes on the background's thin columns. The
+[draw-input investigation](PORTABLE_DRAW_INPUTS.md) subsequently localizes the
+difference to RGB retained by the target's zero-alpha far-fog vertices, using
+same-source products and an isolated color substitution. The earlier
+default-profile x86_64 reference precedes the legacy source repair.
 
 Evidence is under `build/laser-i386-20261014/`: the four named stage/profile
 directories retain images, raw state and comparisons; `renderer-default-final/`

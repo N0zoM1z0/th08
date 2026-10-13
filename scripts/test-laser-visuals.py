@@ -27,6 +27,9 @@ spec.loader.exec_module(quads)
 spec = importlib.util.spec_from_file_location("subpixel_probe", Path(__file__).parent / "analysis/probe-subpixel-quads.py")
 subpixel = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(subpixel)
+spec = importlib.util.spec_from_file_location("portable_draws", Path(__file__).parent / "analysis/compare-portable-draws.py")
+portable_draws = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(portable_draws)
 
 
 def bits(value):
@@ -58,6 +61,74 @@ class FontEvidenceTests(unittest.TestCase):
         self.assertEqual(evidence["file"], str(self.font))
         self.assertEqual(query.call_args.args[0],
                          ["fc-match", "-f", "%{file}", "VL Gothic:lang=ja:spacing=mono"])
+
+
+class DrawEvidenceTests(unittest.TestCase):
+    def setUp(self):
+        temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(temporary.cleanup)
+        self.reference, self.candidate = (Path(temporary.name) / name for name in ("reference", "candidate"))
+        inputs = dict(primitiveType=5, primitiveCount=2, stride=28, fvf=0x144, vertices=[0] * 28,
+                      world=[0] * 16, view=[0] * 16, projection=[0] * 16, textureTransform=[0] * 16,
+                      viewport=[0, 0, 640, 480, 0, bits(1)], renderStates=[0] * 256,
+                      textureStates=[0] * 32, texture=None)
+        metadata = dict(product="portable-linux", watchDraws=True, runnerExitCode=0, temporaryRuntimeRemoved=True,
+                        rasterization=True, scout=False, muted=True, stage=4, frames=[100], executableSha256="a" * 64)
+        metadata.update(frameCounter="GameManager.gameplayFrameCounter after Present", playbackMode=0,
+                        startStage=4, keepLives=False)
+        for key in ("replaySha256", "gameDataSha256", "bgmDataSha256", "configSha256"):
+            metadata[key] = "b" * 64
+        self.rows = [dict(stage=4, frame=100, draws=[dict(inputs=inputs, cpuFloatingPoint=dict(x87=895, mxcsr=8192))])]
+        for folder in (self.reference, self.candidate):
+            folder.mkdir()
+            (folder / "metadata.json").write_text(json.dumps(metadata))
+            (folder / "draws.json").write_text(json.dumps(self.rows))
+
+    def write_candidate(self):
+        (self.candidate / "draws.json").write_text(json.dumps(self.rows))
+
+    def test_cpu_environment_is_separate_from_input_equality(self):
+        self.rows[0]["draws"][0]["cpuFloatingPoint"]["x87"] = 127
+        self.write_candidate()
+        report = portable_draws.compare(self.reference, self.candidate)
+        self.assertEqual(report["result"], "equal")
+        self.assertNotEqual(report["frames"][0]["referenceFpu"], report["frames"][0]["candidateFpu"])
+
+    def test_single_word_difference_cannot_pass(self):
+        self.rows[0]["draws"][0]["inputs"]["projection"][5] = 1
+        self.write_candidate()
+        report = portable_draws.compare(self.reference, self.candidate)
+        self.assertEqual(report["result"], "different")
+        self.assertEqual(report["frames"][0]["differences"][0]["field"], "[0].projection[5]")
+
+    def test_incomplete_draw_layout_is_rejected(self):
+        self.rows[0]["draws"][0]["inputs"]["vertices"].pop()
+        self.write_candidate()
+        with self.assertRaisesRegex(ValueError, "word layout"):
+            portable_draws.compare(self.reference, self.candidate)
+
+    def test_experimental_draw_control_is_not_an_ordinary_capture(self):
+        path = self.candidate / "metadata.json"
+        metadata = json.loads(path.read_text())
+        metadata["renderInputControl"] = True
+        path.write_text(json.dumps(metadata))
+        with self.assertRaisesRegex(ValueError, "Experimental"):
+            portable_draws.compare(self.reference, self.candidate)
+
+    def test_rgb_control_preserves_all_meaningful_vertex_words(self):
+        current = self.rows[0]["draws"][0]["inputs"]
+        reference = json.loads(json.dumps(current))
+        reference["vertices"][4] = 0x00123456
+        result, changed = portable_draws.borrow_transparent_rgb(current, reference)
+        self.assertEqual(changed, [4])
+        self.assertEqual(result, reference["vertices"])
+        reference["vertices"][4] = 0xff123456
+        with self.assertRaisesRegex(ValueError, "zero-alpha"):
+            portable_draws.borrow_transparent_rgb(current, reference)
+        reference["vertices"][4] = 0x00123456
+        reference["vertices"][0] = 1
+        with self.assertRaisesRegex(ValueError, "zero-alpha"):
+            portable_draws.borrow_transparent_rgb(current, reference)
 
 
 class QuadEvidenceTests(unittest.TestCase):
@@ -154,6 +225,12 @@ class LaserVisualTests(unittest.TestCase):
         result = self.compare()
         self.assertEqual(result["result"], "equal")
         self.assertGreater(result["frames"][0]["laserGeometryPixels"], 50)
+
+    def test_experimental_render_input_cannot_pass_the_ordinary_gate(self):
+        self.portable["renderInputControl"] = True
+        self.metadata()
+        with self.assertRaisesRegex(ValueError, "Experimental render-input"):
+            self.compare()
 
     def test_legacy_profile_requires_observed_context_evidence(self):
         self.portable["legacyOpenGL"] = True

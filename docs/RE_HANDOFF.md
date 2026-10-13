@@ -126,7 +126,11 @@ pass 113,221 calculations on all 25 fields. Evidence is under
 the older provenance's GCC 8.4.0 label has a preserved correction addendum.
 Seven playfields per profile equal the retained x86_64 pixels. Stage 4B frame
 15,360 retains a small background-shading difference, with means 0.073440 and
-0.074393. Capture input transforms and renderer state before assigning a cause.
+0.074393. The [draw-input investigation](PORTABLE_DRAW_INPUTS.md) confirms that
+195 zero-alpha RGB words in the background call differ while all other inputs
+agree. Borrowing those words yields pixel-identical playfields. The canonical
+target also writes alpha only in its far-fog branches; reconstruction behavior
+is preserved. Experimental controls remain separate from ordinary image gates.
 
 For runtime work, select a concrete remaining visual or hardware scenario and
 retain the stage, route, recording, frame, and comparison evidence. For exact

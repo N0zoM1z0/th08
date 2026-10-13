@@ -85,6 +85,8 @@ def capture_portable(candidate, data, replay, output, settings):
                                      font=selected_font),
                     muted=True, keepLives=False, suppressLaserBodies=settings["suppressLaserBodies"])
     metadata["watchQuads"] = settings.get("watchQuads", False)
+    metadata["watchDraws"] = settings.get("watchDraws", False)
+    metadata["renderInputControl"] = bool(settings.get("drawColorsFrom"))
     metadata["legacyOpenGL"] = settings.get("legacyOpenGL", False)
     try:
         for archive in ("th08.dat", "thbgm.dat"):
@@ -129,6 +131,15 @@ def capture_portable(candidate, data, replay, output, settings):
             quads = json.loads((output / "quads.json").read_text())
             if [row["frame"] for row in quads] != settings["frames"] or any(not row["quads"] for row in quads):
                 raise RuntimeError("Portable quad coverage differs from the requested frames")
+        if settings.get("watchDraws"):
+            draws = json.loads((output / "draws.json").read_text())
+            if [row["frame"] for row in draws] != settings["frames"] or any(not row["draws"] for row in draws):
+                raise RuntimeError("Portable draw coverage differs from the requested frames")
+        if settings.get("drawColorsFrom"):
+            control = json.loads((output / "draw-color-control.json").read_text())
+            if not control["changedWords"] or control["restoredCalls"] != control["modifiedCalls"]:
+                raise RuntimeError("Draw-color control did not complete its substitution and restoration")
+            metadata["drawColorControl"] = control
         if settings.get("legacyOpenGL"):
             renderer = json.loads((output / "renderer.json").read_text())
             if renderer["clipControlLoaded"] or not renderer["version"].startswith("2.1 "):
@@ -224,6 +235,9 @@ def main():
     parser.add_argument("--font", type=Path, help="Portable font override; recorded with its file hash")
     parser.add_argument("--watch-text-fonts", action="store_true", help="Record bold text parameters and retail font diagnostics")
     parser.add_argument("--watch-quads", action="store_true", help="Read every submitted sprite quad in the selected frames")
+    parser.add_argument("--watch-draws", action="store_true", help="Read portable draw inputs, matrices, states and texture identities")
+    parser.add_argument("--draw-colors-from", type=Path, help="Experimental zero-alpha RGB control using another completed draw capture")
+    parser.add_argument("--draw-color-index", type=int, default=2, help="Draw index for the experimental color control")
     parser.add_argument("--maximum-frame", type=int, default=30000)
     parser.add_argument("--suppress-laser-bodies", action="store_true", help="Isolated missing-laser negative control")
     parser.add_argument("--retail", action="store_true", help="Also capture the original executable at the same frames")
@@ -260,6 +274,10 @@ def main():
         parser.error("Legacy OpenGL validation requires rasterized frame captures")
     if args.watch_quads and (args.scout or args.watch_text_fonts or args.suppress_laser_bodies):
         parser.error("Quad diagnostics require an ordinary frame capture, separate from font and omission probes")
+    if args.watch_draws and (args.scout or args.watch_quads or args.watch_text_fonts or args.suppress_laser_bodies or args.retail):
+        parser.error("Draw diagnostics require a separate portable frame capture")
+    if args.draw_colors_from and (not args.watch_draws or len(frames) != 1 or args.draw_color_index < 0):
+        parser.error("Draw-color controls require --watch-draws, one frame and a nonnegative draw index")
     if args.retail and args.suppress_laser_bodies:
         parser.error("Compare a missing-laser control against separate normal and retail captures")
     fixture = next((entry for entry in json.loads((ROOT / "config/replay-fixtures.json").read_text())["fixtures"]
@@ -279,10 +297,20 @@ def main():
         if not (data / name).is_file():
             parser.error("Original archive is missing: " + name)
     output.mkdir(parents=True)
+    color_capture = None
+    if args.draw_colors_from:
+        color_capture = args.draw_colors_from.resolve(strict=True)
+        draw_module = module("draw_comparison", ROOT / "scripts/analysis/compare-portable-draws.py")
+        color_meta, color_rows = draw_module.load(color_capture)
+        if color_meta["stage"] != args.stage or color_meta["frames"] != frames or color_meta["replaySha256"] != sha(replay):
+            parser.error("Draw-color source capture does not match the requested recording and frame")
     settings = dict(stage=args.stage, frames=frames, scout=args.scout,
                     maximumFrame=maximum, paced=args.paced, suppressLaserBodies=args.suppress_laser_bodies,
                     watchTextFonts=args.watch_text_fonts,
                     watchQuads=args.watch_quads,
+                    watchDraws=args.watch_draws,
+                    drawColorsFrom=str(color_capture) if color_capture else None,
+                    drawColorIndex=args.draw_color_index,
                     legacyOpenGL=args.legacy_gl,
                     fontOverride=str(args.font.resolve(strict=True)) if args.font else None)
     if case:
