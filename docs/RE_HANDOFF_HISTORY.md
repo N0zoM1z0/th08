@@ -128,10 +128,10 @@ completed 29 recordings and found three differences before it was paused.
 `matrix-fixed/` retains that candidate's results. Border Team Normal Stage 1
 traced to [D3DX normalization rounding](PORTABLE_NORMALIZATION.md); the repaired
 recording passes all 100,979 calculations. Ordinary GDB playback passes its
-2,517-calculation prefix. The two Solo Youmu failures traced to
+2,517-calculation prefix. The two Solo Yuyuko failures traced to
 [polar motion precision](PORTABLE_POLAR_MOTION.md). The latest x86_64 candidate
 passes all three complete recordings over 358,140 calculations. Its GDB
-Youmu Easy prefix passes 6,826 calculations and 6,824 shared enemy-motion
+Yuyuko Easy prefix passes 6,826 calculations and 6,824 shared enemy-motion
 records. The final x86_64 build passes all 108 recordings over 12,311,460
 calculations in `matrix-final/`, including all 25 fields, stage-end scores,
 natural replay exits, and published fingerprints. A second validation pass

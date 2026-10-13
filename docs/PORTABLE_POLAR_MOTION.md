@@ -1,6 +1,6 @@
 # Portable polar motion precision
 
-Solo Youmu Easy Final B, `th8_ud2bff.rpy`, first differed at Stage 2 frame
+Solo Yuyuko Easy Final B, `th8_ud2bff.rpy`, first differed at Stage 2 frame
 6,825. Retail registered a player-shot hit that portable missed: enemy 1
 took 31 damage, internal score increased by 6, and the hit effect consumed
 four RNG values. The player and shot positions agreed at that boundary.
@@ -76,9 +76,9 @@ The repaired x86_64 recorder passes three complete recordings:
 
 | Case | Calculations |
 | --- | ---: |
-| Solo Youmu Easy Final B | 127,605 |
+| Solo Yuyuko Easy Final B | 127,605 |
 | Border Team Normal Final B | 100,979 |
-| Solo Youmu Normal Final B | 129,556 |
+| Solo Yuyuko Normal Final B | 129,556 |
 | Total | 358,140 |
 
 All 25 fields, stage-end scores, natural exits, and published fingerprints
@@ -89,3 +89,4 @@ x86_64 and i386 builds each pass the full 108-recording gate over 12,311,460
 calculations. The [validation results](REPLAY_RESULTS.md) record the complete gates.
 Evidence is in `build/portable-state-20261012/matrix-polar/`, the
 `youmu-easy-*` diagnostics, and `polar-rendering-regression/`.
+The historical `youmu-easy-*` directory names refer to this Yuyuko recording.
