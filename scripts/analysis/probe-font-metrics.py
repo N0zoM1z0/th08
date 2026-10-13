@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Measure TH08's requested GDI font and the portable SDL_ttf fallback."""
+"""Measure TH08's requested GDI font and direct SDL_ttf point-size metrics."""
 import argparse
 import ctypes
 import ctypes.util
@@ -19,7 +19,7 @@ def sha(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def portable_metrics(font_path):
+def ttf_metrics(font_path):
     library = ctypes.util.find_library("SDL2_ttf")
     if not library:
         raise RuntimeError("SDL2_ttf is unavailable")
@@ -102,21 +102,21 @@ def main():
         subprocess.run(["wineserver", "-w"], env=environment, timeout=15, check=False)
         shutil.rmtree(prefix)
         binary.unlink()
-    portable = portable_metrics(font_path)
+    portable = ttf_metrics(font_path)
     (output / "portable.json").write_text(json.dumps(portable, indent=2) + "\n")
-    provenance = dict(evidenceClass="Isolated font API probes; not a TH08 game capture",
+    provenance = dict(evidenceClass="Wine GDI and direct SDL_ttf metric probes; not a TH08 game capture",
                       probeSha256=sha(source), runnerSha256=sha(Path(__file__)),
                       fontPath=str(font_path), fontSha256=sha(font_path), fontOverride=override,
                       locale={name: os.environ.get(name) for name in ("LANG", "LC_ALL", "LC_CTYPE")},
                       nativeParameters="TH08 CreateFontA face, semibold, Shift-JIS, antialias, fixed pitch",
-                      portableParameters="Current portable TTF height, synthetic bold and light hinting",
+                      portableParameters="Direct TTF point size, synthetic bold and light hinting; no GDI height mapping",
                       compiler=subprocess.check_output(["i686-w64-mingw32-g++", "--version"], text=True).splitlines()[0],
                       wine=subprocess.check_output(["wine", "--version"], text=True).strip(),
                       temporaryPrefixRemoved=True)
     (output / "provenance.json").write_text(json.dumps(provenance, indent=2) + "\n")
     for native, candidate in zip(rows, portable):
         print(f"Height {native['requestedHeight']}: Wine {native['face']} "
-              f"width {native['textWidth']}, portable {candidate['face']} width {candidate['textWidth']}")
+              f"width {native['textWidth']}, direct SDL_ttf {candidate['face']} width {candidate['textWidth']}")
 
 
 if __name__ == "__main__":

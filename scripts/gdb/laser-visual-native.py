@@ -58,6 +58,48 @@ def laser_state():
     return result
 
 
+text_fonts = []
+
+
+class TextFont(gdb.Breakpoint):
+    def __init__(self):
+        address = settings["fontCreatedAddress"]
+        expected = bytes.fromhex(settings["fontCreatedBytes"])
+        if ns["block"](address, len(expected)) != expected:
+            raise RuntimeError("Retail font-return instructions differ from the canonical target")
+        super().__init__("*0x%08X" % address, gdb.BP_HARDWARE_BREAKPOINT)
+        self.enabled = False
+
+    def stop(self):
+        try:
+            frame = ns["read"](ns["GM"] + 0x3DDC0)
+            ebp = int(gdb.parse_and_eval("$ebp"))
+            # The target saves fastcall x/y at -0x84/-0x88; eight arguments follow EBP.
+            item = dict(stage=stage, frame=frame, bold=True)
+            for name, offset in (("xPos", -0x84), ("yPos", -0x88), ("spriteWidth", 8),
+                                 ("spriteHeight", 12), ("fontHeight", 16), ("fontWidth", 20),
+                                 ("textColor", 24), ("outlineType", 28)):
+                item[name] = ns["read"](ebp + offset)
+            pointer = ns["read"](ebp + 32)
+            raw = bytearray()
+            for index in range(256):
+                value = ns["block"](pointer + index, 1)[0]
+                if value == 0:
+                    break
+                raw.append(value)
+            else:
+                raise RuntimeError("Retail text exceeds the diagnostic string bound")
+            item.update(textCp932=raw.hex(), text=raw.decode("cp932"),
+                        requestedGdiHeight=item["fontHeight"] * 2 - 2,
+                        fontHandle=int(gdb.parse_and_eval("$eax")) & 0xFFFFFFFF)
+            text_fonts.append(item)
+            (output / "text-fonts.json").write_text(json.dumps(text_fonts, indent=2) + "\n")
+        except Exception as error:
+            self.enabled = False
+            observer.finish("Retail font observation failed: " + str(error))
+        return False
+
+
 class Screenshot(gdb.Breakpoint):
     def __init__(self):
         super().__init__("*0x%08X" % address, gdb.BP_HARDWARE_BREAKPOINT)
@@ -93,6 +135,8 @@ class Screenshot(gdb.Breakpoint):
                 ns[name].close()
             for bp in (observer, observer.completion_observer, ns["begin_observer"], ns["delete_observer"], self):
                 bp.enabled = False
+            if text_font is not None:
+                text_font.enabled = False
             (output / "complete.json").write_text(json.dumps(dict(
                 ended=False, diagnosticComplete=True, errors=[], rows=observer.count,
                 stage=stage, capturedFrames=[record["frame"] for record in records],
@@ -101,11 +145,16 @@ class Screenshot(gdb.Breakpoint):
 
 
 screenshot = Screenshot()
+text_font = TextFont() if settings.get("watchTextFonts") else None
 ordinary_stop = observer.stop
 
 
 def observe_and_arm(completion=False):
     result = ordinary_stop(completion=completion)
+    if text_font is not None and observer.stage == stage:
+        # Stage-start RNG was already observed. Reserve two slots for font/Present.
+        ns["begin_observer"].enabled = observer.completion_observer.enabled = False
+        text_font.enabled = True
     if observer.stage == stage and ns["read"](ns["GM"] + 0x3DDC0) >= max(1, min(frames) - 16):
         observer.completion_observer.enabled = False
         screenshot.enabled = True

@@ -138,6 +138,36 @@ class Present(gdb.Breakpoint):
         return False
 
 
+text_fonts = []
+
+
+class TextFont(gdb.Breakpoint):
+    def __init__(self):
+        super().__init__("th08::TextHelper::RenderTextToTextureBold", internal=True)
+
+    def stop(self):
+        selected_stage, frame = current()
+        if selected_stage != stage or frame < 1:
+            return False
+        item = dict(stage=stage, frame=frame, bold=True)
+        for name in ("xPos", "yPos", "spriteWidth", "spriteHeight", "fontHeight", "fontWidth", "textColor", "outlineType"):
+            item[name] = number(name)
+        pointer = number("string")
+        raw = bytearray()
+        for index in range(256):
+            byte = bytes(gdb.selected_inferior().read_memory(pointer + index, 1))[0]
+            if byte == 0:
+                break
+            raw.append(byte)
+        else:
+            raise RuntimeError("Portable text exceeds the diagnostic string bound")
+        item.update(textCp932=raw.hex(), text=raw.decode("cp932"),
+                    requestedGdiHeight=item["fontHeight"] * 2 - 2)
+        text_fonts.append(item)
+        (output / "text-fonts.json").write_text(json.dumps(text_fonts, indent=2) + "\n")
+        return False
+
+
 class Presented(gdb.FinishBreakpoint):
     def stop(self):
         frame = current()[1]
@@ -225,6 +255,8 @@ if scout:
     Scout()
 else:
     Present()
+    if settings.get("watchTextFonts"):
+        TextFont()
     if settings.get("suppressLaserBodies", False):
         skip_laser, skip_quad = SkipLaser(), SkipQuad()
         skip_laser.enabled = skip_quad.enabled = False

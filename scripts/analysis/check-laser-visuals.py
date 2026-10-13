@@ -50,8 +50,24 @@ def source_identity():
                 runnerSha256=sha(Path(__file__)))
 
 
+def font_environment(override):
+    if override:
+        path = Path(override)
+        if not path.is_absolute():
+            raise ValueError("TH08_FONT must be absolute for reproducible laser captures; use --font")
+        if not path.is_file() or not os.access(path, os.R_OK):
+            raise ValueError("Portable font override is unreadable: " + str(path))
+    else:
+        path = Path(subprocess.check_output([
+            "fc-match", "-f", "%{file}", "VL Gothic:lang=ja:spacing=mono"], text=True))
+    path = path.resolve(strict=True)
+    return dict(override=override, file=str(path), sha256=sha(path),
+                selection="TH08_FONT" if override else "Fontconfig Japanese monospace fallback")
+
+
 def capture_portable(candidate, data, replay, output, settings):
     observer = ROOT / "scripts/gdb/laser-visual-observer.py"
+    selected_font = font_environment(settings.get("fontOverride") or os.environ.get("TH08_FONT"))
     runtime = Path(tempfile.mkdtemp(prefix="laser-visual.", dir=ROOT / "build"))
     settings_path = output / "settings.json"
     settings_path.write_text(json.dumps(dict(settings, output=str(output)), indent=2) + "\n")
@@ -65,7 +81,8 @@ def capture_portable(candidate, data, replay, output, settings):
                     configSha256=hashlib.sha256(configuration).hexdigest(),
                     fastPortableClock=not settings["paced"], rasterization=not settings["scout"],
                     environment=dict(host=platform.platform(),
-                                     gdb=subprocess.check_output(["gdb", "--version"], text=True).splitlines()[0]),
+                                     gdb=subprocess.check_output(["gdb", "--version"], text=True).splitlines()[0],
+                                     font=selected_font),
                     muted=True, keepLives=False, suppressLaserBodies=settings["suppressLaserBodies"])
     try:
         for archive in ("th08.dat", "thbgm.dat"):
@@ -82,6 +99,8 @@ def capture_portable(candidate, data, replay, output, settings):
         for name in ("TH08_REPLAY_TRACE_REFERENCE", "TH08_REPLAY_TRACE_ROWS", "TH08_REPLAY_TRACE_COMPLETION", "TH08_REPLAY_TRACE_MAXIMUM"):
             environment.pop(name, None)
         environment.pop("LP_NO_RAST", None)
+        if settings.get("fontOverride"):
+            environment["TH08_FONT"] = settings["fontOverride"]
         if settings["scout"]:
             environment["LP_NO_RAST"] = "1"
         command = ["xvfb-run", "-a", "-s", "-screen 0 1024x768x24", "timeout",
@@ -100,6 +119,8 @@ def capture_portable(candidate, data, replay, output, settings):
             for frame in settings["frames"]:
                 if not (output / f"frame-{frame}.png").is_file():
                     raise RuntimeError("Requested laser image is missing")
+        if settings.get("watchTextFonts") and not json.loads((output / "text-fonts.json").read_text()):
+            raise RuntimeError("No bold-text font calls were captured in the selected stage")
     finally:
         for name in ("modern-crash.txt", "modern-files.txt"):
             path = runtime / name
@@ -113,13 +134,16 @@ def capture_portable(candidate, data, replay, output, settings):
             compress(output / name)
 
 
-def capture_retail(target, data, replay, output, stage, frames):
+def capture_retail(target, data, replay, output, stage, frames, watch_text_fonts=False):
     from pe_image import PEImage
     if target.stat().st_size != 840704 or sha(target) != TARGET_SHA256:
         raise ValueError("Retail input must be the canonical Japanese TH08 1.00d executable")
     image = PEImage(target)
     settings = dict(stage=stage, frames=frames, postPresentAddress=0x442082,
                     postPresentBytes=image.read_rva(0x442082 - image.image_base, 13).hex())
+    if watch_text_fonts:
+        settings.update(watchTextFonts=True, fontCreatedAddress=0x43FA12,
+                        fontCreatedBytes=image.read_rva(0x43FA12 - image.image_base, 11).hex())
     provenance = dict(source_identity(), observerSha256=sha(ROOT / "scripts/gdb/laser-visual-native.py"),
                       baseObserverSha256=sha(ROOT / "scripts/replay-external-observer.py"),
                       frameCounter=FRAME_COUNTER, frames=frames,
@@ -137,12 +161,16 @@ def capture_retail(target, data, replay, output, stage, frames):
                "--bgm-data", str((data / "thbgm.dat").resolve()), "--replay", str(replay),
                "--start-stage", str(stage), "--playback-mode", "0", "--timeout", "900",
                "--wine-prefix", str(prefix), "--output-dir", str(output)]
+    if watch_text_fonts:
+        command.append("--trace-fonts")
     try:
         with (output.parent / "retail.log").open("w") as stream:
             subprocess.run(command, env=environment, stdout=stream, stderr=subprocess.STDOUT, check=True)
         complete = json.loads((output / "complete.json").read_text())
         if complete.get("capturedFrames") != frames or not complete.get("diagnosticComplete") or complete.get("errors"):
             raise RuntimeError("Retail laser frames did not complete")
+        if watch_text_fonts and not json.loads((output / "text-fonts.json").read_text()):
+            raise RuntimeError("No retail bold-text font calls were captured in the selected stage")
         metadata_path = output / "metadata.json"
         metadata = json.loads(metadata_path.read_text())
         metadata["laserCapture"] = provenance
@@ -171,6 +199,8 @@ def main():
     parser.add_argument("--frames", help="Comma-separated active frame numbers")
     parser.add_argument("--scout", action="store_true", help="Read laser state every 30 frames without rasterization")
     parser.add_argument("--paced", action="store_true", help="Capture portable images with ordinary pacing")
+    parser.add_argument("--font", type=Path, help="Portable font override; recorded with its file hash")
+    parser.add_argument("--watch-text-fonts", action="store_true", help="Record bold text parameters and retail font diagnostics")
     parser.add_argument("--maximum-frame", type=int, default=30000)
     parser.add_argument("--suppress-laser-bodies", action="store_true", help="Isolated missing-laser negative control")
     parser.add_argument("--retail", action="store_true", help="Also capture the original executable at the same frames")
@@ -201,6 +231,8 @@ def main():
         parser.error("Capture requires positive --frames")
     if args.scout and (args.retail or args.suppress_laser_bodies or args.paced):
         parser.error("Scout mode does not capture retail images or run missing-laser controls")
+    if args.scout and args.watch_text_fonts:
+        parser.error("Text-font diagnostics require rasterized frame captures")
     if args.retail and args.suppress_laser_bodies:
         parser.error("Compare a missing-laser control against separate normal and retail captures")
     fixture = next((entry for entry in json.loads((ROOT / "config/replay-fixtures.json").read_text())["fixtures"]
@@ -221,7 +253,9 @@ def main():
             parser.error("Original archive is missing: " + name)
     output.mkdir(parents=True)
     settings = dict(stage=args.stage, frames=frames, scout=args.scout,
-                    maximumFrame=maximum, paced=args.paced, suppressLaserBodies=args.suppress_laser_bodies)
+                    maximumFrame=maximum, paced=args.paced, suppressLaserBodies=args.suppress_laser_bodies,
+                    watchTextFonts=args.watch_text_fonts,
+                    fontOverride=str(args.font.resolve(strict=True)) if args.font else None)
     if case:
         (output / "case.json").write_text(json.dumps(case, indent=2) + "\n")
     print(f"Reading laser scene: {fixture['id']}, stage index {args.stage}", flush=True)
@@ -234,7 +268,7 @@ def main():
     print(f"Captured {len(records)} laser samples in {output}", flush=True)
     if args.retail:
         print("Capturing retail laser frames with ordinary pacing and rasterization", flush=True)
-        capture_retail(args.target.resolve(strict=True), data, replay, output / "retail", args.stage, frames)
+        capture_retail(args.target.resolve(strict=True), data, replay, output / "retail", args.stage, frames, args.watch_text_fonts)
         comparator = module("laser_comparison", ROOT / "scripts/analysis/compare-laser-visuals.py")
         report = comparator.compare(output / "retail", output)
         (output / "comparison.json").write_text(json.dumps(report, indent=2) + "\n")

@@ -26,10 +26,10 @@ canonical 1.00d hash. Recordings come from the
 Keep the font environment with image evidence: portable uses `TH08_FONT` when
 supplied, otherwise Fontconfig's Japanese monospace fallback; retail uses Wine
 GDI font substitution. Glyph differences can affect beam-region errors where
-text overlays a laser. The recorded host selects VL Gothic for portable. An
-isolated Wine API probe selects Droid Sans Fallback for the game's requested
-face; the original game process's selected font still needs to be captured
-directly.
+text overlays a laser. The recorded host selects VL Gothic for portable;
+the Stage 3 retail font trace selects Droid Sans Fallback. Portable captures
+now record the selected font file and SHA-256. Use `--font` for a controlled
+same-font comparison.
 
 The runner captures portable first and retail second. Both run muted with
 normal life rules and playback mode 0. Retail uses ordinary pacing; portable
@@ -198,14 +198,13 @@ The full-recording evidence is in `x86_64-suite/lunatic-0-b/`; use
 `scripts/test-portable-replay-suite.py --cases lunatic-0-b` with the portable
 replay guide's normal capture and retained-evidence commands.
 
-An isolated font API probe uses the game's Japanese face name and semibold,
+The initial isolated font API probe uses the game's Japanese face name and semibold,
 Shift-JIS, antialiased, fixed-pitch parameters. In a fresh Wine32 prefix it
 selects Droid Sans Fallback; portable selects VL Gothic. At requested height
 30, Wine reports ascent/descent 24/6 and a 151-pixel width for `Stage 3`;
-portable reports 26/4 and 126 pixels. This measures font substitution and
-metrics independently of the game. It supports the title-region diagnosis;
-the original game process's selected font and title parameters remain to be
-captured. The initial probe source and measurements are in `font-metrics/`;
+direct SDL_ttf reports 26/4 and 126 pixels. This measures substitution and
+point-size metrics independently of the GDI adapter. The initial probe source
+and measurements are in `font-metrics/`;
 the committed runner reproduces all six heights in `final-font-metrics/`
 under the same investigation directory.
 
@@ -278,6 +277,84 @@ Capture `--case stage4b-marisa` with that executable using the existing laser
 runner, then compare against a fresh normal capture's `retail/`. Use
 `--case stage3-keine` for the Stage 3 comparison. The captures require the same
 original archives as the normal procedure.
+
+## Font-height regression, October 14, 2026
+
+The Stage 3 original-game capture records 81 bold-text calls. Every text byte,
+position, size, color, and outline parameter agrees with portable. The target
+requests GDI height 28; Wine selects `DroidSansFallbackFull.ttf` and maps that
+height to 21 ppem. The native observer reads the attested `CreateFontA` return
+at `0x0043FA12` with a hardware breakpoint; gameplay memory and target bytes
+remain unchanged. `--watch-text-fonts` writes `text-fonts.json` and retains
+Wine font diagnostics in the compressed retail log.
+
+The Linux adapter previously forwarded GDI height directly to SDL_ttf's
+point-size argument. Positive GDI height includes internal leading; negative
+height selects the em square. The repair uses the font's OpenType Windows
+ascent/descent to select the em size and aligns the rendered baseline with
+GDI's ascent. See [CreateFontA](https://learn.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-createfonta)
+and the [SDL_ttf point-size contract](https://www.libsdl.org/projects/docs/old/SDL_ttf/SDL_ttf_14.html).
+Linux builds now link FreeType explicitly. Native VC7 source and build flags
+are unchanged.
+
+| Stage 3 frame | Color repair, default font | Height repair, default font | Height repair, matched Droid font |
+| ---: | ---: | ---: | ---: |
+| 12,900 | 1.484770 | 1.377827 | 1.281292 |
+| 14,130 | 1.244176 | 0.636065 | 0.592546 |
+| 14,310 | 0.293679 | 0.292456 | 0.292456 |
+| 14,490 | 1.292878 | 0.970204 | 0.913421 |
+
+Both repaired-font captures pass three of four strict checks and retain the
+retail laser/VM packet hash. Frame 12,900 still exceeds 1.0. The previous
+49-pixel horizontal edge needs vertex/sampling evidence; text rasterization
+also has remaining differences. The asset-free pixel probe captures 27 text
+images at seven positive and two negative heights, including two recorded
+Stage 3 titles. At height 28, the sword title's bounds change from
+`[6, 11, 319, 37]` to `[5, 8, 246, 28]`; Wine's bounds are
+`[6, 8, 235, 27]`. Remaining widths and grayscale levels differ, so the probe
+reports measurements rather than a pixel-equality pass.
+
+To reproduce the actual-game parameter/font capture:
+
+```bash
+python3 scripts/analysis/check-laser-visuals.py \
+  --candidate build/portable-linux-x86_64/th08-modern \
+  --game-data-dir "/path/to/original/TH08 directory" \
+  --case stage3-keine --watch-text-fonts --retail \
+  --font /usr/share/fonts/truetype/droid/DroidSansFallbackFull.ttf \
+  --output-dir build/laser-font-paired
+```
+
+The portable font override affects only portable. Check the original game's
+font-selection log before interpreting this as a same-font comparison on
+another host. Repeat the adapter pixel probe with the pre-repair failure
+control:
+
+```bash
+python3 scripts/analysis/probe-font-pixels.py \
+  --font /usr/share/fonts/truetype/droid/DroidSansFallbackFull.ttf \
+  --baseline-ref 5b07fd8a --output-dir build/font-pixels
+```
+
+The probe needs MinGW's i686 compiler, Wine32, Pillow, and the Linux build
+libraries. It converts PPM evidence to verified lossless PNGs and removes the
+temporary Wine prefix and probe executables. It records the actual Wine face,
+font file hash, locale, compilers, adapter/source hashes, and image identities.
+
+Local evidence is under `build/laser-font-20261014/`: the original-game font
+trace is in `stage3-droid-paired/retail/`; repaired captures are in
+`stage3-cell-height-default/` and `stage3-cell-height-droid/`. API images and
+old-source controls are in `final-font-pixels/`. The tested x86_64 recorder
+has SHA-256 `75f785111922b27bedb71a2d8142a23b71f6c98cd0ac854a47d5b978539fc566`,
+retained with source hashes and build configuration in `cell-height-build/`.
+The completed compiler tree was removed. Fresh default-font Stage 4B captures
+pass all four checks with the color-repair errors unchanged. The default-font
+image gate now passes seven of eight frames. The complete `lunatic-0-b`
+recording passes 113,221 calculations on all 25 fields with a natural exit;
+its evidence is in `x86_64-suite/`. These results cover the selected x86_64
+product; refreshed i386 images and later-boss cases remain to be exercised.
+Retained-evidence verification, four renderer contract groups, 297 color
+samples, and all 196,608 surface copies also pass with the height repair.
 
 ## Read and verify the evidence
 

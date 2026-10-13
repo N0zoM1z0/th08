@@ -10,6 +10,9 @@
 #include <errno.h>
 #include <fcntl.h>
 #include <fontconfig/fontconfig.h>
+#include <ft2build.h>
+#include FT_FREETYPE_H
+#include FT_TRUETYPE_TABLES_H
 #include <glob.h>
 #include <iconv.h>
 #include <limits.h>
@@ -109,10 +112,11 @@ struct GdiBitmap : GdiObject
 
 struct GdiFont : GdiObject
 {
-    GdiFont() : font(NULL) { kind = FONT; }
-    explicit GdiFont(TTF_Font *font_) : font(font_) { kind = FONT; }
+    GdiFont() : font(NULL), baselineOffset(0) { kind = FONT; }
+    GdiFont(TTF_Font *font_, int baselineOffset_) : font(font_), baselineOffset(baselineOffset_) { kind = FONT; }
     ~GdiFont() { if (font != NULL) TTF_CloseFont(font); }
     TTF_Font *font;
+    int baselineOffset;
 };
 
 struct GdiDc
@@ -214,6 +218,44 @@ const char *ResolveJapaneseFont()
         path = reinterpret_cast<const char *>(file);
     FcPatternDestroy(match);
     return path.empty() ? NULL : path.c_str();
+}
+
+bool GetGdiFontSize(const char *path, int height, int *pixelSize, int *ascent)
+{
+    FT_Library library;
+    if (FT_Init_FreeType(&library) != 0) return false;
+    FT_Face face;
+    if (FT_New_Face(library, path, 0, &face) != 0)
+    {
+        FT_Done_FreeType(library);
+        return false;
+    }
+    bool available = FT_IS_SCALABLE(face) && face->units_per_EM != 0;
+    if (available)
+    {
+        const TT_OS2 *metrics = static_cast<const TT_OS2 *>(FT_Get_Sfnt_Table(face, ft_sfnt_os2));
+        FT_Long winAscent = metrics != NULL ? metrics->usWinAscent : face->ascender;
+        FT_Long winDescent = metrics != NULL ? metrics->usWinDescent : -face->descender;
+        if (winAscent + winDescent == 0)
+        {
+            winAscent = face->ascender;
+            winDescent = -face->descender;
+        }
+        const FT_Long cellUnits = winAscent + winDescent;
+        available = cellUnits > 0;
+        if (available)
+        {
+            if (height == 0) height = 16;
+            // Positive GDI height includes internal leading; negative height selects the em square.
+            FT_Long size = height > 0 ? FT_MulDiv(face->units_per_EM, height, cellUnits) : -static_cast<FT_Long>(height);
+            if (height > 0 && size > 1 && FT_MulDiv(cellUnits, size, face->units_per_EM) > height) --size;
+            *pixelSize = static_cast<int>(size > 0 ? size : 1);
+            *ascent = static_cast<int>(FT_MulDiv(winAscent, *pixelSize, face->units_per_EM));
+        }
+    }
+    FT_Done_Face(face);
+    FT_Done_FreeType(library);
+    return available;
 }
 
 void PutGdiTextPixel(GdiBitmap *bitmap, int x, int y, COLORREF color, BYTE coverage)
@@ -638,7 +680,10 @@ HFONT CreateFontA(int height, int, int, int, int weight, DWORD, DWORD, DWORD, DW
         fprintf(stderr, "th08-modern: SDL_ttf initialization failed: %s\n", TTF_GetError());
         return new GdiFont();
     }
-    TTF_Font *font = TTF_OpenFont(path, height < 0 ? -height : height);
+    int pixelSize = height < 0 ? -height : height;
+    int ascent = 0;
+    const bool haveMetrics = GetGdiFontSize(path, height, &pixelSize, &ascent);
+    TTF_Font *font = TTF_OpenFont(path, pixelSize);
     if (font == NULL)
     {
         fprintf(stderr, "th08-modern: unable to load Japanese font %s: %s\n", path, TTF_GetError());
@@ -646,7 +691,7 @@ HFONT CreateFontA(int height, int, int, int, int weight, DWORD, DWORD, DWORD, DW
     }
     if (weight >= FW_SEMIBOLD) TTF_SetFontStyle(font, TTF_STYLE_BOLD);
     TTF_SetFontHinting(font, TTF_HINTING_LIGHT);
-    return new GdiFont(font);
+    return new GdiFont(font, haveMetrics ? ascent - TTF_FontAscent(font) : 0);
 }
 HBITMAP CreateDIBSection(HDC, const void *infoRaw, UINT, VOID **pixels, HANDLE, DWORD)
 {
@@ -670,7 +715,7 @@ BOOL TextOutA(HDC dcRaw, int x, int y, LPCSTR text, int length)
     {
         const BYTE *source = static_cast<const BYTE *>(glyph->pixels) + row * glyph->pitch;
         for (int column = 0; column < glyph->w; ++column)
-            PutGdiTextPixel(dc->bitmap, x + column, y + row, dc->color, source[column * 4 + 3]);
+            PutGdiTextPixel(dc->bitmap, x + column, y + row + dc->font->baselineOffset, dc->color, source[column * 4 + 3]);
     }
     if (SDL_MUSTLOCK(glyph)) SDL_UnlockSurface(glyph);
     SDL_FreeSurface(glyph);

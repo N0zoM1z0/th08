@@ -82,35 +82,31 @@ new replay output directory.
 
 ## Next bounded work
 
-Laser image work is active on `test/portable-laser-visual-regression`. Eight
-Stage 3 and Stage 4B retail/portable frames have identical raw laser and VM
-packets. One Stage 4B despawn frame passes the strict beam-region pixel limit;
-seven frames report differences above 1.0. The initial scout used
-`stageActiveFrames` on portable; corrected captures use `gameplayFrameCounter`
-on both products. The direct-stage 14,500-calculation portable prefix passes
-all 25 fields. See [the laser workflow](PORTABLE_LASER_VISUALS.md) for commands
-and retained evidence. Missing-beam controls suppress 170 Stage 3 and 10
-Stage 4B submissions, preserve raw state, and detect omissions in all eight
-frames. Error localization finds a dark bias from Linux 5/6-bit color
-conversion and separate Stage 3 title glyph differences. A private codec
-counterfactual passes five of eight strict image checks, preserves all raw
-laser packets, and matches 297 Wine D3D8 color/copy/blend samples; production
-baseline differs on 59 color samples. The production Linux converters now include the
-codec repair. Fresh Wine samples, 144 D3DX copy samples, all 196,608 exhaustive
-16-bit copies, and the four renderer contract groups pass. The old-source
-failure control reproduces the measured defects. Fresh production Stage 4B
-passes all four strict image checks with unchanged raw state; Stage 3 passes
-one and retains three title/edge differences. All eight beam masks equal the
-localized counterfactual pixels. The complete `lunatic-0-b` recording passes
-113,221 calculations and all 25 fields with a natural exit. New evidence is
-under `build/laser-codec-repair-20261014/`; the earlier 108-recording gates
-remain scoped to their published binaries.
-An isolated font API probe selects Droid Sans Fallback in fresh Wine and VL
-Gothic in portable, with different text widths and baselines. Reusable color
-and font API probes are committed with their workflow. Next, capture the
-original game's selected font/title parameters and inspect
-the 49-pixel horizontal-edge residual at Stage 3 frame 12,900. Later-boss cases
-remain to be added. Issue #20 remains open; its original scene is unspecified.
+Laser image work is active on `test/portable-laser-visual-regression`.
+Eight Stage 3 and Stage 4B frames retain identical retail laser/VM packets.
+The color repair passes 297 Wine D3D8 samples, 144 D3DX copy samples, and
+196,608 exhaustive 16-bit copies; its complete `lunatic-0-b` recording passes
+113,221 calculations on all 25 fields. Earlier 108-recording gates remain
+scoped to their published binaries.
+
+The original-game font capture now confirms Droid Sans Fallback, GDI height
+28 mapped to 21 ppem, and 81 bold-text parameter records equal to portable.
+The Linux height/baseline repair uses OpenType Windows metrics. Fresh Stage 3
+captures pass three of four strict image checks with both the default VL Gothic
+and matched Droid fonts. Stage 4B passes all four. The tested Debug recorder
+is `75f785111922b27bedb71a2d8142a23b71f6c98cd0ac854a47d5b978539fc566`;
+its complete `lunatic-0-b` recording passes 113,221 calculations and all
+25 fields with a natural exit, under `build/laser-font-20261014/`.
+Retained-evidence verification, renderer contracts, and texture/copy gates pass.
+The completed compiler tree and owned Wine prefixes have been removed.
+
+The remaining Stage 3 frame 12,900 needs submitted-vertex/sampling evidence
+for the horizontal edge. Font pixel probes also retain measured bold-width
+and grayscale differences. See [the laser workflow](PORTABLE_LASER_VISUALS.md)
+for replay selections, font overrides, original-game font observation, and the
+asset-free 27-image probe with its old-source control. Later-boss laser cases
+and refreshed i386 image/runtime gates remain to be added. Issue #20 remains
+open; its original scene is unspecified.
 
 For runtime work, select a concrete remaining visual or hardware scenario and
 retain the stage, route, recording, frame, and comparison evidence. For exact

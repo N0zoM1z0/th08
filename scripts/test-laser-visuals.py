@@ -1,12 +1,14 @@
 #!/usr/bin/env python3
 """Exercise laser evidence identity checks and missing-beam detection."""
 import importlib.util
+import hashlib
 import json
 from pathlib import Path
 import struct
 import shutil
 import tempfile
 import unittest
+from unittest import mock
 
 from PIL import Image
 
@@ -16,10 +18,40 @@ spec.loader.exec_module(visuals)
 spec = importlib.util.spec_from_file_location("laser_errors", Path(__file__).parent / "analysis/analyze-laser-errors.py")
 errors = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(errors)
+spec = importlib.util.spec_from_file_location("laser_capture", Path(__file__).parent / "analysis/check-laser-visuals.py")
+capture = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(capture)
 
 
 def bits(value):
     return struct.unpack("<I", struct.pack("<f", value))[0]
+
+
+class FontEvidenceTests(unittest.TestCase):
+    def setUp(self):
+        temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(temporary.cleanup)
+        self.font = Path(temporary.name) / "font with spaces.ttf"
+        self.font.write_bytes(b"font identity fixture")
+
+    def test_explicit_override_records_file_and_hash(self):
+        evidence = capture.font_environment(str(self.font))
+        self.assertEqual(evidence["file"], str(self.font))
+        self.assertEqual(evidence["sha256"], hashlib.sha256(self.font.read_bytes()).hexdigest())
+        self.assertEqual(evidence["selection"], "TH08_FONT")
+
+    def test_relative_or_missing_overrides_fail(self):
+        with self.assertRaisesRegex(ValueError, "must be absolute"):
+            capture.font_environment("relative.ttf")
+        with self.assertRaisesRegex(ValueError, "unreadable"):
+            capture.font_environment(str(self.font.with_name("missing.ttf")))
+
+    def test_fallback_records_the_fontconfig_selection(self):
+        with mock.patch.object(capture.subprocess, "check_output", return_value=str(self.font)) as query:
+            evidence = capture.font_environment(None)
+        self.assertEqual(evidence["file"], str(self.font))
+        self.assertEqual(query.call_args.args[0],
+                         ["fc-match", "-f", "%{file}", "VL Gothic:lang=ja:spacing=mono"])
 
 
 class LaserVisualTests(unittest.TestCase):
