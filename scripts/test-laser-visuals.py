@@ -21,6 +21,9 @@ spec.loader.exec_module(errors)
 spec = importlib.util.spec_from_file_location("laser_capture", Path(__file__).parent / "analysis/check-laser-visuals.py")
 capture = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(capture)
+spec = importlib.util.spec_from_file_location("sprite_quads", Path(__file__).parent / "analysis/compare-sprite-quads.py")
+quads = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(quads)
 
 
 def bits(value):
@@ -52,6 +55,40 @@ class FontEvidenceTests(unittest.TestCase):
         self.assertEqual(evidence["file"], str(self.font))
         self.assertEqual(query.call_args.args[0],
                          ["fc-match", "-f", "%{file}", "VL Gothic:lang=ja:spacing=mono"])
+
+
+class QuadEvidenceTests(unittest.TestCase):
+    def quad(self):
+        return [[bits(x), bits(y), bits(0.06), bits(1), 0xffffffff, bits(u), bits(v)]
+                for x, y, u, v in [(200, 236, 0, 0), (280, 236, 1, 0),
+                                  (200, 244, 0, 1), (280, 244, 1, 1)]]
+
+    def test_single_float_ulp_is_reported(self):
+        a, b = self.quad(), self.quad()
+        b[0][1] += 1
+        result = quads.differences(a, b)
+        self.assertEqual(len(result), 1)
+        self.assertEqual(result[0]["field"], "y")
+        self.assertGreater(result[0]["delta"], 0)
+
+    def test_region_excludes_full_frame_and_offscreen_sprites(self):
+        body = self.quad()
+        background = [[bits(x), bits(y), *vertex[2:]] for vertex, (x, y) in zip(body,
+                       [(0, 0), (640, 0), (0, 480), (640, 480)])]
+        offscreen = [[bits(-100), *vertex[1:]] for vertex in body]
+        self.assertEqual([x[0] for x in quads.select_region([background, body, offscreen], (201, 236, 248, 245))], [1])
+
+    def test_missing_frame_or_invalid_layout_cannot_pass(self):
+        with tempfile.TemporaryDirectory() as directory:
+            folder = Path(directory)
+            path = folder / "quads.json"
+            path.write_text(json.dumps([dict(stage=2, frame=100, quads=[self.quad()])]))
+            self.assertEqual(len(quads.load_quads(folder, [100])), 1)
+            with self.assertRaisesRegex(ValueError, "coverage"):
+                quads.load_quads(folder, [101])
+            path.write_text(json.dumps([dict(stage=2, frame=100, quads=[[self.quad()[0]]])]))
+            with self.assertRaisesRegex(ValueError, "layout"):
+                quads.load_quads(folder, [100])
 
 
 class LaserVisualTests(unittest.TestCase):

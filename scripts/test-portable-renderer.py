@@ -50,12 +50,13 @@ def main():
     controls = {"locks": "flag-0 lock sees current GPU pixels",
                 "perspective": "XYZRHW uses reciprocal-depth texture interpolation",
                 "clipping": "vertices behind the camera are clipped",
-                "fog": "CPU upload ignores current fog and viewport"}
+                "fog": "CPU upload ignores current fog and viewport",
+                "edges": "horizontal top edge covers its pixel center"}
     if args.cases:
         available = dict(controls, fpu="device uses retail single-precision x87 mode")
         requested = args.cases.split(",")
         if len(requested) != len(set(requested)) or any(name not in available for name in requested):
-            parser.error("Contract names must be unique and selected from locks,perspective,clipping,fog,fpu")
+            parser.error("Contract names must be unique and selected from locks,perspective,clipping,fog,edges,fpu")
         controls = {name: available[name] for name in requested}
     for case, assertion in controls.items():
         result = subprocess.run(["xvfb-run", "-a", "-s", "-screen 0 1024x768x24", "timeout", "30s", str(binary), case],

@@ -232,13 +232,32 @@ void CheckFogAndBlit()
     Color(2, 2, 0x00ff00, "presentation preserves CPU upload");
     puts("PASS: fog distance and viewport-independent backbuffer upload");
 }
+
+void CheckEdges()
+{
+    Reset(0xff802080);
+    Solid(16.0f, 32.0f, 96.0f, 40.0f, 0xffffffff);
+    Color(40, 32, 0xffffff, "horizontal top edge covers its pixel center");
+    Color(40, 40, 0x802080, "horizontal bottom edge excludes its pixel center");
+    Color(16, 36, 0xffffff, "left edge covers its pixel center");
+    Color(96, 36, 0x802080, "right edge excludes its pixel center");
+    D3DVIEWPORT8 viewport = {8, 8, 112, 112, 0.0f, 1.0f};
+    device->SetViewport(&viewport);
+    Solid(16.0f, 48.0f, 96.0f, 56.0f, 0xff00ff00);
+    Color(40, 48, 0x00ff00, "offset viewport retains top-edge coverage");
+    Color(40, 56, 0x802080, "offset viewport retains bottom-edge exclusion");
+    device->Present(NULL, NULL, NULL, NULL);
+    Color(40, 48, 0x00ff00, "presentation retains the edge-correct backbuffer");
+    puts("PASS: horizontal and vertical pixel-center edge coverage");
+}
 }
 
 int main(int argc, char **argv)
 {
     const char *test = argc == 2 ? argv[1] : "all";
     Require(argc <= 2 && (!strcmp(test, "all") || !strcmp(test, "locks") || !strcmp(test, "perspective") ||
-                          !strcmp(test, "clipping") || !strcmp(test, "fog") || !strcmp(test, "fpu")), "unknown contract case");
+                          !strcmp(test, "clipping") || !strcmp(test, "fog") || !strcmp(test, "fpu") ||
+                          !strcmp(test, "edges")), "unknown contract case");
     HWND window = CreateWindowExA(0, "TEST", "TH08 renderer contract", WS_VISIBLE,
                                  0, 0, 640, 480, NULL, NULL, NULL, NULL);
     Require(window != NULL, "SDL window");
@@ -261,6 +280,7 @@ int main(int argc, char **argv)
     if (!strcmp(test, "all") || !strcmp(test, "perspective")) CheckPerspective();
     if (!strcmp(test, "all") || !strcmp(test, "clipping")) CheckClippingAndDepth();
     if (!strcmp(test, "all") || !strcmp(test, "fog")) CheckFogAndBlit();
+    if (!strcmp(test, "all") || !strcmp(test, "edges")) CheckEdges();
     backbuffer->Release(); device->Release(); d3d->Release(); DestroyWindow(window);
     puts("Portable renderer contracts passed.");
     return 0;

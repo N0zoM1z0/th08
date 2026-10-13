@@ -84,6 +84,7 @@ def capture_portable(candidate, data, replay, output, settings):
                                      gdb=subprocess.check_output(["gdb", "--version"], text=True).splitlines()[0],
                                      font=selected_font),
                     muted=True, keepLives=False, suppressLaserBodies=settings["suppressLaserBodies"])
+    metadata["watchQuads"] = settings.get("watchQuads", False)
     try:
         for archive in ("th08.dat", "thbgm.dat"):
             (runtime / archive).symlink_to((data / archive).resolve())
@@ -121,6 +122,10 @@ def capture_portable(candidate, data, replay, output, settings):
                     raise RuntimeError("Requested laser image is missing")
         if settings.get("watchTextFonts") and not json.loads((output / "text-fonts.json").read_text()):
             raise RuntimeError("No bold-text font calls were captured in the selected stage")
+        if settings.get("watchQuads"):
+            quads = json.loads((output / "quads.json").read_text())
+            if [row["frame"] for row in quads] != settings["frames"] or any(not row["quads"] for row in quads):
+                raise RuntimeError("Portable quad coverage differs from the requested frames")
     finally:
         for name in ("modern-crash.txt", "modern-files.txt"):
             path = runtime / name
@@ -134,7 +139,7 @@ def capture_portable(candidate, data, replay, output, settings):
             compress(output / name)
 
 
-def capture_retail(target, data, replay, output, stage, frames, watch_text_fonts=False):
+def capture_retail(target, data, replay, output, stage, frames, watch_text_fonts=False, watch_quads=False):
     from pe_image import PEImage
     if target.stat().st_size != 840704 or sha(target) != TARGET_SHA256:
         raise ValueError("Retail input must be the canonical Japanese TH08 1.00d executable")
@@ -144,10 +149,14 @@ def capture_retail(target, data, replay, output, stage, frames, watch_text_fonts
     if watch_text_fonts:
         settings.update(watchTextFonts=True, fontCreatedAddress=0x43FA12,
                         fontCreatedBytes=image.read_rva(0x43FA12 - image.image_base, 11).hex())
+    if watch_quads:
+        settings.update(watchQuads=True, quadAddress=0x462F10,
+                        quadBytes=image.read_rva(0x462F10 - image.image_base, 12).hex())
     provenance = dict(source_identity(), observerSha256=sha(ROOT / "scripts/gdb/laser-visual-native.py"),
                       baseObserverSha256=sha(ROOT / "scripts/replay-external-observer.py"),
                       frameCounter=FRAME_COUNTER, frames=frames,
                       gameplayMemoryReadOnly=True, executableBytesUnmodified=True)
+    provenance["watchQuads"] = watch_quads
     settings_path = output.parent / "retail-settings.json"
     settings_path.write_text(json.dumps(settings, indent=2) + "\n")
     environment = dict(os.environ, TH08_STAGE5_REPOSITORY=str(ROOT),
@@ -171,6 +180,10 @@ def capture_retail(target, data, replay, output, stage, frames, watch_text_fonts
             raise RuntimeError("Retail laser frames did not complete")
         if watch_text_fonts and not json.loads((output / "text-fonts.json").read_text()):
             raise RuntimeError("No retail bold-text font calls were captured in the selected stage")
+        if watch_quads:
+            quads = json.loads((output / "quads.json").read_text())
+            if [row["frame"] for row in quads] != frames or any(not row["quads"] for row in quads):
+                raise RuntimeError("Retail quad coverage differs from the requested frames")
         metadata_path = output / "metadata.json"
         metadata = json.loads(metadata_path.read_text())
         metadata["laserCapture"] = provenance
@@ -201,6 +214,7 @@ def main():
     parser.add_argument("--paced", action="store_true", help="Capture portable images with ordinary pacing")
     parser.add_argument("--font", type=Path, help="Portable font override; recorded with its file hash")
     parser.add_argument("--watch-text-fonts", action="store_true", help="Record bold text parameters and retail font diagnostics")
+    parser.add_argument("--watch-quads", action="store_true", help="Read every submitted sprite quad in the selected frames")
     parser.add_argument("--maximum-frame", type=int, default=30000)
     parser.add_argument("--suppress-laser-bodies", action="store_true", help="Isolated missing-laser negative control")
     parser.add_argument("--retail", action="store_true", help="Also capture the original executable at the same frames")
@@ -233,6 +247,8 @@ def main():
         parser.error("Scout mode does not capture retail images or run missing-laser controls")
     if args.scout and args.watch_text_fonts:
         parser.error("Text-font diagnostics require rasterized frame captures")
+    if args.watch_quads and (args.scout or args.watch_text_fonts or args.suppress_laser_bodies):
+        parser.error("Quad diagnostics require an ordinary frame capture, separate from font and omission probes")
     if args.retail and args.suppress_laser_bodies:
         parser.error("Compare a missing-laser control against separate normal and retail captures")
     fixture = next((entry for entry in json.loads((ROOT / "config/replay-fixtures.json").read_text())["fixtures"]
@@ -255,6 +271,7 @@ def main():
     settings = dict(stage=args.stage, frames=frames, scout=args.scout,
                     maximumFrame=maximum, paced=args.paced, suppressLaserBodies=args.suppress_laser_bodies,
                     watchTextFonts=args.watch_text_fonts,
+                    watchQuads=args.watch_quads,
                     fontOverride=str(args.font.resolve(strict=True)) if args.font else None)
     if case:
         (output / "case.json").write_text(json.dumps(case, indent=2) + "\n")
@@ -268,7 +285,8 @@ def main():
     print(f"Captured {len(records)} laser samples in {output}", flush=True)
     if args.retail:
         print("Capturing retail laser frames with ordinary pacing and rasterization", flush=True)
-        capture_retail(args.target.resolve(strict=True), data, replay, output / "retail", args.stage, frames, args.watch_text_fonts)
+        capture_retail(args.target.resolve(strict=True), data, replay, output / "retail", args.stage, frames,
+                       args.watch_text_fonts, args.watch_quads)
         comparator = module("laser_comparison", ROOT / "scripts/analysis/compare-laser-visuals.py")
         report = comparator.compare(output / "retail", output)
         (output / "comparison.json").write_text(json.dumps(report, indent=2) + "\n")

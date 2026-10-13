@@ -100,12 +100,23 @@ its complete `lunatic-0-b` recording passes 113,221 calculations and all
 Retained-evidence verification, renderer contracts, and texture/copy gates pass.
 The completed compiler tree and owned Wine prefixes have been removed.
 
-The remaining Stage 3 frame 12,900 needs submitted-vertex/sampling evidence
-for the horizontal edge. Font pixel probes also retain measured bold-width
-and grayscale differences. See [the laser workflow](PORTABLE_LASER_VISUALS.md)
-for replay selections, font overrides, original-game font observation, and the
-asset-free 27-image probe with its old-source control. Later-boss laser cases
-and refreshed i386 image/runtime gates remain to be added. Issue #20 remains
+The horizontal-edge capture observes 16 region quads with all 448 vertex
+words identical. The independent API probe localizes the difference to edge
+coverage: the old renderer omits the top row and includes the bottom row.
+The upper-left clip-origin repair passes all 34 solid cases and 53/68 total
+synthetic image cases. Fresh game captures now pass all eight strict pixel
+checks with unchanged raw laser/VM packets. Frame 12,900's outside-header mean
+falls to 0.003603 and its 49 high-error pixels disappear. The tested recorder
+is `f0138506b35e9849a2877ee6a8ebe6df66c933534b1375b40c35944af2d653d6`;
+its complete `lunatic-0-b` recording and retained-evidence verification pass
+113,221 calculations and all 25 fields under `build/laser-vertices-20261014/`.
+CI and the named edge contract/failure control pass.
+
+Fifteen synthetic striped-material cases retain sampling differences. Font
+bold-width/grayscale differences, the legacy context path without clip control,
+later-boss laser cases, and refreshed i386 gates remain to be checked.
+See [the laser workflow](PORTABLE_LASER_VISUALS.md) for observed quad capture,
+API replay, and the named old-source edge failure control. Issue #20 remains
 open; its original scene is unspecified.
 
 For runtime work, select a concrete remaining visual or hardware scenario and

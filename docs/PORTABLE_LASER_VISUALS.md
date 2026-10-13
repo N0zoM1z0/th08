@@ -158,8 +158,9 @@ header are 0.019959 and 0.017975. The title glyphs differ between Wine GDI and
 SDL_ttf, with selection and metrics examined by the isolated probe below. Frame
 12,900 has 60.0% of its remaining error in the header and a small horizontal
 beam-edge residual: 49 pixels with mean RGB error above 32 within
-`(201, 236)`–`(247, 244)`. Its outside-header mean error is 0.650546. Vertex
-and sampling evidence is still needed to explain that residual.
+`(201, 236)`–`(247, 244)`. Its outside-header mean error is 0.650546. The
+[subsequent vertex/origin investigation](#horizontal-edge-regression-october-14-2026)
+localizes and repairs this edge residual.
 
 The counterfactual evidence is retained under `build/laser-visual-20261013/`.
 The following checks exercise the repair in repository source.
@@ -306,7 +307,7 @@ are unchanged.
 
 Both repaired-font captures pass three of four strict checks and retain the
 retail laser/VM packet hash. Frame 12,900 still exceeds 1.0. The previous
-49-pixel horizontal edge needs vertex/sampling evidence; text rasterization
+49-pixel horizontal edge is investigated and repaired below; text rasterization
 also has remaining differences. The asset-free pixel probe captures 27 text
 images at seven positive and two negative heights, including two recorded
 Stage 3 titles. At height 28, the sword title's bounds change from
@@ -355,6 +356,92 @@ its evidence is in `x86_64-suite/`. These results cover the selected x86_64
 product; refreshed i386 images and later-boss cases remain to be exercised.
 Retained-evidence verification, four renderer contract groups, 297 color
 samples, and all 196,608 surface copies also pass with the height repair.
+
+## Horizontal-edge regression, October 14, 2026
+
+The selected Stage 3 frame has 16 thin horizontal sprite quads crossing the
+edge region `(201, 236)`–`(248, 245)`. All 448 vertex words agree between
+retail and portable: position, reciprocal W, diffuse color, and UV. The
+complete observed submission counts are 316 and 490; this equality claim
+covers the selected 16 quads, not the entire sprite stream.
+
+An independent D3D8 API probe draws those inputs with solid and synthetic
+striped materials, separately and together, through two viewports. The
+baseline differs in all 68 cropped images. Its solid rectangles omit row 236
+and include row 244, while Wine D3D8 includes the top row and excludes the
+bottom row. This localizes the edge to rasterization rather than the observed
+input coordinates. A private viewport-only experiment leaves all 34 solid
+cases different; an upper-left clip-origin experiment matches all 34.
+
+The Linux renderer now selects the upper-left clip origin when
+`GL_ARB_clip_control` is available. Its projection retains the existing image
+orientation. Presentation and CPU backbuffer uploads use their lower-left
+blit convention explicitly. The legacy path remains for contexts without
+clip-control support; that path still needs a separate edge gate. See the
+[Direct3D filling convention](https://learn.microsoft.com/en-us/windows/win32/direct3d9/rasterization-rules)
+for terminology and [ARB_clip_control](https://registry.khronos.org/OpenGL/extensions/ARB/ARB_clip_control.txt)
+for the OpenGL origin mapping. The measured oracle is Wine D3D8.
+
+| Stage 3 frame | Before origin repair | After origin repair | Strict result |
+| ---: | ---: | ---: | --- |
+| 12,900 | 1.377827 | 0.786645 | Equal |
+| 14,130 | 0.636065 | 0.324227 | Equal |
+| 14,310 | 0.292456 | 0.003113 | Equal |
+| 14,490 | 0.970204 | 0.766607 | Equal |
+
+All four Stage 4B errors remain unchanged and pass. The selected eight-frame
+gate therefore passes with the original 1.0 limit and exact raw laser/VM
+packets. At frame 12,900 the beam-mask mean outside the header falls from
+0.650546 to 0.003603; its 49 pixels above 32 disappear. The independent probe
+passes 53 of 68 exact image comparisons, including every solid case. Fifteen
+striped-material images retain sampling differences; title font rasterization
+also remains distinct. These are separate from the repaired coverage defect.
+
+Capture the observed vertices without rewriting original gameplay memory:
+
+```bash
+python3 scripts/analysis/check-laser-visuals.py \
+  --candidate build/portable-linux-x86_64/th08-modern \
+  --game-data-dir "/path/to/original/TH08 directory" \
+  --fixture lunatic-0-b --stage 2 --frames 12900 --watch-quads --retail \
+  --output-dir build/laser-quads
+python3 scripts/analysis/compare-sprite-quads.py \
+  --reference build/laser-quads/retail --candidate build/laser-quads \
+  --output build/laser-quads/quad-comparison.json
+python3 scripts/analysis/probe-subpixel-quads.py \
+  --capture build/laser-quads --baseline-ref 8702c8ef --check-coverage \
+  --output-dir build/subpixel-api
+```
+
+The retail hardware breakpoint at `AddSpriteToDrawBuffer @ 0x00462F10`
+attests its instructions and reads the four 28-byte vertices. It is armed only
+for selected frames; the portable observer uses Debug types and the same
+word layout. Region selection retains every thin horizontal quad crossing
+the ROI in submission order. Missing coverage and malformed/nonfinite vertex
+data fail validation. Font and omission observers run in separate captures.
+
+The asset-free renderer gate now checks top/bottom and left/right pixel-center
+coverage, an offset viewport, and preservation through Present:
+
+```bash
+python3 scripts/test-portable-renderer.py --cases edges
+python3 scripts/test-portable-renderer.py --cases edges \
+  --baseline-ref 8702c8ef --expect-failures
+```
+
+The pre-repair renderer fails the named top-edge assertion. Local evidence is
+under `build/laser-vertices-20261014/`: `stage3-12900-paired/` contains the
+observed inputs; `repro-subpixel-api/` contains synthetic images and the
+old-source control. Repaired game frames are in `stage3-origin/` and
+`stage4b-origin/`. The tested x86_64 recorder has SHA-256
+`f0138506b35e9849a2877ee6a8ebe6df66c933534b1375b40c35944af2d653d6`,
+retained with source/build identities in `production-origin/`; its compiler
+tree was removed. The complete `lunatic-0-b` recording passes 113,221
+calculations and all 25 fields with a natural replay exit. Retained-evidence
+verification and target-independent CI also pass. The refreshed whole corpus
+and i386 images remain separate gates.
+The renderer's five contract groups and all 297 texture-color samples and
+196,608 surface copies pass after the origin change.
 
 ## Read and verify the evidence
 

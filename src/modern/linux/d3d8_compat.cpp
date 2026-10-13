@@ -29,6 +29,7 @@ typedef void (APIENTRY *RenderbufferStorageFunction)(GLenum, GLenum, GLsizei, GL
 typedef void (APIENTRY *FramebufferRenderbufferFunction)(GLenum, GLenum, GLenum, GLuint);
 typedef void (APIENTRY *DeleteRenderbuffersFunction)(GLsizei, const GLuint *);
 typedef void (APIENTRY *FogCoordfFunction)(GLfloat);
+typedef void (APIENTRY *ClipControlFunction)(GLenum, GLenum);
 
 struct FramebufferApi
 {
@@ -89,6 +90,12 @@ struct FramebufferApi
 
 FramebufferApi g_framebufferApi;
 FogCoordfFunction g_fogCoordf;
+ClipControlFunction g_clipControl;
+
+void SetClipOrigin(GLenum origin)
+{
+    if (g_clipControl != NULL) g_clipControl(origin, GL_NEGATIVE_ONE_TO_ONE);
+}
 
 UINT BytesPerPixel(D3DFORMAT format)
 {
@@ -244,6 +251,9 @@ class LinuxSurface : public IDirect3DSurface8
                 DecodePixel(&pixels[y * pitch + x * bytes], format, &rgba[(y * width + x) * 4]);
 
         GLuint name = 0;
+        GLint previousOrigin = GL_LOWER_LEFT;
+        if (g_clipControl != NULL) glGetIntegerv(GL_CLIP_ORIGIN, &previousOrigin);
+        SetClipOrigin(GL_LOWER_LEFT);
         glPushAttrib(GL_ALL_ATTRIB_BITS);
         glDisable(GL_ALPHA_TEST); glDisable(GL_BLEND); glDisable(GL_CULL_FACE);
         glDisable(GL_DEPTH_TEST); glDisable(GL_SCISSOR_TEST);
@@ -270,6 +280,7 @@ class LinuxSurface : public IDirect3DSurface8
         glPopMatrix(); glMatrixMode(GL_PROJECTION); glPopMatrix(); glMatrixMode(GL_MODELVIEW);
         glDeleteTextures(1, &name);
         glPopAttrib();
+        SetClipOrigin(previousOrigin);
         dirty = false;
     }
     ULONG refs;
@@ -450,6 +461,8 @@ class LinuxDevice : public IDirect3DDevice8
         context = SDL_GL_CreateContext(window);
         if (context == NULL) return;
         SDL_GL_MakeCurrent(window, context);
+        g_clipControl = SDL_GL_ExtensionSupported("GL_ARB_clip_control") ?
+            reinterpret_cast<ClipControlFunction>(SDL_GL_GetProcAddress("glClipControl")) : NULL;
         g_fogCoordf = reinterpret_cast<FogCoordfFunction>(SDL_GL_GetProcAddress("glFogCoordf"));
         if (g_fogCoordf == NULL)
             g_fogCoordf = reinterpret_cast<FogCoordfFunction>(SDL_GL_GetProcAddress("glFogCoordfEXT"));
@@ -495,6 +508,7 @@ class LinuxDevice : public IDirect3DDevice8
         int drawableWidth, drawableHeight;
         SDL_GL_GetDrawableSize(window, &drawableWidth, &drawableHeight);
         g_framebufferApi.bindFramebuffer(GL_FRAMEBUFFER, 0);
+        SetClipOrigin(GL_LOWER_LEFT);
         glDrawBuffer(GL_BACK);
         glViewport(0, 0, drawableWidth, drawableHeight);
 
@@ -874,7 +888,11 @@ class LinuxDevice : public IDirect3DDevice8
                   drawableHeight - static_cast<int>((viewport.Y + viewport.Height) * drawableHeight / height),
                   static_cast<int>(viewport.Width * drawableWidth / width),
                   static_cast<int>(viewport.Height * drawableHeight / height));
-        glMatrixMode(GL_PROJECTION); glLoadIdentity(); glOrtho(0.0, width, height, 0.0, -1.0, 1.0);
+        // Upper-left origin selects D3D's horizontal-edge coverage convention.
+        SetClipOrigin(g_clipControl != NULL ? GL_UPPER_LEFT : GL_LOWER_LEFT);
+        glMatrixMode(GL_PROJECTION); glLoadIdentity();
+        if (g_clipControl != NULL) glOrtho(0.0, width, 0.0, height, -1.0, 1.0);
+        else glOrtho(0.0, width, height, 0.0, -1.0, 1.0);
         glMatrixMode(GL_MODELVIEW); glLoadIdentity();
         if (renderStates[D3DRS_ALPHABLENDENABLE])
         { glEnable(GL_BLEND); glBlendFunc(BlendFunction(renderStates[D3DRS_SRCBLEND]), BlendFunction(renderStates[D3DRS_DESTBLEND])); }

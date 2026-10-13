@@ -73,6 +73,8 @@ def main() -> int:
         run("Smoke-test replay frame inspection CLI", [sys.executable, "scripts/analysis/check-stage5-background.py", "--help"])
         run("Smoke-test laser frame inspection CLI", [sys.executable, "scripts/analysis/check-laser-visuals.py", "--help"])
         run("Smoke-test laser visual comparison CLI", [sys.executable, "scripts/analysis/compare-laser-visuals.py", "--help"])
+        run("Smoke-test sprite quad comparison CLI", [sys.executable, "scripts/analysis/compare-sprite-quads.py", "--help"])
+        run("Smoke-test subpixel quad probe CLI", [sys.executable, "scripts/analysis/probe-subpixel-quads.py", "--help"])
         run("Smoke-test laser error localization CLI", [sys.executable, "scripts/analysis/analyze-laser-errors.py", "--help"])
         run("Smoke-test texture color probe CLI", [sys.executable, "scripts/analysis/probe-texture-colors.py", "--help"])
         run("Smoke-test font metrics probe CLI", [sys.executable, "scripts/analysis/probe-font-metrics.py", "--help"])

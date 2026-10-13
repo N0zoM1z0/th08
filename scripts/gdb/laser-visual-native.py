@@ -59,6 +59,32 @@ def laser_state():
 
 
 text_fonts = []
+quad_frames = {}
+
+
+class Quad(gdb.Breakpoint):
+    def __init__(self):
+        address = settings["quadAddress"]
+        expected = bytes.fromhex(settings["quadBytes"])
+        if ns["block"](address, len(expected)) != expected:
+            raise RuntimeError("Retail quad instructions differ from the canonical target")
+        super().__init__("*0x%08X" % address, gdb.BP_HARDWARE_BREAKPOINT)
+        self.enabled = False
+
+    def stop(self):
+        try:
+            frame = ns["read"](ns["GM"] + 0x3DDC0)
+            esp = int(gdb.parse_and_eval("$esp"))
+            pointer = ns["read"](esp + 4)
+            raw = ns["block"](pointer, 4 * 28)
+            rows = quad_frames.setdefault(frame, [])
+            if len(rows) >= 10000:
+                raise RuntimeError("Retail quad capture exceeds its bounded frame capacity")
+            rows.append([list(struct.unpack_from("<7I", raw, offset)) for offset in range(0, 112, 28)])
+        except Exception as error:
+            self.enabled = False
+            observer.finish("Retail quad observation failed: " + str(error))
+        return False
 
 
 class TextFont(gdb.Breakpoint):
@@ -121,6 +147,11 @@ class Screenshot(gdb.Breakpoint):
         if frame not in frames:
             raise RuntimeError("Retail presentation skipped a requested laser frame")
         records.append(dict(stage=stage, frame=frame, lasers=laser_state()))
+        if quad is not None:
+            quad.enabled = False
+            (output / "quads.json").write_text(json.dumps([
+                dict(stage=stage, frame=row["frame"], quads=quad_frames.get(row["frame"], []))
+                for row in records], indent=2) + "\n")
         (output / "lasers.json").write_text(json.dumps(records, indent=2) + "\n")
         windows = subprocess.check_output([
             "xdotool", "search", "--onlyvisible", "--pid", str(gdb.selected_inferior().pid)], text=True).split()
@@ -146,11 +177,15 @@ class Screenshot(gdb.Breakpoint):
 
 screenshot = Screenshot()
 text_font = TextFont() if settings.get("watchTextFonts") else None
+quad = Quad() if settings.get("watchQuads") else None
 ordinary_stop = observer.stop
 
 
 def observe_and_arm(completion=False):
     result = ordinary_stop(completion=completion)
+    if quad is not None and observer.stage == stage:
+        ns["begin_observer"].enabled = observer.completion_observer.enabled = False
+        quad.enabled = ns["read"](ns["GM"] + 0x3DDC0) in frames
     if text_font is not None and observer.stage == stage:
         # Stage-start RNG was already observed. Reserve two slots for font/Present.
         ns["begin_observer"].enabled = observer.completion_observer.enabled = False

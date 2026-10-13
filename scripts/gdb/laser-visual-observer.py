@@ -5,6 +5,7 @@ import os
 from pathlib import Path
 import struct
 import subprocess
+import struct
 
 settings = json.loads(Path(os.environ["TH08_LASER_SETTINGS"]).read_text())
 output = Path(settings["output"])
@@ -139,6 +140,37 @@ class Present(gdb.Breakpoint):
 
 
 text_fonts = []
+quad_frames = {}
+
+
+class Quad(gdb.Breakpoint):
+    def __init__(self):
+        super().__init__("th08::AnmManager::AddSpriteToDrawBuffer(th08::VertexTex1DiffuseXyzrhw*)", internal=True)
+        self.enabled = False
+
+    def stop(self):
+        selected_stage, frame = current()
+        if selected_stage != stage or frame not in frames:
+            raise RuntimeError("Portable quad observer was armed outside its selected frame")
+        pointer = number("vertices")
+        if value("sizeof(th08::VertexTex1DiffuseXyzrhw)") != 28:
+            raise RuntimeError("Portable quad vertex stride differs")
+        raw = bytes(gdb.selected_inferior().read_memory(pointer, 112))
+        rows = quad_frames.setdefault(frame, [])
+        if len(rows) >= 10000:
+            raise RuntimeError("Portable quad capture exceeds its bounded frame capacity")
+        rows.append([list(struct.unpack_from("<7I", raw, offset)) for offset in range(0, 112, 28)])
+        return False
+
+
+class ArmQuads(gdb.Breakpoint):
+    def __init__(self):
+        super().__init__("th08::AnmManager::ClearVertexBuffer()", internal=True)
+
+    def stop(self):
+        selected_stage, frame = current()
+        quad.enabled = selected_stage == stage and frame in frames
+        return False
 
 
 class TextFont(gdb.Breakpoint):
@@ -172,6 +204,11 @@ class Presented(gdb.FinishBreakpoint):
     def stop(self):
         frame = current()[1]
         records.append(dict(stage=stage, frame=frame, lasers=laser_state()))
+        if settings.get("watchQuads"):
+            quad.enabled = False
+            (output / "quads.json").write_text(json.dumps([
+                dict(stage=stage, frame=row["frame"], quads=quad_frames.get(row["frame"], []))
+                for row in records], indent=2) + "\n")
         save_records()
         return True
 
@@ -255,6 +292,9 @@ if scout:
     Scout()
 else:
     Present()
+    if settings.get("watchQuads"):
+        quad = Quad()
+        ArmQuads()
     if settings.get("watchTextFonts"):
         TextFont()
     if settings.get("suppressLaserBodies", False):
