@@ -179,6 +179,11 @@ complete Border Team Normal recording and an independent 60,797-calculation
 GDB prefix. The final x86_64 build is running all 108 recordings in
 `matrix-final/`; `final-full-suite.log` records progress. Previous candidates'
 results remain separate checkpoints.
+The current x86_64 candidate passes all 25 fields for 36 Easy, Normal, and
+Hard Final B recordings over 4,479,937 calculations, including stage-end scores
+and natural exits.
+The candidate uses gameplay source `af9cb1d3`. The batch continues with
+Lunatic, Extra, and Final A recordings.
 
 State parity covers the selected recordings and fields. Use the
 [rendering gate](PORTABLE_RENDERING.md) for frame comparisons, HOME screenshots,

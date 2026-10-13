@@ -125,6 +125,11 @@ Youmu Easy prefix passes 6,826 calculations and 6,824 shared enemy-motion
 records. The final x86_64 build is running all 108 recordings in `matrix-final/`
 with `final-x86_64-candidate/th08-modern`.
 `build/portable-state-20261012/final-full-suite.log` records progress.
+The current x86_64 candidate passes all 25 fields for 36 Easy, Normal, and
+Hard Final B recordings over 4,479,937 calculations, including stage-end scores
+and natural exits.
+The candidate uses gameplay source `af9cb1d3`. The batch continues with
+Lunatic, Extra, and Final A recordings.
 The detached serial queue records its status in `serial-replay-queue.json`
 under the same evidence directory. It runs the i386 corpus after a complete
 x86_64 pass, reusing the completed Border Team check in `i386-matrix-fpu/`.
