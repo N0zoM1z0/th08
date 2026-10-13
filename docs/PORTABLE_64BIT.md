@@ -14,12 +14,14 @@ Active development and CI snapshots remain on
 
 | Architecture | Build verification | Runtime verification |
 | --- | --- | --- |
-| x86_64 | ELF64 little-endian PIE; native globals; no fixed-address TH08 symbols | Complete Sakuya/Remilia Lunatic route through Stages 1–6A, ending, results, and return to title under WSLg; additional Stage 4A and Stage 6B Practice validation; deterministic replay audits under Xvfb/Mesa |
+| x86_64 | ELF64 little-endian PIE; native globals; no fixed-address TH08 symbols | All 108 replay recordings and 12,311,460 calculations match retail on 25 fields; selected retail frame comparisons, a complete Lunatic run, and Stage 4A/6B Practice runs also pass |
 | AArch64 | Cross-built ELF64 little-endian PIE with only AArch64 libraries | QEMU user-mode reaches DAT/version/logo/loading initialization; a real AArch64 desktop gameplay run remains required |
 
 Native x86_64 gameplay and replay audits have run under WSLg and Xvfb/Mesa.
 AArch64 has cross-build, packaging, and QEMU startup evidence; gameplay on real
 AArch64 hardware remains the next gate.
+The [replay validation results](REPLAY_RESULTS.md) record the complete native,
+Linux x86_64, and Linux i386 gates and their reproduction methods.
 
 <p align="center">
   <img
@@ -259,8 +261,9 @@ and removes each temporary runtime. A failure stops the batch with its evidence
 retained. `--windows yukari-stage3,border-stage5` selects individual checks;
 use a new output directory for each run.
 
-These windows establish bounded portable replay/render coverage. The full
-108-case, 25-field parity claim belongs to the separate VC7 replay gate.
+These windows check selected portable rendering paths. The separate complete
+state suites pass all 108 recordings on both Linux x86_64 and i386, with the
+same 25 fields and published fingerprints as the VC7 gate.
 Use [PORTABLE_REPLAY_TESTING.md](PORTABLE_REPLAY_TESTING.md) for the complete
 portable state gate and [PORTABLE_VECTOR_PRECISION.md](PORTABLE_VECTOR_PRECISION.md)
 for the Stage 4A math-overload repair found by that gate.
@@ -271,11 +274,13 @@ The 2026-10-12 run at source commit `2c253eb2` passed all six windows, with
 all 1,106 accepted VC7 units after a cold build and passed fresh normal/bugfix
 link checks. Reports and compressed logs are in `build/replay-cold-20261011/`.
 
-The Stage 5 window contains one `color-loss-suspect` sample at frame 6,166,
+That initial Stage 5 window contained one `color-loss-suspect` sample at frame 6,166,
 enemy 14, sprite 77, alongside 72 `ok` samples for the same animation/script/
 sprite. The checker reports isolated suspects and fails structural errors or
-repeated zero-pixel draws. This sample needs visual confirmation; the retained
-CSV records its texture, tint, geometry, and framebuffer delta.
+repeated zero-pixel draws. The retained CSV records its texture, tint, geometry,
+and framebuffer delta. Subsequent same-frame review found no obvious color
+anomaly. The repaired six-window gate retains nine unconfirmed heuristic color
+suspects; the [rendering report](PORTABLE_RENDERING.md) records their current status.
 
 Same-frame retail comparison subsequently exposed a Stage 5 background
 perspective difference. [PORTABLE_BACKGROUND.md](PORTABLE_BACKGROUND.md) records

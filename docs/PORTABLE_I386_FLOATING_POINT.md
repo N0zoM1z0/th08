@@ -77,5 +77,7 @@ resets the death count, while this full-run reference reaches Stage 5 with
 two deaths. Such a startup comparison describes a different replay scenario.
 
 Evidence is in `build/portable-state-20261012/i386-matrix-fpu/`,
-`i386-stage5-full-prefix/`, and `fpu-device-contracts/`. This is one complete
-i386 recording; the wider corpus and AArch64 hardware gameplay remain pending.
+`i386-stage5-full-prefix/`, and `fpu-device-contracts/`. The subsequent full i386
+gate passes all 108 recordings and 12,311,460 calculations, including a separate
+retained-evidence verification. See the [complete results](REPLAY_RESULTS.md).
+AArch64 hardware gameplay remains a separate check.

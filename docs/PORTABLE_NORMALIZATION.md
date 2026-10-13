@@ -97,7 +97,7 @@ RNG callers by default in an external detail window.
 The repaired x86_64 recorder passes the complete Border Team Normal Final B
 recording: **100,979 calculations**, all 25 fields, stage-end scores, and natural
 replay completion agree with retail. The subsequent
-[polar motion repair](PORTABLE_POLAR_MOTION.md) resolves the Solo Youmu
+[polar motion repair](PORTABLE_POLAR_MOTION.md) resolves the Solo Yuyuko
 Easy and Normal failures.
 
 The ordinary GDB build passes 2,517 calculations. Its first 2,516 pool records
@@ -111,3 +111,5 @@ at calculation 60,796, Stage 5 frame 3,789: internal score +4 and four extra
 RNG generations. The subsequent
 [i386 device precision repair](PORTABLE_I386_FLOATING_POINT.md) resolves it.
 AArch64 hardware gameplay is pending; ARM retains scalar normalization.
+The subsequent [complete state gates](REPLAY_RESULTS.md) pass all 108 recordings
+and 12,311,460 calculations on both Linux x86_64 and i386.

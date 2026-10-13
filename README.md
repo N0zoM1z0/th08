@@ -35,6 +35,7 @@ paths; whole-executable identity is still in progress.
 | --- | --- |
 | Understand the project and how the engine fits together | [Project and engine guide](docs/PROJECT_GUIDE.md) |
 | Check reconstruction progress | [Repository status](#repository-status) |
+| Review replay validation results and reproduce them | [Replay validation](docs/REPLAY_RESULTS.md) |
 | Understand how AI agents work on the project | [AI agent workflow](#ai-agent-workflow) |
 | Read our accuracy and readability philosophy | [What we mean by semantic reconstruction](#what-we-mean-by-semantic-reconstruction) |
 | Contribute | [Contributing](#contributing) |

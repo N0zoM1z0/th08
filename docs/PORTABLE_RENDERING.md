@@ -108,6 +108,7 @@ The source changes are confined to the Linux platform backend; target-facing
 reconstruction source, layouts, and mapping ledgers retain the preceding native
 checkpoint.
 
-Portable's complete 108-recording state-parity run and AArch64 hardware gameplay
-remain separate validation tasks. The [background investigation](PORTABLE_BACKGROUND.md)
+The subsequent Linux x86_64 and i386 state suites each pass all 108 recordings
+over 12,311,460 calculations; see the [complete results](REPLAY_RESULTS.md).
+AArch64 hardware gameplay remains to be verified. The [background investigation](PORTABLE_BACKGROUND.md)
 and [runtime review](PORTABLE_RUNTIME_REVIEW.md) preserve the original findings.

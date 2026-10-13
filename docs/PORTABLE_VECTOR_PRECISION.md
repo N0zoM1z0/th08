@@ -76,10 +76,14 @@ python3 scripts/capture-portable-replay.py \
   --game-data-dir /path/to/original-game-data \
   --replay tests/fixtures/replays/th08-1.00d/accepted/th8_ud2cd7.rpy \
   --reference build/replay-cold-20261011/matrix/lunatic-1-a/reference \
-  --backend gdb --start-stage 3 --max-calculations 14566 \
+  --backend gdb --max-calculations 54574 \
   --watch-enemy 5 --watch-item 2052 --watch-item-start 14460 \
   --output-dir build/portable-magic-motion
 ```
+
+This retains earlier stages' cumulative state and reaches Stage 4A frame
+14,566 at calculation 54,574. The recorded 14,566-calculation stage-only
+diagnostic used a separate retail reference that also started at Stage 4A.
 
 The native runner's `--watch-enemy` and `--watch-item` options read the same
 pool slots during a selected `--detail-stage/--detail-start/--detail-end`
@@ -93,7 +97,8 @@ After the angle repair, all 14,463 retained enemy observations agree with
 retail, and the 14,566-calculation Stage 4A prefix passes all 25 fields.
 Item slot 2,052 reaches the original `166.0` pickup height. The asset-free
 angle probe reproduces the wrong bit in the earlier ELF and passes in the
-repaired build. The complete portable corpus gate is recorded separately.
+repaired build. The [complete results](REPLAY_RESULTS.md) record the subsequent
+108-recording passes on both Linux x86_64 and i386.
 
 Local diagnosis and regression evidence is in `build/portable-state-20261012/`.
 The native comparison branch retains its preceding expressions and ABI.

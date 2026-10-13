@@ -6,6 +6,9 @@ sequence, records each calculation frame, and reports the first difference.
 BGM and sound effects are off throughout. The run needs no menu input or
 supervision.
 
+See [Replay validation results](REPLAY_RESULTS.md) for the complete native and
+portable results, tested artifacts, repairs, and coverage.
+
 `test-replay-suite.py` extends the comparison to standard replay files. The
 [fixture manifest](../config/replay-fixtures.json) pins 108 public 1.00d
 recordings: each of the 12 shot types on Easy, Normal, Hard, and Lunatic through
