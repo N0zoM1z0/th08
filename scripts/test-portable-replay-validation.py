@@ -31,8 +31,8 @@ class ValidationTests(unittest.TestCase):
                              gameDataSha256="th08.dat", bgmDataSha256="thbgm.dat", muted=True,
                              configSha256=hashlib.sha256(b"config").hexdigest())
         self.fingerprint = "published"
-        comparison = SimpleNamespace(load=lambda _: (self.metadata, [[0] * 25]),
-                                     trace_sha256=lambda *_: self.fingerprint)
+        self.count = 1
+        comparison = SimpleNamespace(summarize=lambda _: (self.metadata, self.count, self.fingerprint))
         native = SimpleNamespace(muted_config=lambda: b"config")
         for item in (patch.object(capture, "ROOT", self.root),
                      patch.object(capture, "sha", lambda path: path.name),
@@ -74,6 +74,11 @@ class ValidationTests(unittest.TestCase):
 
     def test_changed_trace_is_rejected(self):
         self.fingerprint = "different"
+        with self.assertRaisesRegex(ValueError, "published"):
+            self.validate()
+
+    def test_changed_count_is_rejected(self):
+        self.count = 2
         with self.assertRaisesRegex(ValueError, "published"):
             self.validate()
 

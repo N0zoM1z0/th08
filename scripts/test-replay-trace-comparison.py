@@ -4,6 +4,8 @@ import importlib.util
 import hashlib
 import json
 from pathlib import Path
+import subprocess
+import sys
 import tempfile
 import unittest
 
@@ -44,6 +46,8 @@ class ComparisonTests(unittest.TestCase):
         self.assertEqual(result["firstDifference"]["frame"], 2)
         self.assertEqual(result["firstDifference"]["differingFields"], ["x"])
         self.assertNotEqual(result["referenceTraceSha256"], result["candidateTraceSha256"])
+        self.assertEqual([row["frame"] for row in result["firstDifference"]["referenceContext"]], [1, 2, 3])
+        self.assertEqual([row["frame"] for row in result["firstDifference"]["candidateContext"]], [1, 2, 3])
 
     def test_trace_digest_ignores_json_whitespace(self):
         (self.candidate / "rows.jsonl").write_text("\n".join(json.dumps(row, separators=(",", ":")) for row in self.rows))
@@ -202,6 +206,72 @@ class ExternalComparisonTests(unittest.TestCase):
         self.write(self.candidate)
         with self.assertRaisesRegex(ValueError, "end score"):
             compare.compare(self.reference, self.candidate)
+
+    def test_difference_does_not_hide_an_invalid_tail(self):
+        self.rows[0][self.metadata["schema"]["fields"].index("x")] = 1
+        self.rows[-1][3] += 1
+        self.write(self.candidate)
+        with self.assertRaisesRegex(ValueError, "calculation frames"):
+            compare.compare(self.reference, self.candidate)
+
+    def test_longer_trace_tail_is_validated_after_the_other_trace_ends(self):
+        for stage in self.metadata["replay"]["stages"]:
+            stage["inputRecords"] -= 1
+        full = self.rows
+        self.rows = full[:-1]
+        self.complete.update(rows=4, stageFrames={"0": 2, "1": 2})
+        self.write(self.reference)
+        self.rows = full
+        self.complete.update(rows=5, stageFrames={"0": 2, "1": 3})
+        self.rows[-1][3] += 1
+        self.write(self.candidate)
+        with self.assertRaisesRegex(ValueError, "calculation frames"):
+            compare.compare(self.reference, self.candidate)
+
+    def test_difference_context_spans_a_stage_boundary(self):
+        self.rows[2][self.metadata["schema"]["fields"].index("x")] = 1
+        self.write(self.candidate)
+        report = compare.compare(self.reference, self.candidate)
+        difference = report["firstDifference"]
+        self.assertEqual(difference["differingFields"], ["x"])
+        for field in ("referenceContext", "candidateContext"):
+            self.assertEqual([row["calc"] for row in difference[field]], [1, 2, 3, 4, 5])
+
+    def test_duplicate_stage_headers_are_rejected(self):
+        self.metadata["replay"]["stages"].insert(1, self.metadata["replay"]["stages"][0])
+        self.write(self.candidate)
+        with self.assertRaisesRegex(ValueError, "stages"):
+            compare.compare(self.reference, self.candidate)
+
+    def test_complete_trace_summary_has_the_same_digest(self):
+        metadata, count, fingerprint = compare.summarize(self.reference)
+        self.assertEqual(metadata, self.metadata)
+        self.assertEqual(count, len(self.rows))
+        self.assertEqual(fingerprint, compare.trace_sha256(self.metadata, self.rows))
+
+    @unittest.skipUnless(sys.platform.startswith("linux"), "Linux address-space budget")
+    def test_large_trace_fits_a_64_mib_process(self):
+        frames = 40000
+        self.metadata["replay"]["stages"] = [dict(index=0, inputRecords=frames + 7, endScore=99)]
+        self.complete = dict(rows=frames, ended=True, stages=[0], stageFrames={"0": frames}, endScores={"0": 99})
+        for directory in (self.reference, self.candidate):
+            (directory / "metadata.json").write_text(json.dumps(self.metadata))
+            (directory / "complete.json").write_text(json.dumps(self.complete))
+            with (directory / "rows.jsonl").open("w") as stream:
+                for frame in range(1, frames + 1):
+                    row = [frame, 0, frame, frame, 99] + [frame + 256] * (len(self.metadata["schema"]["fields"]) - 5)
+                    stream.write(json.dumps(row) + "\n")
+        script = Path(__file__).with_name("compare-replay-traces.py")
+        program = ("import resource, runpy, sys; from pathlib import Path; "
+                   "resource.setrlimit(resource.RLIMIT_AS, (64 * 1024 * 1024, 64 * 1024 * 1024)); "
+                   "sys.path.insert(0, str(Path(sys.argv[1]).parent)); "
+                   "sys.argv = sys.argv[1:]; runpy.run_path(sys.argv[0], run_name='__main__')")
+        result = subprocess.run([sys.executable, "-c", program, str(script), str(self.reference), str(self.candidate)],
+                                capture_output=True, text=True, timeout=30)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        report = json.loads(result.stdout)
+        self.assertEqual(report["result"], "equal")
+        self.assertEqual(report["comparedFrames"], frames)
 
     def test_pacing_difference_requires_explicit_validation(self):
         self.metadata["clockRate"] = 128

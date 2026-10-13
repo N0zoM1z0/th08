@@ -46,6 +46,47 @@ Repeat the command to resume: completed captures are revalidated, and failed
 attempts remain under their case directory. A changed executable, observer,
 asset set, schema, or playback profile requires a fresh output directory.
 
+## Resource use and cleanup
+
+Build with `--parallel 1` and run one suite at a time. The suite captures one
+recording per process, limits Mesa worker threads, and gives each capture a
+deadline (`--timeout`, 1,800 seconds by default). Finish the active suite before
+starting another build. Prefix the suite command with `/usr/bin/time -v` to record
+its elapsed time and maximum resident set size.
+
+Trace validation and comparison stream the rows, retaining stage boundaries
+and a five-row diagnostic window. On the 126,803-calculation `easy-1-b` pair,
+the comparison process peaked at 17.5 MiB, down from 227 MiB with the buffered
+comparator at `af9cb1d3`. Both produced identical reports. A regression test
+compares 40,000 rows within a 64 MiB process address-space limit; this budget
+applies to the comparator, while the game runs in its own process.
+
+Measure a completed pair with:
+
+```bash
+/usr/bin/time -v python3 scripts/compare-replay-traces.py \
+  build/replay-cold-20261011/matrix/easy-1-b/reference \
+  build/portable-replay-suite/easy-1-b/candidate --allow-pacing-difference
+```
+
+To measure the preceding comparator, export it with
+`git show af9cb1d3:scripts/compare-replay-traces.py > build/compare-replay-before.py`,
+then repeat that command with `PYTHONPATH=scripts` and
+`build/compare-replay-before.py` as the script path. Use the same retained pair
+for both measurements.
+
+Each completed capture compresses its logs and removes its temporary runtime.
+The suite shares equal compressed traces with the validated retail reference,
+so repeated passes retain metadata without duplicating those traces. Keep the
+tested executable, build provenance, completed references, and comparison
+results. Once build checks finish, copy the executable to a separate candidate
+directory and remove that build's compiler tree. Check `free -h` and
+`du -sh build/portable-replay*` between batches.
+
+After an interrupted run, check the suite and capture processes before cleaning
+any leftover `build/portable-state.*` directories. Resume with the same command:
+the runner validates completed captures before continuing.
+
 ## Read the result
 
 `suite.json` records each case. A complete pass requires:

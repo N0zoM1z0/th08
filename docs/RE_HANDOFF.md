@@ -90,6 +90,14 @@ the native gate. Its optional compiled recorder reads typed fields and exits
 through normal shutdown after natural replay deletion. A GDB backend provides
 independent checks and bounded enemy/item motion diagnostics.
 
+Trace validation and comparison now stream rows. Revalidation of all 108
+retained retail/native pairs reproduces their preceding reports and published
+fingerprints over 12,311,460 calculations. The `easy-1-b` comparison's peak
+resident size falls from 227 MiB to 17.5 MiB; 29 comparison tests, seven
+reference-identity tests, and repository CI pass. Reproduction and cleanup
+commands are in [PORTABLE_REPLAY_TESTING.md](PORTABLE_REPLAY_TESTING.md).
+This revalidation checks the comparator; it reuses the completed cold captures.
+
 The first batch exposed a Magic Team Lunatic Final A score difference at
 Stage 4A frame 14,564: internal score +12. Modern C++ selected the float
 `atan2` overload in `VectorAngle @ 0x0040C7B0`; the portable branch now selects
@@ -117,13 +125,16 @@ Youmu Easy prefix passes 6,826 calculations and 6,824 shared enemy-motion
 records. The final x86_64 build is running all 108 recordings in `matrix-final/`
 with `final-x86_64-candidate/th08-modern`.
 `build/portable-state-20261012/final-full-suite.log` records progress.
+The detached serial queue records its status in `serial-replay-queue.json`
+under the same evidence directory. It runs the i386 corpus after a complete
+x86_64 pass, reusing the completed Border Team check in `i386-matrix-fpu/`.
 
 The i386 [device precision repair](PORTABLE_I386_FLOATING_POINT.md) resolves
 the Stage 5 frame 3,789 drift. Its full Border Team recording passes 100,979
 calculations in `i386-matrix-fpu/`; GDB independently passes 60,797 calculations
 and records retail's `0x007F` control word. Asset-free device defaults and
 FPU-preservation contracts pass and reproduce the old backend's failure.
-Expand i386 replay coverage after the x86_64 batch; captures remain serial.
+The queued i386 corpus follows the x86_64 batch; captures remain serial.
 
 The accepted VC7 ledger passes all 1,106 units from a new cold build after
 the motion repair. Fresh normal/bugfix links and their owner/data/callee

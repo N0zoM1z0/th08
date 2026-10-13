@@ -32,7 +32,7 @@ def sha(path):
 
 def validate_reference(reference, replay, data, target):
     comparison, native = module("compare-replay-traces"), module("capture-replay")
-    metadata, rows = comparison.load(reference)
+    metadata, count, fingerprint = comparison.summarize(reference)
     expected = dict(product="retail", executableSha256=sha(target), targetSha256=sha(target),
                     schema=json.loads((ROOT / "scripts/replay-external-schema.json").read_text()),
                     fixture=replay["sha256"], replay=replay, startStage=replay["stages"][0]["index"], playbackMode=2,
@@ -43,8 +43,7 @@ def validate_reference(reference, replay, data, target):
             raise ValueError("Retail reference identity differs: " + field)
     fixture = next(entry for entry in json.loads((ROOT / "config/replay-fixtures.json").read_text())["fixtures"]
                    if entry["sha256"] == replay["sha256"])
-    fingerprint = comparison.trace_sha256(metadata, rows)
-    if len(rows) != fixture["retailTrace"]["calculationFrames"] or fingerprint != fixture["retailTrace"]["sha256"]:
+    if count != fixture["retailTrace"]["calculationFrames"] or fingerprint != fixture["retailTrace"]["sha256"]:
         raise ValueError("Retail reference differs from the published trace expectation")
     return metadata, fixture, fingerprint
 
