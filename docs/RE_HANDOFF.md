@@ -114,7 +114,8 @@ images, with nine first-row differences coinciding with Wine's offset-viewport
 sensitivity. Private viewport mapping does not resolve them. Its evidence
 is under `build/laser-sampling-20261014/`; `--position-grid 256` reproduces
 the control. Later-boss laser cases and the full corpus
-for the revised products remain to be checked. Issue #20 remains open; its
+for the revised products remain to be checked. The later Final A capture below
+is the next concrete image investigation. Issue #20 remains open; its
 original scene is unspecified.
 
 The refreshed i386 recorder is
@@ -131,6 +132,21 @@ Seven playfields per profile equal the retained x86_64 pixels. Stage 4B frame
 agree. Borrowing those words yields pixel-identical playfields. The canonical
 target also writes alpha only in its far-fog branches; reconstruction behavior
 is preserved. Experimental controls remain separate from ordinary image gates.
+
+The Magic Team Lunatic Final A case `finala-eirin` adds five paired frames.
+All laser/VM packets match retail exactly, but all five image checks fail the
+unchanged 1.0 limit, with beam-region means 12.120407–20.909872. Paired images
+show a large spell-background difference. At frame 9,570, ordinary-paced and
+accelerated portable captures have identical playfields and laser packets;
+the paced capture also retains 30 draw calls. Next compare retail and portable
+background quad/texture inputs and measure background versus beam contributions.
+The manifest pins the failing selection and retail state hash. Evidence is under
+`build/laser-stage4a-20261014/`; see the
+[Final A observation](PORTABLE_LASER_VISUALS.md#final-a-observation-october-14-2026).
+The scout now supports interval 1, samples at Present entry, records counter
+gaps, and enforces a 32 MiB snapshot capacity. This recording's Stage 4A survey
+observed no active lasers in 22,947 presented samples; its older report predates
+gap accounting and supports no claim about unobserved calculations.
 
 For runtime work, select a concrete remaining visual or hardware scenario and
 retain the stage, route, recording, frame, and comparison evidence. For exact

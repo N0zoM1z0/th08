@@ -229,7 +229,8 @@ def main():
     parser.add_argument("--fixture", help="ID in config/replay-fixtures.json; default: lunatic-1-a")
     parser.add_argument("--stage", type=int, help="Internal stage index, 0 through 8")
     parser.add_argument("--frames", help="Comma-separated active frame numbers")
-    parser.add_argument("--scout", action="store_true", help="Read laser state every 30 frames without rasterization")
+    parser.add_argument("--scout", action="store_true", help="Discover laser state at presented frames without rasterization")
+    parser.add_argument("--sample-interval", type=int, default=30, help="Scout interval in presented gameplay frames; 1 checks every distinct frame")
     parser.add_argument("--paced", action="store_true", help="Capture portable images with ordinary pacing")
     parser.add_argument("--legacy-gl", action="store_true", help="Capture portable through Mesa OpenGL 2.1 without clip control")
     parser.add_argument("--font", type=Path, help="Portable font override; recorded with its file hash")
@@ -244,6 +245,8 @@ def main():
     parser.add_argument("--target", type=Path, default=ROOT / "resources/th08.exe")
     parser.add_argument("--output-dir", type=Path, required=True, help="Fresh directory under build/")
     args = parser.parse_args()
+    if args.sample_interval < 1:
+        parser.error("Sample interval must be positive")
     case = None
     if args.case:
         config = json.loads((ROOT / "config/laser-visual-fixtures.json").read_text())
@@ -305,6 +308,7 @@ def main():
         if color_meta["stage"] != args.stage or color_meta["frames"] != frames or color_meta["replaySha256"] != sha(replay):
             parser.error("Draw-color source capture does not match the requested recording and frame")
     settings = dict(stage=args.stage, frames=frames, scout=args.scout,
+                    sampleInterval=args.sample_interval,
                     maximumFrame=maximum, paced=args.paced, suppressLaserBodies=args.suppress_laser_bodies,
                     watchTextFonts=args.watch_text_fonts,
                     watchQuads=args.watch_quads,

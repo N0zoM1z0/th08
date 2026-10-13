@@ -27,6 +27,20 @@
         { "frame": 15360, "phase": "colored stationary despawn", "expectedLaserState": 2 },
         { "frame": 18210, "phase": "moving beams", "expectedLaserState": 1 }
       ]
+    },
+    {
+      "id": "finala-eirin",
+      "fixture": "lunatic-1-a",
+      "stage": 6,
+      "boss": "Eirin",
+      "retailLaserStateSha256": "8b072685ec6cfa446961167be9a9608eb2ad102dad0da1c7171c2849f0032a28",
+      "frames": [
+        { "frame": 9570, "phase": "dense stationary attack", "expectedLaserState": 1 },
+        { "frame": 14490, "phase": "stationary startup", "expectedLaserState": 0 },
+        { "frame": 14550, "phase": "stationary active", "expectedLaserState": 1 },
+        { "frame": 15090, "phase": "stationary despawn", "expectedLaserState": 2 },
+        { "frame": 22590, "phase": "late mixed-phase attack", "expectedLaserState": 2 }
+      ]
     }
   ]
 }

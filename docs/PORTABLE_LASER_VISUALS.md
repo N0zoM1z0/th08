@@ -14,7 +14,9 @@ records the current executable and complete-recording check.
 
 Font rasterization and synthetic texture sampling retain measurable differences.
 The [i386 refresh](#i386-refresh-october-14-2026) passes the same selected frames
-in both context profiles. Later bosses and the full corpus for the revised
+in both context profiles. The [Final A investigation](#final-a-observation-october-14-2026)
+adds five failing image cases with identical laser/VM packets and a visible
+spell-background difference. Other bosses and the full corpus for the revised
 binaries remain separate checks. The dated sections below preserve the baseline
 and each repair's evidence.
 
@@ -601,6 +603,59 @@ fresh output directory for the second profile. See the
 [i386 renderer command](PORTABLE_RENDERING.md#pixel-contracts-without-game-assets)
 for architecture-specific compiler and package-metadata selection.
 
+## Final A observation, October 14, 2026
+
+Case `finala-eirin` uses `lunatic-1-a`, Magic Team, Lunatic, Final A,
+credited to Asahi in the replay corpus. Its five paired frames cover a dense
+stationary attack, startup, active beams, despawn and a later mixed-phase attack.
+Retail and portable laser/VM packets are identical, with SHA-256
+`8b072685ec6cfa446961167be9a9608eb2ad102dad0da1c7171c2849f0032a28`.
+The portable executable is the current x86_64 recorder `62386854…` identified
+in the legacy-profile section above. These captures use its default context.
+
+| Frame | Active slots | Beam-geometry pixels | Beam-region mean RGB error | Image result |
+| ---: | ---: | ---: | ---: | --- |
+| 9,570 | 55 | 10,716 | 17.589088 | Different |
+| 14,490 | 4 | 1,435 | 20.909872 | Different |
+| 14,550 | 4 | 6,372 | 14.604154 | Different |
+| 15,090 | 4 | 5,780 | 15.289389 | Different |
+| 22,590 | 10 | 10,160 | 12.120407 | Different |
+
+Paired images show a large spell-background texture difference, while the
+visible beams and bullets occupy corresponding positions. Full-playfield mean
+errors range from 30.788425 to 40.457833. Beam masks also contain the background
+visible through transparent laser pixels, so these failures require background
+and laser contributions to be measured separately. Texture selection, UV/state
+inputs remain investigation questions; the matched laser
+packets alone do not establish the rendering cause. At frame 9,570, a fresh
+ordinary-paced portable capture has the same laser packet and pixel-identical
+playfield as the accelerated capture. Playback pacing is excluded for that
+frame. Its draw-input capture records 30 calls, including two large rotated
+background quads; comparison with retail texture and quad inputs is still needed.
+
+Reproduce the failing selection with the unchanged 1.0 image limit:
+
+```bash
+python3 scripts/analysis/check-laser-visuals.py \
+  --candidate build/portable-linux-x86_64/th08-modern \
+  --game-data-dir "/path/to/original/TH08 directory" \
+  --case finala-eirin --retail --output-dir build/laser-finala
+```
+
+The retained paired evidence is under
+`build/laser-stage4a-20261014/finala-paired/`. The ordinary-paced image and draw
+inputs are in `finala-paced-draws/`, with `finala-pacing-comparison.json` in the
+parent directory. The manifest pins all five frames and their retail state hash,
+including the failing image cases.
+
+A separate Stage 4A survey of this recording observes 22,947 presented gameplay
+counter samples at interval 1, with no active laser slots. This describes the
+observed presentations rather than all numerical counter values. The later
+Final A interval-30 survey observes 321 samples with active lasers among 877
+samples and records its counter gaps. Both complete within their frame limits;
+their reports are in `scout-every-frame/` and `finala-scout/` under the same
+evidence directory. The earlier Stage 4A report predates gap accounting.
+
 ## Read and verify the evidence
 
 `comparison.json` records the executable and replay identities, raw laser-state
@@ -698,9 +753,15 @@ python3 scripts/analysis/check-laser-visuals.py \
 ```
 
 Scout mode samples active laser state every 30 presented gameplay frames with
-rasterization disabled. `scout-summary.json` records the sampled range and
-stop reason; `lasers.json` retains samples containing active slots. Choose
-frames with substantial on-screen geometry, then capture those exact frames
+rasterization disabled. It reads the pool at `LinuxDevice::Present` entry,
+after the draw chain. `--sample-interval 1` checks each distinct presented
+gameplay counter; smaller intervals can discover shorter events.
+`scout-summary.json` records the interval, boundary, sampled range, counter
+gaps, serialized record size and stop reason. Detailed snapshots have a
+32 MiB serialized limit; reaching it fails the capture. `lasers.json` retains
+samples containing active slots. Counter gaps remain explicit, so an empty
+survey describes observed presented frames rather than every calculation.
+Choose frames with substantial on-screen geometry, then capture those exact frames
 with rasterization and retail comparison. Sampling can miss shorter events.
 New cases should identify the boss, phase, credited fixture, stage, and frame,
 and retain paired state and image evidence before entering the manifest.

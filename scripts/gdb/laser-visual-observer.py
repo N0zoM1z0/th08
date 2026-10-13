@@ -7,7 +7,6 @@ import os
 from pathlib import Path
 import struct
 import subprocess
-import struct
 
 settings = json.loads(Path(os.environ["TH08_LASER_SETTINGS"]).read_text())
 output = Path(settings["output"])
@@ -18,7 +17,9 @@ maximum = settings.get("maximumFrame", max(frames, default=30000))
 sample_interval = settings.get("sampleInterval", 30)
 records = []
 scout_summary = dict(sampledFrames=0, framesWithLasers=0, firstFrame=None, lastFrame=None,
-                     stopReason=None, complete=False)
+                     stopReason=None, complete=False, sampleInterval=sample_interval,
+                     samplingBoundary="LinuxDevice::Present entry", serializedRecordBytes=0,
+                     counterGaps=[], counterWentBackwards=False)
 
 
 def value(expression):
@@ -97,7 +98,7 @@ def save_records():
 
 class Scout(gdb.Breakpoint):
     def __init__(self):
-        super().__init__("th08::BulletManager::OnDraw(th08::BulletManager*)", internal=True)
+        super().__init__("'(anonymous namespace)::LinuxDevice::Present'", internal=True)
 
     def stop(self):
         global last_sampled_frame
@@ -111,6 +112,11 @@ class Scout(gdb.Breakpoint):
                 return True
             return False
         if frame > 0 and frame % sample_interval == 0 and frame != last_sampled_frame:
+            if last_sampled_frame is not None:
+                if frame > last_sampled_frame + sample_interval:
+                    scout_summary["counterGaps"].append([last_sampled_frame + sample_interval, frame - sample_interval])
+                if frame < last_sampled_frame:
+                    scout_summary["counterWentBackwards"] = True
             last_sampled_frame = frame
             active = laser_state()
             scout_summary["sampledFrames"] += 1
@@ -119,7 +125,13 @@ class Scout(gdb.Breakpoint):
                 scout_summary["firstFrame"] = frame
             scout_summary["lastFrame"] = frame
             if active:
-                records.append(dict(stage=stage, frame=frame, lasers=active))
+                record = dict(stage=stage, frame=frame, lasers=active)
+                scout_summary["serializedRecordBytes"] += len(json.dumps(record))
+                if scout_summary["serializedRecordBytes"] > 32 * 1024 * 1024:
+                    scout_summary.update(stopReason="record capacity", complete=False)
+                    save_records()
+                    raise RuntimeError("Scout snapshots exceed the 32 MiB serialized capacity")
+                records.append(record)
                 save_records()
         if frame == maximum:
             scout_summary.update(stopReason="frame limit", complete=True)
