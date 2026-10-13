@@ -88,7 +88,8 @@ verification, and output smoke pass. The repaired playable image has SHA-256
 Its muted full-route comparison passes all 25 fields over 107,296 calculations,
 with all six stage end scores matching the recording and a natural replay exit.
 Evidence is in `build/replay-suite/matrix-v1/easy-0-b/` and the score/item
-diagnostic directories. The remaining fixture matrix is in progress.
+diagnostic directories. The subsequent [complete native gate](REPLAY_RESULTS.md)
+passes all 108 fixtures over 12,311,460 calculations.
 
 <a id="rt-011"></a>
 
@@ -113,8 +114,8 @@ their VC7 comparisons after a cold build. The Linux link and a callback
 register/cut smoke pass. The muted native replay now agrees with retail for
 37,016 calculations, including the complete first two stages. At Stage 3
 frame 14,350 it then exposed a separate score difference of 156, repaired in
-[RT-012](#rt-012). The full 107,296-calculation replay now passes; the remaining
-route matrix is in progress. Raw evidence is under
+[RT-012](#rt-012). The full 107,296-calculation replay passes, as does the
+subsequent [108-recording route gate](REPLAY_RESULTS.md). Raw evidence is under
 `build/replay-suite/`, with fixture provenance in
 [replay-fixtures.json](../config/replay-fixtures.json).
 
