@@ -128,7 +128,8 @@ with `final-x86_64-candidate/th08-modern`.
 The current x86_64 candidate passes all 25 fields for 48 Final B recordings
 over 5,995,059 calculations, including stage-end scores and natural exits.
 These cover all four story difficulties and 12 shot choices. The candidate
-uses gameplay source `af9cb1d3`; the batch continues with Extra and Final A.
+uses gameplay source `af9cb1d3`. All 12 Extra recordings also pass over
+599,995 calculations; the batch now runs the Final A recordings.
 The detached serial queue records its status in `serial-replay-queue.json`
 under the same evidence directory. It runs the i386 corpus after a complete
 x86_64 pass, reusing the completed Border Team check in `i386-matrix-fpu/`.

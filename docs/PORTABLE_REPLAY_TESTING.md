@@ -182,7 +182,8 @@ results remain separate checkpoints.
 The current x86_64 candidate passes all 25 fields for 48 Final B recordings
 over 5,995,059 calculations, including stage-end scores and natural exits.
 These cover all four story difficulties and 12 shot choices. The candidate
-uses gameplay source `af9cb1d3`; the batch continues with Extra and Final A.
+uses gameplay source `af9cb1d3`. All 12 Extra recordings also pass over
+599,995 calculations; the batch now runs the Final A recordings.
 
 State parity covers the selected recordings and fields. Use the
 [rendering gate](PORTABLE_RENDERING.md) for frame comparisons, HOME screenshots,
