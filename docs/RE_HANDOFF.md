@@ -126,7 +126,13 @@ also repairs 2,712 pixels found by the first blend repetition. The recorder is
 build identity under `build/font-production-20261014/production/`. All eight
 default-font Stage 3/4B laser images and four matched-Droid Stage 3 images pass
 the original limits with exact raw laser/VM packets. Matched-font game-image
-residuals remain to be localized. The complete `lunatic-0-b` recording and
+residuals now have a scaling candidate: the text helper requests filter 4 for
+half-size copies, while portable discards that argument and uses nearest-neighbor
+coordinates. Canonical D3DX8 forwards the filter through its fallback and
+validates types 1–5. Next obtain paired scaled-surface pixel evidence against
+the target-linked implementation; see
+[the scaling observation](PORTABLE_LASER_VISUALS.md#remaining-title-texture-scaling).
+The complete `lunatic-0-b` recording and
 retained-evidence gate pass 113,221 calculations on all 25 fields, end scores
 and natural exit. All six renderer contract groups pass. The new product's complete corpus and i386
 refresh remain separate gates. See the

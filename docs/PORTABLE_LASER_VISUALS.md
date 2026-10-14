@@ -559,6 +559,41 @@ Both captures run muted and serially. It removes temporary executables and
 its owned Wine prefix, compresses raw bitmaps, and records all pixel differences
 and source hashes. Evidence is under `build/font-production-20261014/`.
 
+### Remaining title texture scaling
+
+The matched-font residual covers more than the beam mask alone. At frame
+12,900, the complete header has 1,081 differing pixels and mean RGB error
+1.501320. Within the beam mask, 99.1% of the remaining error lies in the header;
+outside it the mean is 0.003603. The title's nine distinct glyphs were tested
+through both system FreeType builds. Eight have identical outlines and coverage;
+U+90F7 retains only the four one-unit coverage differences documented above.
+
+Source inspection identifies the next scaling gate. The game text helper
+copies a double-size bitmap into a half-size texture with filter `4`.
+The canonical caller pushes `4` at `0x0043FC9E` and calls the linked surface
+copy at `0x0043FCB5`.
+Portable `D3DXLoadSurfaceFromSurface` discards the filter argument, and
+`CopyRgbaToSurface` chooses pixels with integer nearest-neighbor coordinates.
+The earlier 144-copy and exhaustive-copy probes test equal dimensions; they
+provide no scaled-filter evidence.
+
+Canonical target instructions at `D3DXLoadSurfaceFromSurface @ 0x0047ABAB`
+check equal rectangle dimensions at `0x0047AC97` and `0x0047ACA4`. The fallback
+forwards the filter at `0x0047AD19` to `FUN_0047a586`, which forwards it at
+`0x0047A615` to `FUN_00480f33`; that dispatcher masks and validates filter
+values 1–5. These are target observations, not a recovered filtering algorithm.
+The configured VC7 prerelease D3DX8 archive was re-attested as SHA-256
+`0d4a2b642485dcaa7671926a9a1a545c656d5eb73f160fe971b3deebf0b516b5`.
+The [Microsoft filter reference](https://learn.microsoft.com/en-us/windows/win32/direct3d9/d3dx-filter)
+describes distinct point, linear, triangle and box filters; it supplies adjacent
+API terminology rather than TH08 D3DX8 pixel evidence.
+
+Next compare scaled synthetic surfaces against the canonical target-linked
+D3DX implementation, then repeat the game images. The font repair's original
+1.0 game-image limit remains unchanged. Current evidence is under
+`build/font-production-20261014/title-glyph-controls/` and
+`surface-filter-observation.json` in the same phase directory.
+
 ## Horizontal-edge regression, October 14, 2026
 
 The selected Stage 3 frame has 16 thin horizontal sprite quads crossing the
