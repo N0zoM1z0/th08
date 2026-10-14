@@ -714,8 +714,11 @@ with errors 0.591680, 0.263236, 0.003113 and 0.544644. Final A's five frames
 pass at 0.015086, 0.151220, 0.076219, 0.812111 and 0.003248, with the
 same pinned retail laser/VM packet. Four beam results are unchanged; frame
 15,090 improves from 0.862803 to 0.812111. These thirteen default-font frames
-and four matched-font frames are ordinary captures. Complete-recording checks
-and i386 refresh remain in progress. The compiled source is pinned to
+and four matched-font frames are ordinary captures. The complete `lunatic-0-b`
+and `lunatic-1-a` recordings pass 232,906 calculations on all 25 fields, end
+scores and natural exits; retained-evidence verification passes both. The
+108-recording refresh is active under `x64-suite/` in the phase directory.
+i386 refresh remains to be done. The compiled source is pinned to
 checkpoint `183cd755`; the build provenance verifies all compiled input hashes
 against its LF-normalized Git blobs.
 

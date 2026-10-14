@@ -145,10 +145,13 @@ from 1,081 differing pixels to three. Stage 4B's four beam results remain equal
 to the prior product. Default-font Stage 3 also passes all four limits with
 exact packets. Final A's five frames also pass with exact packets; frame
 15,090's beam error improves to 0.812111. All seventeen image checks pass.
-The complete `lunatic-0-b` and `lunatic-1-a` checks are active under
-`build/surface-filter-repair-20261014/x64-suite/`. After their natural-exit and
-retained-evidence gates, expand the same product to all 108 recordings. The
-i386 refresh remains separate. Compiled source checkpoint is `183cd755`;
+The complete `lunatic-0-b` and `lunatic-1-a` recordings pass 232,906 calculations
+on all 25 fields, end scores and natural exits. Retained-evidence verification
+also passes both. The same product's 108-recording gate is active under
+`build/surface-filter-repair-20261014/x64-suite/`, reusing validated retail
+references with fresh isolated recorder processes. Resume with the same
+identity and output directory. The i386 refresh remains separate. Compiled
+source checkpoint is `183cd755`;
 all 132 recorded build-input hashes agree with its normalized Git blobs. See
 [the scaling observation](PORTABLE_LASER_VISUALS.md#remaining-title-texture-scaling).
 The complete `lunatic-0-b` recording and
