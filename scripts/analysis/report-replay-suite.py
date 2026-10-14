@@ -138,9 +138,10 @@ def main():
             print(f"Live game processes: {len(games)}")
             for pid, resident, cwd in games:
                 print(f"  PID {pid}: {resident / 1048576:.1f} MiB RSS; {cwd}")
-        print(f"Suite artifacts: {artifact_bytes(suite) / 1048576:.1f} MiB (archive symlinks excluded)")
+        print(f"Logical suite file size: {artifact_bytes(suite) / 1048576:.1f} MiB "
+              "(shared hardlinks included; archive symlinks excluded)")
         if prefix:
-            print(f"Shared Wine prefix: {artifact_bytes(prefix) / 1048576:.1f} MiB")
+            print(f"Logical shared Wine prefix size: {artifact_bytes(prefix) / 1048576:.1f} MiB")
 
 
 if __name__ == "__main__":
