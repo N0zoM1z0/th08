@@ -121,8 +121,10 @@ Its fresh GCC 12 ELF32 recorder is
 from `ed8ff8df`. All 132 recorded build-input hashes agree. It includes the
 script-owner, font, surface-filter and ECL trigonometry repairs. ELF32/fixed
 layout verification, all 640 surface API cases and seven renderer/FPU contract
-groups pass. All seven Final B image/raw-state checks and 390 paired spawn
-inputs pass, with the same beam errors as x86_64. Other laser scenes and the
+groups pass in both default and forced OpenGL 2.1 contexts. All seven Final B
+image/raw-state checks and 390 paired spawn inputs pass in each context. The
+`finalb-kaguya` manifest pins the original state file and passes retained checks
+for x86_64 and both i386 contexts. Other laser scenes and the
 complete corpus remain pending. CMake, package discovery and
 Ninja run together inside the borrowed GCC 12 container, limited to one CPU,
 768 MiB and one job. The compiler tree has been removed. Use the container
@@ -140,8 +142,7 @@ before i386 captures begin. Progress is under
 existing jobs. Four Extra startup/active/despawn frames now pass against
 retail, with exact laser/VM packets and beam errors 0.001472–0.004902. The
 `extra-mokou` case pins their retail state hash; evidence is under
-`build/laser-extra-20261014/paired/`. Remaining platform scene checks and legacy
-contexts follow.
+`build/laser-extra-20261014/paired/`. Remaining platform scene checks follow.
 Issue #20's reported scene remains unspecified. Small font/sampling residuals,
 the Stage 5 color observations and native RT-007 retain their measured scope
 in the laser, rendering and runtime reports. AArch64 hardware and audio are

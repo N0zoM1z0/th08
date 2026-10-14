@@ -983,6 +983,34 @@ failed configuration logs remain retained. The
 [container reproduction commands](PORTABLE_REPLAY_TESTING.md) use the committed
 image recipe and a single compiler job with a 768 MiB limit.
 
+### Refreshed i386 OpenGL 2.1 check, October 15, 2026
+
+The same `bd8b148c…` product also passes all seven renderer/FPU contract groups
+under forced OpenGL 2.1 with clip-control unavailable. Its seven Final B raw
+laser/VM packets and all 390 paired spawn inputs agree exactly with retail.
+Every beam image passes the unchanged 1.0 limit:
+
+| Frame | Default-context mean RGB error | OpenGL 2.1 mean RGB error |
+| ---: | ---: | ---: |
+| 8,400 | 0.003476 | 0.003444 |
+| 11,160 | 0.011708 | 0.011483 |
+| 11,490 | 0.008568 | 0.008650 |
+| 12,240 | 0.004209 | 0.004393 |
+| 14,280 | 0.023993 | 0.023883 |
+| 16,770 | 0.144060 | 0.144252 |
+| 17,460 | 0.004788 | 0.004975 |
+
+The new `finalb-kaguya` manifest pins the original seven-frame state file.
+Retained-evidence verification passes that pin for x86_64, i386 default and
+i386 legacy captures. Reports are under `renderer-legacy/` and
+`finalb-legacy/` in `build/laser-i386-refresh-20261014/`. Both selected rendering
+contexts now have actual Final B images; other scenes and complete gameplay
+replays retain their own gates.
+
+Reproduce either portable context with `--case finalb-kaguya --retail`.
+Add `--legacy-gl` for the OpenGL 2.1 capture and use a separate output directory.
+The same case supports `--watch-laser-spawns 8000:8400` for input regression.
+
 ## Final A observation, October 14, 2026
 
 Case `finala-eirin` uses `lunatic-1-a`, Magic Team, Lunatic, Final A,

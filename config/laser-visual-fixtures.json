@@ -54,6 +54,22 @@
         {"frame": 25320, "phase": "stationary despawn", "expectedLaserState": 2},
         {"frame": 25800, "phase": "later stationary active", "expectedLaserState": 1}
       ]
+    },
+    {
+      "id": "finalb-kaguya",
+      "fixture": "lunatic-0-b",
+      "stage": 7,
+      "boss": "Kaguya",
+      "retailLaserStateSha256": "a45b19508e54a40be9ddc3ee19e64241f9c0d1a9ba8653254a1bea7afe06cb03",
+      "frames": [
+        {"frame": 8400, "phase": "moving active beams", "expectedLaserState": 1},
+        {"frame": 11160, "phase": "stationary startup", "expectedLaserState": 0},
+        {"frame": 11490, "phase": "stationary active", "expectedLaserState": 1},
+        {"frame": 12240, "phase": "stationary despawn", "expectedLaserState": 2},
+        {"frame": 14280, "phase": "later moving active beams", "expectedLaserState": 1},
+        {"frame": 16770, "phase": "later stationary active", "expectedLaserState": 1},
+        {"frame": 17460, "phase": "later stationary despawn", "expectedLaserState": 2}
+      ]
     }
   ]
 }
