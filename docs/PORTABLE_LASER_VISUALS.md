@@ -24,7 +24,7 @@ product also passes all 108 recordings and retained-evidence verification.
 The added [Final B samples](#final-b-precision-observation-october-14-2026)
 exposed a one-ULP laser-origin difference at frame 8,400. The ECL sine/cosine
 repair now passes all seven raw packets and 390 paired spawn-input records.
-Its complete replay refresh is the next gate. Extra images and the i386
+Its complete replay refresh is running. Extra images and the i386
 refresh remain to be checked. The dated
 sections below preserve each repair's evidence.
 
@@ -1149,9 +1149,10 @@ python3 scripts/analysis/check-laser-visuals.py \
 ## Final B precision observation, October 14, 2026
 
 The Final B survey selected frames 8,400, 11,160, 11,490, 12,240, 14,280,
-16,770 and 17,460 from `lunatic-0-b`. Fresh paired captures pass the original
-image limit in all seven frames, with beam errors 0.003476–0.144060. The strict
-packet gate fails at 8,400: slots 12 and 19 each differ by one ULP in their
+16,770 and 17,460 from `lunatic-0-b`. The preceding surface-filter product's
+paired captures pass the original image limit in all seven frames, with beam
+errors 0.003476–0.144060. Its strict packet gate fails at 8,400: slots 12 and 19
+each differ by one ULP in their
 origin Y coordinate, with corresponding start-cap Y differences. The other
 six frames have identical laser/VM packets. The failed comparison is retained
 under `finalb-paired/` in the phase directory; thresholds remain unchanged.
@@ -1190,13 +1191,20 @@ float-returning libm calls reproduce the earlier portable words.
 The portable opcode branches now call `sin(double)` and `cos(double)` and
 convert their results to float before writing the ECL variable. The native
 expressions remain unchanged. A fresh build and comparison of the affected
-RunEcl unit is exact; this is a single-unit check. The new GCC 8 x86_64 Debug
+RunEcl unit is exact; this is a single-unit check. The initial GCC 8 x86_64 Debug
 recorder is SHA-256
 `ee78ef7efa7f9e79bd89f1b82320d266f8d63725eefd0298a4a3b2330b4aca10`.
 Its 390 spawn-input records all agree with retail. All seven Final B laser/VM
 packets now agree, and the beam image errors remain 0.003476–0.144060. The
-complete 108-recording refresh remains separate. Evidence is under
-`build/laser-spawn-origin-20261014/`; the owned compiler tree is removed.
+final product, built from checkpoint `897decb2`, repeats all 390 input records
+and seven image/packet checks successfully. Its SHA-256 is
+`e0a57a43520524713b70dbaa38329155fd6ab4a09006869b4f09db8dbcc27649`,
+with provenance under `production-final/`. All 132 recorded build-input hashes
+agree with that checkpoint after LF normalization. Its 108-recording refresh
+is running under `x64-suite/`; a retained-evidence pass follows automatically.
+Evidence is under `build/laser-spawn-origin-20261014/`. Both owned compiler
+trees and the superseded initial repair executable are removed; its metadata
+and comparison reports remain.
 
 Reproduce the paired input and frame checks with a newly built recorder:
 
@@ -1213,8 +1221,8 @@ The command requires both comparisons to pass. `laser-spawns.json` stores
 exact float words, owner slots, context state and call order. The native
 observer uses attested hardware breakpoints and reserves their limited slots
 for this diagnostic. Each capture holds at most 4,096 records. `firstFreeSlot`
-describes the pool at entry; it does not assert allocation when spawning is
-suppressed. Portable additionally saves bounded ECL subroutine prefixes under
+records the first free pool slot before spawn-suppression checks. Portable
+additionally saves bounded ECL subroutine prefixes under
 the private build directory. Recompute the input comparison without launching
 the game:
 

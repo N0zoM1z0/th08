@@ -171,11 +171,17 @@ in slots 12 and 19 at 8,400. Paired spawn observations locate them in the ECL
 standalone sine/cosine outputs: eight differing offsets among 390 calls, with
 both failing origins created at 8,242. The opcode 32/33 repair now passes all
 390 input records and all seven laser/VM packets with unchanged beam errors.
-GCC 8 recorder SHA-256 is
-`ee78ef7efa7f9e79bd89f1b82320d266f8d63725eefd0298a4a3b2330b4aca10`, under
-`build/laser-spawn-origin-20261014/production/`. Its affected native RunEcl
-unit passes a fresh build and exact comparison. The full replay refresh is
-next; i386 remains separate. See the
+The final GCC 8 recorder SHA-256 is
+`e0a57a43520524713b70dbaa38329155fd6ab4a09006869b4f09db8dbcc27649`, under
+`build/laser-spawn-origin-20261014/production-final/`. Source checkpoint is
+`897decb2`; all 132 build-input hashes agree after LF normalization. This
+product repeats all 390 inputs and seven image/packet checks successfully.
+The affected native RunEcl unit passes a fresh build and exact comparison.
+The full replay refresh is running under
+`build/laser-spawn-origin-20261014/x64-suite/`, followed automatically by
+retained-evidence verification. Resume the existing job/output identity;
+i386 remains separate. Both owned compiler trees and the initial repair
+executable have been removed. See the
 [Final B observation](PORTABLE_LASER_VISUALS.md#final-b-precision-observation-october-14-2026).
 Extra images remain to be captured. Issue #20's reported scene is unspecified.
 
@@ -234,7 +240,7 @@ validated retail references, clock rate 128, no rasterization and ptrace
 observations. Owned runtime directories and the shared Wine prefix are removed.
 The summary pins the native product above to owner-repair checkpoint `096c5a87`.
 
-Next run the repaired ECL product's full replay corpus, refresh i386 and
+Next finish the repaired ECL product's full replay gate, refresh i386 and
 capture Extra visual cases. Evidence is under
 `build/laser-background-owner-20261014/` and `build/laser-stage4a-20261014/`; see the
 [Final A observation](PORTABLE_LASER_VISUALS.md#final-a-observation-october-14-2026).
