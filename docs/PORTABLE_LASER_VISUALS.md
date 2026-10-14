@@ -476,8 +476,8 @@ Only `(6,14)` crosses a `coverage * 17 / 256` boundary: level 10 versus 11.
 The Wine intensity ramp maps these to 208 and 217, exactly the retained
 image difference at `(208,22)`. This control localizes that residual to
 rasterization in the two FreeType builds, after equal outline generation.
-The 27-image control still records 26 exact images; the production font adapter
-remains to be repaired and checked in game scenes.
+The 27-image control records 26 exact images. The production repair below
+carries the measured GDI rules into the adapter and checks game scenes.
 
 Reproduce on Linux x86_64 with GDB, binutils, `libc6:i386`,
 `libfreetype6:i386`, and Python `freetype-py`:
@@ -493,6 +493,71 @@ FreeType APIs. It runs without Wine, a compiler or game assets. The report
 pins both FreeType files, libc, font, observer and analyzer hashes, and retains
 full outlines and coverage bytes. Coordinates are relative to the glyph bitmap.
 Local evidence is under `build/font-residual-audit-20261014/repro-architecture-final/`.
+
+### Production font rendering repair, October 14, 2026
+
+Scalable Linux fonts now use FreeType outline rendering with GDI's glyph
+advances, synthetic bold strength and 17-level intensity ranges. Font selection
+and the existing Windows-metric height conversion are retained. Bitmap fonts
+keep the SDL_ttf path. Native VC7 source and layouts are unchanged.
+
+Fresh paired API captures reproduce 26 of 27 Wine text images exactly; the
+remaining pixel is the independently measured FreeType coverage difference
+above. A second probe exercises colored backgrounds, black and colored text,
+negative coordinates, overlapping draws, and unused bitmap bits in RGB555 and
+32-bit DIBs. All 96 regular-weight cases are byte-identical. Of 96 semibold
+cases, 11 are byte-identical; the other 85 differ only at measured coverage
+locations and within bounds derived from both directions of the intensity ramp.
+Unused bits must still agree, and every other pixel is compared exactly.
+
+The first RGB555 repetition exposed 2,712 additional pixel differences. GDI
+quantizes both the pen color and destination to the DIB format before blending;
+five-bit channels expand by bit replication. Restoring those steps removes
+all additional differences. The pre-repair `380dc74b` controls retain 17,682
+unexplained semibold pixels and 20,639 regular pixels. This probe measures API
+behavior independently of the renderer's image threshold.
+
+The new x86_64 Debug recorder is
+`4cce0fe8ee633fa2b37713214793fef078395edbb303f52c0cdd98e4bc914cc6`.
+Its four default-font Stage 3 images and four Stage 4B images pass the unchanged
+1.0 beam-region limit with the pinned retail laser/VM hashes. Matched-Droid
+Stage 3 images also pass:
+
+| Stage 3 frame | Default VL Gothic | Matched Droid |
+| ---: | ---: | ---: |
+| 12,900 | 0.694699 | 0.350891 |
+| 14,130 | 0.317662 | 0.184668 |
+| 14,310 | 0.003113 | 0.003113 |
+| 14,490 | 0.711447 | 0.320516 |
+
+Values are beam-region mean RGB errors. The matched-font game captures retain
+image residuals that need further localization. Stage 4B errors remain
+0.004278, 0.001907, 0.003865 and 0.021046.
+The complete `lunatic-0-b` recording passes 113,221 calculations on all 25
+fields, recorded end scores and natural exit; retained-evidence verification
+also passes. All six renderer contract groups pass. The complete corpus,
+i386 product and later-boss images remain separate refreshes for this binary.
+
+Reproduce the blending gate after the architecture control above:
+
+```bash
+python3 scripts/analysis/probe-font-blending.py \
+  --font /usr/share/fonts/truetype/droid/DroidSansFallbackFull.ttf \
+  --coverage-reference build/freetype-architecture \
+  --baseline-ref 380dc74b --output-dir build/font-blending
+python3 scripts/analysis/probe-freetype-architecture.py \
+  --font /usr/share/fonts/truetype/droid/DroidSansFallbackFull.ttf \
+  --strength 0 --output-dir build/freetype-regular
+python3 scripts/analysis/probe-font-blending.py \
+  --font /usr/share/fonts/truetype/droid/DroidSansFallbackFull.ttf \
+  --weight regular --coverage-reference build/freetype-regular \
+  --baseline-ref 380dc74b --output-dir build/font-blending-regular
+```
+
+The blending probe needs MinGW, the Linux build dependencies, Wine32 and Xvfb.
+Both captures run muted and serially. It removes temporary executables and
+its owned Wine prefix, compresses raw bitmaps, and records all pixel differences
+and source hashes. Evidence is under `build/font-production-20261014/`.
 
 ## Horizontal-edge regression, October 14, 2026
 

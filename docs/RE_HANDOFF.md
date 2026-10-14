@@ -117,8 +117,19 @@ images exactly, with all 27 visible-pixel masks equal. The remaining pixel is
 `(208,22)` in height-28 probe text 1: gray 217 versus Wine's 208. The system
 i386/x86_64 API control now localizes it to FreeType rasterization: pre/post-bold
 outlines agree, four raw coverage values differ by one, and only coverage
-165/166 crosses a gray-level boundary. Next verify general blending and actual
-game images before changing production font rendering. See the
+165/166 crosses a gray-level boundary. The production scalable-font adapter now
+uses those GDI rules. Fresh API checks give 26/27 exact text images, 96/96 exact
+regular blend cases, and 96 semibold blend cases with differences confined to
+measured coverage locations and bounds. RGB555 pen/destination quantization
+also repairs 2,712 pixels found by the first blend repetition. The recorder is
+`4cce0fe8ee633fa2b37713214793fef078395edbb303f52c0cdd98e4bc914cc6`, with
+build identity under `build/font-production-20261014/production/`. All eight
+default-font Stage 3/4B laser images and four matched-Droid Stage 3 images pass
+the original limits with exact raw laser/VM packets. Matched-font game-image
+residuals remain to be localized. The complete `lunatic-0-b` recording and
+retained-evidence gate pass 113,221 calculations on all 25 fields, end scores
+and natural exit. All six renderer contract groups pass. The new product's complete corpus and i386
+refresh remain separate gates. See the
 [font controls](PORTABLE_LASER_VISUALS.md#font-rasterization-controls-october-14-2026).
 
 The earlier clip-control API probe retains 15 striped-material sampling

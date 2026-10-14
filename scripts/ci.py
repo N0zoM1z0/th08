@@ -81,6 +81,7 @@ def main() -> int:
         run("Smoke-test font pixel probe CLI", [sys.executable, "scripts/analysis/probe-font-pixels.py", "--help"])
         run("Smoke-test font rasterization analysis CLI", [sys.executable, "scripts/analysis/analyze-font-rasterization.py", "--help"])
         run("Smoke-test FreeType architecture probe CLI", [sys.executable, "scripts/analysis/probe-freetype-architecture.py", "--help"])
+        run("Smoke-test font blending probe CLI", [sys.executable, "scripts/analysis/probe-font-blending.py", "--help"])
         run("Smoke-test portable display inspection CLI", [sys.executable, "scripts/analysis/check-portable-display.py", "--help"])
         run("Smoke-test portable renderer contract CLI", [sys.executable, "scripts/test-portable-renderer.py", "--help"])
         run("Smoke-test portable rendering regression CLI", [sys.executable, "scripts/test-portable-rendering.py", "--help"])

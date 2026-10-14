@@ -22,6 +22,7 @@ def main():
     parser.add_argument('--font', type=Path, required=True)
     parser.add_argument('--codepoint', type=lambda value: int(value, 0), default=0x90F7)
     parser.add_argument('--ppem', type=int, default=21)
+    parser.add_argument('--strength', type=int, help='Override outline strength in 26.6 units; zero tests regular glyphs')
     parser.add_argument('--output-dir', type=Path, required=True, help='Fresh directory under build/')
     args = parser.parse_args()
     output, font = args.output_dir.resolve(), args.font.resolve(strict=True)
@@ -49,7 +50,9 @@ def main():
         return dict(points=list(map(list, slot.outline.points)), tags=list(slot.outline.tags), contours=list(slot.outline.contours))
 
     before = packet()
-    strength = (args.ppem * 64 + 12) // 24
+    strength = args.strength if args.strength is not None else (args.ppem * 64 + 12) // 24
+    if not 0 <= strength <= 256:
+        parser.error('Outline strength exceeds the probe limit')
     if freetype.FT_Outline_Embolden(ctypes.byref(slot._FT_GlyphSlot.contents.outline), strength):
         parser.error('Native FreeType outline emboldening failed')
     after = packet()
