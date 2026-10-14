@@ -120,8 +120,9 @@ Its fresh GCC 12 ELF32 recorder is
 `bd8b148c0ac6a478391ee4c1fea7334ac1f473466418131715cda4e1a900ce40`, built
 from `ed8ff8df`. All 132 recorded build-input hashes agree. It includes the
 script-owner, font, surface-filter and ECL trigonometry repairs. ELF32/fixed
-layout verification, all 640 surface API cases and seven renderer/FPU contract
-groups pass in both default and forced OpenGL 2.1 contexts. All seven Final B
+layout verification and all 640 default-context surface API cases pass. Seven
+renderer/FPU contract groups pass in each of the default and forced OpenGL 2.1
+contexts. All seven Final B
 image/raw-state checks and 390 paired spawn inputs pass in each context. The
 `finalb-kaguya` manifest pins the original state file and passes retained checks
 for x86_64 and both i386 contexts. Other laser scenes and the
