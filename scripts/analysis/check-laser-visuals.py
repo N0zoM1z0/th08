@@ -86,6 +86,7 @@ def capture_portable(candidate, data, replay, output, settings):
                     muted=True, keepLives=False, suppressLaserBodies=settings["suppressLaserBodies"])
     metadata["watchQuads"] = settings.get("watchQuads", False)
     metadata["watchDraws"] = settings.get("watchDraws", False)
+    metadata["watchRotatingHitboxes"] = settings.get("watchRotatingHitboxes", False)
     metadata["renderInputControl"] = bool(settings.get("drawColorsFrom"))
     metadata["legacyOpenGL"] = settings.get("legacyOpenGL", False)
     try:
@@ -266,6 +267,8 @@ def main():
     parser.add_argument("--watch-text-fonts", action="store_true", help="Record bold text parameters and retail font diagnostics")
     parser.add_argument("--watch-quads", action="store_true", help="Read every submitted sprite quad in the selected frames")
     parser.add_argument("--watch-draws", action="store_true", help="Read portable draw inputs, matrices, states and texture identities")
+    parser.add_argument("--watch-rotating-hitboxes", action="store_true",
+                        help="Scout the three enemy rotating-laser collision helpers and their VM state")
     parser.add_argument("--draw-colors-from", type=Path, help="Experimental zero-alpha RGB control using another completed draw capture")
     parser.add_argument("--draw-color-index", type=int, default=2, help="Draw index for the experimental color control")
     parser.add_argument("--maximum-frame", type=int, default=30000)
@@ -281,6 +284,8 @@ def main():
         parser.error("Native captures support ordinary images and --watch-quads")
     if args.sample_interval < 1:
         parser.error("Sample interval must be positive")
+    if args.watch_rotating_hitboxes and (not args.scout or args.native_map):
+        parser.error("Rotating-hitbox discovery requires a portable --scout capture")
     case = None
     if args.case:
         config = json.loads((ROOT / "config/laser-visual-fixtures.json").read_text())
@@ -350,6 +355,7 @@ def main():
                     watchTextFonts=args.watch_text_fonts,
                     watchQuads=args.watch_quads,
                     watchDraws=args.watch_draws,
+                    watchRotatingHitboxes=args.watch_rotating_hitboxes,
                     drawColorsFrom=str(color_capture) if color_capture else None,
                     drawColorIndex=args.draw_color_index,
                     legacyOpenGL=args.legacy_gl,

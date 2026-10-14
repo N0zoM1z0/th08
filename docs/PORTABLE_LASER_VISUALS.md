@@ -1137,6 +1137,27 @@ python3 scripts/analysis/check-laser-visuals.py \
   --output-dir build/native-finala-csmt0
 ```
 
+## Final B precision observation, October 14, 2026
+
+The Final B survey selected frames 8,400, 11,160, 11,490, 12,240, 14,280,
+16,770 and 17,460 from `lunatic-0-b`. Fresh paired captures pass the original
+image limit in all seven frames, with beam errors 0.003476–0.144060. The strict
+packet gate fails at 8,400: slots 12 and 19 each differ by one ULP in their
+origin Y coordinate, with corresponding start-cap Y differences. The other
+six frames have identical laser/VM packets. The failed comparison is retained
+under `finalb-paired/` in the phase directory; thresholds remain unchanged.
+
+`SpawnLaserPattern @ 0x00430F20` copies the descriptor position. The ECL path
+constructs that descriptor from enemy world position and shoot offset.
+Canonical polar handlers at `0x004195B5` (opcode 38) and `0x0041E156` (opcode
+166) call the float trigonometric wrappers, multiply their wider register
+results, then store floats. Portable currently rounds through `sinf`/`cosf`
+first. This repeats the wrapper distinction documented in
+[polar motion precision](PORTABLE_POLAR_MOTION.md#target-evidence-and-repair).
+Next trace the spawning operands and verify the precision repair against the
+failed packet and fresh captures. The 25-field gameplay pass remains scoped
+to its recorded fields.
+
 ## Read and verify the evidence
 
 `comparison.json` records the executable and replay identities, raw laser-state
@@ -1246,3 +1267,31 @@ Choose frames with substantial on-screen geometry, then capture those exact fram
 with rasterization and retail comparison. Sampling can miss shorter events.
 New cases should identify the boss, phase, credited fixture, stage, and frame,
 and retain paired state and image evidence before entering the manifest.
+
+### Additional discovery paths
+
+The default scout samples `BulletManager::lasers`. Three other target helpers,
+`0x00424730`, `0x00424820` and `0x00424910`, use enemy position and VM rotation
+when calling `Player::CalcLaserHitbox @ 0x0044A6A0`. Track their invocation
+ranges separately:
+
+```bash
+python3 scripts/analysis/check-laser-visuals.py \
+  --candidate build/portable-replay/th08-modern \
+  --game-data-dir /path/to/original-game-data \
+  --fixture lunatic-0-b --stage 5 --scout \
+  --sample-interval 30 --watch-rotating-hitboxes \
+  --output-dir build/rotating-hitbox-scout
+```
+
+The optional observer records helper counts and sampled enemy/VM words under
+`rotating-hitboxes.json`, with a shared 32 MiB record budget. Its boundary is
+helper entry, distinct from the pool scout's Present boundary. Three completed
+surveys on the filter-repaired recorder found no helper invocations: Stage 5
+with a 20,606 frame limit, Final B and Extra with 30,000 frame limits. These
+surveys validate breakpoint setup; a positive invocation is still needed to
+exercise the enemy/VM sampling branch. A zero pool count describes that pool's
+sampled frames, while helper and unobserved-frame coverage remain separate.
+
+Evidence is under `build/surface-filter-repair-20261014/` in
+`stage5-hitbox-scout/`, `finalb-hitbox-scout/` and `extra-hitbox-scout/`.

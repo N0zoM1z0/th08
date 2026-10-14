@@ -16,6 +16,9 @@ scout = settings.get("scout", False)
 maximum = settings.get("maximumFrame", max(frames, default=30000))
 sample_interval = settings.get("sampleInterval", 30)
 records = []
+rotating_records = []
+rotating_summary = dict(boundary="rotating-hitbox helper entry", sampledRecords=0,
+                        serializedRecordBytes=0, helpers={})
 scout_summary = dict(sampledFrames=0, framesWithLasers=0, firstFrame=None, lastFrame=None,
                      stopReason=None, complete=False, sampleInterval=sample_interval,
                      samplingBoundary="LinuxDevice::Present entry", serializedRecordBytes=0,
@@ -94,6 +97,59 @@ def save_records():
     (output / "lasers.json").write_text(json.dumps(records, indent=2) + "\n")
     if scout:
         (output / "scout-summary.json").write_text(json.dumps(scout_summary, indent=2) + "\n")
+    if settings.get("watchRotatingHitboxes"):
+        (output / "rotating-hitboxes.json").write_text(json.dumps(
+            dict(summary=rotating_summary, records=rotating_records), indent=2) + "\n")
+
+
+class RotatingHitbox(gdb.Breakpoint):
+    def __init__(self, helper):
+        self.helper = helper
+        self.seen = set()
+        super().__init__("th08::Update" + helper + "RotatingLaserHitbox", internal=True)
+        rotating_summary["helpers"][helper] = dict(calls=0, firstFrame=None, lastFrame=None)
+
+    def stop(self):
+        selected_stage, frame = current()
+        if selected_stage != stage or not 0 < frame <= maximum:
+            return False
+        summary = rotating_summary["helpers"][self.helper]
+        summary["calls"] += 1
+        summary["firstFrame"] = frame if summary["firstFrame"] is None else summary["firstFrame"]
+        summary["lastFrame"] = frame
+        if frame % sample_interval:
+            return False
+        enemy = value("enemy")
+        pool = value("th08::g_EnemyManager.enemies")
+        stride = pool.type.target().sizeof
+        offset = int(enemy) - int(pool.address)
+        if offset < 0 or offset % stride or offset // stride >= 481:
+            raise RuntimeError("Rotating hitbox enemy is outside the typed pool")
+        slot = offset // stride
+        key = (frame, slot)
+        if key in self.seen:
+            return False
+        self.seen.add(key)
+        item = dict(stage=stage, frame=frame, enemySlot=slot, helper=self.helper)
+        for name, format_ in (("worldPosition", "3I"), ("position", "3I"),
+                              ("vm.rotation", "3I"), ("vm.pos", "3I"),
+                              ("vm.scale", "2I"), ("vm.spriteSize", "2I"),
+                              ("vm.color1.d3dColor", "I"), ("vm.color2.d3dColor", "I"),
+                              ("vm.flagsWord", "I"), ("vm.activeSpriteIndex", "h"),
+                              ("vm.anmFileIndex", "h"), ("vm.scriptIndex", "h")):
+            field = enemy.dereference()
+            for member in name.split("."):
+                field = field[member]
+            decoded = struct.unpack("<" + format_, bytes(gdb.selected_inferior().read_memory(
+                int(field.address), struct.calcsize("<" + format_))))
+            item[name] = list(decoded) if len(decoded) > 1 else decoded[0]
+        size = len(json.dumps(item))
+        rotating_summary["serializedRecordBytes"] += size
+        if rotating_summary["serializedRecordBytes"] + scout_summary["serializedRecordBytes"] > 32 * 1024 * 1024:
+            raise RuntimeError("Combined laser scout records exceed the 32 MiB capacity")
+        rotating_records.append(item)
+        rotating_summary["sampledRecords"] += 1
+        return False
 
 
 class Scout(gdb.Breakpoint):
@@ -104,6 +160,8 @@ class Scout(gdb.Breakpoint):
         global last_sampled_frame
         selected_stage, frame = current()
         progress(selected_stage, frame)
+        if settings.get("watchRotatingHitboxes") and selected_stage == stage and frame > 0 and frame % 3000 == 0:
+            save_records()
         if selected_stage != stage or frame > maximum:
             if scout_summary["sampledFrames"] and (selected_stage != stage or frame > maximum):
                 scout_summary.update(stopReason="stage changed" if selected_stage != stage else "frame limit",
@@ -127,7 +185,7 @@ class Scout(gdb.Breakpoint):
             if active:
                 record = dict(stage=stage, frame=frame, lasers=active)
                 scout_summary["serializedRecordBytes"] += len(json.dumps(record))
-                if scout_summary["serializedRecordBytes"] > 32 * 1024 * 1024:
+                if scout_summary["serializedRecordBytes"] + rotating_summary["serializedRecordBytes"] > 32 * 1024 * 1024:
                     scout_summary.update(stopReason="record capacity", complete=False)
                     save_records()
                     raise RuntimeError("Scout snapshots exceed the 32 MiB serialized capacity")
@@ -402,6 +460,8 @@ for command in ("set pagination off", "set confirm off", "set breakpoint pending
                 "set direct-call-timeout 10", "set unwind-on-timeout on"):
     gdb.execute(command)
 if scout:
+    if settings.get("watchRotatingHitboxes"):
+        rotating_watchers = [RotatingHitbox(helper) for helper in ("Narrow", "Medium", "Wide")]
     Scout()
 else:
     Present()
