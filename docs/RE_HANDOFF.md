@@ -143,8 +143,13 @@ exhaustive-copy and six-group renderer checks pass. The new GCC 8 recorder is
 images pass with exact laser/VM packets; frame 12,900's complete header changes
 from 1,081 differing pixels to three. Stage 4B's four beam results remain equal
 to the prior product. Default-font Stage 3 also passes all four limits with
-exact packets. Final A repetition, complete recordings and i386 refresh are
-next; see
+exact packets. Final A's five frames also pass with exact packets; frame
+15,090's beam error improves to 0.812111. All seventeen image checks pass.
+The complete `lunatic-0-b` and `lunatic-1-a` checks are active under
+`build/surface-filter-repair-20261014/x64-suite/`. After their natural-exit and
+retained-evidence gates, expand the same product to all 108 recordings. The
+i386 refresh remains separate. Compiled source checkpoint is `183cd755`;
+all 132 recorded build-input hashes agree with its normalized Git blobs. See
 [the scaling observation](PORTABLE_LASER_VISUALS.md#remaining-title-texture-scaling).
 The complete `lunatic-0-b` recording and
 retained-evidence gate pass 113,221 calculations on all 25 fields, end scores
