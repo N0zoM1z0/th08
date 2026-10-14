@@ -27,6 +27,26 @@ Separate retained-evidence passes recomputed all native comparisons and all
 portable comparisons. The portable `--verify-only` passes also checked capture
 identities, completion records, saved reports, and suite ledgers.
 
+### Refresh after spell-background ownership repair
+
+The native owner-repair checkpoint `096c5a87` passes the full 108-recording
+corpus again: 12,311,460 calculations agree on all 25 fields, stage-end scores,
+fingerprints and natural exits. Retained-evidence verification also passes.
+Its fresh VC7 bugfix product is SHA-256
+`1b8e217a7fe48b74304b1cbf01600385e78f13273e63a6b90bcc1c32436e45f4`.
+This refresh uses new serial candidate captures against validated retail
+references, clock rate 128, no rasterization and ptrace observations. Evidence
+is under `build/laser-native-20261014/full-state128/`; owned runtimes and the
+shared Wine prefix have been removed.
+
+The [laser investigation](PORTABLE_LASER_VISUALS.md) records the visual
+reproduction, canonical field ownership and image comparisons. Its latest
+Linux surface-filter repair passes 640 pinned-D3DX8 API cases and seventeen
+selected images. The revised x86_64 product's full corpus refresh is active;
+its `lunatic-0-b` and `lunatic-1-a` checks already pass 232,906 calculations
+with a separate retained-evidence pass. Earlier portable full-corpus results
+remain tied to the products listed below.
+
 ## Coverage
 
 The [committed corpus](../tests/fixtures/replays/th08-1.00d/README.md) contains
