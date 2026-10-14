@@ -420,6 +420,42 @@ version, input hashes and all control images. Local evidence is under
 `build/font-residual-audit-20261014/repro-hinting/`; no gameplay or renderer
 source changes accompany this measurement.
 
+The direct FreeType outline control adds the measured Wine advance,
+emboldening and grayscale rules. Using system FreeType 2.13.2, it reproduces
+26 of 27 Wine images pixel for pixel. All 27 visible-pixel masks agree. The
+remaining image is the height-28 sword title: at `(208, 22)`, the control draws
+gray 217 and Wine draws 208. Its mean error is 0.000122; the other 26 images
+have zero error. The last coverage-level difference remains to be measured.
+The control's raw coverage is 166, which quantizes to level 11. Wine's gray
+208 is level 10, corresponding to raw coverage 151–165 under the same rule.
+Its raw value still needs an observer measurement.
+
+The control rounds the original glyph advance upward after adding one pixel,
+emboldens the outline by `ppem * 64 / 24`, and converts coverage with
+`coverage * 17 / 256`. The Wine DIB painter skips levels zero and one and
+uses its documented 17-entry intensity ramp. Source references are
+[FreeType glyph handling](https://github.com/wine-mirror/wine/blob/wine-9.0/dlls/win32u/freetype.c),
+[the DIB intensity ramp](https://github.com/wine-mirror/wine/blob/wine-9.0/dlls/win32u/dibdrv/graphics.c)
+and [DIB glyph painting](https://github.com/wine-mirror/wine/blob/wine-9.0/dlls/win32u/dibdrv/primitives.c).
+The analyzer retains glyph indices and advances, exact differing-pixel counts,
+bounds, and maximum channel errors. The English label in this same-font probe
+renders missing-glyph boxes in both backends; the two Japanese titles contain
+real glyphs.
+
+Install `freetype-py==2.5.1` in the Python environment to enable this control:
+
+```bash
+python3 scripts/analysis/analyze-font-rasterization.py \
+  --capture build/font-pixels --outline-control \
+  --output-dir build/font-outline-controls
+```
+
+These measurements cover white text on a black 32-bit bitmap at nine font
+heights. General color blending, overlapping glyphs, and actual game images
+are the next adapter checks. Local evidence is under
+`build/font-residual-audit-20261014/repro-outline-final-v2/`. The controls leave
+production rendering unchanged.
+
 ## Horizontal-edge regression, October 14, 2026
 
 The selected Stage 3 frame has 16 thin horizontal sprite quads crossing the
