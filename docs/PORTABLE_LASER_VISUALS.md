@@ -50,6 +50,8 @@ All raw laser and VM packets still agree exactly with retail.
 Stage 4B frame 15,360 is the eighth sample; it passed both builds at 0.003865.
 The original Stage 4B failures came from packed-color conversion. Stage 3
 also exposed font metrics/rasterization and the horizontal beam edge.
+Image results throughout this report use Pass/Fail for the beam-region
+mean RGB error limit of 1.0; exact raw-state comparisons are reported separately.
 Passing the image limit allows small pixel differences. The table uses the
 portable default font. With the same Droid font as retail, Stage 3's four
 errors are 0.003292, 0.017577, 0.003113 and 0.018465. The
@@ -115,12 +117,12 @@ matches the published retail reference for 14,500 calculations on all 25
 fields. Its first 14,490 rows also match the fresh ordinary-paced retail
 capture.
 
-| Frame | Beam-geometry pixels | Beam-region mean RGB error | Strict pixel result |
+| Frame | Beam-geometry pixels | Beam-region mean RGB error | Image result |
 | ---: | ---: | ---: | --- |
-| 12,900 | 10,024 | 2.831371 | Different |
-| 14,130 | 3,148 | 2.609911 | Different |
-| 14,310 | 50,966 | 1.324700 | Different |
-| 14,490 | 46,628 | 2.085793 | Different |
+| 12,900 | 10,024 | 2.831371 | Fail |
+| 14,130 | 3,148 | 2.609911 | Fail |
+| 14,310 | 50,966 | 1.324700 | Fail |
+| 14,490 | 46,628 | 2.085793 | Fail |
 
 The strict 1.0 limit fails in all four frames. Initial image review shows the
 corresponding beams; difference images highlight spell-title text and smaller
@@ -144,12 +146,12 @@ a later Marisa attack. All four raw laser and VM packets match retail exactly.
 Both `lasers.json` files have SHA-256
 `adea4722edaf1f07fd87199e04c2bf4f32d9ac3b872d093973f959b1b470e503`.
 
-| Frame | Active slots | Beam-geometry pixels | Beam-region mean RGB error | Strict pixel result |
+| Frame | Active slots | Beam-geometry pixels | Beam-region mean RGB error | Image result |
 | ---: | ---: | ---: | ---: | --- |
-| 13,140 | 5 | 935 | 3.084492 | Different |
-| 13,260 | 10 | 3,671 | 2.222010 | Different |
-| 15,360 | 10 | 1,035 | 0.003865 | Equal |
-| 18,210 | 4 | 10,200 | 1.657255 | Different |
+| 13,140 | 5 | 935 | 3.084492 | Fail |
+| 13,260 | 10 | 3,671 | 2.222010 | Fail |
+| 15,360 | 10 | 1,035 | 0.003865 | Pass |
+| 18,210 | 4 | 10,200 | 1.657255 | Fail |
 
 Corresponding colored and moving beams are visible in the paired images.
 The despawn frame passes the strict pixel limit; the
@@ -190,16 +192,16 @@ R5G6B5 samples. The repaired codecs preserve all 144. This probe exercises
 platform APIs; the paired game frames
 below supply the TH08 evidence.
 
-| Stage | Frame | Baseline beam error | Repaired beam error | Repaired pixel result |
+| Stage | Frame | Baseline beam error | Repaired beam error | Repaired image result |
 | --- | ---: | ---: | ---: | --- |
-| 3 | 12,900 | 2.831371 | 1.484770 | Different |
-| 3 | 14,130 | 2.609911 | 1.244176 | Different |
-| 3 | 14,310 | 1.324700 | 0.293679 | Equal |
-| 3 | 14,490 | 2.085793 | 1.292878 | Different |
-| 4B | 13,140 | 3.084492 | 0.004278 | Equal |
-| 4B | 13,260 | 2.222010 | 0.001907 | Equal |
-| 4B | 15,360 | 0.003865 | 0.003865 | Equal |
-| 4B | 18,210 | 1.657255 | 0.021046 | Equal |
+| 3 | 12,900 | 2.831371 | 1.484770 | Fail |
+| 3 | 14,130 | 2.609911 | 1.244176 | Fail |
+| 3 | 14,310 | 1.324700 | 0.293679 | Pass |
+| 3 | 14,490 | 2.085793 | 1.292878 | Fail |
+| 4B | 13,140 | 3.084492 | 0.004278 | Pass |
+| 4B | 13,260 | 2.222010 | 0.001907 | Pass |
+| 4B | 15,360 | 0.003865 | 0.003865 | Pass |
+| 4B | 18,210 | 1.657255 | 0.021046 | Pass |
 
 All eight private-build laser and VM packets retain their published retail
 hashes. The unchanged strict gate passes five frames. Stage 4B's reduction
@@ -758,12 +760,12 @@ covers its follow-up repair. See the
 for terminology and [ARB_clip_control](https://registry.khronos.org/OpenGL/extensions/ARB/ARB_clip_control.txt)
 for the OpenGL origin mapping. The measured oracle is Wine D3D8.
 
-| Stage 3 frame | Before origin repair | After origin repair | Strict result |
+| Stage 3 frame | Before origin repair | After origin repair | Image result |
 | ---: | ---: | ---: | --- |
-| 12,900 | 1.377827 | 0.786645 | Equal |
-| 14,130 | 0.636065 | 0.324227 | Equal |
-| 14,310 | 0.292456 | 0.003113 | Equal |
-| 14,490 | 0.970204 | 0.766607 | Equal |
+| 12,900 | 1.377827 | 0.786645 | Pass |
+| 14,130 | 0.636065 | 0.324227 | Pass |
+| 14,310 | 0.292456 | 0.003113 | Pass |
+| 14,490 | 0.970204 | 0.766607 | Pass |
 
 All four Stage 4B errors remain unchanged and pass. The selected eight-frame
 gate therefore passes with the original 1.0 limit and exact raw laser/VM
@@ -1023,11 +1025,11 @@ in the legacy-profile section above. These captures use its default context.
 
 | Frame | Active slots | Beam-geometry pixels | Beam-region mean RGB error | Image result |
 | ---: | ---: | ---: | ---: | --- |
-| 9,570 | 55 | 10,716 | 17.589088 | Different |
-| 14,490 | 4 | 1,435 | 20.909872 | Different |
-| 14,550 | 4 | 6,372 | 14.604154 | Different |
-| 15,090 | 4 | 5,780 | 15.289389 | Different |
-| 22,590 | 10 | 10,160 | 12.120407 | Different |
+| 9,570 | 55 | 10,716 | 17.589088 | Fail |
+| 14,490 | 4 | 1,435 | 20.909872 | Fail |
+| 14,550 | 4 | 6,372 | 14.604154 | Fail |
+| 15,090 | 4 | 5,780 | 15.289389 | Fail |
+| 22,590 | 10 | 10,160 | 12.120407 | Fail |
 
 Paired images show a large spell-background texture difference, while the
 visible beams and bullets occupy corresponding positions. Full-playfield mean
