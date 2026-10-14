@@ -185,6 +185,19 @@ executable have been removed. See the
 [Final B observation](PORTABLE_LASER_VISUALS.md#final-b-precision-observation-october-14-2026).
 Extra images remain to be captured. Issue #20's reported scene is unspecified.
 
+The native owner repair is also prepared on `fix/native-spell-background-owner`
+in the private worktree `.analysis/native-main-owner-20261014/`, based on
+main `4fe9ce61`. All three affected units and the full 1,106-unit cold gate pass.
+Fresh normal and bugfix links pass the owner/data/callee guard. Products and
+reports are under `build/laser-native-20261014/main-production/`; their fresh
+native replay and Final A image gates remain pending before a main PR/merge.
+The worktree exposed checkout-specific anonymous-namespace names in two replay
+units. The comparator now normalizes only their generated discriminator and
+records the actual COFF names, with ambiguity, signature, extent and relocation
+checks preserved. A fixed-output two-path compiler probe confirms the cause;
+the portable checkout's own cold 1,106-unit gate also passes. The temporary
+suite scheduler guard resumed the existing portable job at its deadline.
+
 The refreshed i386 recorder is
 `a82e7155eb7c71e5db645df9294cd5316e895df5f35dcbce696946ba4ba9de27`.
 Both context profiles pass seven renderer/FPU groups and the same eight laser

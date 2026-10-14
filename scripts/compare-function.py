@@ -7,6 +7,7 @@ import argparse
 import hashlib
 import json
 from pathlib import Path
+import re
 import struct
 import sys
 import tomllib
@@ -21,6 +22,12 @@ ROOT = Path(__file__).resolve().parents[1]
 MANIFEST = ROOT / "config" / "match-units.toml"
 TARGET_MANIFEST = ROOT / "config" / "target.toml"
 RELOCATION_TYPES = {"DIR32": 0x0006, "REL32": 0x0014}
+
+
+def stable_namespace(name: str) -> str:
+    # VC7's anonymous-namespace discriminator changes with the checkout path.
+    # Preserve every other component of the decorated name and its signature.
+    return re.sub(r"(?<=@)\?A0x[0-9a-fA-F]{8}(?=@)", "?A0x*", name)
 
 
 def repository_path(value: str) -> Path:
@@ -92,19 +99,22 @@ def object_function(
     *,
     allow_auxless_comdat: bool = False,
     expected_size: int | None = None,
+    identity: dict[str, str] | None = None,
 ) -> tuple[bytearray, list[dict[str, object]]]:
     module = ObjectModule()
     module.unpack(path.read_bytes())
     matches = []
     for symbol in module.symbols:
         name = symbol.get_name(module.string_table).decode("ascii", errors="strict")
-        if name == decorated_name and symbol.section_number > 0:
+        if stable_namespace(name) == stable_namespace(decorated_name) and symbol.section_number > 0:
             matches.append(symbol)
     if len(matches) != 1:
         raise ValueError(
             f"expected one section-defined COFF symbol {decorated_name!r}, found {len(matches)}"
         )
     symbol = matches[0]
+    if identity is not None:
+        identity["object_symbol"] = symbol.get_name(module.string_table).decode("ascii", errors="strict")
     section = module.sections[symbol.section_number - 1]
     function_aux = (
         symbol.aux_records[0]
@@ -143,7 +153,7 @@ def object_function(
                 external_owners.append(
                     candidate.get_name(module.string_table).decode("ascii", errors="strict")
                 )
-        if external_owners != [decorated_name]:
+        if [stable_namespace(name) for name in external_owners] != [stable_namespace(decorated_name)]:
             raise ValueError(
                 f"auxless COMDAT section has ambiguous external owners: {external_owners!r}"
             )
@@ -194,7 +204,7 @@ def apply_relocations(
             stem, separator, suffix = name.rpartition("$")
             if separator and stem and suffix.isdigit():
                 return stem + "$*"
-        return name
+        return stable_namespace(name)
 
     normalized_expected = []
     for relocation in expected:
@@ -257,6 +267,7 @@ def apply_relocations(
                 "offset": f"0x{offset:X}",
                 "type": relocation["type"],
                 "symbol": relocation["symbol"],
+                "object_symbol": str(actual_by_offset[offset]["symbol"]),
                 "target": f"0x{relocation['target']:08X}",
                 "addend": f"0x{addend:08X}",
                 "addend_signed": struct.unpack("<i", struct.pack("<I", addend))[0],
@@ -307,11 +318,13 @@ def compare(unit: dict[str, object], target_path: Path) -> dict[str, object]:
             f"comparison extent {compare_size:#x} is smaller than coverage "
             f"size {coverage_size:#x}"
         )
+    identity: dict[str, str] = {}
     code, actual_relocations = object_function(
         object_path,
         str(unit["symbol"]),
         allow_auxless_comdat=bool(unit.get("allow_auxless_comdat", False)),
         expected_size=compare_size,
+        identity=identity,
     )
     if len(code) != compare_size:
         raise ValueError(
@@ -352,6 +365,7 @@ def compare(unit: dict[str, object], target_path: Path) -> dict[str, object]:
         "matched_compared_bytes": compare_size - len(differences),
         "object": str(object_path.relative_to(ROOT)),
         "symbol": unit["symbol"],
+        "object_symbol": identity["object_symbol"],
         "relocations": relocations,
         "literal_attestations": literal_attestations,
         "first_differences": differences[:16],
