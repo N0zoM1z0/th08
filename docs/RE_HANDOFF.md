@@ -116,16 +116,27 @@ checks remain strict. The controlled two-path compiler experiment and ten
 contract tests are documented in [RE_WORKFLOW.md](RE_WORKFLOW.md).
 
 The i386 refresh is prepared under `build/laser-i386-refresh-20261014/`.
-It includes the script-owner, font, surface-filter and ECL trigonometry
-repairs. Its borrowed GCC 12 container is limited to one CPU, 768 MiB and one
-compiler job. Preserve the compiler working directory for CMake try-compiles
-and Ninja output paths. The fresh build, 640 surface API cases, renderer/FPU
-contracts, paired laser images and full replay gate remain separate checks.
+Its fresh GCC 12 ELF32 recorder is
+`bd8b148c0ac6a478391ee4c1fea7334ac1f473466418131715cda4e1a900ce40`, built
+from `ed8ff8df`. All 132 recorded build-input hashes agree. It includes the
+script-owner, font, surface-filter and ECL trigonometry repairs. ELF32/fixed
+layout verification, all 640 surface API cases and seven renderer/FPU contract
+groups pass. All seven Final B image/raw-state checks and 390 paired spawn
+inputs pass, with the same beam errors as x86_64. Other laser scenes and the
+complete corpus remain pending. CMake, package discovery and
+Ninja run together inside the borrowed GCC 12 container, limited to one CPU,
+768 MiB and one job. The compiler tree has been removed. Use the container
+commands in [PORTABLE_REPLAY_TESTING.md](PORTABLE_REPLAY_TESTING.md) to reproduce
+that environment.
 The earlier i386 product's results remain in
 [PORTABLE_LASER_VISUALS.md](PORTABLE_LASER_VISUALS.md#i386-refresh-october-14-2026).
 
-Next finish the current x86_64 gate, exercise the new native product's complete
-replays, validate the refreshed i386 product and capture Extra laser images.
+A serial worker is queued after the current x86_64 capture and retained-evidence
+pass. It runs the new native product's 108-recording gate, revalidates it, then
+runs and revalidates the i386 corpus. Its product hashes are pinned, and its
+owned native Wine prefix is removed after the batch. Progress is under
+`build/laser-i386-refresh-20261014/queued-platform-gates.json`. Continue those
+existing jobs; capture remaining laser scenes, legacy contexts and Extra next.
 Issue #20's reported scene remains unspecified. Small font/sampling residuals,
 the Stage 5 color observations and native RT-007 retain their measured scope
 in the laser, rendering and runtime reports. AArch64 hardware and audio are

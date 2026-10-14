@@ -44,6 +44,32 @@ scripts/verify-modern-linux.sh build/i386-replay/th08-modern
 Use that executable as `--candidate` in the same suite commands, with a separate
 output directory for each architecture.
 
+For a container build, use the committed [Linux32 image recipe](../containers/linux32.Dockerfile).
+Run CMake and Ninja inside that image so dependency discovery and compilation
+use the same 32-bit libraries:
+
+```bash
+docker build --platform linux/386 -f containers/linux32.Dockerfile \
+  -t th08-modern-linux32 .
+docker run --rm --network none --cpus 1 --memory 768m --pids-limit 128 \
+  --user "$(id -u):$(id -g)" -v "$PWD:$PWD" -w "$PWD" \
+  --entrypoint cmake th08-modern-linux32 \
+  -S . -B build/i386-replay -G Ninja \
+  -DCMAKE_TOOLCHAIN_FILE=cmake/linux-i386-toolchain.cmake \
+  -DCMAKE_BUILD_TYPE=Debug -DTH08_ENABLE_REPLAY_TRACE=ON
+docker run --rm --network none --cpus 1 --memory 768m --pids-limit 128 \
+  --user "$(id -u):$(id -g)" -v "$PWD:$PWD" -w "$PWD" \
+  --entrypoint cmake th08-modern-linux32 \
+  --build build/i386-replay --parallel 1
+scripts/verify-modern-linux.sh build/i386-replay/th08-modern
+```
+
+Record the built image ID, compiler and package versions with the executable
+hash. The image recipe uses Debian's package repositories, so later builds
+can have different dependency versions. Host replay captures require the
+32-bit runtime libraries listed in the multilib instructions above. Keep
+container-built and host-built products in separate capture directories.
+
 Run every accepted recording:
 
 ```bash

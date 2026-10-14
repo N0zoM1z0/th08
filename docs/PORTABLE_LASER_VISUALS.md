@@ -961,6 +961,27 @@ fresh output directory for the second profile. See the
 [i386 renderer command](PORTABLE_RENDERING.md#pixel-contracts-without-game-assets)
 for architecture-specific compiler and package-metadata selection.
 
+### i386 source refresh after the shared repairs
+
+The new GCC 12 i386 recorder is SHA-256
+`bd8b148c0ac6a478391ee4c1fea7334ac1f473466418131715cda4e1a900ce40`, with
+build-input hashes pinned to source checkpoint `ed8ff8df`. It includes the
+script-owner, GDI font, surface-filter and standalone ECL sine/cosine repairs.
+ELF32 and fixed-layout ownership checks pass. The extended surface probe
+passes all 640 pinned-D3DX8 API cases, and seven default renderer/FPU contract
+groups pass. All seven Final B image/raw-state checks and all 390 paired spawn
+inputs also pass. Beam errors are identical to the repaired x86_64 product at
+0.003476–0.144060. Other scenes, legacy-context repetitions and the full replay
+corpus remain separate gates. Evidence is under
+`build/laser-i386-refresh-20261014/`; the owned compiler tree has been removed.
+
+This build runs CMake, package discovery and Ninja together in the pinned
+container. Host CMake with only a compiler wrapper first failed to access its
+ABI probe source, then failed to locate container Fontconfig libraries. Both
+failed configuration logs remain retained. The
+[container reproduction commands](PORTABLE_REPLAY_TESTING.md) use the committed
+image recipe and a single compiler job with a 768 MiB limit.
+
 ## Final A observation, October 14, 2026
 
 Case `finala-eirin` uses `lunatic-1-a`, Magic Team, Lunatic, Final A,
