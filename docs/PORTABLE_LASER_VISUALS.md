@@ -22,8 +22,10 @@ finds a split spell-background script field; its owner repair passes the five
 added x86_64 image cases with identical laser/VM packets. The surface-filter
 product also passes all 108 recordings and retained-evidence verification.
 The added [Final B samples](#final-b-precision-observation-october-14-2026)
-pass the image limit but expose a one-ULP laser-origin difference at frame
-8,400. Extra images and the i386 refresh remain to be checked. The dated
+exposed a one-ULP laser-origin difference at frame 8,400. The ECL sine/cosine
+repair now passes all seven raw packets and 390 paired spawn-input records.
+Its complete replay refresh is the next gate. Extra images and the i386
+refresh remain to be checked. The dated
 sections below preserve each repair's evidence.
 
 ### Status of the seven initial failures
@@ -1166,9 +1168,65 @@ the radius multiplication in both handlers. Its fresh seven-frame capture
 retains the same four differing fields at 8,400; the other six packets agree.
 That experiment does not explain this failure, and its source changes were
 reverted. The patch, native RunEcl comparison and failed capture remain under
-`build/ecl-polar-laser-20261014/`. Next trace the spawning operands and any
-later position writes to find the earliest divergence. The 25-field gameplay
-pass remains scoped to its recorded fields.
+`build/ecl-polar-laser-20261014/`.
+
+### Spawn-input evidence and repair
+
+A fresh paired capture records 390 calls to `SpawnLaserPattern` in frames
+8,000–8,400. Enemy world positions and input angles agree. Eight calls have
+one-ULP differences in shoot-offset components; cached ECL variables extend
+the differences to eleven records. The first differing offset is at 8,042.
+Slots 12 and 19's observed origins are created at 8,242, already carrying the
+same differences seen at 8,400. Their start-cap differences follow those origins.
+
+Subroutine 52's observed prefix uses ECL cosine opcode 33 at `+0x194` and
+sine opcode 32 at `+0x1BC`, with float multiplications by 32 immediately
+after each. The canonical handlers at `0x004193AF` and `0x00419347` call
+`cosf @ 0x00408D40` and `sinf @ 0x00409060`, then store floats. Those wrappers
+call the double CRT routines. For all eight differing offsets, double
+trigonometry followed by a float conversion agrees with retail; the host's
+float-returning libm calls reproduce the earlier portable words.
+
+The portable opcode branches now call `sin(double)` and `cos(double)` and
+convert their results to float before writing the ECL variable. The native
+expressions remain unchanged. A fresh build and comparison of the affected
+RunEcl unit is exact; this is a single-unit check. The new GCC 8 x86_64 Debug
+recorder is SHA-256
+`ee78ef7efa7f9e79bd89f1b82320d266f8d63725eefd0298a4a3b2330b4aca10`.
+Its 390 spawn-input records all agree with retail. All seven Final B laser/VM
+packets now agree, and the beam image errors remain 0.003476–0.144060. The
+complete 108-recording refresh remains separate. Evidence is under
+`build/laser-spawn-origin-20261014/`; the owned compiler tree is removed.
+
+Reproduce the paired input and frame checks with a newly built recorder:
+
+```bash
+python3 scripts/analysis/check-laser-visuals.py \
+  --candidate build/portable-linux-x86_64/th08-modern \
+  --game-data-dir "/path/to/original/TH08 directory" \
+  --fixture lunatic-0-b --stage 7 --frames 8400 \
+  --watch-laser-spawns 8000:8400 --retail \
+  --output-dir build/finalb-spawn-check
+```
+
+The command requires both comparisons to pass. `laser-spawns.json` stores
+exact float words, owner slots, context state and call order. The native
+observer uses attested hardware breakpoints and reserves their limited slots
+for this diagnostic. Each capture holds at most 4,096 records. `firstFreeSlot`
+describes the pool at entry; it does not assert allocation when spawning is
+suppressed. Portable additionally saves bounded ECL subroutine prefixes under
+the private build directory. Recompute the input comparison without launching
+the game:
+
+```bash
+python3 scripts/analysis/compare-laser-spawns.py \
+  --reference build/finalb-spawn-check/retail \
+  --candidate build/finalb-spawn-check \
+  --output build/finalb-spawn-check/spawn-revalidation.json
+```
+
+The 25-field gameplay pass remains scoped to its recorded fields. These spawn
+and laser-pool packets provide the additional state evidence for this repair.
 
 ## Read and verify the evidence
 

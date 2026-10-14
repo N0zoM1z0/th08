@@ -50,6 +50,12 @@ def source_identity():
                 runnerSha256=sha(Path(__file__)))
 
 
+def validate_spawn_capture(output, selected_range):
+    capture = json.loads((output / "laser-spawns.json").read_text())
+    if capture.get("range") != selected_range or capture.get("complete") is not True:
+        raise RuntimeError("Laser spawn observation did not complete its requested range")
+
+
 def font_environment(override):
     if override:
         path = Path(override)
@@ -87,6 +93,7 @@ def capture_portable(candidate, data, replay, output, settings):
     metadata["watchQuads"] = settings.get("watchQuads", False)
     metadata["watchDraws"] = settings.get("watchDraws", False)
     metadata["watchRotatingHitboxes"] = settings.get("watchRotatingHitboxes", False)
+    metadata["watchLaserSpawns"] = settings.get("watchLaserSpawns")
     metadata["renderInputControl"] = bool(settings.get("drawColorsFrom"))
     metadata["legacyOpenGL"] = settings.get("legacyOpenGL", False)
     try:
@@ -128,6 +135,8 @@ def capture_portable(candidate, data, replay, output, settings):
                     raise RuntimeError("Requested laser image is missing")
         if settings.get("watchTextFonts") and not json.loads((output / "text-fonts.json").read_text()):
             raise RuntimeError("No bold-text font calls were captured in the selected stage")
+        if settings.get("watchLaserSpawns"):
+            validate_spawn_capture(output, settings["watchLaserSpawns"])
         if settings.get("watchQuads"):
             quads = json.loads((output / "quads.json").read_text())
             if [row["frame"] for row in quads] != settings["frames"] or any(not row["quads"] for row in quads):
@@ -160,7 +169,7 @@ def capture_portable(candidate, data, replay, output, settings):
 
 
 def capture_retail(target, data, replay, output, stage, frames, watch_text_fonts=False, watch_quads=False,
-                   candidate=None, map_path=None, wine_csmt=None):
+                   candidate=None, map_path=None, wine_csmt=None, watch_laser_spawns=None):
     from pe_image import PEImage
     if target.stat().st_size != 840704 or sha(target) != TARGET_SHA256:
         raise ValueError("Retail input must be the canonical Japanese TH08 1.00d executable")
@@ -179,6 +188,11 @@ def capture_retail(target, data, replay, output, stage, frames, watch_text_fonts
     settings = dict(stage=stage, frames=frames, postPresentAddress=post_present,
                     postPresentBytes=image.read_rva(post_present - image.image_base, 13).hex(),
                     layoutFile=label + "-layout.json")
+    if watch_laser_spawns:
+        if candidate:
+            raise ValueError("Spawn diagnostics currently require the canonical retail image")
+        settings.update(watchLaserSpawns=watch_laser_spawns, spawnAddress=0x430F20,
+                        spawnBytes=image.read_rva(0x430F20 - image.image_base, 9).hex())
     if watch_text_fonts:
         settings.update(watchTextFonts=True, fontCreatedAddress=0x43FA12,
                         fontCreatedBytes=image.read_rva(0x43FA12 - image.image_base, 11).hex())
@@ -190,6 +204,7 @@ def capture_retail(target, data, replay, output, stage, frames, watch_text_fonts
                       frameCounter=FRAME_COUNTER, frames=frames,
                       gameplayMemoryReadOnly=True, executableBytesUnmodified=True)
     provenance["watchQuads"] = watch_quads
+    provenance["watchLaserSpawns"] = watch_laser_spawns
     stem = output.name + "-native" if candidate else "retail"
     settings_path = output.parent / (stem + "-settings.json")
     settings_path.write_text(json.dumps(settings, indent=2) + "\n")
@@ -221,6 +236,8 @@ def capture_retail(target, data, replay, output, stage, frames, watch_text_fonts
             raise RuntimeError("Retail laser frames did not complete")
         if watch_text_fonts and not json.loads((output / "text-fonts.json").read_text()):
             raise RuntimeError("No retail bold-text font calls were captured in the selected stage")
+        if watch_laser_spawns:
+            validate_spawn_capture(output, watch_laser_spawns)
         if watch_quads:
             quads = json.loads((output / "quads.json").read_text())
             if [row["frame"] for row in quads] != frames or any(not row["quads"] for row in quads):
@@ -269,6 +286,7 @@ def main():
     parser.add_argument("--watch-draws", action="store_true", help="Read portable draw inputs, matrices, states and texture identities")
     parser.add_argument("--watch-rotating-hitboxes", action="store_true",
                         help="Scout the three enemy rotating-laser collision helpers and their VM state")
+    parser.add_argument("--watch-laser-spawns", help="Read spawn inputs in an inclusive START:END gameplay-frame range")
     parser.add_argument("--draw-colors-from", type=Path, help="Experimental zero-alpha RGB control using another completed draw capture")
     parser.add_argument("--draw-color-index", type=int, default=2, help="Draw index for the experimental color control")
     parser.add_argument("--maximum-frame", type=int, default=30000)
@@ -277,6 +295,16 @@ def main():
     parser.add_argument("--target", type=Path, default=ROOT / "resources/th08.exe")
     parser.add_argument("--output-dir", type=Path, required=True, help="Fresh directory under build/")
     args = parser.parse_args()
+    spawn_range = None
+    if args.watch_laser_spawns:
+        try:
+            spawn_range = [int(part) for part in args.watch_laser_spawns.split(":")]
+        except ValueError:
+            parser.error("Spawn range must be START:END")
+        if len(spawn_range) != 2 or not 1 <= spawn_range[0] <= spawn_range[1]:
+            parser.error("Spawn range must have positive, ordered START:END frames")
+        if args.native_map or args.watch_text_fonts or args.watch_quads or args.watch_draws or args.suppress_laser_bodies:
+            parser.error("Spawn diagnostics require a separate portable/retail capture")
     if args.wine_csmt is not None and not args.native_map:
         parser.error("--wine-csmt requires --native-map")
     if args.native_map and (args.scout or args.legacy_gl or args.font or args.watch_text_fonts or args.watch_draws
@@ -328,6 +356,8 @@ def main():
         parser.error("Fixture is unknown or does not contain the requested stage")
     header = next(entry for entry in fixture["stages"] if entry["index"] == args.stage)
     maximum = min(args.maximum_frame, header["inputRecords"] - 8)
+    if spawn_range and spawn_range[1] > (maximum if args.scout else max(frames)):
+        parser.error("Spawn range must end within the requested capture")
     if maximum < 1 or any(frame > header["inputRecords"] - 8 for frame in frames):
         parser.error("Requested frame is outside the recording's complete gameplay range")
     replay = ROOT / "tests/fixtures/replays/th08-1.00d/accepted" / fixture["file"]
@@ -356,6 +386,7 @@ def main():
                     watchQuads=args.watch_quads,
                     watchDraws=args.watch_draws,
                     watchRotatingHitboxes=args.watch_rotating_hitboxes,
+                    watchLaserSpawns=spawn_range,
                     drawColorsFrom=str(color_capture) if color_capture else None,
                     drawColorIndex=args.draw_color_index,
                     legacyOpenGL=args.legacy_gl,
@@ -380,12 +411,20 @@ def main():
     if args.retail:
         print("Capturing retail laser frames with ordinary pacing and rasterization", flush=True)
         capture_retail(args.target.resolve(strict=True), data, replay, output / "retail", args.stage, frames,
-                       args.watch_text_fonts, args.watch_quads, wine_csmt=args.wine_csmt)
+                       args.watch_text_fonts, args.watch_quads, wine_csmt=args.wine_csmt,
+                       watch_laser_spawns=spawn_range)
         comparator = module("laser_comparison", ROOT / "scripts/analysis/compare-laser-visuals.py")
         report = comparator.compare(output / "retail", output)
         (output / "comparison.json").write_text(json.dumps(report, indent=2) + "\n")
         print("Laser visual comparison: " + report["result"], flush=True)
-        if report["result"] != "equal":
+        spawn_failed = False
+        if spawn_range:
+            spawn_comparator = module("laser_spawns", ROOT / "scripts/analysis/compare-laser-spawns.py")
+            spawn_report = spawn_comparator.compare(output / "retail", output)
+            (output / "spawn-comparison.json").write_text(json.dumps(spawn_report, indent=2) + "\n")
+            print("Laser spawn comparison: " + spawn_report["result"], flush=True)
+            spawn_failed = spawn_report["result"] != "equal"
+        if report["result"] != "equal" or spawn_failed:
             raise SystemExit(1)
 
 

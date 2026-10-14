@@ -16,6 +16,8 @@ scout = settings.get("scout", False)
 maximum = settings.get("maximumFrame", max(frames, default=30000))
 sample_interval = settings.get("sampleInterval", 30)
 records = []
+spawn_records = []
+spawn_subroutines = {}
 rotating_records = []
 rotating_summary = dict(boundary="rotating-hitbox helper entry", sampledRecords=0,
                         serializedRecordBytes=0, helpers={})
@@ -60,6 +62,7 @@ layouts = None
 counter_addresses = None
 last_sampled_frame = None
 last_progress_frame = None
+last_observed_frame = 0
 
 
 def progress(selected_stage, frame):
@@ -95,11 +98,69 @@ def laser_state():
 
 def save_records():
     (output / "lasers.json").write_text(json.dumps(records, indent=2) + "\n")
+    if settings.get("watchLaserSpawns"):
+        (output / "laser-spawns.json").write_text(json.dumps(dict(
+            boundary="SpawnLaserPattern entry", frameCounter="GameManager.gameplayFrameCounter",
+            range=settings["watchLaserSpawns"],
+            complete=last_observed_frame >= settings["watchLaserSpawns"][1],
+            records=spawn_records), indent=2) + "\n")
+        (output / "ecl-subroutine-prefixes.json").write_text(json.dumps(spawn_subroutines, indent=2) + "\n")
     if scout:
         (output / "scout-summary.json").write_text(json.dumps(scout_summary, indent=2) + "\n")
     if settings.get("watchRotatingHitboxes"):
         (output / "rotating-hitboxes.json").write_text(json.dumps(
             dict(summary=rotating_summary, records=rotating_records), indent=2) + "\n")
+
+
+class LaserSpawn(gdb.Breakpoint):
+    def __init__(self):
+        super().__init__("th08::BulletManager::SpawnLaserPattern", internal=True)
+
+    def stop(self):
+        selected_stage, frame = current()
+        start, end = settings["watchLaserSpawns"]
+        if selected_stage != stage or not start <= frame <= end:
+            return False
+        if len(spawn_records) >= 4096:
+            raise RuntimeError("Laser spawn capture exceeds its 4096-record limit")
+        descriptor = value("descriptor").dereference()
+        pool = value("th08::g_EnemyManager.enemies")
+        stride = pool.type.target().sizeof
+        descriptor_offset = int(value("&th08::g_EnemyManager.enemies[0].laserSpawnDescriptor")) - int(pool.address)
+        offset = int(descriptor.address) - int(pool.address) - descriptor_offset
+        slot = offset // stride if offset >= 0 and offset % stride == 0 and offset // stride < 481 else None
+        item = dict(stage=stage, frame=frame, enemySlot=slot,
+                    caller=gdb.newest_frame().older().name())
+        for name, format_ in (("position", "3I"), ("angle", "I"), ("speed1", "I"),
+                              ("bulletType", "h"), ("color", "h"), ("laserDuration", "i")):
+            field = descriptor[name]
+            decoded = struct.unpack("<" + format_, bytes(gdb.selected_inferior().read_memory(field.address, struct.calcsize(format_))))
+            item["descriptor." + name] = list(decoded) if len(decoded) > 1 else decoded[0]
+        if slot is not None:
+            enemy = pool[slot]
+            for name in ("position", "worldPosition", "shootOffset"):
+                item["enemy." + name] = list(struct.unpack("<3I", bytes(gdb.selected_inferior().read_memory(enemy[name].address, 12))))
+            context = enemy["activeEclContext"].dereference()
+            item["ecl.subId"] = int(context["subId"])
+            item["ecl.time"] = int(context["time"]["current"])
+            item["ecl.instruction"] = bytes(gdb.selected_inferior().read_memory(context["currentInstr"], 12)).hex()
+            item["ecl.floatVariables"] = list(struct.unpack("<8I", bytes(gdb.selected_inferior().read_memory(context["floatVariables"].address, 32))))
+            sub_id = item["ecl.subId"]
+            if sub_id not in spawn_subroutines:
+                manager = value("th08::g_EclManager")
+                count = int(manager["eclFile"].dereference()["subCount"])
+                if not 0 <= sub_id < count <= 4096:
+                    raise RuntimeError("Spawn context has an invalid ECL subroutine index")
+                begin = int(manager["subTable"][sub_id])
+                later = [int(manager["subTable"][i]) for i in range(count) if int(manager["subTable"][i]) > begin]
+                if later:
+                    length = min(512, min(later) - begin)
+                    spawn_subroutines[sub_id] = dict(prefixBytes=length, bytes=bytes(
+                        gdb.selected_inferior().read_memory(begin, length)).hex())
+        lasers = value("th08::g_BulletManager.lasers")
+        item["firstFreeSlot"] = next((i for i in range(256) if int(lasers[i]["inUse"]) == 0), None)
+        spawn_records.append(item)
+        return False
 
 
 class RotatingHitbox(gdb.Breakpoint):
@@ -157,8 +218,10 @@ class Scout(gdb.Breakpoint):
         super().__init__("'(anonymous namespace)::LinuxDevice::Present'", internal=True)
 
     def stop(self):
-        global last_sampled_frame
+        global last_sampled_frame, last_observed_frame
         selected_stage, frame = current()
+        if selected_stage == stage:
+            last_observed_frame = max(last_observed_frame, frame)
         progress(selected_stage, frame)
         if settings.get("watchRotatingHitboxes") and selected_stage == stage and frame > 0 and frame % 3000 == 0:
             save_records()
@@ -203,7 +266,10 @@ class Present(gdb.Breakpoint):
         super().__init__("'(anonymous namespace)::LinuxDevice::Present'", internal=True)
 
     def stop(self):
+        global last_observed_frame
         selected_stage, frame = current()
+        if selected_stage == stage:
+            last_observed_frame = max(last_observed_frame, frame)
         progress(selected_stage, frame)
         if selected_stage == stage and frame in frames:
             gdb.execute("set $laser_device = this")
@@ -459,6 +525,8 @@ for command in ("set pagination off", "set confirm off", "set breakpoint pending
                 "set debuginfod enabled off", "set print thread-events off",
                 "set direct-call-timeout 10", "set unwind-on-timeout on"):
     gdb.execute(command)
+if settings.get("watchLaserSpawns"):
+    spawn_watcher = LaserSpawn()
 if scout:
     if settings.get("watchRotatingHitboxes"):
         rotating_watchers = [RotatingHitbox(helper) for helper in ("Narrow", "Medium", "Wide")]

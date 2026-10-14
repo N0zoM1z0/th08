@@ -30,10 +30,72 @@ spec.loader.exec_module(subpixel)
 spec = importlib.util.spec_from_file_location("portable_draws", Path(__file__).parent / "analysis/compare-portable-draws.py")
 portable_draws = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(portable_draws)
+spec = importlib.util.spec_from_file_location("laser_spawns", Path(__file__).parent / "analysis/compare-laser-spawns.py")
+laser_spawns = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(laser_spawns)
 
 
 def bits(value):
     return struct.unpack("<I", struct.pack("<f", value))[0]
+
+
+class LaserSpawnTests(unittest.TestCase):
+    def setUp(self):
+        temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(temporary.cleanup)
+        self.reference, self.candidate = (Path(temporary.name) / name for name in ("retail", "portable"))
+        common = dict(gameDataSha256="data", bgmDataSha256="bgm", configSha256="config", startStage=7, muted=True)
+        reference = dict(common, product="retail", executableSha256=laser_spawns.TARGET_SHA256, fixture="replay",
+                         laserCapture=dict(gameplayMemoryReadOnly=True, executableBytesUnmodified=True, watchLaserSpawns=[80, 100]))
+        candidate = dict(common, product="portable-linux", executableSha256="candidate", replaySha256="replay",
+                         runnerExitCode=0, watchLaserSpawns=[80, 100])
+        row = dict(stage=7, frame=90, enemySlot=2, firstFreeSlot=12, caller="caller")
+        for field in ("descriptor.position", "enemy.position", "enemy.worldPosition", "enemy.shootOffset"):
+            row[field] = [bits(1), bits(2), bits(0)]
+        row.update({"descriptor.angle": bits(0.5), "descriptor.speed1": bits(4), "descriptor.bulletType": 4,
+                    "descriptor.color": 4, "descriptor.laserDuration": 800, "ecl.subId": 52,
+                    "ecl.time": 5, "ecl.instruction": "00" * 12, "ecl.floatVariables": [0] * 8})
+        for directory, metadata in ((self.reference, reference), (self.candidate, candidate)):
+            directory.mkdir()
+            (directory / "metadata.json").write_text(json.dumps(metadata))
+            (directory / "laser-spawns.json").write_text(json.dumps(dict(
+                boundary="SpawnLaserPattern entry", frameCounter="GameManager.gameplayFrameCounter",
+                range=[80, 100], complete=True, records=[row])))
+        (self.reference / "complete.json").write_text(json.dumps(dict(diagnosticComplete=True, errors=[])))
+
+    def mutate(self, filename, action):
+        path = self.candidate / filename
+        data = json.loads(path.read_text())
+        action(data)
+        path.write_text(json.dumps(data))
+
+    def test_one_ulp_is_detected_and_platform_caller_name_is_ignored(self):
+        self.mutate("laser-spawns.json", lambda d: d["records"][0].update(caller="portable caller"))
+        self.assertEqual(laser_spawns.compare(self.reference, self.candidate)["result"], "equal")
+        self.mutate("laser-spawns.json", lambda d: d["records"][0]["descriptor.position"].__setitem__(1, bits(2) + 1))
+        result = laser_spawns.compare(self.reference, self.candidate)
+        self.assertEqual(result["result"], "different")
+        self.assertEqual(result["differences"][0]["field"], "descriptor.position")
+
+    def test_missing_raw_state_cannot_pass(self):
+        self.mutate("laser-spawns.json", lambda d: d["records"][0].pop("enemy.shootOffset"))
+        with self.assertRaisesRegex(ValueError, "raw float"):
+            laser_spawns.compare(self.reference, self.candidate)
+
+    def test_incomplete_range_or_mismatched_replay_cannot_pass(self):
+        self.mutate("laser-spawns.json", lambda d: d.update(complete=False))
+        with self.assertRaisesRegex(ValueError, "incomplete"):
+            laser_spawns.compare(self.reference, self.candidate)
+        self.mutate("laser-spawns.json", lambda d: d.update(complete=True))
+        self.mutate("metadata.json", lambda d: d.update(replaySha256="another recording"))
+        with self.assertRaisesRegex(ValueError, "identities"):
+            laser_spawns.compare(self.reference, self.candidate)
+
+    def test_different_record_counts_are_detected(self):
+        self.mutate("laser-spawns.json", lambda d: d["records"].append(dict(d["records"][0])))
+        result = laser_spawns.compare(self.reference, self.candidate)
+        self.assertEqual(result["result"], "different")
+        self.assertEqual(result["differences"][0]["field"], "recordCount")
 
 
 class FontEvidenceTests(unittest.TestCase):

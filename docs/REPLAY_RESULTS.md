@@ -49,8 +49,11 @@ retained-evidence pass. This refresh uses fresh serial candidate processes,
 validated retail references and the compiled recorder without rasterization.
 Source checkpoint is `183cd755`; evidence is under
 `build/surface-filter-repair-20261014/x64-suite/`. The added Final B image
-samples expose a one-ULP laser-origin difference at frame 8,400 in fields
-outside the gameplay trace. The laser guide retains that failed packet.
+samples exposed a one-ULP laser-origin difference at frame 8,400 in fields
+outside the gameplay trace. The subsequent ECL sine/cosine repair passes all
+seven image/packet checks and 390 paired spawn-input records; its full corpus
+refresh remains separate. The laser guide retains the failed and repaired
+evidence.
 Earlier portable full-corpus results remain tied to the products listed below.
 
 ## Coverage
@@ -153,7 +156,8 @@ height, and edge-coverage repairs, all eight pass the unchanged 1.0 mean RGB
 error limit. Font rasterization and synthetic texture-sampling differences
 remain documented in that investigation. The revised x86_64 product also passes
 the full corpus as recorded above. The original seven image failures are
-resolved; the added Final B packet difference is a separate open investigation.
+resolved; the added Final B packet difference now has a verified ECL
+sine/cosine repair and its own input regression.
 
 ## Reproduce the results
 

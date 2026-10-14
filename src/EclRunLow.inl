@@ -333,12 +333,32 @@ static EclRawInstruction *__fastcall CompareOperands(
         break;
     case ECL_OPCODE_INT_INCREMENT: ++*WriteInt(enemy, instruction, 0); break;
     case ECL_OPCODE_INT_DECREMENT: --*WriteInt(enemy, instruction, 0); break;
-    case ECL_OPCODE_FLOAT_SINE: *WriteFloat(enemy, instruction, 0) = sinf(((instruction->operandFlags & (1U << 1))
-        ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 1)))
-        : *reinterpret_cast<f32 *>(&RawInt(instruction, 1)))); break;
-    case ECL_OPCODE_FLOAT_COSINE: *WriteFloat(enemy, instruction, 0) = cosf(((instruction->operandFlags & (1U << 1))
-        ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 1)))
-        : *reinterpret_cast<f32 *>(&RawInt(instruction, 1)))); break;
+    case ECL_OPCODE_FLOAT_SINE:
+#ifdef TH08_MODERN_PORT
+        // The target wrappers call the double CRT, then these opcodes store a float.
+        // Linux sinf/cosf can differ by one ULP even for ordinary in-range angles.
+        *WriteFloat(enemy, instruction, 0) = static_cast<f32>(sin(static_cast<f64>(
+            (instruction->operandFlags & (1U << 1))
+                ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 1)))
+                : *reinterpret_cast<f32 *>(&RawInt(instruction, 1)))));
+#else
+        *WriteFloat(enemy, instruction, 0) = sinf(((instruction->operandFlags & (1U << 1))
+            ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 1)))
+            : *reinterpret_cast<f32 *>(&RawInt(instruction, 1))));
+#endif
+        break;
+    case ECL_OPCODE_FLOAT_COSINE:
+#ifdef TH08_MODERN_PORT
+        *WriteFloat(enemy, instruction, 0) = static_cast<f32>(cos(static_cast<f64>(
+            (instruction->operandFlags & (1U << 1))
+                ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 1)))
+                : *reinterpret_cast<f32 *>(&RawInt(instruction, 1)))));
+#else
+        *WriteFloat(enemy, instruction, 0) = cosf(((instruction->operandFlags & (1U << 1))
+            ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 1)))
+            : *reinterpret_cast<f32 *>(&RawInt(instruction, 1))));
+#endif
+        break;
     case ECL_OPCODE_POINT_ANGLE:
         *WriteFloat(enemy, instruction, 0) = VectorAngle((((instruction->operandFlags & (1U << 4))
             ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 4)))

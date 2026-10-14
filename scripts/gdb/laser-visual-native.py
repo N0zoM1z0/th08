@@ -15,6 +15,7 @@ settings = json.loads(Path(os.environ["TH08_LASER_SETTINGS"]).read_text())
 stage = settings["stage"]
 frames = set(settings["frames"])
 records = []
+spawn_records = []
 address = settings["postPresentAddress"]
 expected = bytes.fromhex(settings["postPresentBytes"])
 if ns["block"](address, len(expected)) != expected:
@@ -60,6 +61,53 @@ def laser_state():
 
 text_fonts = []
 quad_frames = {}
+
+
+class LaserSpawn(gdb.Breakpoint):
+    def __init__(self):
+        address = settings["spawnAddress"]
+        expected = bytes.fromhex(settings["spawnBytes"])
+        if ns["block"](address, len(expected)) != expected:
+            raise RuntimeError("Retail laser spawn instructions differ from the canonical target")
+        super().__init__("*0x%08X" % address, gdb.BP_HARDWARE_BREAKPOINT)
+        self.enabled = False
+
+    def stop(self):
+        try:
+            frame = ns["read"](ns["GM"] + 0x3DDC0)
+            start, end = settings["watchLaserSpawns"]
+            if ns["read"](ns["GM"] + 0x3DDC4) != stage or not start <= frame <= end:
+                return False
+            if len(spawn_records) >= 4096:
+                raise RuntimeError("Laser spawn capture exceeds its 4096-record limit")
+            esp = int(gdb.parse_and_eval("$esp"))
+            descriptor = ns["read"](esp + 4)
+            # EnemyManager's initial Enemy is its template; the live pool follows it.
+            pool = ns["settings"]["enemyManager"] + 0x53D0
+            offset = descriptor - pool - 0x3070
+            slot = offset // 0x53D0 if offset >= 0 and offset % 0x53D0 == 0 and offset // 0x53D0 < 481 else None
+            item = dict(stage=stage, frame=frame, enemySlot=slot, caller=hex(ns["read"](esp)))
+            for name, offset_, format_ in (("position", 4, "3I"), ("angle", 0x10, "I"),
+                                          ("speed1", 0x18, "I"), ("bulletType", 0, "h"),
+                                          ("color", 2, "h"), ("laserDuration", 0x1E4, "i")):
+                decoded = struct.unpack("<" + format_, ns["block"](descriptor + offset_, struct.calcsize(format_)))
+                item["descriptor." + name] = list(decoded) if len(decoded) > 1 else decoded[0]
+            if slot is not None:
+                enemy = pool + slot * 0x53D0
+                for name, offset_ in (("position", 0x2D34), ("worldPosition", 0x2D88), ("shootOffset", 0x2DB8)):
+                    item["enemy." + name] = list(struct.unpack("<3I", ns["block"](enemy + offset_, 12)))
+                context = ns["read"](enemy + 0x2CA0)
+                item["ecl.subId"] = struct.unpack("<h", ns["block"](context + 0x224, 2))[0]
+                item["ecl.time"] = ns["read"](context + 12)
+                item["ecl.instruction"] = ns["block"](ns["read"](context), 12).hex()
+                item["ecl.floatVariables"] = list(struct.unpack("<8I", ns["block"](context + 0x38, 32)))
+            raw = ns["block"](base, stride * 256)
+            item["firstFreeSlot"] = next((i for i in range(256) if struct.unpack_from("<i", raw, i * stride + 0x584)[0] == 0), None)
+            spawn_records.append(item)
+        except Exception as error:
+            self.enabled = False
+            observer.finish("Laser spawn observation failed: " + str(error))
+        return False
 
 
 class Quad(gdb.Breakpoint):
@@ -161,6 +209,11 @@ class Screenshot(gdb.Breakpoint):
                        check=True, timeout=15)
         frames.remove(frame)
         if not frames:
+            if spawn_watcher is not None:
+                spawn_watcher.enabled = False
+                (output / "laser-spawns.json").write_text(json.dumps(dict(
+                    boundary="SpawnLaserPattern entry", frameCounter="GameManager.gameplayFrameCounter",
+                    range=settings["watchLaserSpawns"], complete=True, records=spawn_records), indent=2) + "\n")
             for name in ("stream", "menu_log", "events", "releases", "score_events", "item_events"):
                 ns[name].flush()
                 ns[name].close()
@@ -178,11 +231,18 @@ class Screenshot(gdb.Breakpoint):
 screenshot = Screenshot()
 text_font = TextFont() if settings.get("watchTextFonts") else None
 quad = Quad() if settings.get("watchQuads") else None
+spawn_watcher = LaserSpawn() if settings.get("watchLaserSpawns") else None
 ordinary_stop = observer.stop
 
 
 def observe_and_arm(completion=False):
     result = ordinary_stop(completion=completion)
+    if spawn_watcher is not None and observer.stage == stage:
+        # Reserve hardware slots for the spawn and presentation observers.
+        ns["begin_observer"].enabled = observer.completion_observer.enabled = False
+        frame = ns["read"](ns["GM"] + 0x3DDC0)
+        start, end = settings["watchLaserSpawns"]
+        spawn_watcher.enabled = start - 1 <= frame <= end
     if quad is not None and observer.stage == stage:
         ns["begin_observer"].enabled = observer.completion_observer.enabled = False
         quad.enabled = ns["read"](ns["GM"] + 0x3DDC0) in frames

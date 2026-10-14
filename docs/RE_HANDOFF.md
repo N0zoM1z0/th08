@@ -166,11 +166,16 @@ differences; the legacy probe retains 16. An XY grid control passes 59/68
 images, with nine first-row differences coinciding with Wine's offset-viewport
 sensitivity. Private viewport mapping does not resolve them. Its evidence
 is under `build/laser-sampling-20261014/`; `--position-grid 256` reproduces
-the control. Final B's seven added frames pass the beam image limit; frame
-8,400 retains one-ULP origin-Y differences in slots 12 and 19 and corresponding
-start-cap differences. The private opcode 38/166 precision counterfactual
-reproduces those fields unchanged, and its source edits were reverted.
-Next trace spawn inputs and later position writes; see the
+the control. Final B's seven added frames exposed one-ULP origin-Y differences
+in slots 12 and 19 at 8,400. Paired spawn observations locate them in the ECL
+standalone sine/cosine outputs: eight differing offsets among 390 calls, with
+both failing origins created at 8,242. The opcode 32/33 repair now passes all
+390 input records and all seven laser/VM packets with unchanged beam errors.
+GCC 8 recorder SHA-256 is
+`ee78ef7efa7f9e79bd89f1b82320d266f8d63725eefd0298a4a3b2330b4aca10`, under
+`build/laser-spawn-origin-20261014/production/`. Its affected native RunEcl
+unit passes a fresh build and exact comparison. The full replay refresh is
+next; i386 remains separate. See the
 [Final B observation](PORTABLE_LASER_VISUALS.md#final-b-precision-observation-october-14-2026).
 Extra images remain to be captured. Issue #20's reported scene is unspecified.
 
@@ -229,8 +234,8 @@ validated retail references, clock rate 128, no rasterization and ptrace
 observations. Owned runtime directories and the shared Wine prefix are removed.
 The summary pins the native product above to owner-repair checkpoint `096c5a87`.
 
-Next refresh i386, trace the Final B origin difference and capture Extra
-visual cases. Evidence is under
+Next run the repaired ECL product's full replay corpus, refresh i386 and
+capture Extra visual cases. Evidence is under
 `build/laser-background-owner-20261014/` and `build/laser-stage4a-20261014/`; see the
 [Final A observation](PORTABLE_LASER_VISUALS.md#final-a-observation-october-14-2026).
 The scout now supports interval 1, samples at Present entry, records counter
