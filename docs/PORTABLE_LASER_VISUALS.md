@@ -326,7 +326,7 @@ retail laser/VM packet hash. Frame 12,900 still exceeds 1.0. The previous
 49-pixel horizontal edge is investigated and repaired below; text rasterization
 also has remaining differences. The asset-free pixel probe captures 27 text
 images at seven positive and two negative heights, including two recorded
-Stage 3 titles. At height 28, the sword title's bounds change from
+Stage 3 titles. At height 28, the first Japanese probe text (index 1) changes from
 `[6, 11, 319, 37]` to `[5, 8, 246, 28]`; Wine's bounds are
 `[6, 8, 235, 27]`. Remaining widths and grayscale levels differ, so the probe
 reports measurements rather than a pixel-equality pass.
@@ -423,12 +423,12 @@ source changes accompany this measurement.
 The direct FreeType outline control adds the measured Wine advance,
 emboldening and grayscale rules. Using system FreeType 2.13.2, it reproduces
 26 of 27 Wine images pixel for pixel. All 27 visible-pixel masks agree. The
-remaining image is the height-28 sword title: at `(208, 22)`, the control draws
+remaining image is the height-28 probe text 1: at `(208, 22)`, the control draws
 gray 217 and Wine draws 208. Its mean error is 0.000122; the other 26 images
-have zero error. The last coverage-level difference remains to be measured.
+have zero error. The API comparison below localizes the last difference.
 The control's raw coverage is 166, which quantizes to level 11. Wine's gray
 208 is level 10, corresponding to raw coverage 151–165 under the same rule.
-Its raw value still needs an observer measurement.
+The i386 API control below reads coverage 165 at the corresponding glyph pixel.
 
 The control rounds the original glyph advance upward after adding one pixel,
 emboldens the outline by `ppem * 64 / 24`, and converts coverage with
@@ -455,6 +455,44 @@ heights. General color blending, overlapping glyphs, and actual game images
 are the next adapter checks. Local evidence is under
 `build/font-residual-audit-20261014/repro-outline-final-v2/`. The controls leave
 production rendering unchanged.
+
+### FreeType architecture control, October 14, 2026
+
+The last font pixel is reproduced independently through system FreeType APIs.
+Both distro libraries are version `2.13.2+dfsg-1ubuntu0.2`. With the same font,
+glyph U+90F7 (index 24,207), 21 ppem and bold strength 56 in 26.6 units,
+the i386 and x86_64 captures have identical outline points, tags and contours
+before and after emboldening. Their raw grayscale bitmaps differ at four
+pixels, each by one coverage unit:
+
+| Glyph-local pixel | i386 coverage | x86_64 coverage |
+| --- | ---: | ---: |
+| `(7, 13)` | 52 | 53 |
+| `(6, 14)` | 165 | 166 |
+| `(5, 15)` | 252 | 253 |
+| `(5, 16)` | 148 | 149 |
+
+Only `(6,14)` crosses a `coverage * 17 / 256` boundary: level 10 versus 11.
+The Wine intensity ramp maps these to 208 and 217, exactly the retained
+image difference at `(208,22)`. This control localizes that residual to
+rasterization in the two FreeType builds, after equal outline generation.
+The 27-image control still records 26 exact images; the production font adapter
+remains to be repaired and checked in game scenes.
+
+Reproduce on Linux x86_64 with GDB, binutils, `libc6:i386`,
+`libfreetype6:i386`, and Python `freetype-py`:
+
+```bash
+python3 scripts/analysis/probe-freetype-architecture.py \
+  --font /usr/share/fonts/truetype/droid/DroidSansFallbackFull.ttf \
+  --output-dir build/freetype-architecture
+```
+
+The i386 observer uses a short-lived system libc process to call public
+FreeType APIs. It runs without Wine, a compiler or game assets. The report
+pins both FreeType files, libc, font, observer and analyzer hashes, and retains
+full outlines and coverage bytes. Coordinates are relative to the glyph bitmap.
+Local evidence is under `build/font-residual-audit-20261014/repro-architecture-final/`.
 
 ## Horizontal-edge regression, October 14, 2026
 

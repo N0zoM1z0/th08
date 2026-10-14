@@ -114,9 +114,11 @@ two-pixel synthetic-bold advance at 21 ppem differs from Wine's one-pixel
 advance. A direct FreeType control of glyph advance, outline emboldening and
 grayscale transfer now reproduces 26 of 27 Wine
 images exactly, with all 27 visible-pixel masks equal. The remaining pixel is
-`(208,22)` in the height-28 sword title: gray 217 versus Wine's 208. Next measure
-that coverage value, then verify general blending and actual game images before
-changing production font rendering. See the
+`(208,22)` in height-28 probe text 1: gray 217 versus Wine's 208. The system
+i386/x86_64 API control now localizes it to FreeType rasterization: pre/post-bold
+outlines agree, four raw coverage values differ by one, and only coverage
+165/166 crosses a gray-level boundary. Next verify general blending and actual
+game images before changing production font rendering. See the
 [font controls](PORTABLE_LASER_VISUALS.md#font-rasterization-controls-october-14-2026).
 
 The earlier clip-control API probe retains 15 striped-material sampling
