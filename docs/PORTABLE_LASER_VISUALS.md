@@ -10,7 +10,8 @@ All eight selected x86_64 frames pass the original 1.0 beam-region mean RGB
 error limit, with identical raw laser/VM packets. The seven baseline failures
 led to repairs in packed-color conversion, GDI font-height mapping, and
 horizontal edge coverage. The [edge regression](#horizontal-edge-regression-october-14-2026)
-records the current executable and complete-recording check.
+records the edge repair; the [font controls](#font-rasterization-controls-october-14-2026)
+record the latest tested x86_64 product.
 
 Font rasterization and synthetic texture sampling retain measurable differences.
 The [i386 refresh](#i386-refresh-october-14-2026) passes the same selected frames
@@ -19,6 +20,33 @@ finds a split spell-background script field; its owner repair passes the five
 added x86_64 image cases with identical laser/VM packets. Other bosses and the full corpus for the revised
 binaries remain separate checks. The dated sections below preserve the baseline
 and each repair's evidence.
+
+### Status of the seven initial failures
+
+The seven failures belong to the October 13 baseline. A retained-image
+revalidation against the original 1.0 limit gives the following results for
+the font-repaired x86_64 recorder, SHA-256
+`4cce0fe8ee633fa2b37713214793fef078395edbb303f52c0cdd98e4bc914cc6`.
+All raw laser and VM packets still agree exactly with retail.
+
+| Stage | Frame | Baseline mean RGB error | Current mean RGB error | Current result |
+| --- | ---: | ---: | ---: | --- |
+| 3 | 12,900 | 2.831371 | 0.694699 | Pass |
+| 3 | 14,130 | 2.609911 | 0.317662 | Pass |
+| 3 | 14,310 | 1.324700 | 0.003113 | Pass |
+| 3 | 14,490 | 2.085793 | 0.711447 | Pass |
+| 4B | 13,140 | 3.084492 | 0.004278 | Pass |
+| 4B | 13,260 | 2.222010 | 0.001907 | Pass |
+| 4B | 18,210 | 1.657255 | 0.021046 | Pass |
+
+Stage 4B frame 15,360 is the eighth sample; it passed both builds at 0.003865.
+The original Stage 4B failures came from packed-color conversion. Stage 3
+also exposed font metrics/rasterization and the horizontal beam edge.
+Passing the selected image limit allows small pixel differences. The remaining
+title investigation now confirms an API filtering defect, described under
+[title texture scaling](#remaining-title-texture-scaling); its contribution to
+the actual game images still needs a repair-and-recapture comparison.
+The fresh retained-image reports are under `build/surface-scaling-20261014/`.
 
 ## Capture a recorded case
 
@@ -588,9 +616,43 @@ The [Microsoft filter reference](https://learn.microsoft.com/en-us/windows/win32
 describes distinct point, linear, triangle and box filters; it supplies adjacent
 API terminology rather than TH08 D3DX8 pixel evidence.
 
-Next compare scaled synthetic surfaces against the canonical target-linked
-D3DX implementation, then repeat the game images. The font repair's original
-1.0 game-image limit remains unchanged. Current evidence is under
+An independent API control now confirms the portable filter defect. It builds
+with VC7 and links the hash-pinned prerelease D3DX8 archive explicitly, then
+runs the same C++ probe against the portable backend. It tests A1R5G5B5 and
+A8R8G8B8 surfaces, four patterns, equal-size copies, half-size copies,
+double-size copies, unequal ratios, and filters 1–5: 160 cases. Two independent
+runs produce identical reference and portable pixel records.
+
+All 40 equal-size copies and all 24 scaled point-filter cases match. Across
+the complete probe, 72/160 cases match. The D3DX8 output varies with filter in
+24 of 32 pattern/size/format groups; portable varies in none. All eight
+half-size filter-4 cases differ, changing 101 of 128 output pixel words.
+For a black/white checkerboard, the A8R8G8B8 reference produces `0x80808080`,
+while portable produces `0x00000000`. The ignored argument therefore has a
+measured effect on scaled surfaces.
+
+These are pinned-archive API observations. The wrapper sections at
+`0x0047ABAB` and `0x0047A586` have matching extents and no differences outside
+relocation fields; this partial comparison adds no accepted exact units.
+The API control runs outside the retail game. Next repair the filter using
+target-supported behavior, then repeat the ordinary game images to measure
+how much of the title residual it explains. The original 1.0 game-image limit
+remains unchanged.
+
+Reproduce the current failure control with the configured private VC7 toolchain
+and D3DX8 archive, Wine32, Xvfb, and the Linux backend build dependencies:
+
+```bash
+python3 scripts/analysis/probe-surface-scaling.py \
+  --expect-filter-failure --output-dir build/surface-scaling-control
+```
+
+The runner checks the target and archive hashes, records source, probe,
+compiler, executable and linker-map hashes, and removes its owned Wine prefix
+and compiled products. It retains pixel records and compressed logs under
+`build/`. After a filter repair, `--check` requires all 160 API cases to agree.
+Current API evidence is under `build/surface-scaling-20261014/repro-final/`.
+Earlier title evidence is under
 `build/font-production-20261014/title-glyph-controls/` and
 `surface-filter-observation.json` in the same phase directory.
 

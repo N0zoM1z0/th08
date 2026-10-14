@@ -129,8 +129,12 @@ the original limits with exact raw laser/VM packets. Matched-font game-image
 residuals now have a scaling candidate: the text helper requests filter 4 for
 half-size copies, while portable discards that argument and uses nearest-neighbor
 coordinates. Canonical D3DX8 forwards the filter through its fallback and
-validates types 1–5. Next obtain paired scaled-surface pixel evidence against
-the target-linked implementation; see
+validates types 1–5. A fresh VC7 probe linked to the pinned D3DX8 archive now
+confirms the API defect: 72/160 surfaces match, all eight half-size filter-4
+cases differ, and portable output ignores all five filters. Equal-size and
+scaled point-filter copies match. An independent repetition retains identical
+pixel records. Next repair filtering against this control and repeat actual
+game images; see
 [the scaling observation](PORTABLE_LASER_VISUALS.md#remaining-title-texture-scaling).
 The complete `lunatic-0-b` recording and
 retained-evidence gate pass 113,221 calculations on all 25 fields, end scores
@@ -195,13 +199,13 @@ The native complete `lunatic-1-a` recording passes 119,685 calculations on all
 Native evidence is under `build/laser-native-20261014/`. The runner supports
 `--native-map` and paired `--wine-csmt 0`; the comparator requires matching Wine
 settings and completed mapped-observer evidence.
-The current native 108-recording refresh is active under
-`build/laser-native-20261014/full-state128/`, using clock rate 128, no rasterization,
-ptrace observations and one shared prefix at `full-state128-wine/` in the parent
-directory. Read the live ledger rather than treating dated counts as current.
-Use `report-replay-suite.py --resources --wine-prefix ...` to inspect progress,
-live game RSS and retained artifacts. Resume with the same binary, map and
-profile; a changed identity requires a new output directory.
+The native refresh under `build/laser-native-20261014/full-state128/` is complete:
+108/108 recordings and 12,311,460 calculations agree on all 25 fields, recorded
+end scores, fingerprints and natural replay exits. Retained-evidence verification
+also passes all 108. This gate uses fresh serial candidate captures against
+validated retail references, clock rate 128, no rasterization and ptrace
+observations. Owned runtime directories and the shared Wine prefix are removed.
+The summary pins the native product above to owner-repair checkpoint `096c5a87`.
 
 Next refresh the new products'
 complete recordings, i386, Final B and Extra visual cases. Evidence is under
