@@ -26,7 +26,6 @@ namespace th08
 // VC7 frame shape; neither playable build links this translation unit.
 
 extern i32 InitializeScoreData();
-extern i32 g_GuiMessageStageMode;
 extern i32 g_TimeRequirementParams[][4];
 
 #define GM_FLAGS_WORD(gm) (*reinterpret_cast<u32 *>(&(gm)->flags))
@@ -349,16 +348,16 @@ void __fastcall GameplaySetupThread0043ABD7(void *unused)
             break;
         case STAGE6A:
             if (!g_GameManager.IsSpellNumberInRange(119, 122))
-                g_GuiMessageStageMode = 2;
+                g_Background.spellVmScriptBase = 2;
             break;
         case STAGE6B:
             if (!g_GameManager.IsSpellNumberInRange(147, 150))
-                g_GuiMessageStageMode = 2;
+                g_Background.spellVmScriptBase = 2;
             break;
         case EXTRASTAGE:
             if (!g_GameManager.IsSpellNumberInRange(191, 193) &&
                 !g_GameManager.IsSpellNumberEqualTo(213))
-                g_GuiMessageStageMode = 2;
+                g_Background.spellVmScriptBase = 2;
             break;
         }
     }

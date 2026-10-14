@@ -82,6 +82,23 @@ new replay output directory.
 
 ## Next bounded work
 
+The native spell-background owner repair is prepared on
+`fix/native-spell-background-owner`, based on main checkpoint `4fe9ce61`.
+Canonical target observations show seven writes and one read at
+`Background + 0xB34 = 0x004E4B64`. Source and relocation entries now select
+that shared field. All three affected units and the full 1,106-unit cold
+comparison pass. Fresh normal and bugfix links pass the seven-write/one-read
+owner guard and the existing linked-data/callee checks.
+
+The independent worktree exposed VC7 anonymous-namespace names that change
+with source paths. The comparator now preserves complete decorated signatures
+while normalizing only the generated namespace discriminator; ambiguous
+matches are rejected. Both this worktree and the portable source checkpoint
+pass cold comparisons. A controlled two-path compiler probe confirms identical
+source and function bytes with different discriminators. Native replay and
+Final A image checks for these newly linked products remain pending before
+publication. Keep these products distinct from the earlier published binaries.
+
 For runtime work, select a concrete remaining visual or hardware scenario and
 retain the stage, route, recording, frame, and comparison evidence. For exact
 reconstruction, resume the authored near match or one bounded whole-link/library
