@@ -42,10 +42,16 @@ shared Wine prefix have been removed.
 The [laser investigation](PORTABLE_LASER_VISUALS.md) records the visual
 reproduction, canonical field ownership and image comparisons. Its latest
 Linux surface-filter repair passes 640 pinned-D3DX8 API cases and seventeen
-selected images. The revised x86_64 product's full corpus refresh is active;
-its `lunatic-0-b` and `lunatic-1-a` checks already pass 232,906 calculations
-with a separate retained-evidence pass. Earlier portable full-corpus results
-remain tied to the products listed below.
+selected images. Its GCC 8 x86_64 product, SHA-256
+`7eb846a665867ed9e8a1c19484d2c0fe1ee586954f0ecca3b1b756223e0e0853`,
+passes all 108 recordings and 12,311,460 calculations with a separate
+retained-evidence pass. This refresh uses fresh serial candidate processes,
+validated retail references and the compiled recorder without rasterization.
+Source checkpoint is `183cd755`; evidence is under
+`build/surface-filter-repair-20261014/x64-suite/`. The added Final B image
+samples expose a one-ULP laser-origin difference at frame 8,400 in fields
+outside the gameplay trace. The laser guide retains that failed packet.
+Earlier portable full-corpus results remain tied to the products listed below.
 
 ## Coverage
 
@@ -146,8 +152,8 @@ strict beam-region image check and failed seven. After the Linux color, font
 height, and edge-coverage repairs, all eight pass the unchanged 1.0 mean RGB
 error limit. Font rasterization and synthetic texture-sampling differences
 remain documented in that investigation. The revised x86_64 product also passes
-the complete 113,221-calculation `lunatic-0-b` recording; the earlier full-corpus
-results above retain their published executable identities.
+the full corpus as recorded above. The original seven image failures are
+resolved; the added Final B packet difference is a separate open investigation.
 
 ## Reproduce the results
 

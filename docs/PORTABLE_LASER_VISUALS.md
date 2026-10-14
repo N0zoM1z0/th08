@@ -19,24 +19,27 @@ font and synthetic texture-sampling differences remain measured below.
 The [i386 refresh](#i386-refresh-october-14-2026) passes the same selected frames
 in both context profiles. The [Final A investigation](#final-a-observation-october-14-2026)
 finds a split spell-background script field; its owner repair passes the five
-added x86_64 image cases with identical laser/VM packets. Other bosses and the full corpus for the revised
-binaries remain separate checks. The dated sections below preserve the baseline
-and each repair's evidence.
+added x86_64 image cases with identical laser/VM packets. The surface-filter
+product also passes all 108 recordings and retained-evidence verification.
+The added [Final B samples](#final-b-precision-observation-october-14-2026)
+pass the image limit but expose a one-ULP laser-origin difference at frame
+8,400. Extra images and the i386 refresh remain to be checked. The dated
+sections below preserve each repair's evidence.
 
 ### Status of the seven initial failures
 
 The seven failures belong to the October 13 baseline. A retained-image
 revalidation against the original 1.0 limit gives the following results for
-the font-repaired x86_64 recorder, SHA-256
-`4cce0fe8ee633fa2b37713214793fef078395edbb303f52c0cdd98e4bc914cc6`.
+the surface-filter-repaired x86_64 recorder, SHA-256
+`7eb846a665867ed9e8a1c19484d2c0fe1ee586954f0ecca3b1b756223e0e0853`.
 All raw laser and VM packets still agree exactly with retail.
 
 | Stage | Frame | Baseline mean RGB error | Current mean RGB error | Current result |
 | --- | ---: | ---: | ---: | --- |
-| 3 | 12,900 | 2.831371 | 0.694699 | Pass |
-| 3 | 14,130 | 2.609911 | 0.317662 | Pass |
+| 3 | 12,900 | 2.831371 | 0.591680 | Pass |
+| 3 | 14,130 | 2.609911 | 0.263236 | Pass |
 | 3 | 14,310 | 1.324700 | 0.003113 | Pass |
-| 3 | 14,490 | 2.085793 | 0.711447 | Pass |
+| 3 | 14,490 | 2.085793 | 0.544644 | Pass |
 | 4B | 13,140 | 3.084492 | 0.004278 | Pass |
 | 4B | 13,260 | 2.222010 | 0.001907 | Pass |
 | 4B | 18,210 | 1.657255 | 0.021046 | Pass |
@@ -44,11 +47,13 @@ All raw laser and VM packets still agree exactly with retail.
 Stage 4B frame 15,360 is the eighth sample; it passed both builds at 0.003865.
 The original Stage 4B failures came from packed-color conversion. Stage 3
 also exposed font metrics/rasterization and the horizontal beam edge.
-Passing the selected image limit allows small pixel differences. The remaining
-title investigation now confirms an API filtering defect, described under
-[title texture scaling](#remaining-title-texture-scaling); its contribution to
-the actual game images still needs a repair-and-recapture comparison.
-The fresh retained-image reports are under `build/surface-scaling-20261014/`.
+Passing the image limit allows small pixel differences. The table uses the
+portable default font. With the same Droid font as retail, Stage 3's four
+errors are 0.003292, 0.017577, 0.003113 and 0.018465. The
+[surface-filter repair](#production-surface-filter-repair) records the
+before/after title measurements. The early failures have identified causes
+and passing regressions; remaining font and sampling residuals have separate
+controls below. Reports are under `build/surface-filter-repair-20261014/`.
 
 ## Capture a recorded case
 
@@ -717,7 +722,9 @@ same pinned retail laser/VM packet. Four beam results are unchanged; frame
 and four matched-font frames are ordinary captures. The complete `lunatic-0-b`
 and `lunatic-1-a` recordings pass 232,906 calculations on all 25 fields, end
 scores and natural exits; retained-evidence verification passes both. The
-108-recording refresh is active under `x64-suite/` in the phase directory.
+108-recording refresh and retained-evidence verification both pass: 12,311,460
+calculations agree on all 25 fields, stage-end scores, fingerprints and natural
+exits. Evidence is under `x64-suite/` in the phase directory.
 i386 refresh remains to be done. The compiled source is pinned to
 checkpoint `183cd755`; the build provenance verifies all compiled input hashes
 against its LF-normalized Git blobs.
@@ -1154,9 +1161,14 @@ Canonical polar handlers at `0x004195B5` (opcode 38) and `0x0041E156` (opcode
 results, then store floats. Portable currently rounds through `sinf`/`cosf`
 first. This repeats the wrapper distinction documented in
 [polar motion precision](PORTABLE_POLAR_MOTION.md#target-evidence-and-repair).
-Next trace the spawning operands and verify the precision repair against the
-failed packet and fresh captures. The 25-field gameplay pass remains scoped
-to its recorded fields.
+A private counterfactual kept double-precision trigonometric results through
+the radius multiplication in both handlers. Its fresh seven-frame capture
+retains the same four differing fields at 8,400; the other six packets agree.
+That experiment does not explain this failure, and its source changes were
+reverted. The patch, native RunEcl comparison and failed capture remain under
+`build/ecl-polar-laser-20261014/`. Next trace the spawning operands and any
+later position writes to find the earliest divergence. The 25-field gameplay
+pass remains scoped to its recorded fields.
 
 ## Read and verify the evidence
 

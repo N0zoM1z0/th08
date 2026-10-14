@@ -147,11 +147,12 @@ exact packets. Final A's five frames also pass with exact packets; frame
 15,090's beam error improves to 0.812111. All seventeen image checks pass.
 The complete `lunatic-0-b` and `lunatic-1-a` recordings pass 232,906 calculations
 on all 25 fields, end scores and natural exits. Retained-evidence verification
-also passes both. The same product's 108-recording gate is active under
+also passes both. The same product's 108-recording gate and retained-evidence
+verification now pass 12,311,460 calculations on all 25 fields, end scores,
+fingerprints and natural exits. Evidence is under
 `build/surface-filter-repair-20261014/x64-suite/`, reusing validated retail
-references with fresh isolated recorder processes. Resume with the same
-identity and output directory. The i386 refresh remains separate. Compiled
-source checkpoint is `183cd755`;
+references with fresh isolated recorder processes. The i386 refresh remains
+separate. Compiled source checkpoint is `183cd755`;
 all 132 recorded build-input hashes agree with its normalized Git blobs. See
 [the scaling observation](PORTABLE_LASER_VISUALS.md#remaining-title-texture-scaling).
 The complete `lunatic-0-b` recording and
@@ -165,10 +166,13 @@ differences; the legacy probe retains 16. An XY grid control passes 59/68
 images, with nine first-row differences coinciding with Wine's offset-viewport
 sensitivity. Private viewport mapping does not resolve them. Its evidence
 is under `build/laser-sampling-20261014/`; `--position-grid 256` reproduces
-the control. Later-boss laser cases and the full corpus
-for the revised products remain to be checked. The later Final A capture below
-is the next concrete image investigation. Issue #20 remains open; its
-original scene is unspecified.
+the control. Final B's seven added frames pass the beam image limit; frame
+8,400 retains one-ULP origin-Y differences in slots 12 and 19 and corresponding
+start-cap differences. The private opcode 38/166 precision counterfactual
+reproduces those fields unchanged, and its source edits were reverted.
+Next trace spawn inputs and later position writes; see the
+[Final B observation](PORTABLE_LASER_VISUALS.md#final-b-precision-observation-october-14-2026).
+Extra images remain to be captured. Issue #20's reported scene is unspecified.
 
 The refreshed i386 recorder is
 `a82e7155eb7c71e5db645df9294cd5316e895df5f35dcbce696946ba4ba9de27`.
@@ -225,8 +229,8 @@ validated retail references, clock rate 128, no rasterization and ptrace
 observations. Owned runtime directories and the shared Wine prefix are removed.
 The summary pins the native product above to owner-repair checkpoint `096c5a87`.
 
-Next refresh the new products'
-complete recordings, i386, Final B and Extra visual cases. Evidence is under
+Next refresh i386, trace the Final B origin difference and capture Extra
+visual cases. Evidence is under
 `build/laser-background-owner-20261014/` and `build/laser-stage4a-20261014/`; see the
 [Final A observation](PORTABLE_LASER_VISUALS.md#final-a-observation-october-14-2026).
 The scout now supports interval 1, samples at Present entry, records counter
