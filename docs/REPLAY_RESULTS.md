@@ -64,6 +64,15 @@ refresh remains separate. The laser guide retains the failed and repaired
 evidence.
 Earlier portable full-corpus results remain tied to the products listed below.
 
+The subsequent ECL-repaired x86_64 product `e0a57a43…`, source `897decb2`, has
+an independently revalidated 73-recording snapshot: 8,029,533 calculations
+agree on all 25 fields, recorded stage-end scores, published fingerprints and
+natural exits. All 73 temporary runtimes are removed and their equal traces
+share the validated reference storage. Evidence is under
+`build/laser-spawn-origin-20261014/partial-revalidation-summary.json`.
+The full 108-recording capture and its final retained-evidence pass remain
+active; this snapshot supports the stated subset only.
+
 ## Coverage
 
 The [committed corpus](../tests/fixtures/replays/th08-1.00d/README.md) contains
