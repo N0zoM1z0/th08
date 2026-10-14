@@ -112,6 +112,17 @@ def compare(reference, candidate, maximum_error=1.0, normal_candidate=None):
             or [(x["stage"], x["frame"]) for x in candidates] != expected
             or retail_capture.get("frames") != got_meta["frames"]):
         raise ValueError("Laser capture frame coverage differs")
+    case_path = candidate / "case.json"
+    if case_path.is_file():
+        case = json.loads(case_path.read_text())
+        selected = [(case["stage"], row["frame"]) for row in case["frames"]]
+        if selected != expected:
+            raise ValueError("Laser case coverage differs from the capture")
+        if digest(reference / "lasers.json") != case["retailLaserStateSha256"]:
+            raise ValueError("Pinned retail laser packet hash differs from the case")
+        for row, selection in zip(references, case["frames"]):
+            if selection["expectedLaserState"] not in {laser["state"] for laser in row["lasers"]}:
+                raise ValueError("Pinned retail laser phase is missing")
     frames = []
     for ref, got in zip(references, candidates):
         ref_slots = {item["slot"]: item for item in ref["lasers"]}

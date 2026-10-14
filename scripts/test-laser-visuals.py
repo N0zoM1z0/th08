@@ -425,6 +425,19 @@ class LaserVisualTests(unittest.TestCase):
         self.assertEqual(result["result"], "different")
         self.assertEqual(result["frames"][0]["stateDifferences"][0]["field"], "state")
 
+    def test_case_pins_reference_state_coverage_and_phase(self):
+        case = dict(stage=2, frames=[dict(frame=100, expectedLaserState=1)],
+                    retailLaserStateSha256=hashlib.sha256((self.reference / "lasers.json").read_bytes()).hexdigest())
+        self.write(self.candidate, "case.json", case)
+        self.assertEqual(self.compare()["result"], "equal")
+        for update, message in ((dict(retailLaserStateSha256="0" * 64), "packet hash"),
+                                (dict(stage=3), "coverage"),
+                                (dict(frames=[dict(frame=100, expectedLaserState=0)]), "phase")):
+            with self.subTest(update=update):
+                self.write(self.candidate, "case.json", dict(case, **update))
+                with self.assertRaisesRegex(ValueError, message):
+                    self.compare()
+
     def test_absent_or_offscreen_lasers_are_not_evidence(self):
         for laser in (None, dict(self.laser, **{"bodyVm.pos": [bits(900), bits(900), bits(0.06)]}),
                       dict(self.laser, **{"bodyVm.color1.d3dColor": 0x00ffffff}),

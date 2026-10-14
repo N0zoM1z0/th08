@@ -1288,6 +1288,13 @@ differences, image hashes, beam-geometry pixel counts, and mean RGB errors.
 Images and state packets remain in the output directory; retail evidence is
 under `retail/`. Recompute the comparison:
 
+With `--case`, the copied case manifest also pins the retail laser-state file
+hash, selected stage/frames and expected phases. The comparator checks all
+three before accepting matching images. The three original case hashes have
+been revalidated against their retained retail packets. New exploratory
+captures can become published cases after their canonical retail observation
+is complete.
+
 ```bash
 python3 scripts/analysis/compare-laser-visuals.py \
   --reference build/laser-stage3/retail \
