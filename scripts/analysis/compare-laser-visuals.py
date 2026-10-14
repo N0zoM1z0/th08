@@ -138,16 +138,24 @@ def compare(reference, candidate, maximum_error=1.0, normal_candidate=None):
             delta = ImageChops.difference(left.convert("RGB"), right.convert("RGB"))
             error = sum(ImageStat.Stat(delta, mask).mean) / 3
             full_error = sum(ImageStat.Stat(delta.crop((32, 16, 416, 464))).mean) / 3
+            header = delta.crop((32, 16, 416, 64))
+            header_error = sum(ImageStat.Stat(header).mean) / 3
+            header_differences = sum(any(pixel) for pixel in header.getdata())
+            header_maximum = max(high for low, high in header.getextrema())
         frames.append(dict(stage=ref["stage"], frame=ref["frame"], activeLasers=len(ref_slots),
                            drawableLasers=visible, laserGeometryPixels=pixels,
                            laserMeanAbsoluteRgbDifference=error,
                            playfieldMeanAbsoluteRgbDifference=full_error,
+                           headerDifferentPixels=header_differences,
+                           headerMeanAbsoluteRgbDifference=header_error,
+                           headerMaximumChannelDifference=header_maximum,
                            referenceImageSha256=digest(left_path), candidateImageSha256=digest(right_path),
                            stateDifferences=differences,
                            result="equal" if not differences and error <= maximum_error else "different"))
     result = dict(result="equal" if all(x["result"] == "equal" for x in frames) else "different",
                 candidateProduct=got_meta["product"],
                 floatStateComparison="exact IEEE-754 bits", maximumLaserMeanRgbError=maximum_error,
+                headerRegion=[32, 16, 416, 64],
                 referenceExecutableSha256=ref_meta["executableSha256"], candidateExecutableSha256=got_meta["executableSha256"],
                 replaySha256=got_meta["replaySha256"], comparatorSha256=digest(Path(__file__)),
                 referenceLaserStateSha256=digest(reference / "lasers.json"), candidateLaserStateSha256=digest(candidate / "lasers.json"),

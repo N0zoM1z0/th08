@@ -133,8 +133,18 @@ validates types 1–5. A fresh VC7 probe linked to the pinned D3DX8 archive now
 confirms the API defect: 72/160 surfaces match, all eight half-size filter-4
 cases differ, and portable output ignores all five filters. Equal-size and
 scaled point-filter copies match. An independent repetition retains identical
-pixel records. Next repair filtering against this control and repeat actual
-game images; see
+pixel records. The production filter repair now matches all 640 extended API
+cases under both the system compiler and GCC 8, including defaults, edge flags,
+cross-format conversions, offset rectangles and rounding-state preservation.
+The previous backend still reproduces the 72/160 failure control. Fresh color,
+exhaustive-copy and six-group renderer checks pass. The new GCC 8 recorder is
+`7eb846a665867ed9e8a1c19484d2c0fe1ee586954f0ecca3b1b756223e0e0853` under
+`build/surface-filter-repair-20261014/production/`. All four matched-Droid Stage 3
+images pass with exact laser/VM packets; frame 12,900's complete header changes
+from 1,081 differing pixels to three. Stage 4B's four beam results remain equal
+to the prior product. Default-font Stage 3 also passes all four limits with
+exact packets. Final A repetition, complete recordings and i386 refresh are
+next; see
 [the scaling observation](PORTABLE_LASER_VISUALS.md#remaining-title-texture-scaling).
 The complete `lunatic-0-b` recording and
 retained-evidence gate pass 113,221 calculations on all 25 fields, end scores

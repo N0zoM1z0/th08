@@ -24,20 +24,21 @@ def windows_path(path):
     return "Z:" + str(path.resolve()).replace("/", "\\")
 
 
-def read_samples(path):
+def read_samples(path, extended=False):
     text = path.read_text()
     start = text.find("[\n")
     if start < 0:
         raise ValueError("Scaling probe JSON is missing: " + str(path))
     rows, _ = json.JSONDecoder().raw_decode(text[start:])
-    expected = [(f, s, p, k) for f in range(2) for s in range(4)
-                for p in range(4) for k in range(1, 6)]
+    filters = [1, 2, 3, 4, 5, 0xffffffff, 0x30003, 0x30004] if extended else range(1, 6)
+    expected = [(f, s, p, k) for f in range(4 if extended else 2) for s in range(5 if extended else 4)
+                for p in range(4) for k in filters]
     actual = [(r["format"], r["shape"], r["pattern"], r["filter"]) for r in rows]
     if actual != expected:
         raise ValueError("Scaling probe case coverage differs")
     for row in rows:
-        count = (64, 16, 64, 12)[row["shape"]]
-        maximum = 65535 if row["format"] == 0 else 0xffffffff
+        count = (64, 16, 64, 12, 30)[row["shape"]]
+        maximum = 65535 if row["format"] in (0, 3) else 0xffffffff
         if len(row["pixels"]) != count or any(not 0 <= p <= maximum for p in row["pixels"]):
             raise ValueError("Scaling probe pixel coverage differs")
     return rows
@@ -49,13 +50,22 @@ def main():
     parser.add_argument("--expect-filter-failure", action="store_true",
                         help="Require the current nearest-neighbor failure control")
     parser.add_argument("--check", action="store_true", help="Require all reference surfaces to match")
+    parser.add_argument("--observe-codecs", action="store_true",
+                        help="Retain normalized colors and FPU state through hardware breakpoints")
+    parser.add_argument("--extended", action="store_true",
+                        help="Also test cross-format copies, rectangle offsets, defaults and edge flags")
+    parser.add_argument("--baseline-ref", help="Compile the portable backend from this immutable Git revision")
+    parser.add_argument("--compiler", default="g++", help="Portable compiler or bounded architecture wrapper")
+    parser.add_argument("--pkg-config", default="pkg-config", help="Package metadata command for the compiler's architecture")
     args = parser.parse_args()
     if args.check and args.expect_filter_failure:
         parser.error("Choose --check or --expect-filter-failure")
+    if args.expect_filter_failure and args.extended:
+        parser.error("The failure control uses the standard 160 cases; omit --extended")
     output = args.output_dir.resolve()
     if output.exists() or not output.is_relative_to(ROOT / "build"):
         parser.error("Output must be a fresh directory under build/")
-    for name in ("wine", "wineserver", "xvfb-run", "g++", "pkg-config"):
+    for name in ("wine", "wineserver", "xvfb-run", args.compiler, args.pkg_config):
         if not shutil.which(name):
             parser.error("Required command is missing: " + name)
     manifest = tomllib.loads((ROOT / "config/library-provenance.toml").read_text())
@@ -65,6 +75,18 @@ def main():
         parser.error("Pinned D3DX8 archive hash differs")
     subprocess.run(["python3", str(ROOT / "scripts/verify-target.py")], check=True)
     output.mkdir(parents=True)
+    baseline = None
+    source_names = ("d3d8_compat.cpp", "d3dx8_compat.cpp", "linux_compat.cpp")
+    sources = [ROOT / "src/modern/linux" / name for name in source_names]
+    if args.baseline_ref:
+        baseline = subprocess.check_output(["git", "rev-parse", "--verify", "--end-of-options",
+                                            args.baseline_ref + "^{commit}"], cwd=ROOT, text=True).strip()
+        (output / "baseline").mkdir()
+        sources = []
+        for name in source_names:
+            path = output / "baseline" / name
+            path.write_bytes(subprocess.check_output(["git", "show", baseline + ":src/modern/linux/" + name], cwd=ROOT))
+            sources.append(path)
     prefix = Path(tempfile.mkdtemp(prefix="surface-scaling-wine.", dir=ROOT / "build"))
     (prefix / ".th08-replay-owned").write_text("Owned surface scaling probe prefix\n")
     environment = dict(os.environ, SDL_AUDIODRIVER="dummy", LIBGL_ALWAYS_SOFTWARE="1",
@@ -92,9 +114,16 @@ def main():
         binary_hashes["native"] = sha(native)
         print("Capturing pinned D3DX8 reference surfaces", flush=True)
         with (output / "native.stdout").open("w") as stdout, (output / "native.log").open("w") as stderr:
-            subprocess.run(["xvfb-run", "-a", "wine", str(native)], cwd=output, env=native_env,
+            command = ["wine", str(native), *(["--extended"] if args.extended else [])]
+            if args.observe_codecs:
+                native_env["TH08_SCALING_OBSERVE"] = "1"
+                command = ["python3", str(ROOT / "scripts/analysis/observe-surface-codecs.py"),
+                           "--executable", str(native), "--map", str(output / "native.map"),
+                           "--output", str(output / "codec-observations.json"),
+                           *(["--extended"] if args.extended else [])]
+            subprocess.run(["xvfb-run", "-a", *command], cwd=output, env=native_env,
                            stdout=stdout, stderr=stderr, timeout=90, check=True)
-        observations["native"] = read_samples(output / "native.stdout")
+        observations["native"] = read_samples(output / "native.stdout", args.extended)
     finally:
         subprocess.run(["wineserver", "-k"], env=native_env, timeout=15, check=False)
         subprocess.run(["wineserver", "-w"], env=native_env, timeout=15, check=False)
@@ -103,12 +132,10 @@ def main():
         shutil.rmtree(prefix)
     environment["PKG_CONFIG_LIBDIR"] = "/usr/lib/x86_64-linux-gnu/pkgconfig:/usr/share/pkgconfig"
     flags = shlex.split(subprocess.check_output(
-        ["pkg-config", "--cflags", "--libs", "sdl2", "SDL2_image", "SDL2_ttf", "fontconfig", "gl"],
+        [args.pkg_config, "--cflags", "--libs", "sdl2", "SDL2_image", "SDL2_ttf", "fontconfig", "gl"],
         env=environment, text=True))
     portable = output / "scaling-probe-portable"
-    sources = [ROOT / ("src/modern/linux/" + name) for name in
-               ("d3d8_compat.cpp", "d3dx8_compat.cpp", "linux_compat.cpp")]
-    command = ["g++", "-std=gnu++98", "-O2", "-fno-strict-aliasing", "-pthread",
+    command = [args.compiler, "-std=gnu++98", "-O2", "-fno-strict-aliasing", "-pthread",
                "-DTH08_MODERN_PORT", "-DTH08_MODERN_LINUX", "-DTH08_PORTABLE_NATIVE_LAYOUT",
                "-D_FILE_OFFSET_BITS=64", "-D_TIME_BITS=64", "-Isrc", "-Isrc/modern/linux/include",
                "-include", "src/modern/linux/linux_compat.hpp", "-Isrc/modern/linux", str(PROBE),
@@ -119,9 +146,9 @@ def main():
                        timeout=120, check=True)
     binary_hashes["portable"] = sha(portable)
     with (output / "portable.stdout").open("w") as stdout:
-        subprocess.run(["xvfb-run", "-a", str(portable)], env=environment, stdout=stdout,
+        subprocess.run(["xvfb-run", "-a", str(portable), *(["--extended"] if args.extended else [])], env=environment, stdout=stdout,
                        stderr=subprocess.STDOUT, timeout=45, check=True)
-    observations["portable"] = read_samples(output / "portable.stdout")
+    observations["portable"] = read_samples(output / "portable.stdout", args.extended)
     comparisons = []
     for reference, candidate in zip(observations["native"], observations["portable"]):
         different = sum(a != b for a, b in zip(reference["pixels"], candidate["pixels"]))
@@ -129,7 +156,10 @@ def main():
                                 pattern=reference["pattern"], filter=reference["filter"],
                                 referenceHresult=reference["hresult"], candidateHresult=candidate["hresult"],
                                 differentPixels=different, pixels=len(reference["pixels"]),
-                                equal=not different and reference["hresult"] == candidate["hresult"]))
+                                referenceRoundingPreserved=reference["roundingPreserved"],
+                                candidateRoundingPreserved=candidate["roundingPreserved"],
+                                equal=not different and reference["hresult"] == candidate["hresult"] and
+                                      reference["roundingPreserved"] and candidate["roundingPreserved"]))
     for name, rows in observations.items():
         (output / (name + ".json")).write_text(json.dumps(rows, indent=2) + "\n")
     filter_sensitive = {}
@@ -146,11 +176,14 @@ def main():
                   nativeCompilerSha256={name: sha(vc7_bin / name) for name in ("CL.EXE", "C1XX.DLL", "C2.DLL", "LINK.EXE")},
                   nativeMapSha256=sha(output / "native.map"),
                   sourceSha256={str(p.relative_to(ROOT)): sha(p) for p in sources},
+                  baselineCommit=baseline,
                   sourceCommit=subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip(),
-                  portableCompiler=subprocess.check_output(["g++", "--version"], text=True).splitlines()[0],
+                  sourceWorkingTreeDirty=bool(subprocess.check_output(["git", "status", "--porcelain"], cwd=ROOT)),
+                  portableCompiler=subprocess.check_output([args.compiler, "--version"], text=True).splitlines()[0],
                   wineVersion=subprocess.check_output(["wine", "--version"], text=True).strip(),
                   samples=len(comparisons), exactSamples=sum(c["equal"] for c in comparisons),
-                  filterSensitiveGroups=filter_sensitive, filterGroups=32,
+                  filterSensitiveGroups=filter_sensitive, filterGroups=80 if args.extended else 32,
+                  extended=args.extended,
                   ownedPrefixRemoved=True, comparisons=comparisons)
     (output / "report.json").write_text(json.dumps(report, indent=2) + "\n")
     for path in (native, obj, portable):

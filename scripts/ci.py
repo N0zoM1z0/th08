@@ -78,6 +78,7 @@ def main() -> int:
         run("Smoke-test laser error localization CLI", [sys.executable, "scripts/analysis/analyze-laser-errors.py", "--help"])
         run("Smoke-test texture color probe CLI", [sys.executable, "scripts/analysis/probe-texture-colors.py", "--help"])
         run("Smoke-test surface scaling probe CLI", [sys.executable, "scripts/analysis/probe-surface-scaling.py", "--help"])
+        run("Smoke-test surface codec observer CLI", [sys.executable, "scripts/analysis/observe-surface-codecs.py", "--help"])
         run("Smoke-test font metrics probe CLI", [sys.executable, "scripts/analysis/probe-font-metrics.py", "--help"])
         run("Smoke-test font pixel probe CLI", [sys.executable, "scripts/analysis/probe-font-pixels.py", "--help"])
         run("Smoke-test font rasterization analysis CLI", [sys.executable, "scripts/analysis/analyze-font-rasterization.py", "--help"])

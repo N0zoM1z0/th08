@@ -5,6 +5,7 @@
 #include <d3dx8.h>
 
 #include <math.h>
+#include <fenv.h>
 #include <string.h>
 #include <vector>
 #if defined(__i386__) || defined(__x86_64__)
@@ -103,9 +104,206 @@ RECT FullRect(UINT width, UINT height)
 bool ValidRect(const RECT &rect)
 { return rect.left >= 0 && rect.top >= 0 && rect.right > rect.left && rect.bottom > rect.top; }
 
+struct SurfaceColor
+{
+    FLOAT channel[4];
+    SurfaceColor() { memset(channel, 0, sizeof(channel)); }
+};
+
+struct SurfaceWeight
+{
+    UINT index;
+    FLOAT value;
+    SurfaceWeight(UINT i, FLOAT v) : index(i), value(v) {}
+};
+
+typedef std::vector<SurfaceWeight> SurfaceWeights;
+
+// D3DX8 integrates each source texel's triangular footprint in destination space.
+// Canonical TF_SetupTriangle is at 0x0047D7B9; unflagged edges wrap.
+std::vector<SurfaceWeights> TriangleWeights(UINT sourceCount, UINT destinationCount, bool wrap)
+{
+    FLOAT ratio = static_cast<FLOAT>(destinationCount) / sourceCount;
+    FLOAT reciprocal = 0.5f / ratio;
+    std::vector<SurfaceWeights> result(sourceCount);
+    for (UINT source = 0; source < sourceCount; ++source)
+    {
+        SurfaceWeights &weights = result[source];
+        for (UINT phase = 0; phase < 2; ++phase)
+        {
+            FLOAT base = static_cast<FLOAT>(source + phase) - 0.5f;
+            FLOAT left = base * ratio;
+            FLOAT right = left + ratio;
+            if (!wrap) { if (left < 0) left = 0; if (right > destinationCount) right = destinationCount; }
+            for (LONG pixel = static_cast<LONG>(floorf(left)); pixel < right; ++pixel)
+            {
+                FLOAT begin = left > pixel ? left : static_cast<FLOAT>(pixel);
+                FLOAT end = right < pixel + 1 ? right : static_cast<FLOAT>(pixel + 1);
+                if (begin >= end) continue;
+                LONG index = pixel;
+                if (index < 0) index += destinationCount;
+                else if (index >= static_cast<LONG>(destinationCount)) index -= destinationCount;
+                FLOAT weight = (begin + end) * reciprocal - base;
+                if (!wrap && base < 0) weight = 1;
+                else if (!wrap && base + 1 >= sourceCount) weight = 0;
+                if (phase != 0) weight = 1 - weight;
+                weight *= end - begin;
+                if (!weights.empty() && weights.back().index == static_cast<UINT>(index))
+                    weights.back().value += weight;
+                else weights.push_back(SurfaceWeight(index, weight));
+            }
+        }
+    }
+    return result;
+}
+
+void SurfaceChannelLayout(D3DFORMAT format, UINT *levels, UINT *shift)
+{
+    for (UINT c = 0; c < 4; ++c) { levels[c] = 255; shift[c] = 0; }
+    if (format == D3DFMT_R5G6B5 || format == D3DFMT_X1R5G5B5 || format == D3DFMT_A1R5G5B5)
+    {
+        levels[0] = levels[2] = 31; shift[0] = shift[2] = 3;
+        levels[1] = format == D3DFMT_R5G6B5 ? 63 : 31;
+        shift[1] = format == D3DFMT_R5G6B5 ? 2 : 3;
+        levels[3] = 1; shift[3] = 7;
+    }
+    else if (format == D3DFMT_A4R4G4B4)
+        for (UINT c = 0; c < 4; ++c) { levels[c] = 15; shift[c] = 4; }
+}
+
+SurfaceColor DecodeSurfaceColor(const BYTE *rgba, D3DFORMAT format, D3DCOLOR colorKey)
+{
+    UINT levels[4], shift[4]; SurfaceChannelLayout(format, levels, shift);
+    SurfaceColor result;
+    for (UINT c = 0; c < 4; ++c)
+    {
+        FLOAT reciprocal = 1.0f / levels[c];
+        result.channel[c] = (rgba[c] >> shift[c]) * reciprocal;
+    }
+    if (colorKey != 0 && (colorKey & 0x00ffffffu) ==
+        ((static_cast<DWORD>(rgba[0]) << 16) | (static_cast<DWORD>(rgba[1]) << 8) | rgba[2]))
+        result.channel[3] = 0;
+    return result;
+}
+
+UINT QuantizeSurfaceChannel(FLOAT value, UINT maximum, FLOAT bias)
+{
+    if (value < 0) value = 0;
+    if (value > 1) value = 1;
+    // Canonical encoders set RC=truncate and store both arithmetic results as float.
+    volatile FLOAT scaled = value * static_cast<FLOAT>(maximum);
+    volatile FLOAT rounded = scaled + bias;
+    UINT result = static_cast<UINT>(rounded);
+    return result > maximum ? maximum : result;
+}
+
+void EncodeSurfaceColor(BYTE *destination, D3DFORMAT format, const SurfaceColor &color,
+                        DWORD filter, UINT x, UINT y)
+{
+    UINT levels[4], shift[4], quantized[4]; SurfaceChannelLayout(format, levels, shift);
+    // Canonical codec rounding matrices at 0x004C8E58 and 0x004C8ED8.
+    static const FLOAT dither[16] = {
+        0.96875f,0.46875f,0.84375f,0.34375f, 0.21875f,0.71875f,0.09375f,0.59375f,
+        0.78125f,0.28125f,0.90625f,0.40625f, 0.03125f,0.53125f,0.15625f,0.65625f
+    };
+    FLOAT bias = (filter & 0x80000) != 0 ? dither[(y & 3) * 4 + (x & 3)] : 0.5f;
+    for (UINT c = 0; c < 4; ++c) quantized[c] = QuantizeSurfaceChannel(color.channel[c], levels[c], bias);
+    WORD word;
+    switch (format)
+    {
+    case D3DFMT_R5G6B5:
+        word = static_cast<WORD>((quantized[0] << 11) | (quantized[1] << 5) | quantized[2]);
+        memcpy(destination, &word, 2); break;
+    case D3DFMT_X1R5G5B5:
+    case D3DFMT_A1R5G5B5:
+        word = static_cast<WORD>(((format == D3DFMT_X1R5G5B5 ? 1 : quantized[3]) << 15) |
+                                (quantized[0] << 10) | (quantized[1] << 5) | quantized[2]);
+        memcpy(destination, &word, 2); break;
+    case D3DFMT_A4R4G4B4:
+        word = static_cast<WORD>((quantized[3] << 12) | (quantized[0] << 8) |
+                                (quantized[1] << 4) | quantized[2]);
+        memcpy(destination, &word, 2); break;
+    default:
+        destination[0] = quantized[2]; destination[1] = quantized[1]; destination[2] = quantized[0];
+        if (format != D3DFMT_R8G8B8) destination[3] = format == D3DFMT_X8R8G8B8 ? 255 : quantized[3];
+        break;
+    }
+}
+
+class SurfaceRoundingScope
+{
+    int previous;
+public:
+    SurfaceRoundingScope() : previous(fegetround()) { fesetround(FE_TOWARDZERO); }
+    ~SurfaceRoundingScope() { fesetround(previous); }
+};
+
+void FilterSurfaceColors(const std::vector<SurfaceColor> &source, UINT sw, UINT sh,
+                         std::vector<SurfaceColor> &destination, UINT dw, UINT dh, DWORD filter)
+{
+    UINT kind = filter & 0xffff;
+    if (kind == 3)
+    {
+        FLOAT xRatio = static_cast<FLOAT>(sw) / dw;
+        FLOAT yRatio = static_cast<FLOAT>(sh) / dh;
+        for (UINT y = 0; y < dh; ++y)
+            for (UINT x = 0; x < dw; ++x)
+            {
+                FLOAT px = x * xRatio - 0.5f, py = y * yRatio - 0.5f;
+                LONG ix = static_cast<LONG>(floorf(px)), iy = static_cast<LONG>(floorf(py));
+                FLOAT fx = px - ix, fy = py - iy;
+                LONG xs[2] = {ix, ix + 1}, ys[2] = {iy, iy + 1};
+                for (UINT i = 0; i < 2; ++i)
+                {
+                    if (xs[i] < 0) xs[i] = (filter & 0x10000) == 0 ? sw - 1 : 0;
+                    if (xs[i] >= static_cast<LONG>(sw)) xs[i] = (filter & 0x10000) == 0 ? 0 : sw - 1;
+                    if (ys[i] < 0) ys[i] = (filter & 0x20000) == 0 ? sh - 1 : 0;
+                    if (ys[i] >= static_cast<LONG>(sh)) ys[i] = (filter & 0x20000) == 0 ? 0 : sh - 1;
+                }
+                for (UINT c = 0; c < 4; ++c)
+                {
+                    FLOAT topLeft = source[ys[0] * sw + xs[0]].channel[c] * (1 - fx);
+                    FLOAT topRight = source[ys[0] * sw + xs[1]].channel[c] * fx;
+                    FLOAT bottomLeft = source[ys[1] * sw + xs[0]].channel[c] * (1 - fx);
+                    FLOAT bottomRight = source[ys[1] * sw + xs[1]].channel[c] * fx;
+                    FLOAT top = (topLeft + topRight) * (1 - fy);
+                    FLOAT bottom = (bottomLeft + bottomRight) * fy;
+                    destination[y * dw + x].channel[c] = top + bottom;
+                }
+            }
+    }
+    else if (kind == 4 || kind == 5)
+    {
+        std::vector<SurfaceWeights> xWeights = TriangleWeights(sw, dw, (filter & 0x10000) == 0);
+        std::vector<SurfaceWeights> yWeights = TriangleWeights(sh, dh, (filter & 0x20000) == 0);
+        for (UINT y = 0; y < sh; ++y)
+            for (UINT x = 0; x < sw; ++x)
+                for (UINT dx = 0; dx < xWeights[x].size(); ++dx)
+                    for (UINT dy = 0; dy < yWeights[y].size(); ++dy)
+                    {
+                        FLOAT weight = xWeights[x][dx].value * yWeights[y][dy].value;
+                        if (xWeights[x][dx].value <= 1.0e-5f || yWeights[y][dy].value <= 1.0e-5f) continue;
+                        SurfaceColor &pixel = destination[yWeights[y][dy].index * dw + xWeights[x][dx].index];
+                        for (UINT c = 0; c < 4; ++c)
+                        {
+                            FLOAT contribution = weight * source[y * sw + x].channel[c];
+                            pixel.channel[c] += contribution;
+                        }
+                    }
+    }
+    else for (UINT y = 0; y < dh; ++y)
+        for (UINT x = 0; x < dw; ++x)
+        {
+            UINT sx = kind == 1 ? x : static_cast<UINT>((static_cast<unsigned long long>(x) * sw) / dw);
+            UINT sy = kind == 1 ? y : static_cast<UINT>((static_cast<unsigned long long>(y) * sh) / dh);
+            if (sx < sw && sy < sh) destination[y * dw + x] = source[sy * sw + sx];
+        }
+}
+
 HRESULT CopyRgbaToSurface(IDirect3DSurface8 *destinationRaw, const RECT *destinationRectRaw,
                           const BYTE *source, UINT sourceWidth, UINT sourceHeight, UINT sourcePitch,
-                          const RECT *sourceRectRaw, D3DCOLOR colorKey)
+                          const RECT *sourceRectRaw, D3DCOLOR colorKey,
+                          DWORD filter = 2, D3DFORMAT sourceFormat = D3DFMT_A8R8G8B8)
 {
     LinuxSurfaceAccess destination;
     if (!th08_linux_surface_access(destinationRaw, &destination, false) || destination.pixels == NULL)
@@ -117,11 +315,69 @@ HRESULT CopyRgbaToSurface(IDirect3DSurface8 *destinationRaw, const RECT *destina
     if (destinationRect.bottom > static_cast<LONG>(destination.height)) destinationRect.bottom = destination.height;
     if (sourceRect.right > static_cast<LONG>(sourceWidth)) sourceRect.right = sourceWidth;
     if (sourceRect.bottom > static_cast<LONG>(sourceHeight)) sourceRect.bottom = sourceHeight;
+    if (!ValidRect(destinationRect) || !ValidRect(sourceRect)) return E_INVALIDARG;
+    if (filter == D3DX_DEFAULT) filter = 0x80004;
+    UINT filterKind = filter & 0xffff;
+    if (filterKind < 1 || filterKind > 5) return E_INVALIDARG;
     UINT destinationWidth = destinationRect.right - destinationRect.left;
     UINT destinationHeight = destinationRect.bottom - destinationRect.top;
     UINT sourceRectWidth = sourceRect.right - sourceRect.left;
     UINT sourceRectHeight = sourceRect.bottom - sourceRect.top;
     UINT destinationBytes = BytesPerPixel(destination.format);
+    bool scaled = sourceRectWidth != destinationWidth || sourceRectHeight != destinationHeight;
+    if (sourceFormat != destination.format || (filterKind != 2 && scaled))
+    {
+        std::vector<SurfaceColor> colors(sourceRectWidth * sourceRectHeight);
+        for (UINT y = 0; y < sourceRectHeight; ++y)
+            for (UINT x = 0; x < sourceRectWidth; ++x)
+                colors[y * sourceRectWidth + x] = DecodeSurfaceColor(
+                    source + (sourceRect.top + y) * sourcePitch + (sourceRect.left + x) * 4, sourceFormat, colorKey);
+        std::vector<SurfaceColor> filtered(destinationWidth * destinationHeight);
+        bool box = filterKind == 5 && scaled && colorKey == 0 &&
+                   (destinationWidth == sourceRectWidth / 2 || (sourceRectWidth == 1 && destinationWidth == 1)) &&
+                   (destinationHeight == sourceRectHeight / 2 || (sourceRectHeight == 1 && destinationHeight == 1));
+        if (box)
+        {
+            UINT levels[4], shift[4]; SurfaceChannelLayout(sourceFormat, levels, shift);
+            UINT xCount = sourceRectWidth > 1 ? 2 : 1;
+            UINT yCount = sourceRectHeight > 1 ? 2 : 1;
+            UINT count = xCount * yCount;
+            for (UINT y = 0; y < destinationHeight; ++y)
+                for (UINT x = 0; x < destinationWidth; ++x)
+                    for (UINT c = 0; c < 4; ++c)
+                    {
+                        if (sourceFormat == destination.format)
+                        {
+                            UINT sum = 0;
+                            for (UINT dy = 0; dy < yCount; ++dy)
+                                for (UINT dx = 0; dx < xCount; ++dx)
+                                    sum += source[(sourceRect.top + y * yCount + dy) * sourcePitch +
+                                                  (sourceRect.left + x * xCount + dx) * 4 + c] >> shift[c];
+                            UINT value = (sum + count / 2) / count;
+                            FLOAT reciprocal = 1.0f / levels[c];
+                            filtered[y * destinationWidth + x].channel[c] = value * reciprocal;
+                        }
+                        else
+                        {
+                            FLOAT rows[2] = {0,0};
+                            for (UINT dy = 0; dy < yCount; ++dy)
+                                for (UINT dx = 0; dx < xCount; ++dx)
+                                    rows[dy] += colors[(y * yCount + dy) * sourceRectWidth + x * xCount + dx].channel[c];
+                            filtered[y * destinationWidth + x].channel[c] = (rows[0] + rows[1]) / count;
+                        }
+                    }
+        }
+        else FilterSurfaceColors(colors, sourceRectWidth, sourceRectHeight, filtered, destinationWidth, destinationHeight,
+                                 scaled ? filter : ((filter & 0xffff0000) | 2));
+        {
+            SurfaceRoundingScope rounding;
+            for (UINT y = 0; y < destinationHeight; ++y)
+                for (UINT x = 0; x < destinationWidth; ++x)
+                    EncodeSurfaceColor(destination.pixels + (destinationRect.top + y) * destination.pitch +
+                        (destinationRect.left + x) * destinationBytes, destination.format, filtered[y * destinationWidth + x], filter, x, y);
+        }
+        th08_linux_surface_changed(destinationRaw); return S_OK;
+    }
     for (UINT y = 0; y < destinationHeight; ++y)
     {
         UINT sourceY = sourceRect.top + static_cast<UINT>((static_cast<unsigned long long>(y) * sourceRectHeight) / destinationHeight);
@@ -140,7 +396,7 @@ HRESULT CopyRgbaToSurface(IDirect3DSurface8 *destinationRaw, const RECT *destina
 }
 
 HRESULT CopySurface(IDirect3DSurface8 *destinationRaw, const RECT *destinationRectRaw,
-                    IDirect3DSurface8 *sourceRaw, const RECT *sourceRectRaw, D3DCOLOR colorKey)
+                    IDirect3DSurface8 *sourceRaw, const RECT *sourceRectRaw, D3DCOLOR colorKey, DWORD filter)
 {
     LinuxSurfaceAccess source;
     if (!th08_linux_surface_access(sourceRaw, &source, true) || source.pixels == NULL) return E_INVALIDARG;
@@ -151,7 +407,7 @@ HRESULT CopySurface(IDirect3DSurface8 *destinationRaw, const RECT *destinationRe
             DecodePixel(source.pixels + y * source.pitch + x * sourceBytes, source.format,
                         &rgba[(y * source.width + x) * 4]);
     return CopyRgbaToSurface(destinationRaw, destinationRectRaw, rgba.empty() ? NULL : &rgba[0],
-                             source.width, source.height, source.width * 4, sourceRectRaw, colorKey);
+                             source.width, source.height, source.width * 4, sourceRectRaw, colorKey, filter, source.format);
 }
 
 SDL_Surface *LoadImage(LPCVOID data, UINT size)
@@ -325,7 +581,7 @@ HRESULT D3DXCreateTexture(IDirect3DDevice8 *device, UINT width, UINT height, UIN
 
 HRESULT D3DXCreateTextureFromFileInMemoryEx(IDirect3DDevice8 *device, LPCVOID data, UINT size,
                                             UINT width, UINT height, UINT levels, DWORD usage,
-                                            D3DFORMAT format, D3DPOOL pool, DWORD, DWORD, D3DCOLOR colorKey,
+                                            D3DFORMAT format, D3DPOOL pool, DWORD filter, DWORD, D3DCOLOR colorKey,
                                             D3DXIMAGE_INFO *info, void *, IDirect3DTexture8 **result)
 {
     if (device == NULL || result == NULL) return E_INVALIDARG;
@@ -341,7 +597,7 @@ HRESULT D3DXCreateTextureFromFileInMemoryEx(IDirect3DDevice8 *device, LPCVOID da
         if (SUCCEEDED(status))
         {
             status = CopyRgbaToSurface(surface, NULL, static_cast<const BYTE *>(image->pixels), image->w, image->h,
-                                       image->pitch, NULL, colorKey);
+                                       image->pitch, NULL, colorKey, filter);
             surface->Release();
         }
         if (FAILED(status)) { (*result)->Release(); *result = NULL; }
@@ -350,17 +606,17 @@ HRESULT D3DXCreateTextureFromFileInMemoryEx(IDirect3DDevice8 *device, LPCVOID da
 }
 
 HRESULT D3DXLoadSurfaceFromFileInMemory(IDirect3DSurface8 *destination, const void *, const RECT *destinationRect,
-                                        LPCVOID data, UINT size, const RECT *sourceRect, DWORD, D3DCOLOR colorKey,
+                                        LPCVOID data, UINT size, const RECT *sourceRect, DWORD filter, D3DCOLOR colorKey,
                                         D3DXIMAGE_INFO *info)
 {
     SDL_Surface *image = LoadImage(data, size); if (image == NULL) return E_FAIL;
     SetImageInfo(info, image->w, image->h, D3DFMT_A8R8G8B8);
     HRESULT status = CopyRgbaToSurface(destination, destinationRect, static_cast<const BYTE *>(image->pixels),
-                                       image->w, image->h, image->pitch, sourceRect, colorKey);
+                                       image->w, image->h, image->pitch, sourceRect, colorKey, filter);
     SDL_FreeSurface(image); return status;
 }
 
 HRESULT D3DXLoadSurfaceFromSurface(IDirect3DSurface8 *destination, const void *, const RECT *destinationRect,
                                    IDirect3DSurface8 *source, const void *, const RECT *sourceRect,
-                                   DWORD, D3DCOLOR colorKey)
-{ return CopySurface(destination, destinationRect, source, sourceRect, colorKey); }
+                                   DWORD filter, D3DCOLOR colorKey)
+{ return CopySurface(destination, destinationRect, source, sourceRect, colorKey, filter); }

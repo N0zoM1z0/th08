@@ -13,7 +13,9 @@ horizontal edge coverage. The [edge regression](#horizontal-edge-regression-octo
 records the edge repair; the [font controls](#font-rasterization-controls-october-14-2026)
 record the latest tested x86_64 product.
 
-Font rasterization and synthetic texture sampling retain measurable differences.
+The [surface-filter repair](#production-surface-filter-repair) now passes 640
+pinned-D3DX8 API cases and reduces the matched-font Stage 3 title error. Small
+font and synthetic texture-sampling differences remain measured below.
 The [i386 refresh](#i386-refresh-october-14-2026) passes the same selected frames
 in both context profiles. The [Final A investigation](#final-a-observation-october-14-2026)
 finds a split spell-background script field; its owner repair passes the five
@@ -416,8 +418,8 @@ paired Wine probe. Image and font hashes are checked before rendering.
 | Light hinting, bold disabled | 3.316637 | 7 / 20 |
 
 Normal hinting improves the average by 2.7%; the title remains too wide.
-Kerning changes none of these pixels. At GDI height 28, the 11-character sword
-title spans 242 pixels in the production probe and 230 in Wine. Their left
+Kerning changes none of these pixels. At GDI height 28, probe text 1
+spans 242 pixels in the production probe and 230 in Wine. Its left
 edges differ by one pixel; the right edges differ by 11. The production image
 has 207 nonzero gray levels, while Wine has 15.
 
@@ -634,17 +636,17 @@ measured effect on scaled surfaces.
 These are pinned-archive API observations. The wrapper sections at
 `0x0047ABAB` and `0x0047A586` have matching extents and no differences outside
 relocation fields; this partial comparison adds no accepted exact units.
-The API control runs outside the retail game. Next repair the filter using
-target-supported behavior, then repeat the ordinary game images to measure
-how much of the title residual it explains. The original 1.0 game-image limit
-remains unchanged.
+The API control runs outside the retail game. The production repair below
+applies these rules and measures their contribution in ordinary game images.
+The original 1.0 game-image limit remains unchanged.
 
 Reproduce the current failure control with the configured private VC7 toolchain
 and D3DX8 archive, Wine32, Xvfb, and the Linux backend build dependencies:
 
 ```bash
 python3 scripts/analysis/probe-surface-scaling.py \
-  --expect-filter-failure --output-dir build/surface-scaling-control
+  --baseline-ref b5608f80 --expect-filter-failure \
+  --output-dir build/surface-scaling-control
 ```
 
 The runner checks the target and archive hashes, records source, probe,
@@ -655,6 +657,62 @@ Current API evidence is under `build/surface-scaling-20261014/repro-final/`.
 Earlier title evidence is under
 `build/font-production-20261014/title-glyph-controls/` and
 `surface-filter-observation.json` in the same phase directory.
+
+#### Production surface-filter repair
+
+The Linux D3DX adapter now honors none, point, linear, triangle and box filters.
+Triangle filtering integrates each source texel's footprint in destination
+space. Linear and triangle edges wrap by default and follow the measured edge
+flags. The half-size box path averages packed channel values; cross-format
+copies use normalized colors. Default filtering applies the canonical 4x4
+rounding matrix. File and texture loaders forward their filter argument too.
+
+Read-only hardware observations inside the pinned-archive probe confirm the
+single-precision color buffers and the encoders' temporary truncation mode.
+The adapter restores the caller's rounding mode after encoding. The 640-case
+extension covers both pixel formats in each conversion direction, four
+patterns, five size/rectangle selections, filters 1–5, default filtering and
+edge flags. Fresh system-compiler and GCC 8 checks match every output word and
+preserve rounding state in every case. The immutable `b5608f80` backend still
+reproduces the original 72/160 result and ignored-filter failure control.
+The existing 297 color/blend samples, 144 raw copies, 196,608 exhaustive copies
+and six renderer groups pass.
+
+Reproduce the repair check:
+
+```bash
+python3 scripts/analysis/probe-surface-scaling.py --extended --check \
+  --compiler g++-8 --output-dir build/surface-filter-check
+```
+
+Add `--observe-codecs` to retain source and encoded color buffers and x87
+control words. The observer uses hardware breakpoints, attests the mapped
+instructions, and enforces an 85-second deadline and 32 MiB color-data limit.
+`--compiler` and `--pkg-config` also accept bounded architecture wrappers.
+
+The fresh x86_64 Debug recorder is SHA-256
+`7eb846a665867ed9e8a1c19484d2c0fe1ee586954f0ecca3b1b756223e0e0853`,
+built with GCC 8.4.0 and one compiler job. Build identity and evidence are under
+`build/surface-filter-repair-20261014/`. With the same Droid font as retail,
+all four Stage 3 images pass and retain exact laser/VM packets. The complete
+header rectangle `(32,16)`–`(416,64)` gives:
+
+| Frame | Previous differing pixels | Repaired differing pixels | Previous mean RGB error | Repaired mean RGB error |
+| ---: | ---: | ---: | ---: | ---: |
+| 12,900 | 1,081 | 3 | 1.501320 | 0.000326 |
+| 14,130 | 787 | 2 | 0.953197 | 0.000217 |
+| 14,310 | 807 | 13 | 0.987431 | 0.001863 |
+| 14,490 | 1,924 | 1,140 | 1.168529 | 0.034216 |
+
+The comparator now reports header pixel counts, means and maximum channel
+differences alongside the unchanged beam-region gate. Run it against the
+previous and repaired captures to reproduce this table. The before/after
+figure is `stage3-title-before-after.png` in the phase directory. Stage 4B's
+four beam errors remain 0.004278, 0.001907, 0.003865 and 0.021046, with exact
+laser/VM packets. Default-font Stage 3 also passes all four original limits,
+with errors 0.591680, 0.263236, 0.003113 and 0.544644. Final A and
+complete-recording checks are the next gates for this product; i386 also needs
+a refreshed build.
 
 ## Horizontal-edge regression, October 14, 2026
 

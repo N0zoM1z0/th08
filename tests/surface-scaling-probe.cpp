@@ -6,7 +6,9 @@
 #ifdef TH08_MODERN_LINUX
 #include <SDL.h>
 #include <d3dx8.h>
+#include <fenv.h>
 #else
+#include <float.h>
 extern "C" HRESULT WINAPI D3DXLoadSurfaceFromSurface(
     IDirect3DSurface8 *, const PALETTEENTRY *, const RECT *,
     IDirect3DSurface8 *, const PALETTEENTRY *, const RECT *, DWORD, D3DCOLOR);
@@ -49,8 +51,9 @@ static void fill(IDirect3DSurface8 *surface, unsigned width, unsigned height,
     require(surface->UnlockRect(), "source unlock");
 }
 
-int main()
+int main(int argc, char **argv)
 {
+    bool extended = argc == 2 && strcmp(argv[1], "--extended") == 0;
     HWND window;
 #ifdef TH08_MODERN_LINUX
     if (SDL_Init(SDL_INIT_VIDEO) != 0) return 1;
@@ -77,27 +80,47 @@ int main()
     IDirect3DDevice8 *device;
     require(api->CreateDevice(0, D3DDEVTYPE_HAL, window, D3DCREATE_SOFTWARE_VERTEXPROCESSING,
                               &parameters, &device), "device");
-    const unsigned sizes[4][4] = {{8,8,8,8}, {8,8,4,4}, {4,4,8,8}, {9,7,4,3}};
+#ifndef TH08_MODERN_LINUX
+    fprintf(stderr, "Native floating-point control: %08x\n", _controlfp(0, 0));
+    if (getenv("TH08_SCALING_OBSERVE")) Sleep(1000);
+#endif
+    const unsigned sizes[5][4] = {{8,8,8,8}, {8,8,4,4}, {4,4,8,8}, {9,7,4,3}, {12,10,6,5}};
+    const DWORD filters[8] = {1,2,3,4,5,0xffffffffu,0x30003,0x30004};
     printf("[\n");
     bool first = true;
-    for (int format = 0; format < 2; ++format) {
-        bool shortFormat = format == 0;
+    for (int format = 0; format < (extended ? 4 : 2); ++format) {
+        bool sourceShort = format == 0 || format == 2;
+        bool shortFormat = format == 0 || format == 3;
+        D3DFORMAT sourceFormat = sourceShort ? D3DFMT_A1R5G5B5 : D3DFMT_A8R8G8B8;
         D3DFORMAT dxFormat = shortFormat ? D3DFMT_A1R5G5B5 : D3DFMT_A8R8G8B8;
-        for (int shape = 0; shape < 4; ++shape) {
+        for (int shape = 0; shape < (extended ? 5 : 4); ++shape) {
             unsigned sw = sizes[shape][0], sh = sizes[shape][1];
             unsigned dw = sizes[shape][2], dh = sizes[shape][3];
             IDirect3DSurface8 *source, *destination;
-            require(device->CreateImageSurface(sw, sh, dxFormat, &source), "source surface");
+            require(device->CreateImageSurface(sw, sh, sourceFormat, &source), "source surface");
             require(device->CreateImageSurface(dw, dh, dxFormat, &destination), "destination surface");
+            RECT sourceRect = {2,1,10,7}, destinationRect = {1,1,5,4};
             for (int pattern = 0; pattern < 4; ++pattern) {
-                fill(source, sw, sh, shortFormat, pattern);
-                for (DWORD filter = 1; filter <= 5; ++filter) {
+                fill(source, sw, sh, sourceShort, pattern);
+                for (int filterIndex = 0; filterIndex < (extended ? 8 : 5); ++filterIndex) {
+                    DWORD filter = filters[filterIndex];
                     fill(destination, dw, dh, shortFormat, 1);
-                    HRESULT result = D3DXLoadSurfaceFromSurface(destination, NULL, NULL,
-                                                                source, NULL, NULL, filter, 0);
+#ifdef TH08_MODERN_LINUX
+                    int rounding = fegetround();
+#else
+                    unsigned rounding = _controlfp(0, 0);
+#endif
+                    HRESULT result = D3DXLoadSurfaceFromSurface(destination, NULL, shape == 4 ? &destinationRect : NULL,
+                                                                source, NULL, shape == 4 ? &sourceRect : NULL, filter, 0);
+#ifdef TH08_MODERN_LINUX
+                    bool roundingPreserved = rounding == fegetround();
+#else
+                    bool roundingPreserved = rounding == _controlfp(0, 0);
+#endif
                     printf("%s{\"format\":%d,\"shape\":%d,\"pattern\":%d,\"filter\":%lu,"
-                           "\"hresult\":%lu,\"pixels\":[", first ? "" : ",\n",
-                           format, shape, pattern, (unsigned long)filter, (unsigned long)(DWORD)result);
+                           "\"hresult\":%lu,\"roundingPreserved\":%s,\"pixels\":[", first ? "" : ",\n",
+                           format, shape, pattern, (unsigned long)filter, (unsigned long)(DWORD)result,
+                           roundingPreserved ? "true" : "false");
                     first = false;
                     D3DLOCKED_RECT lock;
                     require(destination->LockRect(&lock, NULL, D3DLOCK_READONLY), "destination lock");
