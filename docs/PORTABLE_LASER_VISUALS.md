@@ -373,6 +373,53 @@ product; refreshed i386 images and later-boss cases remain to be exercised.
 Retained-evidence verification, four renderer contract groups, 297 color
 samples, and all 196,608 surface copies also pass with the height repair.
 
+### Font rasterization controls, October 14, 2026
+
+An offline SDL_ttf control reproduces all 27 retained production font images
+pixel for pixel before varying hinting, kerning, or bold. It uses the same
+Droid Sans Fallback file, font-height conversion, text and placement as the
+paired Wine probe. Image and font hashes are checked before rendering.
+
+| Control | Mean RGB error across 27 images | Improved / worsened images |
+| --- | ---: | ---: |
+| Production light hinting and bold | 2.812630 | Baseline |
+| Normal hinting and bold | 2.737256 | 25 / 1 |
+| Normal hinting, kerning disabled | 2.737256 | 25 / 1 |
+| Light hinting, bold disabled | 3.316637 | 7 / 20 |
+
+Normal hinting improves the average by 2.7%; the title remains too wide.
+Kerning changes none of these pixels. At GDI height 28, the 11-character sword
+title spans 242 pixels in the production probe and 230 in Wine. Their left
+edges differ by one pixel; the right edges differ by 11. The production image
+has 207 nonzero gray levels, while Wine has 15.
+
+The [SDL_ttf 2.22.0 source](https://github.com/libsdl-org/SDL_ttf/blob/release-2.22.0/SDL_ttf.c)
+adds `ppem / 10` pixels to each synthetic-bold advance and expands the bitmap
+horizontally. At 21 ppem this adds two pixels.
+[Wine 9.0](https://github.com/wine-mirror/wine/blob/wine-9.0/dlls/win32u/freetype.c)
+adds one pixel to the synthetic-bold advance and emboldens the outline with
+strength `ppem * 64 / 24`. It also supplies a 16-step grayscale bitmap for
+`GGO_GRAY4_BITMAP`. These adapter differences identify the next controls:
+glyph advance, outline emboldening, and grayscale transfer. The measured
+hinting change alone leaves most of the residual error.
+
+Reproduce the controls after the paired font pixel probe above:
+
+```bash
+python3 scripts/analysis/analyze-font-rasterization.py \
+  --capture build/font-pixels \
+  --output-dir build/font-rasterization-controls
+```
+
+The analyzer needs Python Pillow and FontTools, plus the SDL2 and SDL2_ttf
+shared libraries. It runs without a compiler, display server, Wine process or
+game assets. Its baseline must reproduce all 27 production images before
+the controls are accepted. Bounds use exclusive right and bottom coordinates;
+the original C++ probe records inclusive endpoints. The report retains library
+version, input hashes and all control images. Local evidence is under
+`build/font-residual-audit-20261014/repro-hinting/`; no gameplay or renderer
+source changes accompany this measurement.
+
 ## Horizontal-edge regression, October 14, 2026
 
 The selected Stage 3 frame has 16 thin horizontal sprite quads crossing the

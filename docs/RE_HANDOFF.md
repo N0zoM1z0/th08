@@ -106,7 +106,14 @@ and the `--legacy-gl` reproduction commands.
 The original-game font evidence confirms Droid Sans Fallback, GDI height
 28 mapped to 21 ppem, and 81 bold-text parameter records equal to portable.
 The Linux height/baseline repair uses OpenType Windows metrics. Remaining
-bold-width/grayscale differences need separate font rasterization measurements.
+bold-width/grayscale differences now have an offline rasterization control:
+all 27 production font images reproduce exactly before changing settings.
+Normal hinting reduces average error by 2.7%; disabling kerning changes none
+of the control pixels, and disabling bold worsens 20 of 27 images. SDL_ttf's
+two-pixel synthetic-bold advance at 21 ppem differs from Wine's one-pixel
+advance. Next measure glyph advance, outline emboldening and grayscale transfer
+with the same font. See the
+[font controls](PORTABLE_LASER_VISUALS.md#font-rasterization-controls-october-14-2026).
 
 The earlier clip-control API probe retains 15 striped-material sampling
 differences; the legacy probe retains 16. An XY grid control passes 59/68
