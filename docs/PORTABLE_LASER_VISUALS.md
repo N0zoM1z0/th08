@@ -4,7 +4,7 @@ Compare the original Japanese TH08 1.00d and Linux portable images at selected
 laser frames. The [replay results](REPLAY_RESULTS.md) establish gameplay trace
 equality; this check adds laser-pool state and images from the presented frame.
 
-## Current result, October 14, 2026
+## Current result, October 15, 2026
 
 All eight selected x86_64 frames pass the original 1.0 beam-region mean RGB
 error limit, with identical raw laser/VM packets. The seven baseline failures
@@ -24,9 +24,10 @@ product also passes all 108 recordings and retained-evidence verification.
 The added [Final B samples](#final-b-precision-observation-october-14-2026)
 exposed a one-ULP laser-origin difference at frame 8,400. The ECL sine/cosine
 repair now passes all seven raw packets and 390 paired spawn-input records.
-Its complete replay refresh is running. Extra images and the i386
-refresh remain to be checked. The dated
-sections below preserve each repair's evidence.
+Its complete replay refresh is running. The new i386 product passes its API,
+renderer and Final B checks; its remaining scene and full-corpus gates follow.
+The [Extra case](#extra-laser-observation-october-15-2026) now passes four paired
+images with exact raw packets. The dated sections preserve each repair's evidence.
 
 ### Status of the seven initial failures
 
@@ -1280,6 +1281,39 @@ python3 scripts/analysis/compare-laser-spawns.py \
 
 The 25-field gameplay pass remains scoped to its recorded fields. These spawn
 and laser-pool packets provide the additional state evidence for this repair.
+
+## Extra laser observation, October 15, 2026
+
+The Border Team Extra recording `extra-0-extra` adds the Mokou case
+`extra-mokou`. Fresh canonical-retail and repaired x86_64 captures observe
+one laser in startup, active and despawning states:
+
+| Frame | Phase | Beam pixels | Mean RGB error | Raw laser/VM packets |
+| ---: | --- | ---: | ---: | --- |
+| 24,900 | Startup | 5,138 | 0.003698 | Exact |
+| 24,960 | Active | 6,120 | 0.004902 | Exact |
+| 25,320 | Despawn | 2,943 | 0.001472 | Exact |
+| 25,800 | Later active | 6,051 | 0.004848 | Exact |
+
+All four pass the unchanged 1.0 beam-region image limit. The retail state file
+is pinned in the committed case manifest to SHA-256
+`53ceaed3e599c88c709c6275325c2169dc165133985dc6b27e8991a9f938386e`.
+Retained-evidence comparison also passes the new case hash, coverage and phase
+checks. The tested x86_64 recorder remains `e0a57a43…`, source `897decb2`.
+Evidence is under `build/laser-extra-20261014/paired/`; the owned temporary
+runtime and Wine prefix are removed, leaving about 4.2 MiB of evidence.
+
+Reproduce from the credited recording and privately supplied original assets:
+
+```bash
+python3 scripts/analysis/check-laser-visuals.py \
+  --candidate build/portable-linux-x86_64/th08-modern \
+  --game-data-dir "/path/to/original/TH08 directory" \
+  --case extra-mokou --retail --output-dir build/laser-extra
+```
+
+This adds image evidence for the selected Extra scene. Other shots and
+unobserved laser paths retain their own scope.
 
 ## Read and verify the evidence
 

@@ -137,9 +137,11 @@ runs and revalidates the i386 corpus. Its product hashes are pinned, and its
 owned native Wine prefix is removed immediately after native verification,
 before i386 captures begin. Progress is under
 `build/laser-i386-refresh-20261014/queued-platform-gates.json`. Continue those
-existing jobs. Four Extra startup/active/despawn frames are being captured
-against retail under `build/laser-extra-20261014/paired/`. Remaining laser scenes
-and legacy contexts follow.
+existing jobs. Four Extra startup/active/despawn frames now pass against
+retail, with exact laser/VM packets and beam errors 0.001472–0.004902. The
+`extra-mokou` case pins their retail state hash; evidence is under
+`build/laser-extra-20261014/paired/`. Remaining platform scene checks and legacy
+contexts follow.
 Issue #20's reported scene remains unspecified. Small font/sampling residuals,
 the Stage 5 color observations and native RT-007 retain their measured scope
 in the laser, rendering and runtime reports. AArch64 hardware and audio are

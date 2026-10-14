@@ -41,6 +41,19 @@
         { "frame": 15090, "phase": "stationary despawn", "expectedLaserState": 2 },
         { "frame": 22590, "phase": "late mixed-phase attack", "expectedLaserState": 2 }
       ]
+    },
+    {
+      "id": "extra-mokou",
+      "fixture": "extra-0-extra",
+      "stage": 8,
+      "boss": "Mokou",
+      "retailLaserStateSha256": "53ceaed3e599c88c709c6275325c2169dc165133985dc6b27e8991a9f938386e",
+      "frames": [
+        {"frame": 24900, "phase": "stationary startup", "expectedLaserState": 0},
+        {"frame": 24960, "phase": "stationary active", "expectedLaserState": 1},
+        {"frame": 25320, "phase": "stationary despawn", "expectedLaserState": 2},
+        {"frame": 25800, "phase": "later stationary active", "expectedLaserState": 1}
+      ]
     }
   ]
 }
