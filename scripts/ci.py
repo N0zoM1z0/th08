@@ -63,6 +63,7 @@ def main() -> int:
         run("Test texture color probe coverage", [sys.executable, "scripts/test-texture-color-probe.py"])
         run("Test replay file validation", [sys.executable, "scripts/test-replay-file.py"])
         run("Test replay capture cleanup", [sys.executable, "scripts/test-replay-capture-cleanup.py"])
+        run("Test replay suite progress and process ownership", [sys.executable, "scripts/test-replay-suite-report.py"])
         run("Validate replay route coverage", [sys.executable, "scripts/validate-replay-fixtures.py"])
         run("Smoke-test portable replay repair CLI", [sys.executable, "scripts/test-portable-replay-repairs.py", "--help"])
         run("Smoke-test portable replay capture CLI", [sys.executable, "scripts/capture-portable-replay.py", "--help"])

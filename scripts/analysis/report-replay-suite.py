@@ -19,55 +19,72 @@ def tail_lines(path, limit=65536):
 
 
 def progress(suite, case):
-    logs = [p for p in (suite / case / "reference.log", suite / case / "candidate.log") if p.exists()]
+    logs = []
+    for role in ("reference", "candidate"):
+        for path in (suite / case / (role + ".log"), suite / case / role / "gdb.log"):
+            try:
+                logs.append((path.stat().st_mtime_ns, role, path))
+            except FileNotFoundError:
+                continue
     if not logs:
         return "capture starting"
-    log = max(logs, key=lambda p: p.stat().st_mtime_ns)
+    # Files created in the same filesystem timestamp tick can tie; prefer inner progress.
+    _, role, log = max(logs, key=lambda entry: (entry[0], entry[2].name == "gdb.log"))
     lines = tail_lines(log)
     last = lines[-1] if lines else ""
-    if last.startswith("Captured "):
-        return f"{log.stem}: {last}"
+    for line in reversed(lines):
+        if line.startswith(("Captured ", "Portable replay:")):
+            return f"{role}: {line}"
     try:
         completion = json.loads(last)
     except (ValueError, TypeError):
-        capture = suite / case / log.stem
+        capture = suite / case / role
         rows, metadata = capture / "rows.jsonl", capture / "metadata.json"
         if rows.exists() and metadata.exists():
             try:
                 fields = json.loads(metadata.read_text()).get("schema", {}).get("fields", [])
             except (OSError, ValueError):
-                return f"{log.stem}: capture updating"
+                return f"{role}: capture updating"
             for line in reversed(tail_lines(rows)):
                 try:
                     row = json.loads(line)
                     values = dict(zip(fields, row)) if isinstance(row, list) else row
-                    return (f"{log.stem}: calculation {values['calc']}, "
+                    return (f"{role}: calculation {values['calc']}, "
                             f"stage index {values['stage']}, gameplay frame {values['frame']}")
                 except (ValueError, TypeError, KeyError):
                     continue
-        return f"{log.stem}: see {log.relative_to(ROOT)}" if last else f"{log.stem}: capture starting"
+        return f"{role}: see {log.relative_to(ROOT)}" if last else f"{role}: capture starting"
     if isinstance(completion, dict) and "rows" in completion:
-        return f"{log.stem}: captured {completion['rows']} calculation frames"
-    return f"{log.stem}: capture updating"
+        return f"{role}: captured {completion['rows']} calculation frames"
+    return f"{role}: capture updating"
 
 
-def live_games(suite):
-    """Read only game processes whose working directory belongs to this suite."""
+def live_games(suite, proc=Path("/proc")):
+    """Select native runtimes by cwd and portable runtimes by their capture destination."""
     result = []
-    proc = Path("/proc")
     if not proc.is_dir():
         return None
     for folder in proc.iterdir():
         if not folder.name.isdigit():
             continue
         try:
-            if (folder / "comm").read_text().strip() not in ("th08.exe", "th08-modern"):
+            name = (folder / "comm").read_text().strip()
+            if name not in ("th08.exe", "th08-modern"):
                 continue
             cwd = (folder / "cwd").resolve(strict=True)
+            capture = None
             if not cwd.is_relative_to(suite):
-                continue
+                if name != "th08-modern" or not cwd.is_relative_to(ROOT / "build"):
+                    continue
+                # Read this one ownership field; never print the process environment.
+                for entry in (folder / "environ").read_bytes().split(b"\0"):
+                    if entry.startswith(b"TH08_PORTABLE_CAPTURE="):
+                        capture = Path(os.fsdecode(entry.split(b"=", 1)[1])).resolve()
+                        break
+                if capture is None or not capture.is_relative_to(suite):
+                    continue
             resident = int((folder / "statm").read_text().split()[1]) * os.sysconf("SC_PAGE_SIZE")
-            result.append((int(folder.name), resident, cwd.relative_to(suite)))
+            result.append((int(folder.name), resident, (capture or cwd).relative_to(suite)))
         except (OSError, ValueError, IndexError):
             continue
     return sorted(result)

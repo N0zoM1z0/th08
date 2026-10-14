@@ -92,6 +92,19 @@ deadline (`--timeout`, 1,800 seconds by default). Finish the active suite before
 starting another build. Prefix the suite command with `/usr/bin/time -v` to record
 its elapsed time and maximum resident set size.
 
+Inspect a running suite without disturbing playback:
+
+```bash
+python3 scripts/analysis/report-replay-suite.py \
+  --suite build/portable-replay-suite --resources
+```
+
+The report reads the ledger and a bounded log tail. It shows the current
+calculation/stage, game RSS and retained file sizes. Portable processes are
+associated with their capture destination, including isolated runtimes outside
+the suite directory. Shared compressed traces contribute to the listed file
+sizes while retaining their existing storage.
+
 Trace validation and comparison stream the rows, retaining stage boundaries
 and a five-row diagnostic window. On the 126,803-calculation `easy-1-b` pair,
 the comparison process peaked at 17.5 MiB, down from 227 MiB with the buffered
