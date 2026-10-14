@@ -39,6 +39,14 @@ references, clock rate 128, no rasterization and ptrace observations. Evidence
 is under `build/laser-native-20261014/full-state128/`; owned runtimes and the
 shared Wine prefix have been removed.
 
+The main backport checkpoint `5dfd5197` also has fresh normal/bugfix links and
+a passing cold 1,106-unit gate. Its new bugfix product
+`9e699dd2c596acb090a5d44e9aa32b6c0bb19f0d5e11fe6a0babb0eb1469fd9b`
+passes five fresh paired Final A images with `csmt=0`: complete playfields are
+pixel-identical, raw laser/VM packets agree, and all 25 fields agree across
+the 22,590-calculation diagnostic prefix. Its complete replay gate remains
+pending; these bounded captures support the stated image and prefix scope.
+
 The [laser investigation](PORTABLE_LASER_VISUALS.md) records the visual
 reproduction, canonical field ownership and image comparisons. Its latest
 Linux surface-filter repair passes 640 pinned-D3DX8 API cases and seventeen

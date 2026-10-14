@@ -1146,6 +1146,30 @@ python3 scripts/analysis/check-laser-visuals.py \
   --output-dir build/native-finala-csmt0
 ```
 
+### Native main backport image gate
+
+The main backport checkpoint `5dfd5197` has fresh VC7 normal and bugfix links,
+a cold 1,106-unit exact gate, and passing linked owner/data/callee guards.
+The bugfix executable is SHA-256
+`9e699dd2c596acb090a5d44e9aa32b6c0bb19f0d5e11fe6a0babb0eb1469fd9b`.
+Fresh paired `finala-eirin` captures with `--wine-csmt 0`, clock rate 1 and
+rasterization pass all five frames: 9,570, 14,490, 14,550, 15,090 and 22,590.
+Every raw laser/VM packet agrees, every beam-region mean RGB error is zero,
+and all five complete playfields are pixel-identical to retail. The paired
+22,590-calculation diagnostic prefix agrees on all 25 fields.
+
+Products and linker maps are under
+`build/laser-native-20261014/main-production/`; paired images, state, traces
+and comparisons are under `main-finala-paired/` in that phase directory.
+The capture tools are pinned separately from compiled source checkpoint
+`5dfd5197`. Both owned Wine prefixes and temporary runtimes have been removed;
+the retained paired evidence occupies about 5 MiB. The new main product's
+complete native replay gate remains pending before PR/merge. The earlier
+108-recording pass remains tied to its preceding executable.
+
+Reproduce with a fresh bugfix link and matching map by adding
+`--wine-csmt 0` to the native image command above.
+
 ## Final B precision observation, October 14, 2026
 
 The Final B survey selected frames 8,400, 11,160, 11,490, 12,240, 14,280,
