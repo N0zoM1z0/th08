@@ -95,8 +95,12 @@ with source paths. The comparator now preserves complete decorated signatures
 while normalizing only the generated namespace discriminator; ambiguous
 matches are rejected. Both this worktree and the portable source checkpoint
 pass cold comparisons. A controlled two-path compiler probe confirms identical
-source and function bytes with different discriminators. Native replay and
-Final A image checks for these newly linked products remain pending before
+source and function bytes with different discriminators. The new bugfix product
+`9e699dd2c596acb090a5d44e9aa32b6c0bb19f0d5e11fe6a0babb0eb1469fd9b`
+passes five fresh paired Final A captures at clock rate 1 with rasterization
+and `csmt=0`. All raw laser/VM packets agree, and all five complete playfields
+are pixel-identical to retail. The 22,590-calculation diagnostic prefix agrees
+on all 25 fields. Its full native replay gate remains pending before
 publication. Keep these products distinct from the earlier published binaries.
 
 For runtime work, select a concrete remaining visual or hardware scenario and
