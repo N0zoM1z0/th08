@@ -1513,6 +1513,41 @@ retains residual coordinates, RGB values, input hashes and analyzer identity.
 The two projected-particle vertex differences remain the next investigation;
 actual projection inputs and intermediates are still needed to explain them.
 
+### Fast geometry observations
+
+Use `--watch-quads --geometry-only` to read submitted sprite inputs with
+rasterization disabled. This mode records vertices and laser/VM packets,
+without framebuffer readback or placeholder images. It keeps at most 16
+selected frames per run. Ordinary image comparisons require rasterized captures.
+
+For a calibration, first retain an ordinary `--watch-quads` capture. Use the
+same executable, recording, stage and frames for the fast capture:
+
+```bash
+python3 scripts/analysis/check-laser-visuals.py \
+  --candidate build/portable-linux-x86_64/th08-modern \
+  --game-data-dir "/path/to/original/TH08 directory" \
+  --fixture lunatic-0-b --stage 7 --frames 11490,17460 \
+  --watch-quads --output-dir build/orbit-rasterized
+python3 scripts/analysis/check-laser-visuals.py \
+  --candidate build/portable-linux-x86_64/th08-modern \
+  --game-data-dir "/path/to/original/TH08 directory" \
+  --fixture lunatic-0-b --stage 7 --frames 11490,17460 \
+  --watch-quads --geometry-only --geometry-reference build/orbit-rasterized \
+  --output-dir build/orbit-geometry
+python3 scripts/analysis/compare-sprite-geometry.py \
+  --reference build/orbit-rasterized --candidate build/orbit-geometry \
+  --check --output build/orbit-geometry/revalidation.json
+```
+
+The capture's `geometry-comparison.json` checks every sprite word in the
+playfield, all requested frames, raw laser/VM packets and capture identities.
+The standalone command repeats that check from retained files. Reports retain
+input hashes and bounded mismatch examples. `geometry-observation.json`
+records the inferior's rasterization environment and frame coverage. Timing
+dependent HUD digits outside the playfield are excluded from vertex pairing.
+Fresh game captures and strict image comparisons provide the final pixel gate.
+
 ### Orbit particles: D3DX rounding
 
 Completed paired observations at frames 11,490 and 17,460 identify effect

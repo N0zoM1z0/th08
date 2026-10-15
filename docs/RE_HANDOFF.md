@@ -463,3 +463,26 @@ initialization call: the first D3DX call uses its C fallback while filling the
 shared fast table. Warming that table before vector cases matches the game's
 observed active SSE dispatch. `reciprocal-boundaries.json` records all words
 and commands; `check-reciprocal-boundaries.py` is still a private diagnostic.
+
+## Reusable geometry capture and remaining survey
+
+The current tool batch changes only unpinned capture/analysis scripts in the
+D3DX worktree. Every live production/capture-tool/reference pin is unchanged.
+`check-laser-visuals.py --watch-quads --geometry-only` now skips rasterization
+and image readback; `--geometry-reference` automatically checks the same
+binary's ordinary capture. `compare-sprite-geometry.py --check` independently
+verifies identities, complete quad/frame coverage, raw laser/VM packets,
+reference images and observed runtime scope. Twelve regression tests and the
+existing 42 laser tests pass; target-independent CI passes. Actual new-mode
+validation is next, reusing the retained sincos ordinary quad captures.
+
+The expanded x86_64 default survey has zero below-title playfield error for
+all selected Stage 3 and Final A frames. Stage 4B frame 15,360 has 6,929
+changed playfield pixels, maximum channel error 22/255, outside the beam
+mask. Connected differences follow tall background strips. Its older retail
+reference records no explicit CSMT setting; a fresh synchronous canonical
+reference is needed before attributing a code defect. Other Stage 4B frames
+have zero below-title error. Extra frame 24,900 retains six changed pixels
+at most 1/255; the remaining Extra frames are exact below the title. Reports
+are `build/math-default-*-pixels.json` in the D3DX worktree. The live broad
+queue continues with the original pinned reference scope.

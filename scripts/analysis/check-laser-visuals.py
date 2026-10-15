@@ -85,12 +85,14 @@ def capture_portable(candidate, data, replay, output, settings):
                     stage=settings["stage"], frames=settings["frames"], scout=settings["scout"],
                     frameCounter=FRAME_COUNTER, startStage=settings["stage"], playbackMode=0,
                     configSha256=hashlib.sha256(configuration).hexdigest(),
-                    fastPortableClock=not settings["paced"], rasterization=not settings["scout"],
+                    fastPortableClock=not settings["paced"],
+                    rasterization=not (settings["scout"] or settings.get("geometryOnly")),
                     environment=dict(host=platform.platform(),
                                      gdb=subprocess.check_output(["gdb", "--version"], text=True).splitlines()[0],
                                      font=selected_font),
                     muted=True, keepLives=False, suppressLaserBodies=settings["suppressLaserBodies"])
     metadata["watchQuads"] = settings.get("watchQuads", False)
+    metadata["geometryOnly"] = settings.get("geometryOnly", False)
     metadata["watchDraws"] = settings.get("watchDraws", False)
     metadata["watchRotatingHitboxes"] = settings.get("watchRotatingHitboxes", False)
     metadata["watchLaserSpawns"] = settings.get("watchLaserSpawns")
@@ -111,6 +113,8 @@ def capture_portable(candidate, data, replay, output, settings):
         for name in ("TH08_REPLAY_TRACE_REFERENCE", "TH08_REPLAY_TRACE_ROWS", "TH08_REPLAY_TRACE_COMPLETION", "TH08_REPLAY_TRACE_MAXIMUM"):
             environment.pop(name, None)
         environment.pop("LP_NO_RAST", None)
+        if settings.get("geometryOnly"):
+            environment.update(LP_NO_RAST="true", LC_ALL="C")
         if settings.get("legacyOpenGL"):
             environment.update(MESA_GL_VERSION_OVERRIDE="2.1", MESA_EXTENSION_OVERRIDE="-GL_ARB_clip_control")
         if settings.get("fontOverride"):
@@ -129,7 +133,7 @@ def capture_portable(candidate, data, replay, output, settings):
             summary = json.loads((output / "scout-summary.json").read_text())
             if not summary.get("complete"):
                 raise RuntimeError("Laser scout did not reach its requested boundary")
-        if not settings["scout"]:
+        if not settings["scout"] and not settings.get("geometryOnly"):
             for frame in settings["frames"]:
                 if not (output / f"frame-{frame}.png").is_file():
                     raise RuntimeError("Requested laser image is missing")
@@ -283,6 +287,8 @@ def main():
     parser.add_argument("--font", type=Path, help="Portable font override; recorded with its file hash")
     parser.add_argument("--watch-text-fonts", action="store_true", help="Record bold text parameters and retail font diagnostics")
     parser.add_argument("--watch-quads", action="store_true", help="Read every submitted sprite quad in the selected frames")
+    parser.add_argument("--geometry-only", action="store_true", help="Capture portable quad inputs with rasterization disabled")
+    parser.add_argument("--geometry-reference", type=Path, help="Verify geometry-only inputs against an ordinary capture of the same binary and frames")
     parser.add_argument("--watch-draws", action="store_true", help="Read portable draw inputs, matrices, states and texture identities")
     parser.add_argument("--watch-rotating-hitboxes", action="store_true",
                         help="Scout the three enemy rotating-laser collision helpers and their VM state")
@@ -344,6 +350,12 @@ def main():
         parser.error("Text-font diagnostics require rasterized frame captures")
     if args.scout and args.legacy_gl:
         parser.error("Legacy OpenGL validation requires rasterized frame captures")
+    if args.geometry_reference and not args.geometry_only:
+        parser.error("--geometry-reference requires --geometry-only")
+    if args.geometry_only and (not args.watch_quads or args.scout or args.retail or args.native_map or args.paced):
+        parser.error("--geometry-only requires a portable --watch-quads capture")
+    if args.geometry_only and len(frames) > 16:
+        parser.error("Geometry-only captures support at most 16 selected frames per run")
     if args.watch_quads and (args.scout or args.watch_text_fonts or args.suppress_laser_bodies):
         parser.error("Quad diagnostics require an ordinary frame capture, separate from font and omission probes")
     if args.watch_draws and (args.scout or args.watch_quads or args.watch_text_fonts or args.suppress_laser_bodies or args.retail):
@@ -367,6 +379,12 @@ def main():
     candidate, data = args.candidate.resolve(strict=True), args.game_data_dir.resolve(strict=True)
     if (args.retail or args.native_map) and (args.target.stat().st_size != 840704 or sha(args.target) != TARGET_SHA256):
         parser.error("Retail input must be the canonical Japanese TH08 1.00d executable")
+    if args.geometry_reference:
+        geometry = module("geometry_preflight", ROOT / "scripts/analysis/compare-sprite-geometry.py")
+        reference_meta = geometry.profile(args.geometry_reference.resolve(strict=True), True)
+        if (reference_meta["executableSha256"] != sha(candidate) or reference_meta["frames"] != frames
+                or reference_meta["stage"] != args.stage or reference_meta["replaySha256"] != sha(replay)):
+            parser.error("Geometry reference must use the same executable, recording, stage and frames")
     for name in ("th08.dat", "thbgm.dat"):
         if not (data / name).is_file():
             parser.error("Original archive is missing: " + name)
@@ -386,6 +404,7 @@ def main():
                     maximumFrame=maximum, paced=args.paced, suppressLaserBodies=args.suppress_laser_bodies,
                     watchTextFonts=args.watch_text_fonts,
                     watchQuads=args.watch_quads,
+                    geometryOnly=args.geometry_only,
                     watchDraws=args.watch_draws,
                     watchRotatingHitboxes=args.watch_rotating_hitboxes,
                     watchLaserSpawns=spawn_range,
@@ -404,12 +423,20 @@ def main():
             (output / "case.json").write_text(json.dumps(case, indent=2) + "\n")
     else:
         capture_portable(candidate, data, replay, output, settings)
+    if args.geometry_reference:
+        geometry = module("sprite_geometry", ROOT / "scripts/analysis/compare-sprite-geometry.py")
+        report = geometry.compare(args.geometry_reference.resolve(strict=True), output)
+        (output / "geometry-comparison.json").write_text(json.dumps(report, indent=2) + "\n")
+        print("Sprite geometry comparison: " + report["result"], flush=True)
+        if report["result"] != "equal":
+            raise SystemExit(1)
     records = json.loads((output / "lasers.json").read_text())
     if case:
         for sample, expected in zip(records, case["frames"]):
             if expected["expectedLaserState"] not in {laser["state"] for laser in sample["lasers"]}:
                 raise RuntimeError("Selected laser phase is missing at frame " + str(expected["frame"]))
-    print(f"Captured {len(records)} laser samples in {output}", flush=True)
+    kind = "geometry" if args.geometry_only else "laser"
+    print(f"Captured {len(records)} {kind} samples in {output}", flush=True)
     if args.retail:
         print("Capturing retail laser frames with ordinary pacing and rasterization", flush=True)
         capture_retail(args.target.resolve(strict=True), data, replay, output / "retail", args.stage, frames,

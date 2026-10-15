@@ -452,6 +452,12 @@ def screenshot(frame):
         (output / "renderer.json").write_text(json.dumps(renderer, indent=2) + "\n")
         if renderer["clipControlLoaded"] or not renderer["version"].startswith("2.1 "):
             raise RuntimeError("Expected OpenGL 2.1 without a loaded clip-control function")
+    if settings.get("geometryOnly"):
+        (output / "geometry-observation.json").write_text(json.dumps(dict(
+            rasterizationEnvironment=os.environ.get("LP_NO_RAST"),
+            inferiorRasterEnvironment=gdb.execute("show environment LP_NO_RAST", to_string=True).strip(),
+            imageCapture=False, capturedFrames=[row["frame"] for row in records]), indent=2) + "\n")
+        return
     gdb.execute("set $laser_access = (LinuxSurfaceAccess*)malloc(sizeof(LinuxSurfaceAccess))")
     gdb.execute("call th08_linux_surface_access($laser_device->backbuffer, $laser_access, true)")
     access = value("*$laser_access")
@@ -562,4 +568,6 @@ save_records()
 (output / "draw-color-control.json").write_text(json.dumps(color_control, indent=2) + "\n")
 (output / "control.json").write_text(json.dumps(suppression, indent=2) + "\n")
 gdb.execute("kill")
-print("Laser scout completed" if scout else "All requested laser frames captured")
+print("Laser scout completed" if scout else
+      "All requested geometry frames captured" if settings.get("geometryOnly") else
+      "All requested laser frames captured")
