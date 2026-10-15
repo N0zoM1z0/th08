@@ -4,6 +4,7 @@ import argparse
 import hashlib
 import importlib.util
 import json
+import math
 import os
 from pathlib import Path
 import shlex
@@ -49,19 +50,59 @@ def snap_positions(data, grid):
                                changedWords=changed, maximumPositionDelta=maximum)
 
 
+def constant_u(data, value):
+    """Remove the U gradient while preserving positions, color, RHW and V."""
+    if not math.isfinite(value):
+        raise ValueError("Constant U must be finite")
+    try:
+        word = struct.pack("<f", value)
+    except OverflowError as error:
+        raise ValueError("Constant U must fit a finite float") from error
+    actual = struct.unpack("<f", word)[0]
+    if not math.isfinite(actual):
+        raise ValueError("Constant U must fit a finite float")
+    result = bytearray(data)
+    changed = 0
+    for vertex in range(4, len(data), 28):
+        offset = vertex + 20
+        changed += data[offset:offset + 4] != word
+        result[offset:offset + 4] = word
+    return bytes(result), dict(kind="synthetic constant U control", value=actual,
+                               floatBits=struct.unpack("<I", word)[0], changedWords=changed)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--capture", type=Path, required=True, help="Completed laser capture with --watch-quads")
     parser.add_argument("--frame", type=int, default=12900)
-    parser.add_argument("--position-grid", type=int,
-                        help="Synthetic control: snap X/Y to this many grid steps per pixel in both APIs")
+    control = parser.add_mutually_exclusive_group()
+    control.add_argument("--position-grid", type=int,
+                         help="Synthetic control: snap X/Y to this many grid steps per pixel in both APIs")
+    control.add_argument("--constant-u", type=float,
+                         help="Synthetic control: set every vertex U to this finite float in both APIs")
     parser.add_argument("--legacy-gl", action="store_true", help="Exercise the portable Mesa OpenGL 2.1 path without clip control")
     parser.add_argument("--baseline-ref", help="Also exercise an immutable pre-repair renderer")
+    parser.add_argument("--renderer-control", type=Path,
+                        help="Also exercise a private renderer source copy, labeled as a diagnostic control")
     parser.add_argument("--check-coverage", action="store_true", help="Require exact pixels in every solid-material case")
     parser.add_argument("--output-dir", type=Path, required=True, help="Fresh directory under build/")
     args = parser.parse_args()
     if args.position_grid is not None and args.position_grid <= 0:
         parser.error("Position grid must be positive")
+    if args.constant_u is not None and not math.isfinite(args.constant_u):
+        parser.error("Constant U must be finite")
+    if args.constant_u is not None:
+        try:
+            struct.pack("<f", args.constant_u)
+        except OverflowError:
+            parser.error("Constant U must fit a finite float")
+    if args.renderer_control:
+        try:
+            args.renderer_control = args.renderer_control.resolve(strict=True)
+        except OSError:
+            parser.error("Renderer control source is missing")
+        if not args.renderer_control.is_file():
+            parser.error("Renderer control source must be a file")
     output = args.output_dir.resolve()
     if output.exists() or not output.is_relative_to(ROOT / "build"):
         parser.error("Output must be a fresh directory under build/")
@@ -86,6 +127,8 @@ def main():
     transformation = dict(kind="unmodified observed vertex words")
     if args.position_grid is not None:
         data, transformation = snap_positions(data, args.position_grid)
+    elif args.constant_u is not None:
+        data, transformation = constant_u(data, args.constant_u)
     (output / "input.bin").write_bytes(data)
     source = ROOT / "tests/subpixel-quad-probe.cpp"
     native = output / "native"
@@ -111,6 +154,10 @@ def main():
         shutil.rmtree(prefix)
         binary.unlink()
     sources = {"production": ROOT / "src/modern/linux/d3d8_compat.cpp"}
+    if args.renderer_control:
+        control_source = output / "control-d3d8.cpp"
+        control_source.write_bytes(args.renderer_control.resolve(strict=True).read_bytes())
+        sources["control"] = control_source
     baseline = None
     if args.baseline_ref:
         baseline = subprocess.check_output(["git", "rev-parse", "--verify", "--end-of-options",
@@ -168,8 +215,12 @@ def main():
         report["variants"][name] = differences
         print(f"{name}: {sum(row['bounds'] is None for row in differences)}/{len(expected)} pixel-identical cases")
     (output / "report.json").write_text(json.dumps(report, indent=2) + "\n")
-    if args.check_coverage and any(row["bounds"] is not None for row in report["variants"]["production"] if "-m0-" in row["image"]):
-        raise SystemExit("Solid-material subpixel coverage differs from Wine D3D8")
+    if args.check_coverage:
+        for name, rows in report["variants"].items():
+            if name == "baseline":
+                continue
+            if any(row["bounds"] is not None for row in rows if "-m0-" in row["image"]):
+                raise SystemExit("Solid-material subpixel coverage differs from Wine D3D8: " + name)
 
 
 if __name__ == "__main__":

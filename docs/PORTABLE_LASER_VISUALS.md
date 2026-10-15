@@ -867,6 +867,39 @@ and the private viewport experiments are under `build/laser-sampling-20261014/`;
 `repro-grid-control/` contains the reproducible Wine/portable control images;
 `repro-observed-inputs/` repeats the unmodified 53/68 result with the same runner.
 
+### U-gradient control, October 15, 2026
+
+A fresh probe on the merged renderer reproduces 53/68 pixel-identical API
+images. All 34 solid cases agree; the 15 textured differences remain confined
+to the first covered row, game Y=236. The observed input SHA-256 is
+`bf4d64e15be8d087ceed0d6f090d0892bdfbcfec7ad6083d4d379fc92dddc983`.
+
+Setting every vertex U to `33/256` produces 68/68 pixel-identical images.
+This synthetic control changes 32 U words while preserving positions, depth,
+RHW, diffuse color and V. The result localizes the difference to behavior
+that depends on the U gradient. It leaves the observed gameplay inputs and
+ordinary image gate unchanged.
+
+```bash
+python3 scripts/analysis/probe-subpixel-quads.py \
+  --capture build/laser-quads --constant-u 0.12890625 --check-coverage \
+  --output-dir build/subpixel-constant-u
+```
+
+Two private viewport controls move the half-pixel correction into a floating
+viewport, then also use the actual D3D viewport dimensions. They pass 53/68
+and 54/68 images, respectively, with all solid cases still agreeing. Their
+partial results leave the textured discrepancy unresolved. The
+[control patches and reproduction commands](../tests/fixtures/render-controls/README.md)
+keep these experiments separate from production code. `--renderer-control`
+copies the experimental source into the output directory and labels its
+results separately; it also checks solid coverage for that control.
+
+Evidence is under `build/laser-sampling-refresh-20261015/`, in `observed/`,
+`constant-u/`, `viewport-control/` and `actual-viewport-control/`. Each probe
+removes its owned Wine prefix and compiled executables. The next measurement
+is the actual reference shader and projection arithmetic for these inputs.
+
 ## Legacy OpenGL coverage, October 14, 2026
 
 Disabling `GL_ARB_clip_control` reproduces the pre-repair top-edge failure at

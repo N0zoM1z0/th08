@@ -1,0 +1,55 @@
+--- renderer.cpp
++++ renderer.cpp
+@@ -859,8 +859,9 @@
+         if (transformed)
+         {
+             const float w = position[3] != 0.0f ? 1.0f / position[3] : 1.0f;
+-            *xOut = (position[0] + 0.5f) * w;
+-            *yOut = (position[1] + 0.5f) * w;
++            const float center = g_clipControl != NULL ? 0.0f : 0.5f;
++            *xOut = (position[0] + center) * w;
++            *yOut = (position[1] + center) * w;
+             *zOut = position[2] * w;
+             *wOut = w;
+             *fogCoordinateOut = 0.0f;
+@@ -887,7 +888,7 @@
+         *zOut = viewport.MinZ * w + vector[2] * (viewport.MaxZ - viewport.MinZ);
+         *wOut = w;
+     }
+-    void PrepareState()
++    void PrepareState(bool transformed)
+     {
+         const UINT width = backbuffer != NULL ? backbuffer->width : viewport.Width;
+         const UINT height = backbuffer != NULL ? backbuffer->height : viewport.Height;
+@@ -901,8 +902,21 @@
+                   static_cast<int>(viewport.Height * drawableHeight / height));
+         // Both paths map logical top edges to OpenGL's inclusive edge convention.
+         SetClipOrigin(g_clipControl != NULL ? GL_UPPER_LEFT : GL_LOWER_LEFT);
++        typedef void (APIENTRY *ViewportIndexedFunction)(GLuint, GLfloat, GLfloat, GLfloat, GLfloat);
++        ViewportIndexedFunction floatingViewport = reinterpret_cast<ViewportIndexedFunction>(
++            SDL_GL_GetProcAddress("glViewportIndexedf"));
++        if (transformed && g_clipControl != NULL && floatingViewport != NULL)
++            floatingViewport(0, viewport.X + 0.5f,
++                             height - viewport.Y - viewport.Height - 0.5f,
++                             viewport.Width, viewport.Height);
++        else
++            glViewport(0, 0, width, height);
+         glMatrixMode(GL_PROJECTION); glLoadIdentity();
+-        glOrtho(0.0, width, 0.0, height, -1.0, 1.0);
++        if (transformed && g_clipControl != NULL && floatingViewport != NULL)
++            glOrtho(viewport.X, viewport.X + viewport.Width,
++                    viewport.Y, viewport.Y + viewport.Height, -1.0, 1.0);
++        else
++            glOrtho(0.0, width, 0.0, height, -1.0, 1.0);
+         glMatrixMode(GL_MODELVIEW); glLoadIdentity();
+         if (renderStates[D3DRS_ALPHABLENDENABLE])
+         { glEnable(GL_BLEND); glBlendFunc(BlendFunction(renderStates[D3DRS_SRCBLEND]), BlendFunction(renderStates[D3DRS_DESTBLEND])); }
+@@ -1008,7 +1022,7 @@
+         if (hasDiffuse) offset += 4;
+         if (fvf & D3DFVF_SPECULAR) offset += 4;
+         bool hasTexture = (fvf & D3DFVF_TEXCOUNT_MASK) != 0; UINT textureOffset = offset;
+-        PrepareState(); glBegin(PrimitiveMode(type));
++        PrepareState(transformed); glBegin(PrimitiveMode(type));
+         for (UINT index = 0; index < count; ++index)
+         {
+             const BYTE *vertex = data + index * stride; float x, y, z, w, fogCoordinate;

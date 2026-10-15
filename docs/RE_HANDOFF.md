@@ -169,8 +169,13 @@ compressed comparison evidence remain under their recorded phase directories.
 
 Continue the measured title and boundary-sampling residuals in
 [the laser report](PORTABLE_LASER_VISUALS.md#remaining-sampling-and-title-error).
-Start with the retained, unmodified quad inputs and their D3D8/OpenGL API
-control; the selected gameplay images already pass their recorded thresholds.
+The refreshed unmodified-input D3D8/OpenGL probe passes 53/68 images; all
+34 solid cases agree. A constant-U control passes 68/68, while the two
+viewport controls pass 53/68 and 54/68. Reproduce them with the committed
+[diagnostic controls](../tests/fixtures/render-controls/README.md). Next,
+measure the reference shader and projection arithmetic. Evidence is under
+`build/laser-sampling-refresh-20261015/`; temporary prefixes and probe binaries
+are removed. The selected gameplay images retain their passing thresholds.
 Issue #20's reported scene remains unspecified. Small font/sampling residuals,
 the Stage 5 color observations and native RT-007 retain their measured scope
 in the laser, rendering and runtime reports. AArch64 hardware and audio are
