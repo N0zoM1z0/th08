@@ -1316,6 +1316,62 @@ queued worker waits for the existing platform jobs, then checks the remaining
 scenes and both complete replay corpora with the frozen cached products.
 Those pending gates remain separate from this completed seven-frame result.
 
+### Four residual pixels: vertex-input localization
+
+A new paired `--watch-quads` capture selects frames 11,490 and 17,460 with
+synchronous Wine rendering. Both retail playfields are pixel-identical to
+the retained references, and both observed portable playfields match the
+ordinary cached-candidate capture. The four residual RGB values repeat
+exactly. The capture finishes and restores the original corpus scheduler;
+its owned Wine prefix and temporary runtime are removed.
+
+The conservative local comparisons find three differing quads:
+
+| Frame | Pixel | Selected quads | Differing quad index | Differing coordinate words |
+| ---: | --- | ---: | ---: | ---: |
+| 11,490 | `(307, 179)` | 5 | 71 | 8 |
+| 17,460 | `(176, 293)` | 29 | 1,031 | 3 |
+| 17,460 | `(223, 265)` | 49 | 1,031 | 3 |
+| 17,460 | `(329, 90)` | 8 | 27 | 8 |
+
+Indices are zero-based submission indices, paired only within the stated
+region and frame. The two middle points share the same differing quad.
+Other selected words, including diffuse colors, Z/RHW and UVs, agree.
+These observed coordinate differences precede GPU filtering and blending.
+
+Quad 1,031 maps to laser slot 84's body VM. All recorded VM fields agree,
+including position, rotation, scale and sprite size. Its rotation is binary32
+`0x3f879c1a` (1.0594513416290283). The target `Draw2D @ 0x00463210` executes
+`FSINCOS` at `0x0046328D`, then stores each result as float. The portable
+macro calls `sinf`/`cosf`. For this input, glibc `cosf` returns `0x3efa8c2a`;
+80-digit trigonometry rounded to binary32 gives `0x3efa8c2b`. The latter,
+computed by double `cos` then converted to float, restores all eight observed
+XY coordinate words through the same float arithmetic. The matching sine is
+`0x3f5f411a`. A standalone positive/negative-angle test fails with the current
+header and passes the private double-then-float control. A fresh game product
+is still required before claiming the corresponding pixel repair.
+
+The other two quads have projected Z 0.9993928670883179. Their nearly square
+edges measure about 24.000003 versus 24.000731 pixels at frame 11,490, and
+23.999266 versus 24.000000 at frame 17,460. The centers and angles remain
+close. These measurements identify a projected-geometry rounding lead;
+the actual projection inputs and intermediate results remain to be captured.
+
+An independent asset-free precision probe also checks all 65,536 A4R4G4B4
+source words with four diffuse colors, three blend modes and one/four draws.
+Point and quarter-texel linear profiles each match all 1,572,864 RGB samples
+against Wine D3D8. This excludes discrepancies in those controlled sampling
+conditions. The actual sprite transforms retain their separate evidence.
+Use [the packed-precision and regional commands](../tests/fixtures/render-controls/README.md#exhaustive-packed-color-precision)
+to reproduce the probes and local comparisons.
+
+Artifacts are under `build/laser-residual-pixels-20261015/` and the isolated
+worktree's `build/residual-paired-quads/`. Regional JSON reports preserve the
+full paired image/state comparison, selected frame, ROI, original vertex
+words and differences. `--frame` still validates all quad rows and stages;
+`--check` returns failure for the observed mismatches. The new synthetic
+probe removes its raw sample buffers and executables after recording hashes.
+
 Reproduce the synchronized paired observation and local vertex comparison:
 
 ```bash

@@ -42,6 +42,9 @@ def select_region(quads, roi, selection="thin-horizontal"):
         if selection == "covering-bounds":
             matches = (bounds[0] <= roi[0] and bounds[1] <= roi[1]
                        and bounds[2] >= roi[2] and bounds[3] >= roi[3])
+        elif selection == "intersecting-bounds":
+            matches = (bounds[0] <= roi[2] and bounds[2] >= roi[0]
+                       and bounds[1] <= roi[3] and bounds[3] >= roi[1])
         elif selection == "thin-horizontal":
             matches = (bounds[2] - bounds[0] > 30 and 0 < bounds[3] - bounds[1] <= 16
                        and bounds[0] < roi[2] and bounds[2] >= roi[0]
@@ -65,7 +68,7 @@ def differences(left, right):
     return result
 
 
-def compare(reference, candidate, roi, selection="thin-horizontal"):
+def compare(reference, candidate, roi, selection="thin-horizontal", frame=None):
     spec = importlib.util.spec_from_file_location("laser_visuals", ROOT / "scripts/analysis/compare-laser-visuals.py")
     visuals = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(visuals)
@@ -74,14 +77,21 @@ def compare(reference, candidate, roi, selection="thin-horizontal"):
         raise ValueError("Raw laser state differs; vertex localization requires the aligned scene")
     frames = [row["frame"] for row in image_report["frames"]]
     left, right = load_quads(reference, frames), load_quads(candidate, frames)
+    if frame is not None and frame not in frames:
+        raise ValueError("Requested frame is absent from the validated capture")
     report = dict(evidenceClass="Observed AddSpriteToDrawBuffer inputs; target bytes and gameplay memory unmodified",
                   vertexLayout=list(FIELDS), vertexBytes=28, roi=list(roi),
-                  selector=("sprite quads with bounds covering ROI in submission order" if selection == "covering-bounds"
+                  captureFrames=frames, selectedFrame=frame,
+                  selector=("sprite quads whose bounds touch ROI in submission order; conservative spatial selection"
+                            if selection == "intersecting-bounds" else
+                            "sprite quads with bounds covering ROI in submission order" if selection == "covering-bounds"
                             else "thin horizontal sprite quads intersecting ROI in submission order"),
                   imageComparison=image_report, frames=[])
-    for a, b in zip(left, right):
-        if a["stage"] != b["stage"]:
+    for a, b, expected in zip(left, right, image_report["frames"]):
+        if a["stage"] != b["stage"] or a["stage"] != expected["stage"]:
             raise ValueError("Submitted-quad stage differs")
+        if frame is not None and a["frame"] != frame:
+            continue
         selected_a, selected_b = select_region(a["quads"], roi, selection), select_region(b["quads"], roi, selection)
         if not selected_a or len(selected_a) != len(selected_b):
             raise ValueError(f"Region quad coverage cannot be paired in submission order: "
@@ -101,19 +111,24 @@ def main():
     parser.add_argument("--reference", type=Path, required=True)
     parser.add_argument("--candidate", type=Path, required=True)
     parser.add_argument("--roi", default="201,236,248,245", help="x0,y0,x1,y1; default: Stage 3 horizontal-edge region")
-    parser.add_argument("--selection", choices=("thin-horizontal", "covering-bounds"), default="thin-horizontal",
-                        help="Select thin edges or sprites whose bounds cover the ROI")
+    parser.add_argument("--selection", choices=("thin-horizontal", "covering-bounds", "intersecting-bounds"), default="thin-horizontal",
+                        help="Select thin edges, bounds covering the ROI, or conservative bounds touching it")
+    parser.add_argument("--frame", type=int, help="Localize one frame after validating the complete paired capture")
+    parser.add_argument("--check", action="store_true", help="Fail if any selected vertex words differ")
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     roi = tuple(int(value) for value in args.roi.split(","))
     if len(roi) != 4 or not (0 <= roi[0] < roi[2] <= 640 and 0 <= roi[1] < roi[3] <= 480):
         parser.error("ROI must be a nonempty rectangle inside the 640x480 frame")
-    report = compare(args.reference, args.candidate, roi, args.selection)
+    report = compare(args.reference, args.candidate, roi, args.selection, args.frame)
     report["comparatorSha256"] = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
     args.output.write_text(json.dumps(report, indent=2) + "\n")
     for row in report["frames"]:
         count = sum(len(pair["differences"]) for pair in row["pairs"])
         print(f"Frame {row['frame']}: {row['selectedQuads']} region quads, {count} differing vertex words")
+
+    if args.check and any(not row["regionVertexWordsEqual"] for row in report["frames"]):
+        raise SystemExit("Selected sprite vertex words differ")
 
 
 if __name__ == "__main__":

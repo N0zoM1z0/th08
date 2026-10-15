@@ -206,3 +206,47 @@ produce the same image checksum. Owned executables are removed after testing.
 The fixed-function baseline keeps the known alpha-test discrepancy, so its
 checksum differs. Timings describe this synthetic software-rendering workload;
 actual scene gates remain required.
+
+## Exhaustive packed-color precision
+
+`probe-packed-precision.py` generates a 256x256 A4R4G4B4 texture containing all
+65,536 source words. Four diffuse colors, three blend modes and one/four draws
+give 24 cases and 1,572,864 RGB samples. Point sampling uses texel centers;
+linear sampling shifts the quad by a quarter pixel. Both profiles match Wine
+D3D8 in the recorded default-context investigation.
+
+```bash
+python3 scripts/analysis/probe-packed-precision.py \
+  --filter point --check --output-dir build/packed-precision-point
+python3 scripts/analysis/probe-packed-precision.py \
+  --filter linear --check --output-dir build/packed-precision-linear
+```
+
+The report retains every case's mismatch count, up to 16 examples, source and
+binary hashes, commands and complete sample hashes. Sample buffers stream in
+256 KiB blocks; raw buffers, executables and the owned Wine prefix are removed
+after comparison. `--renderer-control`, `--compiler`, `--pkg-config` and
+`--legacy-gl` select other controlled variants. These tests cover the specified
+colors, filtering offsets and blend states; actual sprite transforms remain a
+separate measurement.
+
+## Localizing one frame in a paired capture
+
+`compare-sprite-quads.py --frame` validates the complete paired image/state and
+quad coverage before selecting one frame. `--selection intersecting-bounds`
+selects all sprite bounds touching the region, including narrow quads ending
+inside it. It is a conservative spatial selection, rather than a rasterization
+or visibility test. `--check` fails when any selected vertex word differs.
+
+```bash
+python3 scripts/analysis/compare-sprite-quads.py \
+  --reference build/paired-quads/retail --candidate build/paired-quads \
+  --frame 11490 --roi 306,178,308,180 \
+  --selection intersecting-bounds --check \
+  --output build/quad-pixel-inputs.json
+```
+
+The full capture stays in the report, alongside the selected frame and region.
+A missing requested frame, malformed unselected quad or mismatched stage fails
+validation. Differences outside the selected region remain outside this local
+input comparison's claim.

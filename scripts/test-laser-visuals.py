@@ -249,6 +249,41 @@ class QuadEvidenceTests(unittest.TestCase):
                 for x, y, u, v in [(200, 236, 0, 0), (280, 236, 1, 0),
                                   (200, 244, 0, 1), (280, 244, 1, 1)]]
 
+    def test_conservative_bounds_include_quads_ending_inside_the_region(self):
+        quad = self.quad()
+        roi = (201, 237, 202, 238)
+        for vertex in quad:
+            if quads.floating(vertex[0]) > 201:
+                vertex[0] = bits(201.5)
+        self.assertEqual(quads.select_region([quad], roi, "covering-bounds"), [])
+        self.assertEqual(len(quads.select_region([quad], roi, "intersecting-bounds")), 1)
+
+    def test_frame_selection_still_validates_unselected_quad_rows(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            reference, candidate = [Path(temporary) / name for name in ("reference", "candidate")]
+            rows = [dict(stage=4, frame=frame, quads=[self.quad()]) for frame in (100, 200)]
+            for folder in (reference, candidate):
+                folder.mkdir()
+                (folder / "quads.json").write_text(json.dumps(rows))
+            comparator = mock.Mock()
+            comparator.compare.return_value = dict(frames=[dict(stage=4, frame=f, stateDifferences=[]) for f in (100, 200)])
+            with mock.patch.object(quads.importlib.util, "spec_from_file_location"), \
+                    mock.patch.object(quads.importlib.util, "module_from_spec", return_value=comparator):
+                report = quads.compare(reference, candidate, (201, 237, 202, 238), frame=200)
+                self.assertEqual(report["captureFrames"], [100, 200])
+                self.assertEqual([row["frame"] for row in report["frames"]], [200])
+                with self.assertRaisesRegex(ValueError, "absent"):
+                    quads.compare(reference, candidate, (201, 237, 202, 238), frame=300)
+                rows[0]["stage"] = 5
+                (candidate / "quads.json").write_text(json.dumps(rows))
+                with self.assertRaisesRegex(ValueError, "stage"):
+                    quads.compare(reference, candidate, (201, 237, 202, 238), frame=200)
+                rows[0]["stage"] = 4
+                rows[0]["quads"][0][0][0] = -1
+                (candidate / "quads.json").write_text(json.dumps(rows))
+                with self.assertRaisesRegex(ValueError, "unsigned"):
+                    quads.compare(reference, candidate, (201, 237, 202, 238), frame=200)
+
     def test_single_float_ulp_is_reported(self):
         a, b = self.quad(), self.quad()
         b[0][1] += 1
