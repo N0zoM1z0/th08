@@ -261,8 +261,9 @@ fresh products have the same 132 pinned build inputs and pass ELF/owner checks:
 - GCC 8 x86_64: `e41f8717fc26dd04373696f6e720f850137204cce4af5befe0c224b5b79fb5fb`.
 - GCC 12 i386: `b09cb926b396d4c8346337a0b5b11024a9496de8a3bdbfafa8f8db25f8ffb948`.
 
-The x86_64 cached alpha-state matrix passes 6,144 samples in both GL contexts;
-its alpha-enabled legacy observed-quad probe passes 68/68 images. A warmed,
+The cached alpha-state matrix and low-alpha filtering profile each pass all
+6,144 samples on both architectures in both GL contexts. The x86_64
+alpha-enabled legacy observed-quad probe passes 68/68 images. A warmed,
 interleaved three-round benchmark gives medians 0.360763 seconds for cached,
 0.371129 fixed-function and 0.327325 narrow float control, with equal float
 variant image checksums. Repeating through the public benchmark gives
@@ -288,15 +289,20 @@ Evidence and live workers are under `build/laser-alpha-repair-20261015/`:
   recording boundary, capture/compare all seven cached Final B frames, then
   resume the same scheduler PID 653259. Inspect `active` and the actual process
   before starting another game capture.
-- `cached-api-gates.json`: serial remaining x86_64 filtering and four i386
-  API profiles. Check its live process before starting another compiler.
+- `cached-api-gates.json`: passed remaining x86_64 filtering and four i386
+  API profiles. Probe executables and owned Wine prefixes are removed.
+- `queued-cached-gates.json`: waits for the two original platform workers,
+  then requires the passed seven-frame capture and API gate. It runs all
+  five scenes in both contexts and both architectures, reusing only the
+  matching seven-frame capture, then each full corpus and retained gate.
+  `worker-handles.json` pins the live focused and queued process identities.
 - `alpha-benchmark*/report.json`: generated probe, renderer/binary identities,
   compile commands, raw timings and checksums. The public rerun is in the
   isolated worktree's `build/cached-alpha-benchmark/`.
 
-Next, inspect those two active workers and their retained reports. Complete
-this seven-frame gate, then choose the remaining cached-candidate scene and
-full-corpus gates. No broad cached-candidate job is queued yet. The original
+Next, inspect the focused capture and retained API reports. The queued worker
+will run the remaining cached-candidate scene and full-corpus gates after its
+prerequisites pass; it stops on a failed prerequisite or comparison. The original
 workers continue their earlier products after each bounded capture; read their
 live state under `build/laser-sampling-production-20261015/`. Keep all build
 inputs frozen while the relevant pinned gates run.
