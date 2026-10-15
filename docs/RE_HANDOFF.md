@@ -176,9 +176,16 @@ first-vertex convention reaches 68/68 in both default and OpenGL 2.1 contexts.
 The convention alone leaves production images unchanged. Reproduce these
 results with the committed
 [diagnostic controls](../tests/fixtures/render-controls/README.md).
-Next, prepare a production candidate and check depth, other vertex formats,
-orientation and real-game images. Current controls cover RHW=1 quads with
-depth disabled; production renderer source is unchanged. Evidence is under
+The production candidate now uses the same offscreen orientation in both
+profiles, applies transformed half-pixel correction in the projection, and
+selects the first-vertex convention where supported. It passes 68/68 API
+images in default and OpenGL 2.1 contexts. Renderer checks cover texture
+perspective, depth, clipping, fog, edges and window orientation. The new
+viewport-depth contract also checks XYZ/XYZRHW transitions and disabled-depth
+Z clipping; it passes the candidate and reproduces the old ordering defect at
+`d44868af`. Next, build the full product and repeat the real-game image gates
+before promoting this candidate. Production-candidate evidence is under
+`build/laser-sampling-production-20261015/`; earlier diagnostic evidence is under
 `build/laser-sampling-refresh-20261015/`; temporary prefixes and probe binaries
 are removed. The selected gameplay images retain their passing thresholds.
 Issue #20's reported scene remains unspecified. Small font/sampling residuals,

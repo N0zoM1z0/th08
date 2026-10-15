@@ -19,7 +19,7 @@ def main():
     parser.add_argument("--output-dir", type=Path, default=ROOT / "build/portable-renderer-test")
     parser.add_argument("--baseline-ref", help="Compile the renderer from a repository commit for a regression control")
     parser.add_argument("--expect-failures", action="store_true", help="Require selected baseline assertions to fail; default: the four original groups")
-    parser.add_argument("--cases", help="Comma-separated contracts; default: locks,perspective,clipping,fog,edges,orientation. Use fpu for i386 device precision")
+    parser.add_argument("--cases", help="Comma-separated contracts; default: locks,perspective,clipping,depthrange,fog,edges,orientation. Use fpu for i386 device precision")
     parser.add_argument("--legacy-gl", action="store_true", help="Exercise Mesa OpenGL 2.1 without ARB_clip_control")
     args = parser.parse_args()
     output = args.output_dir.resolve()
@@ -70,6 +70,7 @@ def main():
     controls = {"locks": "flag-0 lock sees current GPU pixels",
                 "perspective": "XYZRHW uses reciprocal-depth texture interpolation",
                 "clipping": "vertices behind the camera are clipped",
+                "depthrange": "XYZRHW and XYZ share the viewport depth range",
                 "fog": "CPU upload ignores current fog and viewport",
                 "edges": "horizontal top edge covers its pixel center",
                 "orientation": "window presentation preserves the logical top"}
@@ -79,7 +80,7 @@ def main():
         available = dict(controls, fpu="device uses retail single-precision x87 mode")
         requested = args.cases.split(",")
         if len(requested) != len(set(requested)) or any(name not in available for name in requested):
-            parser.error("Contract names must be unique and selected from locks,perspective,clipping,fog,edges,orientation,fpu")
+            parser.error("Contract names must be unique and selected from locks,perspective,clipping,depthrange,fog,edges,orientation,fpu")
         controls = {name: available[name] for name in requested}
     for case, assertion in controls.items():
         result = subprocess.run(["xvfb-run", "-a", "-s", "-screen 0 1024x768x24", "timeout", "30s", str(binary), case],

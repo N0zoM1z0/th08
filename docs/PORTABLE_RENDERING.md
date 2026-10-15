@@ -4,6 +4,10 @@ The Linux renderer preserves homogeneous clip `W` for XYZ vertices and the
 reciprocal depth of XYZRHW vertices. Both paths account for Direct3D's integer
 pixel centers. Backbuffer locks read current GPU pixels; writable unlocks commit
 updates immediately, and read-only unlocks leave subsequent rendering intact.
+The offscreen buffer stores its logical top at the lowest OpenGL row in both
+context profiles. Transformed vertices apply the half-pixel correction in the
+projection matrix and use the D3D viewport dimensions. Where supported, the
+backend selects the first-vertex convention used by D3D.
 Fullscreen windows start at desktop dimensions so Xvfb presentation uses the
 actual drawable size.
 
@@ -54,7 +58,8 @@ This compiles the production Linux backend and exercises rendered pixels through
 its D3D8 API. Checks cover flag-0 reads, read-only locks, immediate partial writes,
 subsequent draws, XYZ and XYZRHW texture interpolation, pixel centers, negative-W
 clipping, depth testing, linear fog, and viewport-independent CPU uploads.
-The six groups also check top/left edge inclusion, bottom/right exclusion,
+The seven groups also check a non-default depth range across XYZ/XYZRHW
+transitions, nonunit RHW, disabled-depth clipping, top/left edge inclusion, bottom/right exclusion,
 asymmetric viewport clears, framebuffer audit coordinates, and actual Xvfb
 window pixels after presentation. The window check uses X11 readback and needs
 the `x11` development package alongside SDL2 and OpenGL.
@@ -74,7 +79,7 @@ chmod +x build/renderer-cxx-i386
 PKG_CONFIG_LIBDIR=/usr/lib/i386-linux-gnu/pkgconfig:/usr/share/pkgconfig \
   python3 scripts/test-portable-renderer.py \
     --compiler build/renderer-cxx-i386 \
-    --cases locks,perspective,clipping,fog,edges,orientation,fpu \
+    --cases locks,perspective,clipping,depthrange,fog,edges,orientation,fpu \
     --output-dir build/renderer-i386
 ```
 
@@ -99,8 +104,21 @@ Each contract reports the actual context version and extension availability.
 contract's output and exit status. Linux CI runs both profiles and uploads the
 reports.
 The second command reproduces the pre-repair top-edge failure. The repaired
-legacy renderer stores the logical top at the bottom of its OpenGL FBO, then
+renderer stores the logical top at the bottom of its OpenGL FBO, then
 maps readback, CPU writes, clears, audit regions, and presentation consistently.
+
+The viewport-depth regression also has a reproducible failure control:
+
+```bash
+python3 scripts/test-portable-renderer.py \
+  --baseline-ref d44868af --cases depthrange --expect-failures \
+  --output-dir build/portable-renderer-depth-baseline
+```
+
+The preceding renderer places a farther XYZRHW quad in front of an XYZ quad
+when the viewport depth range is `(0.2, 0.8)`. The current contract checks that
+ordering, a nearer quad, the return to XYZ, and an out-of-range Z with depth
+disabled.
 
 Confirm the tests detect the preceding defects:
 

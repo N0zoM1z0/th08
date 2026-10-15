@@ -30,6 +30,7 @@ typedef void (APIENTRY *FramebufferRenderbufferFunction)(GLenum, GLenum, GLenum,
 typedef void (APIENTRY *DeleteRenderbuffersFunction)(GLsizei, const GLuint *);
 typedef void (APIENTRY *FogCoordfFunction)(GLfloat);
 typedef void (APIENTRY *ClipControlFunction)(GLenum, GLenum);
+typedef void (APIENTRY *ProvokingVertexFunction)(GLenum);
 
 struct FramebufferApi
 {
@@ -99,8 +100,8 @@ void SetClipOrigin(GLenum origin)
 
 int BackbufferY(int height, int top, int rows)
 {
-    // The legacy FBO stores the logical top at OpenGL's lowest row.
-    return g_clipControl != NULL ? height - top - rows : top;
+    // Store the logical top at the lowest FBO row in every context.
+    return top;
 }
 
 UINT BytesPerPixel(D3DFORMAT format)
@@ -257,8 +258,6 @@ class LinuxSurface : public IDirect3DSurface8
                 DecodePixel(&pixels[y * pitch + x * bytes], format, &rgba[(y * width + x) * 4]);
 
         GLuint name = 0;
-        GLint previousOrigin = GL_LOWER_LEFT;
-        if (g_clipControl != NULL) glGetIntegerv(GL_CLIP_ORIGIN, &previousOrigin);
         SetClipOrigin(GL_LOWER_LEFT);
         glPushAttrib(GL_ALL_ATTRIB_BITS);
         glDisable(GL_ALPHA_TEST); glDisable(GL_BLEND); glDisable(GL_CULL_FACE);
@@ -275,8 +274,7 @@ class LinuxSurface : public IDirect3DSurface8
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, &rgba[0]);
         glMatrixMode(GL_PROJECTION); glPushMatrix(); glLoadIdentity();
-        if (g_clipControl != NULL) glOrtho(0.0, width, height, 0.0, -1.0, 1.0);
-        else glOrtho(0.0, width, 0.0, height, -1.0, 1.0);
+        glOrtho(0.0, width, 0.0, height, -1.0, 1.0);
         glMatrixMode(GL_MODELVIEW); glPushMatrix(); glLoadIdentity();
         glColor4ub(255, 255, 255, 255);
         glBegin(GL_TRIANGLE_STRIP);
@@ -288,7 +286,6 @@ class LinuxSurface : public IDirect3DSurface8
         glPopMatrix(); glMatrixMode(GL_PROJECTION); glPopMatrix(); glMatrixMode(GL_MODELVIEW);
         glDeleteTextures(1, &name);
         glPopAttrib();
-        SetClipOrigin(previousOrigin);
         dirty = false;
     }
     ULONG refs;
@@ -471,6 +468,13 @@ class LinuxDevice : public IDirect3DDevice8
         SDL_GL_MakeCurrent(window, context);
         g_clipControl = SDL_GL_ExtensionSupported("GL_ARB_clip_control") ?
             reinterpret_cast<ClipControlFunction>(SDL_GL_GetProcAddress("glClipControl")) : NULL;
+        // D3D selects the first vertex; this also affects Mesa interpolation rounding.
+        ProvokingVertexFunction provokingVertex = NULL;
+        if (SDL_GL_ExtensionSupported("GL_ARB_provoking_vertex"))
+            provokingVertex = reinterpret_cast<ProvokingVertexFunction>(SDL_GL_GetProcAddress("glProvokingVertex"));
+        else if (SDL_GL_ExtensionSupported("GL_EXT_provoking_vertex"))
+            provokingVertex = reinterpret_cast<ProvokingVertexFunction>(SDL_GL_GetProcAddress("glProvokingVertexEXT"));
+        if (provokingVertex != NULL) provokingVertex(GL_FIRST_VERTEX_CONVENTION);
         g_fogCoordf = reinterpret_cast<FogCoordfFunction>(SDL_GL_GetProcAddress("glFogCoordf"));
         if (g_fogCoordf == NULL)
             g_fogCoordf = reinterpret_cast<FogCoordfFunction>(SDL_GL_GetProcAddress("glFogCoordfEXT"));
@@ -533,7 +537,7 @@ class LinuxDevice : public IDirect3DDevice8
         glOrtho(0.0, drawableWidth, drawableHeight, 0.0, -1.0, 1.0);
         glMatrixMode(GL_MODELVIEW); glPushMatrix(); glLoadIdentity();
         glColor4ub(255, 255, 255, 255);
-        const float topV = g_clipControl != NULL ? 1.0f : 0.0f;
+        const float topV = 0.0f;
         const float bottomV = 1.0f - topV;
         glBegin(GL_TRIANGLE_STRIP);
         glTexCoord2f(0.0f, topV); glVertex2f(0.0f, 0.0f);
@@ -859,8 +863,8 @@ class LinuxDevice : public IDirect3DDevice8
         if (transformed)
         {
             const float w = position[3] != 0.0f ? 1.0f / position[3] : 1.0f;
-            *xOut = (position[0] + 0.5f) * w;
-            *yOut = (position[1] + 0.5f) * w;
+            *xOut = position[0] * w;
+            *yOut = position[1] * w;
             *zOut = position[2] * w;
             *wOut = w;
             *fogCoordinateOut = 0.0f;
@@ -887,7 +891,7 @@ class LinuxDevice : public IDirect3DDevice8
         *zOut = viewport.MinZ * w + vector[2] * (viewport.MaxZ - viewport.MinZ);
         *wOut = w;
     }
-    void PrepareState()
+    void PrepareState(bool transformed)
     {
         const UINT width = backbuffer != NULL ? backbuffer->width : viewport.Width;
         const UINT height = backbuffer != NULL ? backbuffer->height : viewport.Height;
@@ -899,10 +903,31 @@ class LinuxDevice : public IDirect3DDevice8
                               viewport.Height * drawableHeight / height),
                   static_cast<int>(viewport.Width * drawableWidth / width),
                   static_cast<int>(viewport.Height * drawableHeight / height));
-        // Both paths map logical top edges to OpenGL's inclusive edge convention.
-        SetClipOrigin(g_clipControl != NULL ? GL_UPPER_LEFT : GL_LOWER_LEFT);
+        // Match D3D's offscreen orientation and keep half-pixel rounding in the projection.
+        SetClipOrigin(GL_LOWER_LEFT);
         glMatrixMode(GL_PROJECTION); glLoadIdentity();
-        glOrtho(0.0, width, 0.0, height, -1.0, 1.0);
+        if (transformed)
+        {
+            const float vw = viewport.Width, vh = viewport.Height;
+            const bool depthEnabled = renderStates[D3DRS_ZENABLE] != FALSE;
+            const GLfloat screenProjection[16] = {
+                2.0f / vw, 0, 0, 0,
+                0, 2.0f / vh, 0, 0,
+                0, 0, depthEnabled ? 2.0f : 0.0f, 0,
+                (1.0f - 2.0f * viewport.X - vw) / vw,
+                (1.0f - 2.0f * viewport.Y - vh) / vh,
+                depthEnabled ? -1.0f : 0.0f, 1
+            };
+            glViewport(viewport.X, viewport.Y, viewport.Width, viewport.Height);
+            glDepthRange(viewport.MinZ, viewport.MaxZ);
+            glLoadMatrixf(screenProjection);
+        }
+        else
+        {
+            glViewport(0, 0, width, height);
+            glDepthRange(0.0, 1.0);
+            glOrtho(0.0, width, 0.0, height, -1.0, 1.0);
+        }
         glMatrixMode(GL_MODELVIEW); glLoadIdentity();
         if (renderStates[D3DRS_ALPHABLENDENABLE])
         { glEnable(GL_BLEND); glBlendFunc(BlendFunction(renderStates[D3DRS_SRCBLEND]), BlendFunction(renderStates[D3DRS_DESTBLEND])); }
@@ -1008,7 +1033,7 @@ class LinuxDevice : public IDirect3DDevice8
         if (hasDiffuse) offset += 4;
         if (fvf & D3DFVF_SPECULAR) offset += 4;
         bool hasTexture = (fvf & D3DFVF_TEXCOUNT_MASK) != 0; UINT textureOffset = offset;
-        PrepareState(); glBegin(PrimitiveMode(type));
+        PrepareState(transformed); glBegin(PrimitiveMode(type));
         for (UINT index = 0; index < count; ++index)
         {
             const BYTE *vertex = data + index * stride; float x, y, z, w, fogCoordinate;
@@ -1030,7 +1055,7 @@ class LinuxDevice : public IDirect3DDevice8
             glColor4ub((color >> 16) & 255, (color >> 8) & 255, color & 255, (color >> 24) & 255);
             if (g_fogCoordf != NULL)
                 g_fogCoordf(fogCoordinate);
-            glVertex4f(x, y, w - 2.0f * z, w);
+            glVertex4f(x, y, transformed ? z : w - 2.0f * z, w);
         }
         glEnd(); return S_OK;
     }

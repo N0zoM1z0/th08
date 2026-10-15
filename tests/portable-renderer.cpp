@@ -204,6 +204,36 @@ void CheckClippingAndDepth()
     puts("PASS: negative clip W and reciprocal-depth Z testing");
 }
 
+void CheckViewportDepth()
+{
+    Reset(0);
+    D3DVIEWPORT8 viewport = {16, 16, 64, 64, 0.2f, 0.8f};
+    device->SetViewport(&viewport);
+    D3DMATRIX identity; memset(&identity, 0, sizeof(identity));
+    identity._11 = identity._22 = identity._33 = identity._44 = 1.0f;
+    device->SetTransform(D3DTS_PROJECTION, &identity);
+    device->SetRenderState(D3DRS_ZENABLE, TRUE);
+    device->SetRenderState(D3DRS_ZFUNC, D3DCMP_LESS);
+    struct Vertex { float x, y, z; D3DCOLOR color; };
+    Vertex world[4] = {{-1,1,0.25f,0xff00ff00}, {1,1,0.25f,0xff00ff00},
+                       {-1,-1,0.25f,0xff00ff00}, {1,-1,0.25f,0xff00ff00}};
+    device->SetVertexShader(D3DFVF_XYZ | D3DFVF_DIFFUSE);
+    device->DrawPrimitiveUP(D3DPT_TRIANGLESTRIP, 2, world, sizeof(Vertex));
+    // The viewport maps 0.25 to 0.35 and 0.30 to 0.38 for both vertex formats.
+    Solid(16, 16, 80, 80, 0xffff0000, 0.30f, 0.25f);
+    Color(32, 40, 0x00ff00, "XYZRHW and XYZ share the viewport depth range");
+    Solid(16, 16, 80, 80, 0xff0000ff, 0.20f, 0.25f);
+    Color(32, 40, 0x0000ff, "nearer XYZRHW depth passes with nonunit RHW");
+    for (int i = 0; i < 4; ++i) { world[i].z = 0.15f; world[i].color = 0xffffff00; }
+    device->SetVertexShader(D3DFVF_XYZ | D3DFVF_DIFFUSE);
+    device->DrawPrimitiveUP(D3DPT_TRIANGLESTRIP, 2, world, sizeof(Vertex));
+    Color(32, 40, 0xffff00, "switching to XYZ applies the depth range once");
+    Reset(0);
+    Solid(16, 16, 80, 80, 0xffffffff, 2.0f, 0.25f);
+    Color(32, 40, 0xffffff, "disabled XYZRHW depth ignores out-of-range Z");
+    puts("PASS: viewport depth range, vertex-format transitions and disabled depth");
+}
+
 void CheckFogAndBlit()
 {
     Reset(0xff010203);
@@ -306,7 +336,7 @@ int main(int argc, char **argv)
 {
     const char *test = argc == 2 ? argv[1] : "all";
     Require(argc <= 2 && (!strcmp(test, "all") || !strcmp(test, "locks") || !strcmp(test, "perspective") ||
-                          !strcmp(test, "clipping") || !strcmp(test, "fog") || !strcmp(test, "fpu") ||
+                          !strcmp(test, "clipping") || !strcmp(test, "depthrange") || !strcmp(test, "fog") || !strcmp(test, "fpu") ||
                           !strcmp(test, "edges") || !strcmp(test, "orientation")), "unknown contract case");
     HWND window = CreateWindowExA(0, "TEST", "TH08 renderer contract", WS_VISIBLE,
                                  0, 0, 640, 480, NULL, NULL, NULL, NULL);
@@ -333,6 +363,7 @@ int main(int argc, char **argv)
     if (!strcmp(test, "all") || !strcmp(test, "locks")) CheckLocks();
     if (!strcmp(test, "all") || !strcmp(test, "perspective")) CheckPerspective();
     if (!strcmp(test, "all") || !strcmp(test, "clipping")) CheckClippingAndDepth();
+    if (!strcmp(test, "all") || !strcmp(test, "depthrange")) CheckViewportDepth();
     if (!strcmp(test, "all") || !strcmp(test, "fog")) CheckFogAndBlit();
     if (!strcmp(test, "all") || !strcmp(test, "edges")) CheckEdges();
     if (!strcmp(test, "all") || !strcmp(test, "orientation")) CheckOrientation(window);
