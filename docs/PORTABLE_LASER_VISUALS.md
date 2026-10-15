@@ -77,7 +77,7 @@ scripts/build-portable-linux.sh x86_64
 python3 scripts/analysis/check-laser-visuals.py \
   --candidate build/portable-linux-x86_64/th08-modern \
   --game-data-dir "/path/to/original/TH08 directory" \
-  --case stage3-keine --retail \
+  --case stage3-keine --wine-csmt 0 --retail \
   --output-dir build/laser-stage3
 ```
 
@@ -131,7 +131,7 @@ test ! -e "$th08_scene_root"
 for scene in stage3-keine stage4b-marisa finala-eirin finalb-kaguya extra-mokou; do
   python3 scripts/analysis/check-laser-visuals.py \
     --candidate "$th08_candidate" --game-data-dir "$th08_game_data" \
-    --case "$scene" --retail --output-dir "$th08_scene_root/default/$scene"
+    --case "$scene" --wine-csmt 0 --retail --output-dir "$th08_scene_root/default/$scene"
   python3 scripts/analysis/check-laser-visuals.py \
     --candidate "$th08_candidate" --game-data-dir "$th08_game_data" \
     --case "$scene" --legacy-gl --output-dir "$th08_scene_root/legacy/$scene"
@@ -827,7 +827,7 @@ Capture the observed vertices without rewriting original gameplay memory:
 python3 scripts/analysis/check-laser-visuals.py \
   --candidate build/portable-linux-x86_64/th08-modern \
   --game-data-dir "/path/to/original/TH08 directory" \
-  --fixture lunatic-0-b --stage 2 --frames 12900 --watch-quads --retail \
+  --fixture lunatic-0-b --stage 2 --frames 12900 --watch-quads --wine-csmt 0 --retail \
   --output-dir build/laser-quads
 python3 scripts/analysis/compare-sprite-quads.py \
   --reference build/laser-quads/retail --candidate build/laser-quads \
@@ -1113,6 +1113,51 @@ Temporary Wine prefixes and probe executables are removed. The next
 measurement compares canonical retail and portable sprite vertices for this
 same frame, using `--watch-quads --retail`.
 
+The first fresh paired quad capture retains equal laser/VM packets, but the
+default-threading retail image differs from the earlier retail playfield.
+Its beam mean is 15.124527, while the portable playfield remains identical
+to its ordinary capture. Retain this failed observation under
+`paired-finalb-quads/`. The post-Present screenshot can stop Wine's rendering
+worker before its queued presentation completes, as the
+[Final A scheduling control](#native-windows-image-capture)
+demonstrated earlier. A `csmt=0` retail quad capture now repeats frame 14,280.
+Use `--wine-csmt 0` for the documented paired quad procedure; the raw packet
+and image checks remain separate.
+
+The synchronous capture has now completed. Its entire retail playfield is
+pixel-identical to the retained ordinary retail frame, and its laser/VM
+packet agrees. The beam mean returns to 0.023551. Both threading profiles
+record the same 15 selected quads whose bounds cover `(168, 310)`–`(169, 311)`;
+all 420 vertex words match portable exactly. Total submitted-quad counts
+are 791 retail and 970 portable, so this comparison uses the explicitly
+selected region rather than pairing the complete lists by ordinal.
+The focused result is in `finalb-14280-quad-inputs-csmt0.json`; the failed
+default-profile observation remains separate.
+
+Reproduce the synchronized paired observation and local vertex comparison:
+
+```bash
+python3 scripts/analysis/check-laser-visuals.py \
+  --candidate build/portable-linux-x86_64/th08-modern \
+  --game-data-dir "/path/to/original/TH08 directory" \
+  --fixture lunatic-0-b --stage 7 --frames 14280 \
+  --watch-quads --wine-csmt 0 --retail --output-dir build/finalb-quads
+python3 scripts/analysis/compare-sprite-quads.py \
+  --reference build/finalb-quads/retail --candidate build/finalb-quads \
+  --roi 168,310,169,311 --selection covering-bounds \
+  --output build/finalb-quads/vertex-comparison.json
+```
+
+Against that synchronized reference, the beam-omission control is detected:
+the beam mean rises from 0.023551 to 41.223733. Existing error localization
+assigns 2.2% of the residual RGB error to cap regions, 54.1% to pixels changed
+by beam omission and 43.7% to the remainder. These are spatial/control
+partitions, with the meaning documented in `analyze-laser-errors.py`.
+`finalb-14280-error-partition.json` and
+`finalb-14280-omission-revalidation.json` retain those checks. The remaining
+small error therefore has aligned local vertex inputs; texture contents and
+GPU interpolation remain the next bounded measurements.
+
 All four Stage 4B default-context image/state checks and retained comparisons
 also pass. Their beam means are 0.004278, 0.000999, 0.003865 and 0.020752 at
 frames 13,140, 13,260, 15,360 and 18,210. The changed laser-mask pixel counts
@@ -1137,10 +1182,11 @@ laser/VM packets. The maximum beam means per case, equal across profiles, are:
 
 The x86_64 corpus worker is running. Its scheduler completed a recording-boundary
 pause for the i386 API preflight and resumed the same suite. The focused draw,
-beam-omission and filtering captures above are complete. The current boundary
-pause collects paired retail/portable sprite vertices at frame 14,280;
-`paired-finalb-quads.json` records its progress. Each bounded diagnostic worker
-resumes the existing scheduler in `finally`.
+beam-omission and filtering captures above are complete. The synchronous
+retail sprite capture at frame 14,280 is complete, and the same
+full-corpus scheduler has resumed. Each bounded diagnostic worker resumes
+the existing scheduler in `finally`. No further game diagnostic is queued
+ahead of the two complete corpus gates.
 The separate i386 scene/corpus worker waits for x86_64 completion.
 Native products and the earlier published corpus results retain their
 recorded scope.
@@ -1453,7 +1499,7 @@ Repeat the background vertex diagnosis using a single selected frame:
 python3 scripts/analysis/check-laser-visuals.py \
   --candidate build/portable-linux-x86_64/th08-modern \
   --game-data-dir "/path/to/original/TH08 directory" \
-  --fixture lunatic-1-a --stage 6 --frames 9570 --watch-quads --retail \
+  --fixture lunatic-1-a --stage 6 --frames 9570 --watch-quads --wine-csmt 0 --retail \
   --output-dir build/finala-quads
 python3 scripts/analysis/compare-sprite-quads.py \
   --reference build/finala-quads/retail --candidate build/finala-quads \

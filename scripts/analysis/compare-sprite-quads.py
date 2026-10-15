@@ -84,7 +84,8 @@ def compare(reference, candidate, roi, selection="thin-horizontal"):
             raise ValueError("Submitted-quad stage differs")
         selected_a, selected_b = select_region(a["quads"], roi, selection), select_region(b["quads"], roi, selection)
         if not selected_a or len(selected_a) != len(selected_b):
-            raise ValueError("Region quad coverage is absent or cannot be paired in submission order")
+            raise ValueError(f"Region quad coverage cannot be paired in submission order: "
+                             f"reference {len(selected_a)}, candidate {len(selected_b)}")
         pairs = []
         for x, y in zip(selected_a, selected_b):
             pairs.append(dict(referenceIndex=x[0], candidateIndex=y[0], referenceBounds=x[2], candidateBounds=y[2],

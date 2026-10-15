@@ -167,78 +167,54 @@ compressed comparison evidence remain under their recorded phase directories.
 
 ## Next bounded work
 
-Continue the measured title and boundary-sampling residuals in
-[the laser report](PORTABLE_LASER_VISUALS.md#remaining-sampling-and-title-error).
-The refreshed unmodified-input D3D8/OpenGL probe passes 53/68 images; all
-34 solid cases agree. The reference shader and all 68 projection calls are
-now observed. A measured-projection control reaches 60/68; adding the
-first-vertex convention reaches 68/68 in both default and OpenGL 2.1 contexts.
-The convention alone leaves production images unchanged. Reproduce these
-results with the committed
-[diagnostic controls](../tests/fixtures/render-controls/README.md).
-The production candidate now uses the same offscreen orientation in both
-profiles, applies transformed half-pixel correction in the projection, and
-selects the first-vertex convention where supported. It passes 68/68 API
-images in default and OpenGL 2.1 contexts. Renderer checks cover texture
-perspective, depth, clipping, fog, edges and window orientation. The new
-viewport-depth contract also checks XYZ/XYZRHW transitions and disabled-depth
-Z clipping; it passes the candidate and reproduces the old ordering defect at
-`d44868af`. The full GCC 8 x86_64 Debug product is built and passes ELF64 and
-native-global ownership verification. Its SHA-256 is
-`dcf14c0c8014073a15e9c1df7fcba45ccf5a6e9f1963cc2ff2e17c60fc4ed611`,
-from clean checkpoint `2fd6a51b`; all 132 build inputs are pinned. Its first
-four Stage 3 image/state checks and retained comparisons pass. Outside the
-title band, changed laser-mask pixels have maximum channel error 4/255.
-All seven Final B image/state checks and their retained comparison also pass;
-their beam means improve over the preceding x86_64 product. Frame 14,280
-retains maximum outside-title channel error 16/255. The new
-`scripts/analysis/summarize-laser-pixels.py` reproduces the region measurements
-and checks them against the strict mask totals.
-The four Stage 4B default images and retained comparisons also pass, with
-exact packets and beam means at most 0.020752. Maximum channel error is 4/255.
-The pixel tool's `--top-pixels 8` option retains coordinates and both RGB
-values. Final B frame 14,280's maximum is at `(168, 310)`. Its focused draw
-capture preserves the ordinary playfield and raw packet. Omitting 18 beam
-submissions leaves 50 of the 92 residual pixels unchanged. At the largest
-pixel, ordinary RGB `(46, 12, 12)` becomes `(41, 15, 14)` with beams omitted;
-the retail value is `(30, 2, 2)`. A 6,144-sample packed-texture filtering and
-blending probe passes against Wine D3D8; a private packed-GPU-format control
-gives the same result. Keep production texture upload unchanged. The next
-observation is the paired retail/portable sprite input at this frame.
-All five scene groups now pass in both default and OpenGL 2.1 contexts:
-48 selected images, exact laser/VM packets and retained comparisons. The
-x86_64 worker has entered its full 108-recording corpus and retained gate.
-It completed a recording-boundary pause for the i386 API preflight;
-`i386-preflight.py` resumed that same scheduler in `finally`. The focused draw,
-beam-omission and filtering probes have also finished. The current boundary
-pause collects paired retail/portable sprite input at Final B frame 14,280;
-`paired-finalb-quads.py` resumes the scheduler in `finally`. Inspect
-`quad-scheduler.json`, `paired-finalb-quads.json`, `i386-preflight.json` and live process identities
-before starting another game. Avoid treating a missing uncompressed log as
-a failure: completed captures compress it.
+Finish the current portable sampling candidate's runtime gates before its PR.
+The renderer source checkpoint is `2fd6a51b`. Both tested products have the
+same 132 build inputs:
 
-The fresh GCC 12 i386 product is
-`240b3f9a4bae462a73129fe0d6b10b65ad44fe9a036889694e422b71cd42ca98`,
-from source checkpoint `bd1f826f`. ELF32/fixed-global-layout verification passes;
-all 132 build inputs match both that commit and the x86_64 source inputs.
-Its build container used one CPU, 768 MiB, no swap and one compiler job.
-Both context profiles pass all eight renderer/FPU groups and all 68
-observed-quad API images. All 640 surface API cases also pass. The sampling
-probe now accepts `--compiler` and `--pkg-config`; reports preserve command
-file hashes and portable compile commands. The new i386 scene/corpus worker
-waits for the x86_64 worker, then reuses only the matching, passed preflight.
-Its state is in `i386-serial-gates.json`. The earlier idle waiter was stopped
-deliberately; follow the replacement worker's identity rather than restarting
-the old handle. Complete both runtime/corpus gates before promoting this
-candidate. Compiler trees and completed contract binaries are removed.
-Production-candidate evidence is under
-`build/laser-sampling-production-20261015/`; earlier diagnostic evidence is under
-`build/laser-sampling-refresh-20261015/`; temporary prefixes and probe binaries
-are removed. The selected gameplay images retain their passing thresholds.
-Issue #20's reported scene remains unspecified. Small font/sampling residuals,
-the Stage 5 color observations and native RT-007 retain their measured scope
-in the laser, rendering and runtime reports. AArch64 hardware and audio are
-separate checks; web work remains deferred.
+- GCC 8 x86_64: `dcf14c0c8014073a15e9c1df7fcba45ccf5a6e9f1963cc2ff2e17c60fc4ed611`.
+- GCC 12 i386: `240b3f9a4bae462a73129fe0d6b10b65ad44fe9a036889694e422b71cd42ca98`,
+  built from `bd1f826f` in the pinned container with one CPU, 768 MiB and one job.
+
+ELF/ownership checks pass for both products. The x86_64 candidate passes all
+five laser scenes in default and OpenGL 2.1 contexts: 48 selected images,
+exact laser/VM packets and retained comparisons. The i386 preflight passes
+eight renderer/FPU groups and 68/68 observed-quad images per context, plus
+640/640 surface API cases. The compiler trees and completed probe binaries
+are removed. See [the candidate report](PORTABLE_LASER_VISUALS.md#production-candidate-october-15-2026)
+for source hashes, measurements and reproduction commands.
+
+The x86_64 worker is running the full 108-recording corpus and retained gate.
+Its same scheduler resumed after each bounded diagnostic. The i386 worker
+waits for x86_64, reuses only the matching passed API preflight, then runs its
+scene and full-corpus gates. Inspect live process identities and state under
+`build/laser-sampling-production-20261015/`:
+
+- `worker-handle.json` and `serial-gates.json`: x86_64.
+- `i386-worker-handle.json` and `i386-serial-gates.json`: queued i386.
+- `production*/build-provenance.json`: tested products and all build inputs.
+
+Keep production inputs unchanged while these pinned jobs run. No further
+game diagnostic is queued ahead of their completion. A missing uncompressed
+capture log can mean successful compression; inspect completion metadata and
+live processes before treating a job as failed.
+
+Final B frame 14,280 retains a small image residual, maximum channel error
+16/255 at `(168, 310)`. A synchronous retail quad capture reproduces the
+retained retail playfield exactly. All 420 words in the 15 selected regional
+quads match portable. A 6,144-sample filtering/blending probe also matches
+Wine, including its private packed-texture control. Beam omission is detected
+at mean error 41.223733 versus 0.023551 normally. The next bounded residual
+measurements are actual texture contents and GPU interpolation.
+
+Use `--wine-csmt 0` for paired quad/image capture. The default-threading
+retail quad observation produced a stale image despite matching raw packets;
+the synchronous control resolves that failure. Preserve its failed evidence
+separately. Shader, matrix, vertex and omission observations are recorded in
+the laser report; they remain distinct from function-matching evidence.
+
+Issue #20's reported scene remains unspecified. Font differences, the Stage 5
+color observations and native RT-007 retain their documented scope. AArch64
+hardware and audio have separate pending checks; web work remains deferred.
 
 Detailed prior checkpoints are preserved in the
 [laser session archive](RE_HANDOFF_HISTORY.md#laser-validation-checkpoints-before-the-final-platform-refresh-october-14-2026).
