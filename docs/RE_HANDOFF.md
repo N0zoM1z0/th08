@@ -198,13 +198,25 @@ game diagnostic is queued ahead of their completion. A missing uncompressed
 capture log can mean successful compression; inspect completion metadata and
 live processes before treating a job as failed.
 
-Final B frame 14,280 retains a small image residual, maximum channel error
-16/255 at `(168, 310)`. A synchronous retail quad capture reproduces the
-retained retail playfield exactly. All 420 words in the 15 selected regional
-quads match portable. A 6,144-sample filtering/blending probe also matches
-Wine, including its private packed-texture control. Beam omission is detected
-at mean error 41.223733 versus 0.023551 normally. The next bounded residual
-measurements are actual texture contents and GPU interpolation.
+Final B frame 14,280's maximum residual is localized to alpha-test rounding.
+The 15 selected regional quads match all 420 words, and portable texture
+payloads match `etama.anm` entries 0 and 5. Enabling the captured alpha-test
+state in the asset-free probe exposes 16/6,144 production pixel differences;
+a floating-point comparison control passes 6,144/6,144 in both GL contexts.
+A shader control with eight-bit rounding reproduces production exactly.
+Replaying the five low-alpha triangles at `(168, 310)` over retail's
+`(30, 2, 2)` yields production `(46, 12, 12)`, exactly the screenshot residual;
+floating-point comparison restores retail. This is a bounded regional replay,
+not a complete-frame fix. Other residuals still need attribution.
+
+The new profile is `probe-texture-filtering.py --alpha-test`. Its diagnostic
+patch and reproduction commands are in
+[the controls guide](../tests/fixtures/render-controls/README.md#floating-point-alpha-test-control).
+Next, implement the required material/alpha-test states after the pinned gates
+finish, then rerun actual scenes. Keep the current products and baseline gate
+results separate from that next candidate. Reports and regional probe source
+are under `build/laser-sampling-production-20261015/`; transient original
+texture bytes, Wine prefixes and executables are removed.
 
 Use `--wine-csmt 0` for paired quad/image capture. The default-threading
 retail quad observation produced a stale image despite matching raw packets;

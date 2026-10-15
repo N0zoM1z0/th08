@@ -1073,8 +1073,8 @@ region measurements.
 
 The coordinate export locates that maximum at `(168, 310)`: retail RGB
 `(30, 2, 2)`, candidate `(46, 12, 12)`. Laser slot 7's geometry covers the
-pixel; the screenshot also contains other rendered layers. A focused draw
-capture or beam-omission control is still needed to attribute the difference.
+pixel; the screenshot also contains other rendered layers. The focused draw,
+beam-omission and alpha-test controls below localize this residual.
 The 92 changed pixels outside the title band have channel-error magnitudes
 from 1 to 16, with only one at 16. `finalb-pixel-locations-v2.json` records the
 largest examples; each exported RGB value was checked against its PNG.
@@ -1109,9 +1109,8 @@ python3 scripts/analysis/probe-texture-filtering.py \
 every mismatched sample. `--renderer-control` labels a private source copy
 separately; `--compiler`, `--pkg-config` and `--legacy-gl` select other test
 environments. The recorded default run is under `texture-filtering-default/`.
-Temporary Wine prefixes and probe executables are removed. The next
-measurement compares canonical retail and portable sprite vertices for this
-same frame, using `--watch-quads --retail`.
+Temporary Wine prefixes and probe executables are removed. The paired sprite
+vertex observations below use `--watch-quads --retail`.
 
 The first fresh paired quad capture retains equal laser/VM packets, but the
 default-threading retail image differs from the earlier retail playfield.
@@ -1120,7 +1119,7 @@ to its ordinary capture. Retain this failed observation under
 `paired-finalb-quads/`. The post-Present screenshot can stop Wine's rendering
 worker before its queued presentation completes, as the
 [Final A scheduling control](#native-windows-image-capture)
-demonstrated earlier. A `csmt=0` retail quad capture now repeats frame 14,280.
+demonstrated earlier. The `csmt=0` retail quad capture repeats frame 14,280.
 Use `--wine-csmt 0` for the documented paired quad procedure; the raw packet
 and image checks remain separate.
 
@@ -1133,6 +1132,71 @@ are 791 retail and 970 portable, so this comparison uses the explicitly
 selected region rather than pairing the complete lists by ordinal.
 The focused result is in `finalb-14280-quad-inputs-csmt0.json`; the failed
 default-profile observation remains separate.
+
+### Alpha-test residual at frame 14,280
+
+The captured low-alpha draw enables `ALPHATESTENABLE`, reference 4 and
+`GREATEREQUAL`, with diffuse alpha 40/255. The original 6,144-sample filtering
+probe disabled alpha testing. Its new `--alpha-test` profile exercises this
+state with the same formats, filters, blending modes and subpixel phases:
+
+| Profile | Production pixels equal to Wine | Floating-point comparison control |
+| --- | ---: | ---: |
+| Default OpenGL | 6,128 / 6,144 | 6,144 / 6,144 |
+| Forced OpenGL 2.1 | 6,128 / 6,144 | 6,144 / 6,144 |
+
+All 16 production mismatches draw pixels that Wine discards. The maximum
+channel error is 35 with blending disabled and 4 after four blended draws.
+The alpha-disabled profile still passes all 6,144 samples. A second private
+control rounds alpha to eight bits inside the same fragment shader; it
+reproduces all production mismatches and pixel values exactly. This isolates
+the comparison's rounding from the choice of fixed-function or shader texture
+processing. See the [control and reproduction commands](../tests/fixtures/render-controls/README.md#floating-point-alpha-test-control).
+
+For example, the A1R5G5B5 linear-filter case at phase 0, sample 8 interpolates
+alpha to approximately 3.645833 in 0–255 units. Direct comparison rejects it
+against 4; rounding first accepts it. Wine 9's
+[shader alpha test](https://github.com/wine-mirror/wine/blob/wine-9.0/dlls/wined3d/glsl_shader.c#L7508)
+compares floating-point values. The
+[OpenGL fixed-function specification, section 4.1.4](https://registry.khronos.org/OpenGL/specs/gl/glspec14.pdf)
+describes rounding for the alpha test. The observed results apply to the
+recorded Wine/Mesa environment.
+
+An offline archive inventory identifies the two relevant texture hashes as
+`etama.anm` entries 0 and 5, both A4R4G4B4. Their original archive payloads
+match the portable CPU texture bytes exactly. This is source-derived archive
+analysis, rather than a measurement of retail GPU texture allocation.
+The archive SHA-256 is
+`9d7edf43b8ddd347cbb641836f6b5050745dd936f688daebbf9382ca557043bb`.
+
+At `(168, 310)`, captured draw 22 has five covering triangles (zero-based
+indices 131, 133, 135, 137 and 139). A CPU interpolation estimate gives alpha
+3.8125–3.874016 in 0–255 units: all five lie below 4 and round to 4.
+A bounded GPU replay uses those captured triangle words and the original
+texture over a solid `(30, 2, 2)` background:
+
+| Regional replay | Resulting RGB at `(168, 310)` |
+| --- | --- |
+| Wine D3D8 | `(30, 2, 2)` |
+| Production portable | `(46, 12, 12)` |
+| Floating-point alpha comparison | `(30, 2, 2)` |
+| Shader comparison with eight-bit rounding | `(46, 12, 12)` |
+
+These values reproduce the actual screenshot's maximum residual exactly.
+The regional experiment isolates those five triangles over the retail final
+pixel; it does not replay the complete frame or establish that every residual
+has the same cause. The complete-frame fix still needs a renderer supporting
+all used material and alpha-test states, followed by fresh image gates.
+Production renderer inputs remain frozen for the running corpus gates.
+
+Evidence is under `build/laser-sampling-production-20261015/`:
+`texture-alpha-enabled-default/`, `texture-alpha-float-control/`,
+`texture-alpha-float-control-legacy/`, `texture-alpha-rounded-control/`,
+`finalb-14280-point-alpha-estimate.json` and `point-alpha-replay/report.json`.
+The regional report pins the captured texture, generated probe, compiler
+commands, binaries and renderer source hashes. Original texture bytes were
+removed after execution; no original assets are committed. The asset-free
+profile and diagnostic patch are retained in the repository.
 
 Reproduce the synchronized paired observation and local vertex comparison:
 

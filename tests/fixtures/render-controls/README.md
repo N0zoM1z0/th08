@@ -109,3 +109,41 @@ python3 scripts/analysis/probe-texture-filtering.py --check \
 This tests a GPU storage hypothesis for the small Final B residual. The
 [Wine 9.0 format table](https://github.com/wine-mirror/wine/blob/wine-9.0/dlls/wined3d/utils.c#L1574)
 supplies supporting API evidence; it is independent of TH08 function matching.
+
+## Floating-point alpha-test control
+
+`float-alpha-test.patch` applies to renderer checkpoint `2fd6a51b`. It retains
+fixed-function vertex processing and uses a small fragment shader for textured
+MODULATE draws with alpha testing enabled. It compares the interpolated alpha
+directly against `ALPHAREF / 255`, without rounding it to eight bits first.
+The control supports the probe's single material and `GREATEREQUAL` comparison;
+it aborts for fog, missing textures, other operations or other comparisons.
+It is a diagnostic source copy, with one context per process.
+
+```bash
+mkdir -p build/alpha-controls
+git show 2fd6a51b:src/modern/linux/d3d8_compat.cpp > build/alpha-controls/renderer.cpp
+patch --batch --output build/alpha-controls/float-alpha.cpp \
+  build/alpha-controls/renderer.cpp \
+  tests/fixtures/render-controls/float-alpha-test.patch
+python3 scripts/analysis/probe-texture-filtering.py \
+  --alpha-test --renderer-control build/alpha-controls/float-alpha.cpp \
+  --output-dir build/alpha-test-control
+```
+
+The October 15 run matches 6,128/6,144 production pixels and 6,144/6,144 control
+pixels against Wine 9 D3D8. Both default and forced OpenGL 2.1 contexts give
+these counts. Repeat with `--legacy-gl` and a fresh output directory. With
+`--alpha-test`, `--check` deliberately fails for the current production
+renderer; the report still retains both variants. Without `--alpha-test`,
+the original 6,144-sample suite passes.
+
+The profile uses alpha reference 4, `GREATEREQUAL` and diffuse alpha 40/255,
+matching the low-alpha Final B draw. Wine's
+[fragment shader generation](https://github.com/wine-mirror/wine/blob/wine-9.0/dlls/wined3d/glsl_shader.c#L7508)
+compares floating-point alpha; its
+[reference conversion](https://github.com/wine-mirror/wine/blob/wine-9.0/dlls/wined3d/wined3d_private.h#L2915)
+uses the same reference divided by 255. The
+[OpenGL 1.4 specification, section 4.1.4](https://registry.khronos.org/OpenGL/specs/gl/glspec14.pdf)
+describes rounding for the fixed-function alpha test. These sources explain
+the control; observed API results establish the local discrepancy.

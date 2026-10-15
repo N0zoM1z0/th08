@@ -1,0 +1,68 @@
+--- a/src/modern/linux/d3d8_compat.cpp
++++ b/src/modern/linux/d3d8_compat.cpp
+@@ -1,6 +1,7 @@
+ #include "d3d8_internal.hpp"
+ 
+ #include <SDL.h>
++#define GL_GLEXT_PROTOTYPES
+ #include <GL/gl.h>
+ #include <GL/glext.h>
+ 
+@@ -16,6 +17,29 @@
+ 
+ namespace
+ {
++// Diagnostic control: one textured MODULATE stage, no fog, alpha >= reference.
++// Keep the fixed-function vertex path; compare alpha in floating point.
++void UseFloatAlphaControl(float reference)
++{
++    static GLuint program;
++    if (!program)
++    {
++        const char *source = "#version 120\nuniform sampler2D image; uniform float reference;"
++            "void main() { vec4 color = texture2D(image, gl_TexCoord[0].xy) * gl_Color;"
++            "if (!(color.a >= reference)) discard; gl_FragColor = color; }";
++        GLuint shader = glCreateShader(GL_FRAGMENT_SHADER);
++        glShaderSource(shader, 1, &source, NULL); glCompileShader(shader);
++        GLint success; glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
++        if (!success) abort();
++        program = glCreateProgram(); glAttachShader(program, shader); glLinkProgram(program);
++        glGetProgramiv(program, GL_LINK_STATUS, &success); if (!success) abort();
++        glDeleteShader(shader);
++    }
++    glDisable(GL_ALPHA_TEST); glUseProgram(program);
++    glUniform1i(glGetUniformLocation(program, "image"), 0);
++    glUniform1f(glGetUniformLocation(program, "reference"), reference);
++}
++
+ class LinuxTexture;
+ 
+ typedef void (APIENTRY *GenFramebuffersFunction)(GLsizei, GLuint *);
+@@ -1033,7 +1057,17 @@
+         if (hasDiffuse) offset += 4;
+         if (fvf & D3DFVF_SPECULAR) offset += 4;
+         bool hasTexture = (fvf & D3DFVF_TEXCOUNT_MASK) != 0; UINT textureOffset = offset;
+-        PrepareState(transformed); glBegin(PrimitiveMode(type));
++        PrepareState(transformed);
++        const bool alphaControl = renderStates[D3DRS_ALPHATESTENABLE] != FALSE;
++        if (alphaControl)
++        {
++            if (texture == NULL || renderStates[D3DRS_FOGENABLE] ||
++                renderStates[D3DRS_ALPHAFUNC] != D3DCMP_GREATEREQUAL ||
++                textureStates[D3DTSS_COLOROP] != D3DTOP_MODULATE ||
++                textureStates[D3DTSS_ALPHAOP] != D3DTOP_MODULATE) abort();
++            UseFloatAlphaControl((renderStates[D3DRS_ALPHAREF] & 255) / 255.0f);
++        }
++        glBegin(PrimitiveMode(type));
+         for (UINT index = 0; index < count; ++index)
+         {
+             const BYTE *vertex = data + index * stride; float x, y, z, w, fogCoordinate;
+@@ -1057,7 +1091,7 @@
+                 g_fogCoordf(fogCoordinate);
+             glVertex4f(x, y, transformed ? z : w - 2.0f * z, w);
+         }
+-        glEnd(); return S_OK;
++        glEnd(); if (alphaControl) glUseProgram(0); return S_OK;
+     }
+     ULONG refs;
+     SDL_Window *window;

@@ -46,7 +46,10 @@ int main()
     check(device->SetRenderState(D3DRS_ZENABLE, FALSE));
     check(device->SetRenderState(D3DRS_LIGHTING, FALSE));
     check(device->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE));
-    check(device->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE));
+    const bool alphaTest = getenv("TH08_PROBE_ALPHA_TEST") != NULL;
+    check(device->SetRenderState(D3DRS_ALPHATESTENABLE, alphaTest));
+    check(device->SetRenderState(D3DRS_ALPHAREF, 4));
+    check(device->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATEREQUAL));
     check(device->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA));
     check(device->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_MODULATE));
     check(device->SetTextureStageState(0, D3DTSS_COLORARG1, D3DTA_TEXTURE));
@@ -84,7 +87,7 @@ int main()
             check(device->SetRenderState(D3DRS_DESTBLEND, blend == 2 ? D3DBLEND_ONE : D3DBLEND_INVSRCALPHA));
             check(device->Clear(0, NULL, D3DCLEAR_TARGET, 0xff183048, 1, 0));
             float x = 3.125f + phase * 0.0625f, y = 4.25f + phase * 0.125f;
-            const DWORD color = 0xd0c0f080;
+            const DWORD color = alphaTest ? 0x28ffffff : 0xd0c0f080;
             Vertex quad[] = {{x,y,0.5f,1,color,0,0}, {x+24,y,0.5f,1,color,1,0},
                              {x,y+24,0.5f,1,color,0,1}, {x+24,y+24,0.5f,1,color,1,1}};
             check(device->BeginScene());

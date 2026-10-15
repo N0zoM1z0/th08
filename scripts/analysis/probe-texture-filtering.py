@@ -42,6 +42,8 @@ def main():
     parser.add_argument("--compiler", default="g++")
     parser.add_argument("--pkg-config", default="pkg-config")
     parser.add_argument("--legacy-gl", action="store_true")
+    parser.add_argument("--alpha-test", action="store_true",
+                        help="Use the scene's alpha test (>= 4/255) and diffuse alpha 40/255")
     parser.add_argument("--check", action="store_true", help="Require every production pixel to match Wine")
     args = parser.parse_args()
     output = args.output_dir.resolve()
@@ -58,6 +60,9 @@ def main():
     environment = dict(os.environ, SDL_AUDIODRIVER="dummy", LIBGL_ALWAYS_SOFTWARE="1",
                        GALLIUM_DRIVER="llvmpipe", LP_NUM_THREADS="0")
     environment.pop("LP_NO_RAST", None)
+    environment.pop("TH08_PROBE_ALPHA_TEST", None)
+    if args.alpha_test:
+        environment["TH08_PROBE_ALPHA_TEST"] = "1"
     binary = output / "filter-probe.exe"
     with (output / "native-build.log").open("w") as log:
         subprocess.run(["i686-w64-mingw32-g++", "-std=gnu++98", "-O2", "-static", str(SOURCE),
@@ -91,6 +96,8 @@ def main():
                   compiler=subprocess.check_output([compiler, "--version"], text=True).splitlines()[0],
                   wineVersion=subprocess.check_output(["wine", "--version"], text=True).strip(),
                   packageMetadataCommand=package_command, legacyOpenGL=args.legacy_gl,
+                  alphaTest=dict(enabled=args.alpha_test, reference=4, comparison="greater-or-equal",
+                                 diffuseArgb="28ffffff" if args.alpha_test else "d0c0f080"),
                   binarySha256=binaries, nativeSamplesSha256=sha(output / "native.stdout"),
                   formats=["A1R5G5B5", "R5G6B5", "A4R4G4B4", "A8R8G8B8"],
                   samples=6144, compileCommands={}, variants={})
