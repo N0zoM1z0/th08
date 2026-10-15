@@ -34,11 +34,12 @@ The [Extra case](#extra-laser-observation-october-15-2026) now passes four paire
 images with exact raw packets. The dated sections preserve each repair's evidence.
 The [October 15 sampling candidate](#production-candidate-october-15-2026)
 passes its API checks and all 48 selected game images across both context
-profiles; its complete corpus gates remain in progress.
+profiles. Its partial corpus is retained after retirement in favor of the
+newer D3DX candidate.
 The [sincos follow-up](#sincos-candidate-seven-frame-verification) also repairs
 laser rotation rounding. Its seven Final B frames retain two changed pixels
 inside the outside-title beam masks and 23 across the whole playfield below
-the title band, each at most 1/255. Broader gates for this candidate are queued. The
+the title band, each at most 1/255. Its unstarted broad queue is now superseded. The
 [orbit investigation](#orbit-particles-d3dx-rounding) traces both residual
 particles to D3DX arithmetic and provides asset-free regression inputs.
 
@@ -1427,14 +1428,11 @@ laser/VM packets. The maximum beam means per case, equal across profiles, are:
 | Final B | 7 | 0.142039 |
 | Extra | 4 | 0.003049 |
 
-The x86_64 corpus worker is running. Its scheduler completed a recording-boundary
-pause for the i386 API preflight and resumed the same suite. The focused draw,
-beam-omission and filtering captures above are complete. The synchronous
-retail sprite capture at frame 14,280 is complete, and the same
-full-corpus scheduler has resumed. Each bounded diagnostic worker resumes
-the existing scheduler in `finally`. No further game diagnostic is queued
-ahead of the two complete corpus gates.
-The separate i386 scene/corpus worker waits for x86_64 completion.
+This sampling product's full-corpus attempt was retired at a recording
+boundary after 65 completed comparisons. Its queued i386 and subsequent
+sincos workers were retired before their scene/corpus gates started. The
+completed scene and diagnostic evidence above retains its product-specific
+scope. The latest D3DX candidate now runs the complete gates below.
 Native products and the earlier published corpus results retain their
 recorded scope.
 
@@ -1489,11 +1487,10 @@ separate measurements; the table excludes them.
 
 Reports are under `build/laser-sincos-repair-20261015/`: `finalb/`,
 `finalb-summary.json`, and `pixel-regression.json`. The compiler trees are
-removed. All eight alpha/filter API profiles pass against current source
-(two architectures and two contexts, 6,144 samples per profile). The new
-serial worker waits for the earlier platform jobs, then runs all five scenes
-in both contexts and both architectures, followed by 108 recordings and
-retained verification per architecture. Those broader gates remain pending.
+removed. All eight alpha/filter API profiles pass at this checkpoint
+(two architectures and two contexts, 6,144 samples per profile). Its queued
+scene/corpus worker was superseded before starting those gates by the D3DX
+candidate below.
 
 Reproduce the actual seven-frame observation and both pixel scopes:
 
@@ -1576,9 +1573,31 @@ precision, records commands and hashes, and removes temporary executables and
 objects. `--attest-target` also repeats both archive/target section comparisons
 and checks the quaternion constant; it requires the canonical executable. Native mode requires the existing local VC7 environment; the golden
 check requires only a Linux compiler and SDL development headers.
+The first quaternion case initializes the original library's shared dispatch
+table before vector cases. Use the same warm-up when probing isolated
+transforms to reproduce the game's active SSE path.
 
-Actual-image and full-corpus gates for these new products are pending.
-Diagnostic evidence is under `build/laser-projection-inputs-20261015/`.
+Source checkpoint `d64dafd8` passes clean x86_64/i386 builds and ELF/global
+ownership verification. Both production compiler profiles pass all 264 math
+cases and renderer contracts in both GL contexts. Compiler trees and completed
+probe executables are removed.
+
+The fresh x86_64 default-context game capture also passes all seven Final B
+frames with exact laser/VM packets. Every RGB pixel below the title band,
+rectangle `(32, 64)`–`(416, 464)`, now matches retail in each frame. The changed
+pixel counts are 0 at frames 8,400, 11,160, 11,490, 12,240, 14,280, 16,770
+and 17,460. This resolves all 23 previous full-playfield residuals, including
+both remaining beam-mask pixels. Title text and timing-dependent HUD content
+have separate measurements.
+
+Reports and source-pinned product manifests are under
+`build/laser-d3dx-math-repair-20261015/`; `finalb-summary.json` reports both
+pixel scopes. The sole active serial queue tests five scenes in both contexts
+and architectures, followed by 108 recordings and retained verification per
+architecture. Earlier incomplete candidate queues were retired at a recording
+boundary, preserving their completed evidence. These full gates remain in
+flight. Diagnostic inputs and prototypes are under
+`build/laser-projection-inputs-20261015/`.
 
 ## Legacy OpenGL coverage, October 14, 2026
 
