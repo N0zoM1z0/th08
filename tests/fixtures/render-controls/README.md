@@ -147,3 +147,26 @@ uses the same reference divided by 255. The
 [OpenGL 1.4 specification, section 4.1.4](https://registry.khronos.org/OpenGL/specs/gl/glspec14.pdf)
 describes rounding for the fixed-function alpha test. These sources explain
 the control; observed API results establish the local discrepancy.
+
+## Alpha-state matrix
+
+The filtering runner also provides `--alpha-states`. This asset-free profile
+checks all eight comparison functions against references 0, 4, 128 and 255.
+Its six materials cover texture/diffuse modulation, texture-factor modulation,
+untextured diffuse, independent color/alpha selection, SELECTARG2, and alpha
+replication/complement. Each runs with transformed vertices or with XYZ
+vertices and linear fog: 384 cases, 16 pixels each, 6,144 samples.
+
+```bash
+python3 scripts/analysis/probe-texture-filtering.py \
+  --alpha-states --output-dir build/alpha-state-matrix
+```
+
+The current renderer matches 4,988/6,144 samples in the default context.
+Most mismatches belong to SELECTARG2 and argument modifiers, which its
+fixed-function material mapping does not implement. The profile also exposes
+alpha comparison differences in ordinary texture/diffuse and texture-factor
+materials. A private context-owned fragment-pipeline candidate matches all
+6,144 samples; it remains separate from the frozen replay-gate products.
+The candidate includes the required color/alpha sources, all comparison
+functions and linear fog. Whole-game image gates still determine acceptance.
