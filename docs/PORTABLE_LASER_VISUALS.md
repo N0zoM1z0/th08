@@ -1120,8 +1120,13 @@ to its ordinary capture. Retain this failed observation under
 worker before its queued presentation completes, as the
 [Final A scheduling control](#native-windows-image-capture)
 demonstrated earlier. The `csmt=0` retail quad capture repeats frame 14,280.
-Use `--wine-csmt 0` for the documented paired quad procedure; the raw packet
-and image checks remain separate.
+Paired and native image capture now default to `csmt=0`, including direct
+`capture_retail()` calls. The CLI accepts `--retail --wine-csmt 0` and keeps
+explicit `--wine-csmt 1` for scheduling controls. Its former validation accepted
+the option only with `--native-map`, rejecting the documented paired command.
+The routing contracts cover both modes and default/explicit threading; the
+preceding CLI fails those contracts. The raw packet and image checks remain
+separate.
 
 The synchronous capture has now completed. Its entire retail playfield is
 pixel-identical to the retained ordinary retail frame, and its laser/VM
@@ -1257,6 +1262,59 @@ identical full-frame checksums. The baseline checksum differs because it
 retains the known alpha-test behavior. Probe source, compile commands, hashes
 and all timings are in `alpha-benchmark/report.json`. A cached shader variant
 is being checked before the next production candidate.
+
+### Cached candidate: seven-frame Final B verification
+
+Source checkpoint `80d7635d` replaces the dynamic material branches with
+context-owned cached shader variants. Alpha reference and texture-factor
+values remain uniforms. Its fresh products are:
+
+- GCC 8 x86_64: `e41f8717fc26dd04373696f6e720f850137204cce4af5befe0c224b5b79fb5fb`.
+- GCC 12 i386: `b09cb926b396d4c8346337a0b5b11024a9496de8a3bdbfafa8f8db25f8ffb948`.
+
+Both pass ELF/global-owner checks, and their manifests pin the same 132 build
+inputs. The alpha-state matrix and low-alpha filtering profile each match
+6,144 Wine samples on both architectures in both GL contexts. The x86_64
+alpha-enabled observed-quad probe also matches all 68 images in GL 2.1.
+
+Three warmed benchmark rounds have median times 0.360763 seconds cached,
+0.371129 fixed-function and 0.327325 narrow float control. A fresh run through
+the public benchmark reports 0.440766 cached and 0.437427 fixed-function.
+Candidate/reference checksums agree in both runs. The shader cache removes
+the dynamic pipeline's measured 2.2x synthetic cost. Reproduce with
+`benchmark-alpha-pipeline.py --baseline-ref 575c2368`; the
+[control guide](../tests/fixtures/render-controls/README.md#cached-alpha-pipeline)
+describes the workload and optional independent reference.
+
+The fresh x86_64 default-context gate passes all seven Final B frames and exact
+laser/VM packets. Outside the title band, the beam-mask results are:
+
+| Frame | Earlier changed pixels | Cached changed pixels | Cached maximum channel error |
+| ---: | ---: | ---: | ---: |
+| 8,400 | 68 | 0 | 0 |
+| 11,160 | 19 | 0 | 0 |
+| 11,490 | 184 | 1 | 1 |
+| 12,240 | 9 | 0 | 0 |
+| 14,280 | 92 | 0 | 0 |
+| 16,770 | 25 | 0 | 0 |
+| 17,460 | 10 | 3 | 1 |
+
+The four remaining pixels are unchanged from the earlier candidate: frame
+11,490 at `(307, 179)`; frame 17,460 at `(176, 293)`, `(223, 265)` and
+`(329, 90)`. Their maximum channel error is 1/255. Thus 403 of the previous
+407 outside-title residual pixels are resolved, with no new changed pixels
+in that region. Their remaining cause still needs a bounded measurement.
+Frame 16,770's total beam mean, 0.141590, comes from the title band; its
+outside-title beam error is zero. This separates text-layer differences from
+the repaired low-alpha rendering without changing the ordinary image gate.
+
+The seven-frame capture takes about 354 seconds and resumes the same original
+full-corpus scheduler afterwards. Its evidence is under
+`build/laser-alpha-repair-20261015/cached-finalb/` and
+`cached-finalb-summary.json`; all temporary runtimes are removed. The serial
+queued worker waits for the existing platform jobs, then checks the remaining
+scenes and both complete replay corpora with the frozen cached products.
+Those pending gates remain separate from this completed seven-frame result.
 
 Reproduce the synchronized paired observation and local vertex comparison:
 

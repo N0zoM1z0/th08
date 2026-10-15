@@ -169,7 +169,7 @@ def capture_portable(candidate, data, replay, output, settings):
 
 
 def capture_retail(target, data, replay, output, stage, frames, watch_text_fonts=False, watch_quads=False,
-                   candidate=None, map_path=None, wine_csmt=None, watch_laser_spawns=None):
+                   candidate=None, map_path=None, wine_csmt=0, watch_laser_spawns=None):
     from pe_image import PEImage
     if target.stat().st_size != 840704 or sha(target) != TARGET_SHA256:
         raise ValueError("Retail input must be the canonical Japanese TH08 1.00d executable")
@@ -270,7 +270,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--candidate", type=Path, required=True, help="Portable Debug ELF or native VC7 bugfix PE32 with --native-map")
     parser.add_argument("--native-map", type=Path, help="VC7 linker map; capture the Windows candidate at ordinary pacing")
-    parser.add_argument("--wine-csmt", type=int, choices=(0, 1), help="Native/retail Wine command-stream threading control")
+    parser.add_argument("--wine-csmt", type=int, choices=(0, 1), help="Native/retail Wine command-stream threading (default: 0 for synchronous images)")
     parser.add_argument("--game-data-dir", type=Path, required=True)
     parser.add_argument("--case", help="ID in config/laser-visual-fixtures.json")
     parser.add_argument("--fixture", help="ID in config/replay-fixtures.json; default: lunatic-1-a")
@@ -305,8 +305,10 @@ def main():
             parser.error("Spawn range must have positive, ordered START:END frames")
         if args.native_map or args.watch_text_fonts or args.watch_quads or args.watch_draws or args.suppress_laser_bodies:
             parser.error("Spawn diagnostics require a separate portable/retail capture")
-    if args.wine_csmt is not None and not args.native_map:
-        parser.error("--wine-csmt requires --native-map")
+    if args.wine_csmt is not None and not (args.native_map or args.retail):
+        parser.error("--wine-csmt requires --native-map or --retail")
+    if args.wine_csmt is None and (args.native_map or args.retail):
+        args.wine_csmt = 0
     if args.native_map and (args.scout or args.legacy_gl or args.font or args.watch_text_fonts or args.watch_draws
                             or args.draw_colors_from or args.suppress_laser_bodies):
         parser.error("Native captures support ordinary images and --watch-quads")

@@ -98,6 +98,56 @@ class LaserSpawnTests(unittest.TestCase):
         self.assertEqual(result["differences"][0]["field"], "recordCount")
 
 
+class CaptureThreadingTests(unittest.TestCase):
+    def invoke(self, options, native=False):
+        (capture.ROOT / "build").mkdir(exist_ok=True)
+        with tempfile.TemporaryDirectory(dir=capture.ROOT / "build") as temporary:
+            directory = Path(temporary)
+            candidate = directory / "candidate"
+            candidate.write_bytes(b"test candidate")
+            target = directory / "target.exe"
+            target.write_bytes(b"\0" * 840704)
+            data = directory / "data"
+            data.mkdir()
+            for name in ("th08.dat", "thbgm.dat"):
+                (data / name).write_bytes(b"test archive")
+            output = directory / "capture"
+            arguments = ["check-laser-visuals.py", "--candidate", str(candidate),
+                         "--target", str(target), "--game-data-dir", str(data),
+                         "--fixture", "lunatic-0-b", "--stage", "7", "--frames", "14280",
+                         "--output-dir", str(output), *options]
+            if native:
+                mapping = directory / "candidate.map"
+                mapping.write_text("test map")
+                arguments += ["--native-map", str(mapping)]
+            else:
+                arguments += ["--retail"]
+
+            def finish(*args, **kwargs):
+                output.mkdir(exist_ok=True)
+                (output / "lasers.json").write_text("[]")
+
+            # Exercise CLI routing without launching a game or attesting fake assets.
+            comparator = mock.Mock()
+            comparator.compare.return_value = dict(result="equal")
+            with mock.patch("sys.argv", arguments), mock.patch.object(capture, "verify_fixture"), \
+                    mock.patch.object(capture, "sha", return_value=capture.TARGET_SHA256), \
+                    mock.patch.object(capture, "capture_portable", side_effect=finish), \
+                    mock.patch.object(capture, "capture_retail", side_effect=finish) as retail, \
+                    mock.patch.object(capture, "module", return_value=comparator), mock.patch("builtins.print"):
+                capture.main()
+                return retail.call_args.kwargs["wine_csmt"]
+
+    def test_paired_images_default_to_synchronous_and_accept_explicit_threading(self):
+        for options, expected in (([], 0), (["--wine-csmt", "0"], 0), (["--wine-csmt", "1"], 1)):
+            with self.subTest(options=options):
+                self.assertEqual(self.invoke(options), expected)
+
+    def test_native_images_default_to_synchronous_and_preserve_explicit_control(self):
+        self.assertEqual(self.invoke([], native=True), 0)
+        self.assertEqual(self.invoke(["--wine-csmt", "1"], native=True), 1)
+
+
 class FontEvidenceTests(unittest.TestCase):
     def setUp(self):
         temporary = tempfile.TemporaryDirectory()
