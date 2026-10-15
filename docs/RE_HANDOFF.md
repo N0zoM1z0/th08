@@ -472,7 +472,7 @@ D3DX worktree. Every live production/capture-tool/reference pin is unchanged.
 and image readback; `--geometry-reference` automatically checks the same
 binary's ordinary capture. `compare-sprite-geometry.py --check` independently
 verifies identities, complete quad/frame coverage, raw laser/VM packets,
-reference images and observed runtime scope. Twelve regression tests and the
+reference images and observed runtime scope. Thirteen regression tests and the
 existing 42 laser tests pass; target-independent CI passes. Actual new-mode
 validation is next, reusing the retained sincos ordinary quad captures.
 
@@ -486,3 +486,8 @@ have zero below-title error. Extra frame 24,900 retains six changed pixels
 at most 1/255; the remaining Extra frames are exact below the title. Reports
 are `build/math-default-*-pixels.json` in the D3DX worktree. The live broad
 queue continues with the original pinned reference scope.
+
+The geometry profile now imports the existing post-Present frame-counter
+contract and tests it against the producer, including a missing-boundary
+failure control. A retained ordinary capture passes preflight. Capture
+metadata also records elapsed wall time for repeatable performance checks.

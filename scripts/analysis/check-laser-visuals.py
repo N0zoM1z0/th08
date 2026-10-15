@@ -12,6 +12,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import time
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "scripts"))
@@ -72,6 +73,7 @@ def font_environment(override):
 
 
 def capture_portable(candidate, data, replay, output, settings):
+    started = time.monotonic()
     observer = ROOT / "scripts/gdb/laser-visual-observer.py"
     selected_font = font_environment(settings.get("fontOverride") or os.environ.get("TH08_FONT"))
     runtime = Path(tempfile.mkdtemp(prefix="laser-visual.", dir=ROOT / "build"))
@@ -166,6 +168,7 @@ def capture_portable(candidate, data, replay, output, settings):
                 shutil.copyfile(path, output / name)
         shutil.rmtree(runtime)
         metadata["temporaryRuntimeRemoved"] = True
+        metadata["elapsedSeconds"] = time.monotonic() - started
         (output / "metadata.json").write_text(json.dumps(metadata, indent=2) + "\n")
         compress(output / "capture.log")
         for name in ("modern-files.txt", "modern-crash.txt"):

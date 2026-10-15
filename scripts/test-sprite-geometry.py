@@ -18,6 +18,9 @@ ROOT = Path(__file__).resolve().parents[1]
 spec = importlib.util.spec_from_file_location("geometry_comparison", ROOT / "scripts/analysis/compare-sprite-geometry.py")
 geometry = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(geometry)
+spec = importlib.util.spec_from_file_location("laser_capture_producer", ROOT / "scripts/analysis/check-laser-visuals.py")
+producer = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(producer)
 
 
 def word(value):
@@ -32,7 +35,7 @@ class GeometryTests(unittest.TestCase):
         self.candidate = Path(self.temporary.name) / "candidate"
         metadata = dict(product="portable-linux", muted=True, scout=False, keepLives=False,
             runnerExitCode=0, temporaryRuntimeRemoved=True, watchQuads=True,
-            frameCounter="GameManager.gameplayFrameCounter", playbackMode=0,
+            frameCounter=producer.FRAME_COUNTER, playbackMode=0,
             stage=7, startStage=7, frames=[11490, 17460], legacyOpenGL=False,
             environment=dict(font=dict(sha256="f" * 64)))
         metadata.update({name: "a" * 64 for name in (
@@ -59,6 +62,12 @@ class GeometryTests(unittest.TestCase):
         value = json.loads((folder / name).read_text())
         callback(value)
         self.write(folder, name, value)
+
+    def test_frame_counter_includes_the_producer_boundary(self):
+        self.assertEqual(geometry.FRAME_COUNTER, producer.FRAME_COUNTER)
+        self.edit(self.candidate, "metadata.json", lambda value: value.update(frameCounter="GameManager.gameplayFrameCounter"))
+        with self.assertRaisesRegex(ValueError, "frameCounter"):
+            geometry.compare(self.reference, self.candidate)
 
     def test_matching_complete_geometry_has_no_image_claim(self):
         report = geometry.compare(self.reference, self.candidate)

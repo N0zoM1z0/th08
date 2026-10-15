@@ -12,7 +12,10 @@ ROOT = Path(__file__).resolve().parents[2]
 spec = importlib.util.spec_from_file_location("sprite_quads", Path(__file__).with_name("compare-sprite-quads.py"))
 quads = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(quads)
-FRAME_COUNTER = "GameManager.gameplayFrameCounter"
+spec = importlib.util.spec_from_file_location("laser_visuals", Path(__file__).with_name("compare-laser-visuals.py"))
+visuals = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(visuals)
+FRAME_COUNTER = visuals.FRAME_COUNTER
 
 
 def digest(path):
