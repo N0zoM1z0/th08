@@ -371,34 +371,53 @@ sincos branch, or use `--baseline-ref b4e70194 --expect-failure` for its recorde
 Linux failure control. Both new probes use generated data and remove their
 executables, raw buffers and owned temporary runtimes.
 
-## Projection-input observation in progress
+## Orbit particle rounding repair
 
-The diagnostic is under `build/laser-projection-inputs-20261015/`. Its first
-worker is terminal with a failed retail capture and `active: false`; the same
-full-corpus scheduler was resumed. The failure is in observer bookkeeping:
-a fifth enabled hardware breakpoint, GDB's temporary `__file__`, and a
-runtime helper overwriting the selected-frame map. Corrected source passes
-two asset-free observer contracts, including both original failure controls.
-The failed two-frame run is retained as diagnostic evidence, not a completed
-paired gate.
+The corrected retail-only observer completes both frames, and the same
+scheduler PID 653259 is resumed. `confirmation-worker.json` is passed with
+`active: false`. It identifies effect slots 349 and 462, both effect ID 13,
+with `EffectOrbitUpdate @ 0x00426030`. All recorded effect fields agree except
+position; both inputs reproduce the original projection locals and XY words.
+The initial failed observation remains separate diagnostic evidence.
 
-Its completed portable inputs reproduce all eight XY words for frame 11,490
-quad 71 and frame 17,460 quad 27 through current source. The first target
-sample identifies effect slot 349; the only differing recorded input is VM
-position X (`0x438B92AD` versus portable `0x438B92AE`). View/projection,
-viewport and camera-right inputs agree. Re-evaluation with native inputs
-reproduces its recorded projection locals and all target XY words. The
-selected target quad and complete playfield match the earlier retained
-retail frame. Entire submission lists include timing-dependent HUD digits;
-whole-list equality is not claimed. `first-frame-preliminary.json` records
-this bounded result; coordinate generation remains to be investigated.
+The geometry-only portable observation also completes and resumes the same
+scheduler. `geometry-worker.json` and `geometry-revalidation.json` record exact
+laser/VM packets and all 469/3,087 selected playfield quads. Its inferior
+records `LP_NO_RAST=true`; this is numerical evidence alongside ordinary
+rasterized images. Two observer contracts reproduce and detect the earlier
+hardware-slot and temporary-`__file__` failures.
 
-`confirmation-worker.json` and `confirmation-worker-handle.json` identify a
-fresh retail-only run with the corrected observer, reusing the completed
-portable capture. Worker PID 973159, process start 94171055, session
-59757 waits for a recording boundary, records both target inputs plus effect
-pool/callback context, then compares and evaluates them automatically.
-The existing scheduler PID 653259 is resumed in `finally`, including on
-failure. Inspect the actual process and state before starting another game
-capture. Production build inputs remain frozen. The prototypes stay under
-`build/` until the full observation and method are verified.
+A pinned original-library probe reproduces both target orbit positions.
+`quaternion-library-comparison.json` attests all 226 bytes of
+`c_D3DXMatrixRotationQuaternion @ 0x004781CD`, including its relocated 2.0
+constant. `transform-library-comparison.json` attests the complete 256-byte
+SSE transform-coordinate section at runtime-observed `0x0048EDF0`.
+The latter entry is not separately added to the current inventory; neither
+comparison changes an acceptance ledger or aggregate count.
+
+The follow-up is isolated in `.analysis/portable-quaternion-rounding/`, branch
+`fix/portable-d3dx-math-rounding`. It changes only the modern D3DX adapter:
+component doubling and separate diagonal subtraction for quaternion matrices;
+paired vector accumulation, one RCPPS refinement and multiplication for
+transform coordinates. The old direct division loses the original reciprocal
+rounding even at W=1. A sine-only control leaves both position errors; the
+two D3DX repairs restore all matrix/position words in both standalone samples.
+No actual-game image repair is claimed before the fresh captures.
+
+The public `scripts/test-portable-d3dx-rounding.py` passes eight attributed
+API goldens. `--baseline-ref d1b5ffe4 --expect-failure` reproduces four old
+failures. `--native --attest-target` passes all 264 cases, including 128
+generated quaternions and 128 projective transforms, and repeats both
+relocation-aware archive/target comparisons plus the target constant check.
+Reports are in the new worktree's `build/d3dx-rounding-*/`; temporary probe
+objects and executables are removed. Reference inputs and recording-credit
+links are committed in `tests/fixtures/d3dx-rounding.json`.
+
+Evidence and diagnostic prototypes remain under
+`build/laser-projection-inputs-20261015/`. Clean source-pinned x86_64/i386
+products, actual-frame checks and full-corpus gates for this repair are next.
+The existing frozen scene/corpus workers retain their earlier scope and
+process handles; inspect their live states before starting another game.
+The geometry-only observer still needs publication as a general capture
+option; the public API probe and ordinary seven-frame capture commands are
+already reproducible.
