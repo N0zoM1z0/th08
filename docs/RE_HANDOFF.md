@@ -100,8 +100,14 @@ source and function bytes with different discriminators. The new bugfix product
 passes five fresh paired Final A captures at clock rate 1 with rasterization
 and `csmt=0`. All raw laser/VM packets agree, and all five complete playfields
 are pixel-identical to retail. The 22,590-calculation diagnostic prefix agrees
-on all 25 fields. Its full native replay gate remains pending before
-publication. Keep these products distinct from the earlier published binaries.
+on all 25 fields. Its full native replay gate and separate retained-evidence
+verification now pass all 108 recordings and 12,311,460 calculations. All
+25 fields, published fingerprints, stage-end scores and replay completion
+boundaries agree with retail. Captures use clock rate 128, no rasterization,
+and the ptrace observer against validated retail references. Evidence is under
+`build/laser-native-20261014/main-full-state128/`; temporary runtimes and the
+owned Wine prefix are removed. Keep these products distinct from the earlier
+published binaries.
 
 For runtime work, select a concrete remaining visual or hardware scenario and
 retain the stage, route, recording, frame, and comparison evidence. For exact
