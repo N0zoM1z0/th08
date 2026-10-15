@@ -425,6 +425,181 @@
         3225419775
       ],
       "expectedSource": "Target SSE RCPPS refinement at W=1; cross-checked by --native"
+    },
+    {
+      "id": "perspective-oracle-1",
+      "kind": "perspective",
+      "inputWords": [
+        1063704116,
+        1062956471,
+        1103908766,
+        1175713496
+      ],
+      "expectedWords": [
+        1075461208,
+        0,
+        0,
+        0,
+        0,
+        1074017209,
+        0,
+        0,
+        0,
+        0,
+        1065375901,
+        1065353216,
+        0,
+        0,
+        3251428623,
+        0
+      ],
+      "expectedSource": "Generated input; SHA-pinned original D3DX8 API under PC_24",
+      "generation": {
+        "seed": "0x54483038",
+        "sourceCase": "camera-perspective-1"
+      }
+    },
+    {
+      "id": "perspective-oracle-2",
+      "kind": "perspective",
+      "inputWords": [
+        1072244972,
+        1062956471,
+        1104053807,
+        1160833089
+      ],
+      "expectedWords": [
+        1063767517,
+        0,
+        0,
+        0,
+        0,
+        1061597300,
+        0,
+        0,
+        0,
+        0,
+        1065430428,
+        1065353216,
+        0,
+        0,
+        3251662034,
+        0
+      ],
+      "expectedSource": "Generated input; SHA-pinned original D3DX8 API under PC_24",
+      "generation": {
+        "seed": "0x54483038",
+        "sourceCase": "camera-perspective-2"
+      }
+    },
+    {
+      "id": "perspective-oracle-3",
+      "kind": "perspective",
+      "inputWords": [
+        1063264429,
+        1062956471,
+        1085734433,
+        1162353772
+      ],
+      "expectedWords": [
+        1075808345,
+        0,
+        0,
+        0,
+        0,
+        1074314755,
+        0,
+        0,
+        0,
+        0,
+        1065368225,
+        1065353216,
+        0,
+        0,
+        3233239538,
+        0
+      ],
+      "expectedSource": "Generated input; SHA-pinned original D3DX8 API under PC_24",
+      "generation": {
+        "seed": "0x54483038",
+        "sourceCase": "camera-perspective-3"
+      }
+    },
+    {
+      "id": "lookat-oracle-1",
+      "kind": "lookat",
+      "inputWords": [
+        1129613205,
+        1111864179,
+        3274694103,
+        3281077514,
+        3286521173,
+        3284077113,
+        3175344321,
+        3212836864,
+        1041606386
+      ],
+      "expectedWords": [
+        1056944158,
+        1057640519,
+        3207422402,
+        0,
+        3189256482,
+        3208084159,
+        3207490680,
+        0,
+        3210379567,
+        1054982068,
+        3196986467,
+        0,
+        3279480258,
+        3220058240,
+        1124125361,
+        1065353216
+      ],
+      "expectedSource": "Generated input; SHA-pinned original D3DX8 API under PC_24",
+      "generation": {
+        "seed": "0x54483038",
+        "sourceCase": "camera-lookat-0"
+      }
+    },
+    {
+      "id": "lookat-oracle-2",
+      "kind": "lookat",
+      "inputWords": [
+        3272231330,
+        1112723336,
+        3278318958,
+        1114541699,
+        1129125860,
+        3289899999,
+        1043189551,
+        3212836864,
+        3205561112
+      ],
+      "expectedWords": [
+        1063613289,
+        1032596031,
+        1054889287,
+        0,
+        3183427502,
+        3211775487,
+        1051506887,
+        0,
+        1054733907,
+        3199189526,
+        3210038411,
+        0,
+        1130698356,
+        3248763758,
+        3272986144,
+        1065353216
+      ],
+      "expectedSource": "Generated input; SHA-pinned original D3DX8 API under PC_24",
+      "generation": {
+        "seed": "0x54483038",
+        "sourceCase": "camera-lookat-1"
+      }
     }
   ],
   "referenceCpu": {
@@ -456,6 +631,34 @@
       "symbol": "?sse_D3DXVec3TransformCoord@@YGPAUD3DXVECTOR3@@PAU1@PBU1@PBUD3DXMATRIX@@@Z",
       "allow_auxless_comdat": true,
       "relocations": []
+    },
+    {
+      "target_address": 4687069,
+      "body_size": 148,
+      "compare_size": 148,
+      "member": "obj/i386/d3dxmath.obj",
+      "symbol": "_D3DXMatrixPerspectiveFovLH@20",
+      "allow_auxless_comdat": true,
+      "relocations": [
+        {
+          "offset": 14,
+          "type": "DIR32",
+          "symbol": "__real@3f000000",
+          "target_base": 4949116
+        }
+      ]
     }
-  ]
+  ],
+  "perspectiveBody": {
+    "address": "0x004784DD",
+    "bytes": 148,
+    "member": "obj/i386/d3dxmath.obj",
+    "symbol": "_D3DXMatrixPerspectiveFovLH@20",
+    "relocation": {
+      "offset": 14,
+      "symbol": "__real@3f000000",
+      "target": "0x004B847C",
+      "literalHex": "0000003f"
+    }
+  }
 }

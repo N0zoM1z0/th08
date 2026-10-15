@@ -73,6 +73,22 @@ int main()
             if (D3DXVec3Project(&result, &vector, &viewport, &projection, &view, &world) != &result) return 3;
             Print(index, &result, 3);
         }
+        else if (kind == 3)
+        {
+            D3DXVECTOR3 eye, at, up;
+            D3DXMATRIX matrix;
+            if (!Read(&eye, 3) || !Read(&at, 3) || !Read(&up, 3)) return 2;
+            if (D3DXMatrixLookAtLH(&matrix, &eye, &at, &up) != &matrix) return 3;
+            Print(index, &matrix, 16);
+        }
+        else if (kind == 4)
+        {
+            float parameters[4];
+            D3DXMATRIX matrix;
+            if (!Read(parameters, 4)) return 2;
+            if (D3DXMatrixPerspectiveFovLH(&matrix, parameters[0], parameters[1], parameters[2], parameters[3]) != &matrix) return 3;
+            Print(index, &matrix, 16);
+        }
         else return 2;
     }
     return 0;

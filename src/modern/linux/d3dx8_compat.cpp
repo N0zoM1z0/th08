@@ -547,9 +547,15 @@ D3DXMATRIX *D3DXMatrixLookAtLH(D3DXMATRIX *out, const D3DXVECTOR3 *eye,
 D3DXMATRIX *D3DXMatrixPerspectiveFovLH(D3DXMATRIX *out, FLOAT fov, FLOAT aspect, FLOAT nearZ, FLOAT farZ)
 {
     if (out == NULL || aspect == 0 || farZ == nearZ) return NULL;
-    memset(out, 0, sizeof(*out)); FLOAT yScale = 1.0f / tanf(fov * 0.5f);
+    // Target FSINCOS stores both components before division; depth translation
+    // multiplies the rounded depth scale by nearZ.
+    const FLOAT halfAngle = fov * 0.5f;
+    const FLOAT sine = static_cast<FLOAT>(sin(static_cast<double>(halfAngle)));
+    const FLOAT cosine = static_cast<FLOAT>(cos(static_cast<double>(halfAngle)));
+    const FLOAT yScale = cosine / sine;
+    memset(out, 0, sizeof(*out));
     out->_11 = yScale / aspect; out->_22 = yScale; out->_33 = farZ / (farZ - nearZ);
-    out->_34 = 1.0f; out->_43 = -nearZ * farZ / (farZ - nearZ); return out;
+    out->_34 = 1.0f; out->_43 = -(out->_33 * nearZ); return out;
 }
 
 #if defined(__i386__) || defined(__x86_64__)

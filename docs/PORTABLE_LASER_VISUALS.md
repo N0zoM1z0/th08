@@ -1663,6 +1663,49 @@ The synchronous reference and comparison are in the D3DX worktree's
 `build/stage4b-synchronous-reference-summary.json`. The public pixel summary
 command above reproduces both scopes from retained captures.
 
+### Perspective arithmetic and billboard inputs
+
+The follow-up is isolated on `fix/portable-perspective-rounding`. Generated
+camera inputs expose a separate D3DX arithmetic difference. All 128 LookAt
+cases agree with the original library. Perspective matrices disagree in
+81/128 cases on x86_64 and 93/128 on i386, affecting X/Y scales and depth
+translation. The target `D3DXMatrixPerspectiveFovLH @ 0x004784DD` stores
+FSINCOS outputs, divides cosine by sine, and multiplies the rounded depth
+scale by the near plane. The adapter previously used `1/tan` and a differently
+ordered depth expression. The corrected adapter follows the target operations.
+
+All 148 bytes of the pinned archive member match the target after one constant
+relocation; the referenced binary32 0.5 at `0x004B847C` also matches. This is a
+diagnostic comparison, with unchanged inventory and acceptance ledgers.
+The regression fixture adds three perspective counterexamples and two LookAt
+controls. The current default check passes 13 goldens; both production compiler
+profiles pass all 525 native-oracle cases and three archive/target attestations.
+The recorded pre-repair control fails exactly the three perspective goldens:
+
+```bash
+python3 scripts/test-portable-d3dx-rounding.py \
+  --baseline-ref 4590feb3 --expect-perspective-failure \
+  --output-dir build/perspective-baseline
+python3 scripts/test-portable-d3dx-rounding.py --native --attest-target \
+  --output-dir build/perspective-native
+```
+
+Actual Stage 4B image verification is still required for this source. The
+preceding product's paired frame 15,360 captures complete with exact laser/VM
+packets, but the added Draw3D observer records zero calls on both sides.
+Its coverage assertion fails after capture; the images and ordinary quad
+observations remain complete. The visible strips use projected billboard
+segments instead. Five mixed-alpha segment quads have different RGB values
+at their zero-alpha ends. Target branches at `0x0040AD9C` and `0x0040B123`
+write only alpha, leaving those RGB bytes from the stack. These observations
+identify a possible source of capture-to-capture background variation; a
+controlled image comparison is still needed to measure its contribution.
+
+Private API controls, canonical disassembly, archive attestation and the
+paired-capture worker records are under
+`build/stage4b-background-inputs-20261015/`. The ordinary paired images and
+quads are in the D3DX worktree's `build/stage4b-background-paired-20261015/`.
+
 ## Legacy OpenGL coverage, October 14, 2026
 
 Disabling `GL_ARB_clip_control` reproduces the pre-repair top-edge failure at

@@ -13,7 +13,8 @@ import tempfile
 import tomllib
 
 ROOT = Path(__file__).resolve().parents[1]
-KINDS = {"quaternion": (0, 4, 16), "transform": (1, 19, 3), "project": (2, 57, 3)}
+KINDS = {"quaternion": (0, 4, 16), "transform": (1, 19, 3), "project": (2, 57, 3),
+         "lookat": (3, 9, 16), "perspective": (4, 4, 16)}
 
 
 def sha(path):
@@ -49,6 +50,7 @@ def main():
     parser.add_argument("--pkg-config", default="pkg-config")
     parser.add_argument("--baseline-ref", help="Compile the D3DX adapter from this revision")
     parser.add_argument("--expect-failure", action="store_true", help="Require both historical matrix failures")
+    parser.add_argument("--expect-perspective-failure", action="store_true", help="Require only the three historical perspective failures")
     parser.add_argument("--native", action="store_true", help="Also compare generated inputs with the SHA-pinned VC7 D3DX8 library")
     parser.add_argument("--attest-target", action="store_true", help="Also compare both pinned library sections with resources/th08.exe")
     parser.add_argument("--output-dir", type=Path, default=ROOT / "build/d3dx-rounding")
@@ -60,6 +62,10 @@ def main():
         parser.error("--attest-target requires --native")
     if args.expect_failure and not args.baseline_ref:
         parser.error("--expect-failure requires --baseline-ref")
+    if args.expect_perspective_failure and not args.baseline_ref:
+        parser.error("--expect-perspective-failure requires --baseline-ref")
+    if args.expect_failure and args.expect_perspective_failure:
+        parser.error("Select one historical failure control")
     output.mkdir(parents=True)
     fixture = ROOT / "tests/fixtures/d3dx-rounding.json"
     fixture_data = json.loads(fixture.read_text())
@@ -116,6 +122,8 @@ def main():
                             raise ValueError("Reference member differs from the canonical target")
                     if pe_bytes_at(target, 0x4B42EC, 4) != bytes.fromhex("00000040"):
                         raise ValueError("Target quaternion constant is not binary32 2.0")
+                    if pe_bytes_at(target, 0x4B847C, 4) != bytes.fromhex("0000003f"):
+                        raise ValueError("Target perspective constant is not binary32 0.5")
                 native = temporary / "reference.exe"
                 command = [str(ROOT / "scripts/wineth08"), str(ROOT / "scripts/th08run.bat"), "cl.exe", "/nologo", "/MT", "/Od",
                     "/Fo" + get_windows_path(temporary / "reference.obj"), "/Fe" + get_windows_path(native),
@@ -138,6 +146,17 @@ def main():
                     extra.append(dict(id=f"generated-transform-{index}", kind="transform",
                         inputWords=[word(randomizer.uniform(-256, 256)) for _ in range(3)] +
                                    [word(randomizer.uniform(-2, 2)) for _ in range(16)]))
+                camera_randomizer = random.Random(0x54483038)
+                for index in range(128):
+                    eye = [camera_randomizer.uniform(-256, 256) for _ in range(3)]
+                    at = [eye[axis] + camera_randomizer.uniform(-512, 512) for axis in range(3)]
+                    up = [camera_randomizer.uniform(-1, 1), -1.0, camera_randomizer.uniform(-1, 1)]
+                    extra.append(dict(id=f"generated-lookat-{index}", kind="lookat", inputWords=list(map(word, eye + at + up))))
+                    fov = camera_randomizer.uniform(0.15, 2.5)
+                    near = camera_randomizer.uniform(0.1, 50)
+                    far = camera_randomizer.uniform(1800, 10000)
+                    extra.append(dict(id=f"generated-perspective-{index}", kind="perspective",
+                                      inputWords=list(map(word, [fov, 384.0 / 448, near, far]))))
                 expected = run([str(ROOT / "scripts/wineth08"), str(native)], extra, ROOT)
                 for case, expected_words in zip(extra, expected):
                     case["expectedWords"] = expected_words
@@ -147,7 +166,12 @@ def main():
                 expectedWords=case["expectedWords"], actualWords=words, equal=words == case["expectedWords"])
                 for case, words in zip(cases, actual)]
             failures = [case for case in report["cases"] if not case["equal"]]
-            if args.expect_failure:
+            if args.expect_perspective_failure:
+                historical = {f"perspective-oracle-{index}" for index in (1, 2, 3)}
+                if historical != {case["id"] for case in failures}:
+                    raise ValueError("Expected only the three historical perspective failures")
+                report["result"] = "historical perspective failures reproduced"
+            elif args.expect_failure:
                 historical = {"finalb-11490-quaternion", "finalb-17460-quaternion"}
                 if not historical <= {case["id"] for case in failures}:
                     raise ValueError("Both historical quaternion failures were not reproduced")
@@ -155,7 +179,7 @@ def main():
             else:
                 report["result"] = "mismatch" if failures else "equal"
             print(f"D3DX rounding: {len(cases) - len(failures)}/{len(cases)} cases equal; {report['result']}")
-            return 0 if args.expect_failure or not failures else 1
+            return 0 if args.expect_failure or args.expect_perspective_failure or not failures else 1
     except BaseException as error:
         report.update(result="error", error=str(error))
         raise

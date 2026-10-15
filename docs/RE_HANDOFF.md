@@ -518,3 +518,36 @@ The initial controller attempt used an unsupported draw/quad CLI combination
 and stopped before launching a game. Its state and log are retained with
 `first-attempt-` names; the retry captures quad pairs and the additional
 read-only Draw3D facts, without the separate low-level draw profile.
+
+## Perspective and billboard follow-up
+
+The paired Stage 4B worker is terminal with exit code 1 after both ordinary
+captures and their image/raw-state comparison complete. Both Draw3D fact
+files contain zero calls, so its additional coverage assertion fails. This
+frame uses projected billboard segments; do not claim its Draw3D inputs were
+observed. The same controller and nested corpus scheduler are resumed. All
+completed ordinary images, quads and raw packets remain available.
+
+Five mixed-alpha background quads have differing RGB at zero-alpha endpoints.
+Canonical `Background::RenderObjects` branches at `0x0040AD9C` and
+`0x0040B123` write only the alpha byte, leaving stack RGB untouched. The
+accepted source preserves that behavior. The paired quads and target
+disassembly support an uninitialized-color lead; a controlled image experiment
+must still determine how much of the residual it explains.
+
+The writable follow-up is `.analysis/portable-perspective-rounding/`, branch
+`fix/portable-perspective-rounding`. A 257-case camera probe finds all 128
+LookAt matrices equal but 81/128 x86_64 and 93/128 i386 perspective failures.
+Target `D3DXMatrixPerspectiveFovLH @ 0x004784DD` uses stored FSINCOS results,
+cosine/sine division and rounded-depth-scale multiplication. Its 148-byte
+pinned archive body and relocated 0.5 literal match the canonical target.
+The modern adapter is corrected; no authored source or ledger changes.
+
+The public math probe now covers LookAt and perspective matrices. It passes
+13 attributed goldens and 525 native-oracle cases on both production compiler
+profiles, with all three target/archive attestations. Baseline `4590feb3`
+with `--expect-perspective-failure` reproduces exactly the three new golden
+failures. Target-independent CI passes. These are numerical API results;
+fresh production builds and actual-image gates are next. Private controls and
+proofs are under `build/stage4b-background-inputs-20261015/` in the root tree.
+The preceding D3DX production inputs remain frozen while their broad queue runs.
