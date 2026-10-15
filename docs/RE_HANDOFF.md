@@ -481,11 +481,13 @@ produces no frame images. Its retained result is
 
 The expanded x86_64 default survey has zero below-title playfield error for
 all selected Stage 3 and Final A frames. Stage 4B frame 15,360 has 6,929
-changed playfield pixels, maximum channel error 22/255, outside the beam
-mask. Connected differences follow tall background strips. Its older retail
-reference records no explicit CSMT setting; a fresh synchronous canonical
-reference is needed before attributing a code defect. Other Stage 4B frames
-have zero below-title error. Extra frame 24,900 retains six changed pixels
+changed playfield pixels against the older reference, outside the beam mask.
+A fresh synchronous canonical capture retains 5,951 changed pixels, maximum
+channel error 22/255. Its other three Stage 4B playfields match exactly.
+Connected differences follow tall background strips. The two retail captures
+also differ; both are retained. The new reference is
+`build/stage4b-retail-csmt0-20261015/` in the D3DX worktree, alongside
+`stage4b-synchronous-reference-summary.json`. Extra frame 24,900 retains six changed pixels
 at most 1/255; the remaining Extra frames are exact below the title. Reports
 are `build/math-default-*-pixels.json` in the D3DX worktree. The live broad
 queue continues with the original pinned reference scope.
@@ -494,3 +496,25 @@ The geometry profile now imports the existing post-Present frame-counter
 contract and tests it against the producer, including a missing-boundary
 failure control. A retained ordinary capture passes preflight. Capture
 metadata also records elapsed wall time for repeatable performance checks.
+
+The synchronous-reference worker is terminal with exit code 0; it resumes the
+same latest controller and nested corpus scheduler. Its earlier startup-only
+failure rejected a Wine-prefix path outside that worktree's build directory;
+no game launched, and its temporary runtime is removed with a file manifest.
+The general geometry calibration had already passed before that rejection.
+
+The next bounded observation is Stage 4B frame 15,360. Its private controller
+and target-attested Draw3D observers are under
+`build/stage4b-background-inputs-20261015/`. `worker-handle.json` identifies
+PID 1226343, process start 94916605, session 94667. It pauses the same latest
+controller and nested corpus scheduler at a completed recording boundary,
+captures ordinary quad/image pairs plus Draw3D VM/camera inputs, then resumes
+both processes on exit. Its output is
+`build/stage4b-background-paired-20261015/` in the D3DX worktree. Inspect actual
+state before starting another game. Default and OpenGL 2.1 Stage 4B/Extra
+playfields are pixel-identical to each other; context selection does not
+explain these retained residuals.
+The initial controller attempt used an unsupported draw/quad CLI combination
+and stopped before launching a game. Its state and log are retained with
+`first-attempt-` names; the retry captures quad pairs and the additional
+read-only Draw3D facts, without the separate low-level draw profile.

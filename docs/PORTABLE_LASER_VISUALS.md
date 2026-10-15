@@ -1642,6 +1642,27 @@ boundary, preserving their completed evidence. These full gates remain in
 flight. Diagnostic inputs and prototypes are under
 `build/laser-projection-inputs-20261015/`.
 
+### Wider playfield survey
+
+The same x86_64 product has zero changed RGB pixels below the title band in
+all selected Stage 3 and Final A frames. Stage 4B has a background residual
+outside the laser masks at frame 15,360. A fresh canonical capture with
+`--wine-csmt 0` retains 5,951 changed pixels, maximum channel error 22/255;
+the other three Stage 4B playfields match exactly. The older asynchronous
+reference gave 6,929 changed pixels at that frame and differs from the new
+retail image itself. Keep the two reference captures separate.
+
+Extra frame 24,900 has six changed pixels below the title band, each at most
+1/255; its other three frames match. Default and OpenGL 2.1 portable
+playfields match each other at every selected Stage 4B and Extra frame.
+These measurements extend the beam-mask gate to other visible layers.
+The Stage 4B background cause remains under investigation.
+
+The synchronous reference and comparison are in the D3DX worktree's
+`build/stage4b-retail-csmt0-20261015/` and
+`build/stage4b-synchronous-reference-summary.json`. The public pixel summary
+command above reproduces both scopes from retained captures.
+
 ## Legacy OpenGL coverage, October 14, 2026
 
 Disabling `GL_ARB_clip_control` reproduces the pre-repair top-edge failure at
