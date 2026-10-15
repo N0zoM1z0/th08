@@ -80,9 +80,13 @@ remove owned temporary runtimes and compiler trees after their checks finish.
 A changed executable, observer, schema, assets, or playback profile requires a
 new replay output directory.
 
-## Next bounded work
+## Latest validation checkpoint
 
-Continue laser validation on `test/portable-laser-visual-regression`. The tested
+The replay and laser repair batch is merged into `port/portable-64bit` through
+[PR #32](https://github.com/N0zoM1z0/th08/pull/32), checkpoint `c7d27932`.
+It includes main PR #31. All 440 existing non-document inputs remain unchanged
+after that history integration; the final 1,106-unit single-job cold comparison
+and repository CI pass. The tested
 GCC 8 x86_64 recorder is
 `e0a57a43520524713b70dbaa38329155fd6ab4a09006869b4f09db8dbcc27649`, built
 from source checkpoint `897decb2`. All 132 recorded build-input hashes agree
@@ -158,8 +162,15 @@ including separate retained comparisons. With Final B, each context covers
 reference hashes remain pinned. Its completed state is in
 `build/laser-i386-refresh-20261014/queued-scene-gates.json`; evidence is under
 `scene-default-*/` and `scene-legacy-*/` in the same directory. All temporary
-game runtimes are removed. Prepare the portable integration after reviewing
-the completed results and preserving the tested build identities.
+game runtimes are removed. Tested binaries, source/build provenance and
+compressed comparison evidence remain under their recorded phase directories.
+
+## Next bounded work
+
+Continue the measured title and boundary-sampling residuals in
+[the laser report](PORTABLE_LASER_VISUALS.md#remaining-sampling-and-title-error).
+Start with the retained, unmodified quad inputs and their D3D8/OpenGL API
+control; the selected gameplay images already pass their recorded thresholds.
 Issue #20's reported scene remains unspecified. Small font/sampling residuals,
 the Stage 5 color observations and native RT-007 retain their measured scope
 in the laser, rendering and runtime reports. AArch64 hardware and audio are
