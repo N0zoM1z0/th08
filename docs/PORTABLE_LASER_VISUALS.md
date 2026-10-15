@@ -33,7 +33,7 @@ per context and exact raw laser/VM packets.
 The [Extra case](#extra-laser-observation-october-15-2026) now passes four paired
 images with exact raw packets. The dated sections preserve each repair's evidence.
 The [October 15 sampling candidate](#production-candidate-october-15-2026)
-passes its API checks and the first eleven Stage 3/Final B game images;
+passes its API checks and the first fifteen Stage 3/Stage 4B/Final B game images;
 the other scene and corpus gates remain in progress.
 
 ### Status of the seven initial failures
@@ -1042,8 +1042,13 @@ regions reconstruct the strict mask's pixel count and total error:
 python3 scripts/analysis/summarize-laser-pixels.py \
   --reference build/laser-retail \
   --candidate build/laser-portable \
+  --top-pixels 8 \
   --output build/laser-pixel-summary.json
 ```
+
+`--top-pixels` retains up to 32 largest differences per region, including
+coordinates and both RGB values. Ties prefer earlier image coordinates.
+The default, zero, keeps aggregate measurements only.
 
 The same product also passes all seven Final B images with exact laser/VM
 packets and a separate retained comparison. Every frame's beam mean improves
@@ -1066,12 +1071,26 @@ reproduces these counts from `scene-default-finalb-kaguya/` and the pinned
 retail capture. `finalb-pixel-summary.json` retains the strict comparison and
 region measurements.
 
+The coordinate export locates that maximum at `(168, 310)`: retail RGB
+`(30, 2, 2)`, candidate `(46, 12, 12)`. Laser slot 7's geometry covers the
+pixel; the screenshot also contains other rendered layers. A focused draw
+capture or beam-omission control is still needed to attribute the difference.
+The 92 changed pixels outside the title band have channel-error magnitudes
+from 1 to 16, with only one at 16. `finalb-pixel-locations-v2.json` records the
+largest examples; each exported RGB value was checked against its PNG.
+
+All four Stage 4B default-context image/state checks and retained comparisons
+also pass. Their beam means are 0.004278, 0.000999, 0.003865 and 0.020752 at
+frames 13,140, 13,260, 15,360 and 18,210. The changed laser-mask pixel counts
+are 3, 3, 1 and 140; maximum channel errors are 3, 3, 4 and 4/255. The masks
+avoid the title band. `stage4b-pixel-locations.json` preserves the summaries.
+
 Evidence is under `build/laser-sampling-production-20261015/`. A serial worker
 is repeating all five scene cases in both context profiles, then the complete
 108-recording corpus and retained-evidence checks. Its state is in
 `serial-gates.json`; a failed comparison stops the queue. These pending gates
-are required before promoting this candidate. Stage 3 and Final B default
-captures have passed; Stage 4B is running. Native products and the earlier
+are required before promoting this candidate. Stage 3, Stage 4B and Final B
+default captures have passed; Final A is running. Native products and the earlier
 published corpus results retain their recorded scope.
 
 ## Legacy OpenGL coverage, October 14, 2026

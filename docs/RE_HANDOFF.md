@@ -194,7 +194,12 @@ their beam means improve over the preceding x86_64 product. Frame 14,280
 retains maximum outside-title channel error 16/255. The new
 `scripts/analysis/summarize-laser-pixels.py` reproduces the region measurements
 and checks them against the strict mask totals.
-A live serial worker is running Stage 4B and the other scene cases in both contexts,
+The four Stage 4B default images and retained comparisons also pass, with
+exact packets and beam means at most 0.020752. Maximum channel error is 4/255.
+The pixel tool's `--top-pixels 8` option retains coordinates and both RGB
+values. Final B frame 14,280's maximum is at `(168, 310)`; a focused draw or
+beam-omission capture is the next attribution step after the active gates.
+A live serial worker is running Final A and the other scene cases in both contexts,
 followed by the full 108-recording corpus and retained verification. Inspect
 `serial-gates.json` and the worker process before launching another game or
 build. Its initial capture has finished; the worker is independent of that
