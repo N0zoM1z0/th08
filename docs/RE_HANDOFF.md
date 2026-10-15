@@ -170,10 +170,15 @@ compressed comparison evidence remain under their recorded phase directories.
 Continue the measured title and boundary-sampling residuals in
 [the laser report](PORTABLE_LASER_VISUALS.md#remaining-sampling-and-title-error).
 The refreshed unmodified-input D3D8/OpenGL probe passes 53/68 images; all
-34 solid cases agree. A constant-U control passes 68/68, while the two
-viewport controls pass 53/68 and 54/68. Reproduce them with the committed
-[diagnostic controls](../tests/fixtures/render-controls/README.md). Next,
-measure the reference shader and projection arithmetic. Evidence is under
+34 solid cases agree. The reference shader and all 68 projection calls are
+now observed. A measured-projection control reaches 60/68; adding the
+first-vertex convention reaches 68/68 in both default and OpenGL 2.1 contexts.
+The convention alone leaves production images unchanged. Reproduce these
+results with the committed
+[diagnostic controls](../tests/fixtures/render-controls/README.md).
+Next, prepare a production candidate and check depth, other vertex formats,
+orientation and real-game images. Current controls cover RHW=1 quads with
+depth disabled; production renderer source is unchanged. Evidence is under
 `build/laser-sampling-refresh-20261015/`; temporary prefixes and probe binaries
 are removed. The selected gameplay images retain their passing thresholds.
 Issue #20's reported scene remains unspecified. Small font/sampling residuals,

@@ -898,7 +898,63 @@ results separately; it also checks solid coverage for that control.
 Evidence is under `build/laser-sampling-refresh-20261015/`, in `observed/`,
 `constant-u/`, `viewport-control/` and `actual-viewport-control/`. Each probe
 removes its owned Wine prefix and compiled executables. The next measurement
-is the actual reference shader and projection arithmetic for these inputs.
+was the actual reference shader and projection arithmetic for these inputs,
+recorded below.
+
+### Measured matrix and triangle convention, October 15, 2026
+
+The opt-in shader trace confirms a projection-matrix multiply followed by
+division by RHW. A GDB hardware-breakpoint observer captures all 68 projection
+calls on Wine's render thread, verifies the mapped entry against the pinned
+DLL, and records two distinct matrices. Observed reference images remain
+pixel-identical to the earlier unobserved capture, 68/68.
+
+The nonzero XY entries below are raw IEEE-754 words. Both matrices have Z
+scale and translation zero because the probe disables depth; their W entry
+is `3f800000`.
+
+| D3D viewport | X scale | Y scale | X translation | Y translation |
+| --- | --- | --- | --- | --- |
+| `(0, 0, 640, 480)` | `3b4ccccd` | `3b888889` | `bf7f999a` | `bf7f7777` |
+| `(32, 16, 384, 448)` | `3baaaaab` | `3b924925` | `bf950000` | `bf88db6e` |
+
+These values place the half-pixel correction in the projection translation,
+consistent with Wine's offscreen path without clip control. The earlier
+floating-viewport controls exercised a different path. A new control uses
+the observed projection expressions and actual viewport dimensions:
+
+| Control | Default context: identical images |
+| --- | --- |
+| Production | 53/68 |
+| First-vertex convention alone | 53/68; all images unchanged from production |
+| Measured projection and offscreen orientation | 60/68 |
+| Same, plus first-vertex convention | 68/68 |
+
+The combined control also passes 68/68 under forced OpenGL 2.1; production
+passes 52/68 there. All solid-material images agree in both contexts. Its
+vertices remain the unmodified observed words. Replacing the vertex shader,
+using an explicit XY texture lookup, and adding position invariance each
+leave the intermediate 60/68 result unchanged. Selecting
+`GL_FIRST_VERTEX_CONVENTION` removes the remaining differences in this Mesa
+environment. Wine 9.0 selects that convention in
+[context initialization](https://github.com/wine-mirror/wine/blob/wine-9.0/dlls/wined3d/context_gl.c#L2109).
+The measurements identify two interacting API-state differences; they do not
+yet identify the driver's individual interpolation instructions.
+
+Reproduce the result with the committed
+[control patches and observer commands](../tests/fixtures/render-controls/README.md#measured-projection-and-first-vertex-controls).
+Evidence is under `build/laser-sampling-refresh-20261015/`, in
+`measured-fragment-control/` (shader and matrix traces),
+`measured-projection-control/`, `first-vertex-only-control/`,
+`first-vertex-control/` and `first-vertex-legacy-control/`.
+Each report pins inputs and source hashes. The observer pins its Wine DLL,
+entry bytes and matrix words; it changes no target instructions.
+
+Production renderer source is unchanged. This probe covers RHW=1 quads with
+depth disabled and two synthetic materials. The next step is a production
+candidate with depth, other vertex formats, orientation and real-game image
+checks. The selected gameplay images retain their existing passing limits;
+this API result does not close all gameplay image residuals.
 
 ## Legacy OpenGL coverage, October 14, 2026
 

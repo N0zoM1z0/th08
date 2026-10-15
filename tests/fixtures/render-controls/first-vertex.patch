@@ -1,0 +1,7 @@
+--- renderer.cpp
++++ renderer.cpp
+@@ -0,0 +1 @@
++#define GL_GLEXT_PROTOTYPES
+@@ -1029 +1030 @@
+-        PrepareState(transformed); glBegin(PrimitiveMode(type));
++        PrepareState(transformed); glProvokingVertex(GL_FIRST_VERTEX_CONVENTION); glBegin(PrimitiveMode(type));

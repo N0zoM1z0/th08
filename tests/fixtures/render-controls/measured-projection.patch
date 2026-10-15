@@ -1,0 +1,65 @@
+--- renderer.cpp
++++ renderer.cpp
+@@ -471,6 +471,7 @@
+         SDL_GL_MakeCurrent(window, context);
+         g_clipControl = SDL_GL_ExtensionSupported("GL_ARB_clip_control") ?
+             reinterpret_cast<ClipControlFunction>(SDL_GL_GetProcAddress("glClipControl")) : NULL;
++        g_clipControl = NULL; // Diagnostic: match the observed Wine offscreen path.
+         g_fogCoordf = reinterpret_cast<FogCoordfFunction>(SDL_GL_GetProcAddress("glFogCoordf"));
+         if (g_fogCoordf == NULL)
+             g_fogCoordf = reinterpret_cast<FogCoordfFunction>(SDL_GL_GetProcAddress("glFogCoordfEXT"));
+@@ -859,8 +860,8 @@
+         if (transformed)
+         {
+             const float w = position[3] != 0.0f ? 1.0f / position[3] : 1.0f;
+-            *xOut = (position[0] + 0.5f) * w;
+-            *yOut = (position[1] + 0.5f) * w;
++            *xOut = position[0] * w;
++            *yOut = position[1] * w;
+             *zOut = position[2] * w;
+             *wOut = w;
+             *fogCoordinateOut = 0.0f;
+@@ -887,7 +888,7 @@
+         *zOut = viewport.MinZ * w + vector[2] * (viewport.MaxZ - viewport.MinZ);
+         *wOut = w;
+     }
+-    void PrepareState()
++    void PrepareState(bool transformed)
+     {
+         const UINT width = backbuffer != NULL ? backbuffer->width : viewport.Width;
+         const UINT height = backbuffer != NULL ? backbuffer->height : viewport.Height;
+@@ -902,7 +903,24 @@
+         // Both paths map logical top edges to OpenGL's inclusive edge convention.
+         SetClipOrigin(g_clipControl != NULL ? GL_UPPER_LEFT : GL_LOWER_LEFT);
+         glMatrixMode(GL_PROJECTION); glLoadIdentity();
+-        glOrtho(0.0, width, 0.0, height, -1.0, 1.0);
++        if (transformed)
++        {
++            const float vw = viewport.Width, vh = viewport.Height;
++            const GLfloat measuredProjection[16] = {
++                2.0f / vw, 0, 0, 0,
++                0, 2.0f / vh, 0, 0,
++                0, 0, 0, 0,
++                (1.0f - 2.0f * viewport.X - vw) / vw,
++                (1.0f - 2.0f * viewport.Y - vh) / vh, 0, 1
++            };
++            glViewport(viewport.X, viewport.Y, viewport.Width, viewport.Height);
++            glLoadMatrixf(measuredProjection);
++        }
++        else
++        {
++            glViewport(0, 0, width, height);
++            glOrtho(0.0, width, 0.0, height, -1.0, 1.0);
++        }
+         glMatrixMode(GL_MODELVIEW); glLoadIdentity();
+         if (renderStates[D3DRS_ALPHABLENDENABLE])
+         { glEnable(GL_BLEND); glBlendFunc(BlendFunction(renderStates[D3DRS_SRCBLEND]), BlendFunction(renderStates[D3DRS_DESTBLEND])); }
+@@ -1008,7 +1026,7 @@
+         if (hasDiffuse) offset += 4;
+         if (fvf & D3DFVF_SPECULAR) offset += 4;
+         bool hasTexture = (fvf & D3DFVF_TEXCOUNT_MASK) != 0; UINT textureOffset = offset;
+-        PrepareState(); glBegin(PrimitiveMode(type));
++        PrepareState(transformed); glBegin(PrimitiveMode(type));
+         for (UINT index = 0; index < count; ++index)
+         {
+             const BYTE *vertex = data + index * stride; float x, y, z, w, fogCoordinate;

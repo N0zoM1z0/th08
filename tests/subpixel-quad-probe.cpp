@@ -23,6 +23,14 @@ int main(int argc,char **argv) {
  IDirect3D8 *api=Direct3DCreate8(D3D_SDK_VERSION);IDirect3DDevice8 *device;
  D3DPRESENT_PARAMETERS p;memset(&p,0,sizeof(p));p.Windowed=TRUE;p.hDeviceWindow=window;p.BackBufferWidth=640;p.BackBufferHeight=480;p.BackBufferCount=1;p.BackBufferFormat=D3DFMT_X8R8G8B8;p.SwapEffect=D3DSWAPEFFECT_COPY;p.Flags=D3DPRESENTFLAG_LOCKABLE_BACKBUFFER;
  check(api->CreateDevice(0,D3DDEVTYPE_HAL,window,D3DCREATE_SOFTWARE_VERTEXPROCESSING,&p,&device));
+#ifndef TH08_MODERN_LINUX
+ if(getenv("TH08_SUBPIXEL_OBSERVE_PROJECTION")) {
+  char filename[2048];snprintf(filename,sizeof(filename),"%s/wined3d-module.txt",argv[2]);
+  FILE *out=fopen(filename,"w");if(!out)return 7;
+  fprintf(out,"%p\n",GetModuleHandleA("wined3d.dll"));fclose(out);
+  DebugBreak();
+ }
+#endif
 #ifdef TH08_MODERN_LINUX
  const char *version=reinterpret_cast<const char *>(glGetString(GL_VERSION));
  const bool clipControl=SDL_GL_ExtensionSupported("GL_ARB_clip_control")!=SDL_FALSE;
