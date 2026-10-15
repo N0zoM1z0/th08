@@ -71,6 +71,7 @@ def main() -> int:
         run("Smoke-test portable replay suite CLI", [sys.executable, "scripts/test-portable-replay-suite.py", "--help"])
         run("Smoke-test portable vector precision CLI", [sys.executable, "scripts/test-portable-math.py", "--help"])
         run("Smoke-test portable sincos precision CLI", [sys.executable, "scripts/test-portable-sincos.py", "--help"])
+        run("Smoke-test portable D3DX rounding CLI", [sys.executable, "scripts/test-portable-d3dx-rounding.py", "--help"])
         run("Smoke-test portable normalization CLI", [sys.executable, "scripts/test-portable-normalization.py", "--help"])
         run("Smoke-test effect pool comparison CLI", [sys.executable, "scripts/analysis/compare-effect-pools.py", "--help"])
         run("Smoke-test replay frame inspection CLI", [sys.executable, "scripts/analysis/check-stage5-background.py", "--help"])

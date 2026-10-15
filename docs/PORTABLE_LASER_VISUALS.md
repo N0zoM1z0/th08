@@ -38,7 +38,9 @@ profiles; its complete corpus gates remain in progress.
 The [sincos follow-up](#sincos-candidate-seven-frame-verification) also repairs
 laser rotation rounding. Its seven Final B frames retain two changed pixels
 inside the outside-title beam masks and 23 across the whole playfield below
-the title band, each at most 1/255. Broader gates for this candidate are queued.
+the title band, each at most 1/255. Broader gates for this candidate are queued. The
+[orbit investigation](#orbit-particles-d3dx-rounding) traces both residual
+particles to D3DX arithmetic and provides asset-free regression inputs.
 
 ### Status of the seven initial failures
 
@@ -1513,6 +1515,70 @@ The summary verifies both regional totals against the strict comparison and
 retains residual coordinates, RGB values, input hashes and analyzer identity.
 The two projected-particle vertex differences remain the next investigation;
 actual projection inputs and intermediates are still needed to explain them.
+
+### Orbit particles: D3DX rounding
+
+Completed paired observations at frames 11,490 and 17,460 identify effect
+slots 349 and 462, both effect ID 13 with `EffectOrbitUpdate @ 0x00426030`.
+All 41 position/scratch words and eight state bytes agree except the final
+position coordinates. Quaternion orientation, radius, angle, camera and
+projection inputs agree. Re-evaluating the recorded native inputs reproduces
+all target projection locals and submitted XY words. The discrepancy begins
+before projection.
+
+A geometry-only portable capture repeats every selected playfield quad word:
+469 quads at frame 11,490 and 3,087 at frame 17,460, plus exact raw laser/VM
+packets. The inferior records `LP_NO_RAST=true`. Its scope is numerical
+observation; ordinary rasterized captures provide the image evidence.
+
+Two original-library arithmetic differences are reproduced without game
+assets:
+
+- `c_D3DXMatrixRotationQuaternion @ 0x004781CD` doubles quaternion components
+  before multiplication and subtracts diagonal terms separately. Its complete
+  226-byte archive member matches the target after its constant relocation;
+  the target literal at `0x004B42EC` is binary32 2.0.
+- The observed `D3DXVec3TransformCoord` dispatch points to `0x0048EDF0`.
+  Its SSE section matches all 256 bytes, including the alternate entry and
+  alignment tail. It adds `(X product + Y product) + (Z product + translation)`,
+  refines `RCPPS` once, then multiplies by the W reciprocal. This rounding
+  differs from direct division even for affine transforms with W=1.
+
+The reference archive is the SHA-pinned prerelease `D3DX8.LIB` in
+`config/library-provenance.toml`. Both comparisons are bounded diagnostic
+proofs; the library inventory and acceptance ledgers are unchanged. The
+modern adapter now follows these operations. Its standalone orbit evaluator
+reproduces both original positions and all matrix words. A sine-only control
+keeps the old position differences and is insufficient for these samples.
+
+The committed [golden inputs](../tests/fixtures/d3dx-rounding.json) contain two
+observed orbit quaternions, four observed projection inputs/results and two
+unit-W reciprocal cases. The fixture distinguishes observed target locals
+from original-library matrix outputs, identifies the reference CPU, and links
+the recording credits. `RCPPS` approximation is CPU-dependent; the optional
+native oracle runs on the same host as the portable probe.
+
+```bash
+python3 scripts/test-portable-d3dx-rounding.py \
+  --output-dir build/d3dx-rounding-goldens
+python3 scripts/test-portable-d3dx-rounding.py \
+  --baseline-ref d1b5ffe4 --expect-failure \
+  --output-dir build/d3dx-rounding-baseline
+python3 scripts/test-portable-d3dx-rounding.py --native --attest-target \
+  --output-dir build/d3dx-rounding-native
+```
+
+The default check passes all eight goldens; the historical adapter fails both
+quaternion and both unit-W cases. The native run additionally compares 128
+generated quaternions and 128 generated projective transforms: all 264 cases
+match every output word. It uses VC7, the hash-checked archive and single
+precision, records commands and hashes, and removes temporary executables and
+objects. `--attest-target` also repeats both archive/target section comparisons
+and checks the quaternion constant; it requires the canonical executable. Native mode requires the existing local VC7 environment; the golden
+check requires only a Linux compiler and SDL development headers.
+
+Actual-image and full-corpus gates for these new products are pending.
+Diagnostic evidence is under `build/laser-projection-inputs-20261015/`.
 
 ## Legacy OpenGL coverage, October 14, 2026
 

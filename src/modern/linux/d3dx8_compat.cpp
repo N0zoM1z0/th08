@@ -471,12 +471,15 @@ D3DXMATRIX *D3DXMatrixRotationZ(D3DXMATRIX *out, FLOAT angle)
 D3DXMATRIX *D3DXMatrixRotationQuaternion(D3DXMATRIX *out, const D3DXQUATERNION *q)
 {
     if (out == NULL || q == NULL) return NULL;
-    out->_11 = 1 - 2 * (q->y * q->y + q->z * q->z);
-    out->_12 = 2 * (q->x * q->y + q->z * q->w); out->_13 = 2 * (q->x * q->z - q->y * q->w); out->_14 = 0;
-    out->_21 = 2 * (q->x * q->y - q->z * q->w);
-    out->_22 = 1 - 2 * (q->x * q->x + q->z * q->z); out->_23 = 2 * (q->y * q->z + q->x * q->w); out->_24 = 0;
-    out->_31 = 2 * (q->x * q->z + q->y * q->w); out->_32 = 2 * (q->y * q->z - q->x * q->w);
-    out->_33 = 1 - 2 * (q->x * q->x + q->y * q->y); out->_34 = 0;
+    // Target D3DX8 doubles the components before the products and subtracts
+    // each diagonal term separately. Keep those float rounding steps.
+    const FLOAT x2 = 2.0f * q->x, y2 = 2.0f * q->y, z2 = 2.0f * q->z;
+    const FLOAT xx = x2 * q->x, xy = y2 * q->x, xz = z2 * q->x;
+    const FLOAT yy = y2 * q->y, yz = z2 * q->y, zz = z2 * q->z;
+    const FLOAT xw = x2 * q->w, yw = y2 * q->w, zw = z2 * q->w;
+    out->_11 = 1.0f - yy - zz; out->_12 = xy + zw; out->_13 = xz - yw; out->_14 = 0;
+    out->_21 = xy - zw; out->_22 = 1.0f - xx - zz; out->_23 = yz + xw; out->_24 = 0;
+    out->_31 = xz + yw; out->_32 = yz - xw; out->_33 = 1.0f - xx - yy; out->_34 = 0;
     out->_41 = out->_42 = out->_43 = 0; out->_44 = 1; return out;
 }
 
@@ -549,15 +552,39 @@ D3DXMATRIX *D3DXMatrixPerspectiveFovLH(D3DXMATRIX *out, FLOAT fov, FLOAT aspect,
     out->_34 = 1.0f; out->_43 = -nearZ * farZ / (farZ - nearZ); return out;
 }
 
+#if defined(__i386__) || defined(__x86_64__)
+__attribute__((target("sse")))
+#endif
 D3DXVECTOR3 *D3DXVec3TransformCoord(D3DXVECTOR3 *out, const D3DXVECTOR3 *value, const D3DXMATRIX *matrix)
 {
     if (out == NULL || value == NULL || matrix == NULL) return NULL;
+#if defined(__i386__) || defined(__x86_64__)
+    const __m128 xy = _mm_add_ps(
+        _mm_mul_ps(_mm_set1_ps(value->x), _mm_loadu_ps(&matrix->_11)),
+        _mm_mul_ps(_mm_set1_ps(value->y), _mm_loadu_ps(&matrix->_21)));
+    const __m128 zw = _mm_add_ps(
+        _mm_mul_ps(_mm_set1_ps(value->z), _mm_loadu_ps(&matrix->_31)),
+        _mm_loadu_ps(&matrix->_41));
+    const __m128 transformed = _mm_add_ps(xy, zw);
+    // Target D3DX8 refines RCPPS once, then multiplies by the W reciprocal.
+    // Preserve the same reciprocal rounding for affine and projective inputs.
+    const __m128 estimate = _mm_rcp_ps(transformed);
+    const __m128 reciprocal = _mm_sub_ps(_mm_add_ps(estimate, estimate),
+        _mm_mul_ps(_mm_mul_ps(estimate, transformed), estimate));
+    const __m128 result = _mm_mul_ps(transformed,
+        _mm_shuffle_ps(reciprocal, reciprocal, _MM_SHUFFLE(3, 3, 3, 3)));
+    FLOAT coordinates[4];
+    _mm_storeu_ps(coordinates, result);
+    out->x = coordinates[0]; out->y = coordinates[1]; out->z = coordinates[2];
+#else
     FLOAT x = value->x * matrix->_11 + value->y * matrix->_21 + value->z * matrix->_31 + matrix->_41;
     FLOAT y = value->x * matrix->_12 + value->y * matrix->_22 + value->z * matrix->_32 + matrix->_42;
     FLOAT z = value->x * matrix->_13 + value->y * matrix->_23 + value->z * matrix->_33 + matrix->_43;
     FLOAT w = value->x * matrix->_14 + value->y * matrix->_24 + value->z * matrix->_34 + matrix->_44;
     if (fabsf(w) > 1.0e-8f) { x /= w; y /= w; z /= w; }
-    out->x = x; out->y = y; out->z = z; return out;
+    out->x = x; out->y = y; out->z = z;
+#endif
+    return out;
 }
 
 D3DXVECTOR3 *D3DXVec3Project(D3DXVECTOR3 *out, const D3DXVECTOR3 *value, const D3DVIEWPORT8 *viewport,
