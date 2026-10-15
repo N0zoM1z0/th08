@@ -27,6 +27,30 @@ Separate retained-evidence passes recomputed all native comparisons and all
 portable comparisons. The portable `--verify-only` passes also checked capture
 identities, completion records, saved reports, and suite ledgers.
 
+### Native spell-background ownership refresh, October 15, 2026
+
+The native repair at source checkpoint `5dfd5197` routes dialogue/setup and
+spell start through `Background::spellVmScriptBase`. Its fresh VC7 bugfix
+product, SHA-256
+`9e699dd2c596acb090a5d44e9aa32b6c0bb19f0d5e11fe6a0babb0eb1469fd9b`,
+passes all 108 recordings and 12,311,460 calculations. All 25 fields,
+stage-end scores, published fingerprints and replay completion boundaries
+agree with retail. A separate retained-evidence pass recomputes and verifies
+all 108 comparisons.
+
+This refresh launches fresh serial candidate captures against validated
+retail references, with clock rate 128, rasterization disabled and the ptrace
+observer. The committed corpus and commands in
+[the native replay guide](REPLAY_TESTING.md#reproduce-published-results)
+reproduce the checks with a fresh bugfix build and matching map. Evidence is
+under `build/laser-native-20261014/main-full-state128/`. All temporary runtimes
+and the owned Wine prefix are removed.
+
+Five additional paired Final A captures run at clock rate 1 with rasterization
+and `csmt=0`. Their complete playfields are pixel-identical to retail, with
+exact laser/VM packets and 25 matching fields across the 22,590-calculation
+diagnostic prefix. These image checks complement the full gameplay traces.
+
 ## Coverage
 
 The [committed corpus](../tests/fixtures/replays/th08-1.00d/README.md) contains

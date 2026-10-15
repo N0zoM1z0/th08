@@ -295,6 +295,32 @@ def verify_spellcard_background_owner(
             )
 
 
+def verify_spell_background_script_owner(
+    target: PEImage, rebuild: PEImage, publics: dict[str, set[int]]
+) -> None:
+    """Require dialogue, setup, reset and spell start to share one field."""
+    if any(name.startswith("?g_GuiMessageStageMode@") for name in publics):
+        raise ValueError("linked image still owns standalone g_GuiMessageStageMode")
+    background = public_va(publics, "g_Background")
+    accesses = (
+        ("StartMessage", 0x0043396D, 0x446, b"\xc7\x05", struct.pack("<I", 2), 3),
+        ("GameplaySetupThread", 0x0043ABD7, 0xD5F, b"\xc7\x05", struct.pack("<I", 2), 3),
+        ("LoadEffectResources", 0x004284B0, 0xD8, b"\xc7\x05", struct.pack("<I", 0), 1),
+        ("StartSpell", SPELLCARD_START_SPELL_VA, SPELLCARD_START_SPELL_SIZE, b"\x03\x0d", b"", 1),
+    )
+    for name, address, size, opcode, suffix, expected in accesses:
+        for label, image, function, owner in (
+            ("target", target, address, 0x004E4030),
+            ("rebuild", rebuild, public_va(publics, name), background),
+        ):
+            pattern = opcode + struct.pack("<I", owner + 0xB34) + suffix
+            count = read_va(image, function, size).count(pattern)
+            if count != expected:
+                raise ValueError(
+                    f"{label} {name} has {count} Background::spellVmScriptBase accesses; expected {expected}"
+                )
+
+
 def verify_spellcard_calc_chain_owner(
     target: PEImage, rebuild: PEImage, publics: dict[str, set[int]]
 ) -> None:
@@ -714,6 +740,7 @@ def main() -> int:
         )
         verify_gui_enemy_name_owner(target, rebuild, publics)
         verify_spellcard_background_owner(target, rebuild, publics)
+        verify_spell_background_script_owner(target, rebuild, publics)
         verify_spellcard_calc_chain_owner(target, rebuild, publics)
         verify_homing_replay_input(target, rebuild, publics)
         verify_player_gauge_bounds_owner(target, rebuild, publics)
@@ -731,7 +758,8 @@ def main() -> int:
         "Last Spell count, 66 Effect templates, 9 stage bonuses, and "
         "12 dialogue palettes match the target; enemy-name copy selects "
         "Gui::frontAnm in all 8 linked loads; spell backgrounds select "
-        "EffectManager::stageEffectAnm; spellcard cleanup selects its registered "
+        "EffectManager::stageEffectAnm; all 7 spell-background script writes and "
+        "the spell-start read share Background::spellVmScriptBase; spellcard cleanup selects its registered "
         "lifetimeObject; homing options read replay-fed gameplay input; "
         "all 21 player gauge-bound writes select "
         "the six GameManager fields; all 3 Background draw gates call "
