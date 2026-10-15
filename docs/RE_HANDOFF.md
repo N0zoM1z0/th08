@@ -150,13 +150,16 @@ before i386 captures began. The completed worker's state is under
 Four Extra startup/active/despawn frames now pass against
 retail, with exact laser/VM packets and beam errors 0.001472–0.004902. The
 `extra-mokou` case pins their retail state hash; evidence is under
-`build/laser-extra-20261014/paired/`. A second serial worker now captures the refreshed
-i386 Stage 3, Stage 4B, Final A and Extra cases in default and OpenGL 2.1
-contexts. It compares and revalidates each capture against pinned retail
-evidence and stops on the first failure. Candidate, observer, comparator,
-case-manifest and reference hashes are pinned before waiting. Progress is in
-`build/laser-i386-refresh-20261014/queued-scene-gates.json`; continue the
-existing worker rather than launching overlapping captures.
+`build/laser-extra-20261014/paired/`. The second serial worker also completed
+the refreshed i386 Stage 3, Stage 4B, Final A and Extra cases in default and
+OpenGL 2.1 contexts. All eight groups and 34 new image/raw-state checks pass,
+including separate retained comparisons. With Final B, each context covers
+24 selected frames. Candidate, observer, comparator, case-manifest and
+reference hashes remain pinned. Its completed state is in
+`build/laser-i386-refresh-20261014/queued-scene-gates.json`; evidence is under
+`scene-default-*/` and `scene-legacy-*/` in the same directory. All temporary
+game runtimes are removed. Prepare the portable integration after reviewing
+the completed results and preserving the tested build identities.
 Issue #20's reported scene remains unspecified. Small font/sampling residuals,
 the Stage 5 color observations and native RT-007 retain their measured scope
 in the laser, rendering and runtime reports. AArch64 hardware and audio are

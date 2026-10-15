@@ -27,7 +27,9 @@ repair now passes all seven raw packets and 390 paired spawn-input records.
 Its complete 108-recording replay refresh and retained-evidence pass succeed.
 The new i386 product passes its API,
 renderer and Final B checks. Its full 108-recording gate and separate
-retained-evidence pass now succeed; the remaining scene refresh is running.
+retained-evidence pass now succeed. Its scene refresh also passes all five
+registered cases in default and OpenGL 2.1 contexts, with 24 selected frames
+per context and exact raw laser/VM packets.
 The [Extra case](#extra-laser-observation-october-15-2026) now passes four paired
 images with exact raw packets. The dated sections preserve each repair's evidence.
 
@@ -980,7 +982,7 @@ inputs also pass. Beam errors are identical to the repaired x86_64 product at
 retained-evidence pass now succeed: 12,311,460 calculations agree on all
 25 fields, stage-end scores, published fingerprints and natural exits.
 Temporary runtimes are removed, and all equal traces share reference storage.
-The scene refresh continues below. Evidence is under
+The completed scene refresh is recorded below. Evidence is under
 `build/laser-i386-refresh-20261014/`; the owned compiler tree has been removed.
 
 This build runs CMake, package discovery and Ninja together in the pinned
@@ -1017,6 +1019,50 @@ replays retain their own gates.
 Reproduce either portable context with `--case finalb-kaguya --retail`.
 Add `--legacy-gl` for the OpenGL 2.1 capture and use a separate output directory.
 The same case supports `--watch-laser-spawns 8000:8400` for input regression.
+
+### Completed i386 scene refresh, October 15, 2026
+
+The same `bd8b148c…` recorder passes fresh Stage 3, Stage 4B, Final A and
+Extra captures in both contexts. Every raw laser/VM packet agrees with the
+pinned retail reference. A second comparison of each retained capture also
+passes. The table reports the largest beam-region mean RGB error in each
+case; the pass limit remains 1.0.
+
+| Case | Frames per context | Default maximum error | OpenGL 2.1 maximum error |
+| --- | ---: | ---: | ---: |
+| Stage 3, Keine | 4 | 0.591680 | 0.591713 |
+| Stage 4B, Marisa | 4 | 0.021046 | 0.021176 |
+| Final A, Eirin | 5 | 0.812111 | 0.811995 |
+| Extra, Mokou | 4 | 0.004902 | 0.005123 |
+
+Together with the seven Final B frames above, these checks cover 24 selected
+frames per context. Stage 3 uses the default portable font; its title-band
+differences retain the scope measured earlier. Passing image thresholds
+supports these selected scenes, while exact raw-state comparisons establish
+agreement in the captured laser/VM fields.
+
+Evidence is under `build/laser-i386-refresh-20261014/scene-default-*/` and
+`scene-legacy-*/`, with `comparison.json` and `revalidation.json` in each
+capture directory. All 34 pinned queue inputs retain their original hashes;
+all temporary game runtimes are removed. The full 108-recording gameplay
+gate and its independent retained-evidence pass are recorded in
+[the replay results](REPLAY_RESULTS.md).
+
+Use the registered cases to reproduce the images with a fresh i386 Debug
+recorder and original game data:
+
+```bash
+for case in stage3-keine stage4b-marisa finala-eirin extra-mokou finalb-kaguya; do
+  python3 scripts/analysis/check-laser-visuals.py \
+    --candidate build/i386-replay/th08-modern \
+    --game-data-dir "/path/to/original/TH08 directory" \
+    --case "$case" --retail --output-dir "build/i386-default-$case"
+  python3 scripts/analysis/check-laser-visuals.py \
+    --candidate build/i386-replay/th08-modern \
+    --game-data-dir "/path/to/original/TH08 directory" \
+    --case "$case" --retail --legacy-gl --output-dir "build/i386-legacy-$case"
+done
+```
 
 ## Final A observation, October 14, 2026
 
