@@ -183,14 +183,13 @@ eight renderer/FPU groups and 68/68 observed-quad images per context, plus
 are removed. See [the candidate report](PORTABLE_LASER_VISUALS.md#production-candidate-october-15-2026)
 for source hashes, measurements and reproduction commands.
 
-The x86_64 worker is running the full 108-recording corpus and retained gate.
-Its same scheduler resumed after each bounded diagnostic. The i386 worker
-waits for x86_64, reuses only the matching passed API preflight, then runs its
-scene and full-corpus gates. Inspect live process identities and state under
-`build/laser-sampling-production-20261015/`:
+The sampling candidate's workers are superseded. Its x86_64 attempt retains
+65 completed replay comparisons and one captured case without a completed
+suite comparison. Its 10 scene/context groups remain passed. The queued i386
+worker was retired before scene/corpus execution. Inspect the retirement
+record in `build/laser-d3dx-math-repair-20261015/obsolete-retirement.json`;
+only the latest products continue through the full gates.
 
-- `worker-handle.json` and `serial-gates.json`: x86_64.
-- `i386-worker-handle.json` and `i386-serial-gates.json`: queued i386.
 - `production*/build-provenance.json`: tested products and all build inputs.
 
 Keep production inputs unchanged while these pinned jobs run. Bounded alpha
@@ -244,7 +243,7 @@ The completed human/agent documentation batch is retained in the
 
 The isolated worktree `.analysis/portable-alpha-test/` holds branch
 `fix/portable-alpha-test`, implementation checkpoint `80d7635d`. The original
-working tree keeps its existing x86_64/i386 corpus workers on the sampling
+working tree retains the earlier x86_64/i386 artifacts for the sampling
 baseline. Keep those baseline results separate from the alpha candidates.
 
 The first alpha implementation, `1514eaed`, fixes actual Final B frame 14,280:
@@ -278,7 +277,7 @@ Reproduce from the alpha branch with
 See [the control guide](../tests/fixtures/render-controls/README.md) and the
 [laser report](PORTABLE_LASER_VISUALS.md#alpha-pipeline-candidate-october-15-2026).
 
-Evidence and live workers are under `build/laser-alpha-repair-20261015/`:
+Evidence and completed/retired worker records are under `build/laser-alpha-repair-20261015/`:
 
 - `production-cached*/build-provenance.json`: clean build-start identity,
   132 hashes, commands and products. Compiler trees are removed.
@@ -299,10 +298,8 @@ Evidence and live workers are under `build/laser-alpha-repair-20261015/`:
   compile commands, raw timings and checksums. The public rerun is in the
   isolated worktree's `build/cached-alpha-benchmark/`.
 
-The following candidate continues the residual investigation. The original
-workers retain their earlier products; read their live state under
-`build/laser-sampling-production-20261015/`. Keep build inputs frozen while
-pinned gates run.
+The following candidate continues the residual investigation. The earlier products and their retirement scopes remain recorded under
+`build/laser-sampling-production-20261015/`. Keep the latest gate inputs frozen.
 
 ## Sincos precision candidate
 
@@ -352,13 +349,10 @@ coordinates without changing the strict image comparison.
 
 `api-gates.json` passes all eight current-source profiles: two architectures,
 two GL contexts, and alpha-state/low-alpha filtering, each with 6,144 samples.
-`queued-gates.json` and `worker-handles.json` identify the replacement serial
-worker. It pins 286 inputs, waits for both original platform workers to pass,
-then checks five scenes in both contexts on both architectures, followed by
-108 recordings and retained verification per architecture. Only the matching
-new seven-frame capture is reused. These broader gates remain pending.
-The retired alpha worker must remain stopped. This candidate has no complete
-scene/corpus claim yet.
+The sincos candidate's queued worker was retired before any scene/corpus
+gate started. Its completed numerical and seven-frame evidence remains
+specific to that source. The D3DX candidate below replaces it for full gates.
+The retired alpha and sincos queues must remain stopped.
 
 The regional comparator now supports `--frame`, conservative
 `--selection intersecting-bounds` and `--check`. All captured rows and stages
@@ -414,10 +408,58 @@ objects and executables are removed. Reference inputs and recording-credit
 links are committed in `tests/fixtures/d3dx-rounding.json`.
 
 Evidence and diagnostic prototypes remain under
-`build/laser-projection-inputs-20261015/`. Clean source-pinned x86_64/i386
-products, actual-frame checks and full-corpus gates for this repair are next.
-The existing frozen scene/corpus workers retain their earlier scope and
-process handles; inspect their live states before starting another game.
+`build/laser-projection-inputs-20261015/`. The latest source-pinned products and completed focused gates are recorded
+below. Their scene/full-corpus worker is the sole active game queue.
 The geometry-only observer still needs publication as a general capture
 option; the public API probe and ordinary seven-frame capture commands are
 already reproducible.
+
+Source checkpoint `d64dafd8` is committed and pushed. Both fresh products pass
+ELF/global ownership verification with 132 commit-attested inputs; only
+`src/modern/linux/d3dx8_compat.cpp` changes from the sincos product:
+
+- GCC 8 x86_64: `ef33728154500c7cf8ecfefa6abf32d2f4fd2bf7ab22c32ef4e0b86d5ac09dc2`.
+- GCC 12 i386: `5b639a5a2112d1dd9b2c8786d1ab21fdb78346d4273295c08ba7bb252dbe9a55`.
+
+The phase is `build/laser-d3dx-math-repair-20261015/`. `build-worker.json` is
+passed and its compiler trees are removed. Both production compiler profiles
+pass 264 original-library math cases and both archive/target attestations.
+Renderer contracts pass in both GL contexts on both architectures, including
+the i386 device-precision case. `api-gates.json` is passed; its worker and the
+build worker are terminal with exit code 0.
+
+`finalb-worker.json` is passed and inactive. All seven x86_64 default-context
+frames have exact laser/VM packets and zero changed RGB pixels in the entire
+playfield below the title band `(32, 64)`–`(416, 464)`. This resolves all 23
+prior full-playfield residuals, including both remaining beam-mask pixels.
+Title text and timing-dependent HUD content retain their separate scope.
+
+`obsolete-retirement.json` records retirement of the original x86_64 worker
+and scheduler at a completed recording boundary, plus the unstarted old i386
+and sincos queues. The original corpus retains 65 completed comparisons;
+its remaining captured case is not counted as a completed suite comparison.
+No old candidate is marked as having passed a complete corpus.
+
+`queued-worker-handle.json` identifies the sole active game queue, PID
+1110151, process start 94543796, session 48287. It pins 302 inputs and runs
+five scenes in both GL contexts on both architectures, then 108 recordings
+and retained verification per architecture. Only the matching new seven-frame
+capture is reused. `queued-gates.json` records each gate. Production source,
+products, root capture tools and reference evidence stay frozen. Inspect
+actual processes before starting another game. The full gates are in flight;
+no complete-corpus claim is made for `d64dafd8` yet.
+
+The first broad worker stopped after two completed scene groups because it
+rewrote the already-pinned Final B build-provenance sidecar. No image/state
+gate failed. The original sidecar bytes are restored and every previous pin
+except the intentionally revised controller is verified. The resumed worker
+preserves existing provenance, revalidates completed captures and continues
+with Stage 4B. `queued-gates-first-attempt.json` preserves the earlier state;
+`queued-gates-resumed.log` and the current handle identify the resumed run.
+
+An additional reciprocal boundary probe passes both production architectures
+for zero/signed/tiny W values. Its 15 cases include an original-library
+initialization call: the first D3DX call uses its C fallback while filling the
+shared fast table. Warming that table before vector cases matches the game's
+observed active SSE dispatch. `reciprocal-boundaries.json` records all words
+and commands; `check-reciprocal-boundaries.py` is still a private diagnostic.
