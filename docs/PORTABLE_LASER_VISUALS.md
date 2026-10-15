@@ -35,6 +35,10 @@ images with exact raw packets. The dated sections preserve each repair's evidenc
 The [October 15 sampling candidate](#production-candidate-october-15-2026)
 passes its API checks and all 48 selected game images across both context
 profiles; its complete corpus gates remain in progress.
+The [sincos follow-up](#sincos-candidate-seven-frame-verification) also repairs
+laser rotation rounding. Its seven Final B frames retain two changed pixels
+inside the outside-title beam masks and 23 across the whole playfield below
+the title band, each at most 1/255. Broader gates for this candidate are queued.
 
 ### Status of the seven initial failures
 
@@ -1311,10 +1315,10 @@ the repaired low-alpha rendering without changing the ordinary image gate.
 The seven-frame capture takes about 354 seconds and resumes the same original
 full-corpus scheduler afterwards. Its evidence is under
 `build/laser-alpha-repair-20261015/cached-finalb/` and
-`cached-finalb-summary.json`; all temporary runtimes are removed. The serial
-queued worker waits for the existing platform jobs, then checks the remaining
-scenes and both complete replay corpora with the frozen cached products.
-Those pending gates remain separate from this completed seven-frame result.
+`cached-finalb-summary.json`; all temporary runtimes are removed. Its broad queued worker was retired before
+starting any gate when the newer sincos candidate passed the same capture.
+The replacement queue tests the newer products; the seven-frame result above
+remains specific to the cached checkpoint.
 
 ### Four residual pixels: vertex-input localization
 
@@ -1347,9 +1351,9 @@ macro calls `sinf`/`cosf`. For this input, glibc `cosf` returns `0x3efa8c2a`;
 80-digit trigonometry rounded to binary32 gives `0x3efa8c2b`. The latter,
 computed by double `cos` then converted to float, restores all eight observed
 XY coordinate words through the same float arithmetic. The matching sine is
-`0x3f5f411a`. A standalone positive/negative-angle test fails with the current
-header and passes the private double-then-float control. A fresh game product
-is still required before claiming the corresponding pixel repair.
+`0x3f5f411a`. The standalone golden-case test fails with the preceding
+header and passes the double-then-float repair. The following fresh game
+capture verifies the corresponding pixel change.
 
 The other two quads have projected Z 0.9993928670883179. Their nearly square
 edges measure about 24.000003 versus 24.000731 pixels at frame 11,490, and
@@ -1386,15 +1390,18 @@ python3 scripts/analysis/compare-sprite-quads.py \
   --output build/finalb-quads/vertex-comparison.json
 ```
 
-Against that synchronized reference, the beam-omission control is detected:
+### Retained sampling-candidate checks
+
+At checkpoint `2fd6a51b`, against the synchronized frame-14,280 reference,
+the beam-omission control is detected:
 the beam mean rises from 0.023551 to 41.223733. Existing error localization
 assigns 2.2% of the residual RGB error to cap regions, 54.1% to pixels changed
 by beam omission and 43.7% to the remainder. These are spatial/control
 partitions, with the meaning documented in `analyze-laser-errors.py`.
 `finalb-14280-error-partition.json` and
 `finalb-14280-omission-revalidation.json` retain those checks. The remaining
-small error therefore has aligned local vertex inputs; texture contents and
-GPU interpolation remain the next bounded measurements.
+small error at that checkpoint has aligned local vertex inputs. The alpha-test
+investigation above later attributes and repairs this frame's residual.
 
 All four Stage 4B default-context image/state checks and retained comparisons
 also pass. Their beam means are 0.004278, 0.000999, 0.003865 and 0.020752 at
@@ -1440,6 +1447,72 @@ compiler versions and compile commands. All 640 extended surface API cases
 also agree with the pinned D3DX8 reference. Evidence is under `production-i386/`, `i386-contracts-*/`,
 `i386-probe-*/` and `i386-preflight.json` in this phase directory. The compiler
 tree and completed contract executables are removed.
+
+### Sincos candidate: seven-frame verification
+
+Checkpoint `0c9f0ef4` evaluates the modern sincos macro in double precision,
+then stores binary32 results, following the observed target rounding for
+these angles. All four callers draw ANM geometry. The native VC7 macro is
+unchanged. Eight golden inputs and a preceding-header failure control pass,
+as do the i386 single-precision test and existing vector contracts. A cold
+single-job comparison retains all 1,106 accepted authored exact matches.
+
+Fresh source-pinned products:
+
+- GCC 8 x86_64: `25af84840b5175da7718f640359c9f9220d8c1f5c68f6d686a512f1cc9d1c370`.
+- GCC 12 i386: `8faef6f0234480746122fb9f4987ad906fddce516ddb61aa61d5cbf7959560a4`.
+
+The x86_64 default-context capture passes all seven Final B image limits with
+exact laser/VM packets. Both laser-slot-84 differences disappear. The table
+separates beam-mask measurements from the complete playfield below the title
+band, rectangle `(32, 64)`–`(416, 464)`:
+
+| Frame | Changed beam-mask pixels below title | Changed complete-playfield pixels below title |
+| ---: | ---: | ---: |
+| 8,400 | 0 | 3 |
+| 11,160 | 0 | 4 |
+| 11,490 | 1 | 6 |
+| 12,240 | 0 | 4 |
+| 14,280 | 0 | 0 |
+| 16,770 | 0 | 0 |
+| 17,460 | 1 | 6 |
+| Total across frames | 2 | 23 |
+
+All residual channel errors in this table are at most 1/255. The two beam
+pixels are `(307, 179)` at frame 11,490 and `(329, 90)` at frame 17,460.
+Compared with the cached candidate, only the two repaired pixels change in
+the complete playfield; no new differences appear. This resolves 405 of the
+original 407 outside-title beam-mask differences. Title text and the HUD have
+separate measurements; the table excludes them.
+
+Reports are under `build/laser-sincos-repair-20261015/`: `finalb/`,
+`finalb-summary.json`, and `pixel-regression.json`. The compiler trees are
+removed. All eight alpha/filter API profiles pass against current source
+(two architectures and two contexts, 6,144 samples per profile). The new
+serial worker waits for the earlier platform jobs, then runs all five scenes
+in both contexts and both architectures, followed by 108 recordings and
+retained verification per architecture. Those broader gates remain pending.
+
+Reproduce the actual seven-frame observation and both pixel scopes:
+
+```bash
+python3 scripts/analysis/check-laser-visuals.py \
+  --candidate build/portable-linux-x86_64/th08-modern \
+  --game-data-dir "/path/to/original/TH08 directory" \
+  --fixture lunatic-0-b --stage 7 \
+  --frames 8400,11160,11490,12240,14280,16770,17460 \
+  --retail --wine-csmt 0 --output-dir build/sincos-finalb
+python3 scripts/analysis/summarize-laser-pixels.py \
+  --reference build/sincos-finalb/retail --candidate build/sincos-finalb \
+  --full-playfield --top-pixels 32 --output build/sincos-finalb-pixels.json
+python3 scripts/test-portable-sincos.py
+python3 scripts/test-portable-sincos.py --baseline-ref b4e70194 --expect-failure
+```
+
+The summary verifies both regional totals against the strict comparison and
+retains residual coordinates, RGB values, input hashes and analyzer identity.
+The two projected-particle vertex differences remain the next investigation;
+actual projection inputs and intermediates are still needed to explain them.
 
 ## Legacy OpenGL coverage, October 14, 2026
 

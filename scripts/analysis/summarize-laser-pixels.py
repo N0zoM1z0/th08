@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Measure laser-region pixel differences inside and outside the title band."""
+"""Measure laser-mask and optional full-playfield differences across the title band."""
 import argparse
 import heapq
 import importlib.util
@@ -14,8 +14,12 @@ comparison = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(comparison)
 
 
-def partition(reference, candidate, lasers, top_pixels=0):
-    mask, _ = comparison.geometry_mask(lasers)
+def partition(reference, candidate, lasers, top_pixels=0, full_playfield=False):
+    if full_playfield:
+        mask = Image.new("L", (640, 480))
+        mask.paste(255, (32, 16, 416, 464))
+    else:
+        mask, _ = comparison.geometry_mask(lasers)
     regions = {name: dict(pixels=0, absoluteRgbSum=0, differentPixels=0,
                           pixelsAboveMean32=0, maximumChannelError=0)
                for name in ("header", "outsideHeader")}
@@ -58,6 +62,8 @@ def main():
     parser.add_argument("--output", type=Path, required=True, help="Fresh JSON file under build/")
     parser.add_argument("--top-pixels", type=int, default=0,
                         help="Retain up to this many largest differences per region (0 through 32)")
+    parser.add_argument("--full-playfield", action="store_true",
+                        help="Also measure the complete playfield, including pixels outside laser geometry")
     args = parser.parse_args()
     if not 0 <= args.top_pixels <= 32:
         parser.error("Top pixel count must be between 0 and 32")
@@ -70,11 +76,15 @@ def main():
                   geometry="Retail laser geometry clipped to the playfield; includes other layers drawn there",
                   reference=str(args.reference.resolve()), candidate=str(args.candidate.resolve()),
                   maximumExamplesPerRegion=args.top_pixels,
+                  fullPlayfieldRectangle=[32, 16, 416, 464] if args.full_playfield else None,
                   analyzerSha256=comparison.digest(Path(__file__)), frames=[])
     for record, paired in zip(records, strict["frames"]):
         filename = f"frame-{record['frame']}.png"
         with Image.open(args.reference / filename) as expected, Image.open(args.candidate / filename) as actual:
-            regions = partition(expected.convert("RGB"), actual.convert("RGB"), record["lasers"], args.top_pixels)
+            expected, actual = expected.convert("RGB"), actual.convert("RGB")
+            regions = partition(expected, actual, record["lasers"], args.top_pixels)
+            if args.full_playfield:
+                playfield_regions = partition(expected, actual, record["lasers"], args.top_pixels, True)
         pixels = sum(region["pixels"] for region in regions.values())
         total = sum(region["absoluteRgbSum"] for region in regions.values())
         if pixels != paired["laserGeometryPixels"]:
@@ -82,6 +92,16 @@ def main():
         if pixels and abs(total / (3 * pixels) - paired["laserMeanAbsoluteRgbDifference"]) > 1e-12:
             raise ValueError("Region errors do not reproduce the strict image comparison")
         report["frames"].append(dict(stage=record["stage"], frame=record["frame"], regions=regions))
+        if args.full_playfield:
+            count = sum(region["pixels"] for region in playfield_regions.values())
+            error = sum(region["absoluteRgbSum"] for region in playfield_regions.values())
+            if count != 384 * 448 or abs(error / (3 * count) - paired["playfieldMeanAbsoluteRgbDifference"]) > 1e-12:
+                raise ValueError("Full playfield regions do not reproduce the strict playfield measurement")
+            report["frames"][-1]["fullPlayfieldRegions"] = playfield_regions
+            remaining = playfield_regions["outsideHeader"]
+            print(f"Stage index {record['stage']}, frame {record['frame']}: "
+                  f"{remaining['differentPixels']} changed full-playfield pixels below the title band; "
+                  f"maximum channel error {remaining['maximumChannelError']}/255")
         outside = regions["outsideHeader"]
         print(f"Stage index {record['stage']}, frame {record['frame']}: "
               f"{outside['differentPixels']} changed laser-mask pixels outside the title band; "

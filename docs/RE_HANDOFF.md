@@ -292,44 +292,81 @@ Evidence and live workers are under `build/laser-alpha-repair-20261015/`:
   PID 653259 is resumed; `active` is false. Capture time is about 354 seconds.
 - `cached-api-gates.json`: passed remaining x86_64 filtering and four i386
   API profiles. Probe executables and owned Wine prefixes are removed.
-- `queued-cached-gates.json`: waits for the two original platform workers,
-  then requires the passed seven-frame capture and API gate. It runs all
-  five scenes in both contexts and both architectures, reusing only the
-  matching seven-frame capture, then each full corpus and retained gate.
-  `worker-handles.json` pins the live focused and queued process identities.
+- `queued-cached-gates.json`: retired before any gate started, after the
+  newer sincos candidate passed its seven-frame capture. The retirement
+  report records the replacement worker and source checkpoint.
 - `alpha-benchmark*/report.json`: generated probe, renderer/binary identities,
   compile commands, raw timings and checksums. The public rerun is in the
   isolated worktree's `build/cached-alpha-benchmark/`.
 
-Next, localize the four remaining 1/255 pixels and inspect the retained API
-reports. The queued worker
-will run the remaining cached-candidate scene and full-corpus gates after its
-prerequisites pass; it stops on a failed prerequisite or comparison. The original
-workers continue their earlier products after each bounded capture; read their
-live state under `build/laser-sampling-production-20261015/`. Keep all build
-inputs frozen while the relevant pinned gates run.
+The following candidate continues the residual investigation. The original
+workers retain their earlier products; read their live state under
+`build/laser-sampling-production-20261015/`. Keep build inputs frozen while
+pinned gates run.
 
-## Sincos precision follow-up
+## Sincos precision candidate
 
-The next source candidate is isolated in `.analysis/portable-sincos-precision/`,
-branch `fix/portable-sincos-precision`. It changes only the modern sincos macro:
-compute double sine/cosine, then store float, matching the observed target's
-FSINCOS/FSTP behavior. The native VC7 branch remains the original source.
+The follow-up is isolated in `.analysis/portable-sincos-precision/`, branch
+`fix/portable-sincos-precision`, source checkpoint `0c9f0ef4`. It changes only
+the modern sincos macro to double evaluation followed by float stores. Its
+only changed input among the 132 build inputs is `src/ZunMath.hpp`.
 
-Paired frame 17,460 maps differing quad 1,031 to laser slot 84. Its identical
-VM rotation is `0x3f879c1a`; glibc cosf returns `0x3efa8c2a`, while the target
-coordinate result and 80-digit oracle require `0x3efa8c2b`. The corrected
-calculation restores all eight XY words. Eight independent golden samples,
-the old-header failure control, i386 single-precision mode, and the existing
-10 vector contracts pass. All 82 selected accepted AnmManager comparisons
-pass after rebuilding the affected objects. A complete cold gate and a fresh
-modern game capture are next; no actual-pixel repair is claimed yet.
+A synchronous paired capture of frames 11,490 and 17,460 repeats all four
+residual pixels. Both retail playfields match the retained retail exactly;
+both portable playfields match the ordinary cached candidate. Region input
+comparisons find three differing quads. Quad 1,031 at frame 17,460 is laser
+slot 84's body VM, with identical recorded VM fields. Its angle `0x3f879c1a`
+exposes glibc cosf `0x3efa8c2a` versus the observed target-compatible and
+80-digit-oracle result `0x3efa8c2b`. The corrected arithmetic restores all
+observed XY words. The other two residuals occur on projected particle quads;
+their projection inputs still need observation.
 
-The other two residual pixels belong to projected particle quads, with small
-scale differences. Their projection inputs still need a bounded observation.
-The preceding cached product's workers retain their frozen source tree and
-continue independently. Current follow-up reports are under
-`build/laser-residual-pixels-20261015/`; paired evidence is in the alpha
-worktree's `build/residual-paired-quads/`. The new precision CLI is
-`python3 scripts/test-portable-sincos.py`; add `--baseline-ref b4e70194
---expect-failure` for the observed Linux failure control.
+Eight golden sincos cases, the preceding-header failure control, i386
+single-precision mode and the existing 10 vector contracts pass. The selected
+82 AnmManager comparisons and the full 1,106-unit single-job cold comparison
+pass against the canonical target. Reports are in
+`build/laser-residual-pixels-20261015/`. VC7 object/PCH/PDB intermediates are
+removed after comparison.
+
+Fresh recorder products, both with verified ELF/global ownership, are under
+`build/laser-sincos-repair-20261015/`:
+
+- GCC 8 x86_64: `25af84840b5175da7718f640359c9f9220d8c1f5c68f6d686a512f1cc9d1c370`.
+- GCC 12 i386: `8faef6f0234480746122fb9f4987ad906fddce516ddb61aa61d5cbf7959560a4`.
+
+`production*/build-provenance.json` records the clean source commit, all
+inputs, commands and product hashes. Their compiler trees are removed.
+`finalb-worker.json` records a completed seven-frame x86_64 default-context
+capture with exact laser/VM packets. The original scheduler is resumed and
+`active` is false. The two laser-slot-84 pixels disappear; the only remaining
+outside-title beam differences are frame 11,490 at `(307, 179)` and frame
+17,460 at `(329, 90)`, each at most 1/255. This resolves 405 of the original
+407 beam-mask differences in that region.
+
+The complete playfield below the title band has 23 remaining changed pixels
+across the seven frames, all at most 1/255. Only the two repaired pixels change
+between candidates; no new image differences appear. `pixel-regression.json`
+records both scopes. From the sincos branch, `summarize-laser-pixels.py
+--full-playfield --top-pixels 32` reports both masks and all these residual
+coordinates without changing the strict image comparison.
+
+`api-gates.json` passes all eight current-source profiles: two architectures,
+two GL contexts, and alpha-state/low-alpha filtering, each with 6,144 samples.
+`queued-gates.json` and `worker-handles.json` identify the replacement serial
+worker. It pins 286 inputs, waits for both original platform workers to pass,
+then checks five scenes in both contexts on both architectures, followed by
+108 recordings and retained verification per architecture. Only the matching
+new seven-frame capture is reused. These broader gates remain pending.
+The retired alpha worker must remain stopped. This candidate has no complete
+scene/corpus claim yet.
+
+The regional comparator now supports `--frame`, conservative
+`--selection intersecting-bounds` and `--check`. All captured rows and stages
+are validated before local selection. The new packed-precision probe matches
+1,572,864 RGB samples for each point/quarter-texel-linear profile. Reproduce
+these methods from the alpha or sincos branch using the
+[control guide](../tests/fixtures/render-controls/README.md#exhaustive-packed-color-precision).
+For the scalar repair, run `python3 scripts/test-portable-sincos.py` from the
+sincos branch, or use `--baseline-ref b4e70194 --expect-failure` for its recorded
+Linux failure control. Both new probes use generated data and remove their
+executables, raw buffers and owned temporary runtimes.

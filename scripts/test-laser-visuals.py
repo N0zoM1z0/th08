@@ -98,6 +98,25 @@ class LaserSpawnTests(unittest.TestCase):
         self.assertEqual(result["differences"][0]["field"], "recordCount")
 
 
+class FullPlayfieldScopeTests(unittest.TestCase):
+    def test_full_scope_includes_nonlaser_pixels_and_excludes_hud(self):
+        spec = importlib.util.spec_from_file_location("pixel_summary", Path(__file__).parent / "analysis/summarize-laser-pixels.py")
+        summary = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(summary)
+        reference = Image.new("RGB", (640, 480))
+        candidate = reference.copy()
+        for point in ((307, 179), (40, 32), (500, 20), (10, 10)):
+            candidate.putpixel(point, (1, 0, 0))
+        beam = summary.partition(reference, candidate, [])
+        self.assertEqual(sum(region["differentPixels"] for region in beam.values()), 0)
+        full = summary.partition(reference, candidate, [], top_pixels=8, full_playfield=True)
+        self.assertEqual(full["header"]["differentPixels"], 1)
+        self.assertEqual(full["outsideHeader"]["differentPixels"], 1)
+        self.assertEqual(sum(region["pixels"] for region in full.values()), 384 * 448)
+        point = full["outsideHeader"]["largestDifferences"][0]
+        self.assertEqual((point["x"], point["y"]), (307, 179))
+
+
 class CaptureThreadingTests(unittest.TestCase):
     def invoke(self, options, native=False):
         (capture.ROOT / "build").mkdir(exist_ok=True)
