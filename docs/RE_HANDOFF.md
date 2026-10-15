@@ -239,3 +239,15 @@ supports a shared-layout rename.
 
 The completed human/agent documentation batch is retained in the
 [handoff archive](RE_HANDOFF_HISTORY.md#replay-investigation-handoff--2026-10-13).
+
+## Alpha-pipeline implementation candidate
+
+Branch `fix/portable-alpha-test` prepares the alpha-test repair in the isolated
+worktree `.analysis/portable-alpha-test/`. The original working tree keeps its
+frozen x86_64/i386 corpus workers. The fragment program belongs to each device
+context, is released before context destruction, and is unbound after draws.
+It preserves fixed-function vertex processing and handles the used texture,
+diffuse and texture-factor materials, all eight alpha comparisons and linear
+fog. Default and forced OpenGL 2.1 alpha-state matrices each match Wine on all
+6,144 samples. The 7 renderer contract groups pass. Whole-game builds and
+fresh actual scene captures remain required before acceptance.

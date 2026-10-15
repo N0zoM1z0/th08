@@ -452,6 +452,138 @@ void ConfigureTextureComponent(GLenum combineParameter, GLenum source0Parameter,
     glTexEnvi(GL_TEXTURE_ENV, operand1Parameter, operand);
 }
 
+
+// Fragment processing keeps alpha in floating point through the test. The
+// compatibility vertex pipeline still supplies positions, colors, UVs and fog.
+class AlphaFragmentPipeline
+{
+  public:
+    AlphaFragmentPipeline() : program(0), initialized(false) {}
+    bool Bind(const DWORD *render, const DWORD *stage, bool textured, bool fog)
+    {
+        if (!initialized && !Initialize()) return false;
+        if (!program) return false;
+        useProgram(program);
+        uniform1i(imageLocation, 0);
+        uniform4i(materialLocation, stage[D3DTSS_COLOROP], stage[D3DTSS_ALPHAOP], textured, fog);
+        uniform4i(argumentsLocation, stage[D3DTSS_COLORARG1], stage[D3DTSS_COLORARG2],
+                  stage[D3DTSS_ALPHAARG1], stage[D3DTSS_ALPHAARG2]);
+        const DWORD factor = render[D3DRS_TEXTUREFACTOR];
+        uniform4f(factorLocation, ((factor >> 16) & 255) / 255.0f,
+                  ((factor >> 8) & 255) / 255.0f, (factor & 255) / 255.0f,
+                  ((factor >> 24) & 255) / 255.0f);
+        uniform1i(comparisonLocation, render[D3DRS_ALPHAFUNC]);
+        uniform1f(referenceLocation, (render[D3DRS_ALPHAREF] & 255) / 255.0f);
+        glDisable(GL_ALPHA_TEST);
+        return true;
+    }
+    void Unbind() { useProgram(0); }
+    void Destroy()
+    {
+        if (program) deleteProgram(program);
+        program = 0;
+    }
+  private:
+    bool Initialize()
+    {
+        initialized = true;
+#define LOAD_GL(member, type, spelling) member = reinterpret_cast<type>(SDL_GL_GetProcAddress(spelling)); if (!member) return false
+        LOAD_GL(createShader, PFNGLCREATESHADERPROC, "glCreateShader");
+        LOAD_GL(shaderSource, PFNGLSHADERSOURCEPROC, "glShaderSource");
+        LOAD_GL(compileShader, PFNGLCOMPILESHADERPROC, "glCompileShader");
+        LOAD_GL(getShaderiv, PFNGLGETSHADERIVPROC, "glGetShaderiv");
+        LOAD_GL(getShaderInfoLog, PFNGLGETSHADERINFOLOGPROC, "glGetShaderInfoLog");
+        LOAD_GL(deleteShader, PFNGLDELETESHADERPROC, "glDeleteShader");
+        LOAD_GL(createProgram, PFNGLCREATEPROGRAMPROC, "glCreateProgram");
+        LOAD_GL(attachShader, PFNGLATTACHSHADERPROC, "glAttachShader");
+        LOAD_GL(linkProgram, PFNGLLINKPROGRAMPROC, "glLinkProgram");
+        LOAD_GL(getProgramiv, PFNGLGETPROGRAMIVPROC, "glGetProgramiv");
+        LOAD_GL(getProgramInfoLog, PFNGLGETPROGRAMINFOLOGPROC, "glGetProgramInfoLog");
+        LOAD_GL(deleteProgram, PFNGLDELETEPROGRAMPROC, "glDeleteProgram");
+        LOAD_GL(useProgram, PFNGLUSEPROGRAMPROC, "glUseProgram");
+        LOAD_GL(getUniformLocation, PFNGLGETUNIFORMLOCATIONPROC, "glGetUniformLocation");
+        LOAD_GL(uniform1i, PFNGLUNIFORM1IPROC, "glUniform1i");
+        LOAD_GL(uniform1f, PFNGLUNIFORM1FPROC, "glUniform1f");
+        LOAD_GL(uniform4i, PFNGLUNIFORM4IPROC, "glUniform4i");
+        LOAD_GL(uniform4f, PFNGLUNIFORM4FPROC, "glUniform4f");
+#undef LOAD_GL
+        const char *source =
+            "#version 120\n"
+            "uniform sampler2D image; uniform ivec4 material, arguments; uniform vec4 factor;"
+            "uniform int comparison; uniform float reference;"
+            "vec4 argument(int selector, vec4 texel) {"
+            "  int base = int(mod(float(selector), 16.0));"
+            "  vec4 result = base == 2 ? texel : (base == 3 ? factor : gl_Color);"
+            "  if (mod(floor(float(selector) / 32.0), 2.0) != 0.0) result = vec4(result.a);"
+            "  if (mod(floor(float(selector) / 16.0), 2.0) != 0.0) result = vec4(1.0) - result;"
+            "  return result; }"
+            "vec4 operation(int op, vec4 a, vec4 b) {"
+            "  if (op == 1) return gl_Color; if (op == 2) return a; if (op == 3) return b; return a * b; }"
+            "bool passes(float a) {"
+            "  if (comparison == 1) return false; if (comparison == 2) return a < reference;"
+            "  if (comparison == 3) return a == reference; if (comparison == 4) return a <= reference;"
+            "  if (comparison == 5) return a > reference; if (comparison == 6) return a != reference;"
+            "  if (comparison == 7) return a >= reference; return true; }"
+            "void main() {"
+            "  vec4 texel = material.z != 0 ? texture2D(image, gl_TexCoord[0].xy) : vec4(1.0);"
+            "  vec4 color = vec4(operation(material.x, argument(arguments.x, texel), argument(arguments.y, texel)).rgb,"
+            "                    operation(material.y, argument(arguments.z, texel), argument(arguments.w, texel)).a);"
+            "  if (!passes(color.a)) discard;"
+            "  if (material.w != 0) {"
+            "    float fog = clamp((gl_Fog.end - gl_FogFragCoord) * gl_Fog.scale, 0.0, 1.0);"
+            "    color.rgb = mix(gl_Fog.color.rgb, color.rgb, fog); }"
+            "  gl_FragColor = color; }";
+        GLuint shader = createShader(GL_FRAGMENT_SHADER);
+        if (!shader) return false;
+        shaderSource(shader, 1, &source, NULL); compileShader(shader);
+        GLint success; getShaderiv(shader, GL_COMPILE_STATUS, &success);
+        if (!success)
+        {
+            char log[2048]; GLsizei length; getShaderInfoLog(shader, sizeof(log), &length, log);
+            fprintf(stderr, "th08-modern: alpha fragment shader failed: %.*s\n", int(length), log);
+            deleteShader(shader); return false;
+        }
+        program = createProgram();
+        if (!program) { deleteShader(shader); return false; }
+        attachShader(program, shader); linkProgram(program); deleteShader(shader);
+        getProgramiv(program, GL_LINK_STATUS, &success);
+        if (!success)
+        {
+            char log[2048]; GLsizei length; getProgramInfoLog(program, sizeof(log), &length, log);
+            fprintf(stderr, "th08-modern: alpha fragment program failed: %.*s\n", int(length), log);
+            Destroy(); return false;
+        }
+        imageLocation = getUniformLocation(program, "image");
+        materialLocation = getUniformLocation(program, "material");
+        argumentsLocation = getUniformLocation(program, "arguments");
+        factorLocation = getUniformLocation(program, "factor");
+        comparisonLocation = getUniformLocation(program, "comparison");
+        referenceLocation = getUniformLocation(program, "reference");
+        return true;
+    }
+    GLuint program;
+    bool initialized;
+    GLint imageLocation, materialLocation, argumentsLocation, factorLocation, comparisonLocation, referenceLocation;
+    PFNGLCREATESHADERPROC createShader;
+    PFNGLSHADERSOURCEPROC shaderSource;
+    PFNGLCOMPILESHADERPROC compileShader;
+    PFNGLGETSHADERIVPROC getShaderiv;
+    PFNGLGETSHADERINFOLOGPROC getShaderInfoLog;
+    PFNGLDELETESHADERPROC deleteShader;
+    PFNGLCREATEPROGRAMPROC createProgram;
+    PFNGLATTACHSHADERPROC attachShader;
+    PFNGLLINKPROGRAMPROC linkProgram;
+    PFNGLGETPROGRAMIVPROC getProgramiv;
+    PFNGLGETPROGRAMINFOLOGPROC getProgramInfoLog;
+    PFNGLDELETEPROGRAMPROC deleteProgram;
+    PFNGLUSEPROGRAMPROC useProgram;
+    PFNGLGETUNIFORMLOCATIONPROC getUniformLocation;
+    PFNGLUNIFORM1IPROC uniform1i;
+    PFNGLUNIFORM1FPROC uniform1f;
+    PFNGLUNIFORM4IPROC uniform4i;
+    PFNGLUNIFORM4FPROC uniform4f;
+};
+
 class LinuxDevice : public IDirect3DDevice8
 {
   public:
@@ -500,6 +632,7 @@ class LinuxDevice : public IDirect3DDevice8
         if (vertexBuffer != NULL) vertexBuffer->Release();
         if (backbuffer != NULL) backbuffer->Release();
         DestroyRenderTarget();
+        alphaFragment.Destroy();
         if (context != NULL) SDL_GL_DeleteContext(context);
     }
     bool Ready() const { return context != NULL && backbuffer != NULL && framebufferReady; }
@@ -1033,14 +1166,25 @@ class LinuxDevice : public IDirect3DDevice8
         if (hasDiffuse) offset += 4;
         if (fvf & D3DFVF_SPECULAR) offset += 4;
         bool hasTexture = (fvf & D3DFVF_TEXCOUNT_MASK) != 0; UINT textureOffset = offset;
-        PrepareState(transformed); glBegin(PrimitiveMode(type));
+        PrepareState(transformed);
+        const bool alphaShader = renderStates[D3DRS_ALPHATESTENABLE] != FALSE;
+        if (alphaShader)
+        {
+            const bool textured = texture != NULL &&
+                (TextureOperationUsesTexture(textureStates[D3DTSS_COLOROP], textureStates[D3DTSS_COLORARG1], textureStates[D3DTSS_COLORARG2]) ||
+                 TextureOperationUsesTexture(textureStates[D3DTSS_ALPHAOP], textureStates[D3DTSS_ALPHAARG1], textureStates[D3DTSS_ALPHAARG2]));
+            const bool fog = renderStates[D3DRS_FOGENABLE] &&
+                             renderStates[D3DRS_FOGVERTEXMODE] == D3DFOG_LINEAR && g_fogCoordf != NULL;
+            if (!alphaFragment.Bind(renderStates, textureStates, textured, fog)) return E_FAIL;
+        }
+        glBegin(PrimitiveMode(type));
         for (UINT index = 0; index < count; ++index)
         {
             const BYTE *vertex = data + index * stride; float x, y, z, w, fogCoordinate;
             TransformPosition(reinterpret_cast<const float *>(vertex), transformed, &x, &y, &z, &w,
                               &fogCoordinate);
             D3DCOLOR color = hasDiffuse ? *reinterpret_cast<const D3DCOLOR *>(vertex + colorOffset) : 0xffffffffu;
-            color = EffectiveColor(color);
+            if (!alphaShader) color = EffectiveColor(color);
             if (hasTexture)
             {
                 const float *uv = reinterpret_cast<const float *>(vertex + textureOffset);
@@ -1057,8 +1201,9 @@ class LinuxDevice : public IDirect3DDevice8
                 g_fogCoordf(fogCoordinate);
             glVertex4f(x, y, transformed ? z : w - 2.0f * z, w);
         }
-        glEnd(); return S_OK;
+        glEnd(); if (alphaShader) alphaFragment.Unbind(); return S_OK;
     }
+    AlphaFragmentPipeline alphaFragment;
     ULONG refs;
     SDL_Window *window;
     SDL_GLContext context;
