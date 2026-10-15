@@ -193,8 +193,9 @@ scene and full-corpus gates. Inspect live process identities and state under
 - `i386-worker-handle.json` and `i386-serial-gates.json`: queued i386.
 - `production*/build-provenance.json`: tested products and all build inputs.
 
-Keep production inputs unchanged while these pinned jobs run. No further
-game diagnostic is queued ahead of their completion. A missing uncompressed
+Keep production inputs unchanged while these pinned jobs run. Bounded alpha
+captures suspend the same scheduler at recording boundaries; the active
+alpha-repair section below records their pause ownership. A missing uncompressed
 capture log can mean successful compression; inspect completion metadata and
 live processes before treating a job as failed.
 
@@ -212,9 +213,8 @@ not a complete-frame fix. Other residuals still need attribution.
 The new profile is `probe-texture-filtering.py --alpha-test`. Its diagnostic
 patch and reproduction commands are in
 [the controls guide](../tests/fixtures/render-controls/README.md#floating-point-alpha-test-control).
-Next, implement the required material/alpha-test states after the pinned gates
-finish, then rerun actual scenes. Keep the current products and baseline gate
-results separate from that next candidate. Reports and regional probe source
+The isolated implementation and new candidate gates are recorded below.
+Keep the current products and baseline results separate from the alpha repair. Reports and regional probe source
 are under `build/laser-sampling-production-20261015/`; transient original
 texture bytes, Wine prefixes and executables are removed.
 
@@ -239,3 +239,64 @@ supports a shared-layout rename.
 
 The completed human/agent documentation batch is retained in the
 [handoff archive](RE_HANDOFF_HISTORY.md#replay-investigation-handoff--2026-10-13).
+
+## Active alpha-test repair
+
+The isolated worktree `.analysis/portable-alpha-test/` holds branch
+`fix/portable-alpha-test`, implementation checkpoint `80d7635d`. The original
+working tree keeps its existing x86_64/i386 corpus workers on the sampling
+baseline. Keep those baseline results separate from the alpha candidates.
+
+The first alpha implementation, `1514eaed`, fixes actual Final B frame 14,280:
+all 12,059 beam-mask pixels agree with retail, all 92 earlier changed mask
+pixels disappear, and the complete playfield below the title band is
+pixel-identical. Laser/VM words agree exactly. Title text and HUD differences
+retain their separate scope. Its dynamic shader has a confirmed synthetic
+performance cost, so it remains a diagnostic checkpoint.
+
+The cached implementation specializes material operations, comparison and
+fog while retaining alpha-reference and texture-factor uniforms. Its two
+fresh products have the same 132 pinned build inputs and pass ELF/owner checks:
+
+- GCC 8 x86_64: `e41f8717fc26dd04373696f6e720f850137204cce4af5befe0c224b5b79fb5fb`.
+- GCC 12 i386: `b09cb926b396d4c8346337a0b5b11024a9496de8a3bdbfafa8f8db25f8ffb948`.
+
+The x86_64 cached alpha-state matrix passes 6,144 samples in both GL contexts;
+its alpha-enabled legacy observed-quad probe passes 68/68 images. A warmed,
+interleaved three-round benchmark gives medians 0.360763 seconds for cached,
+0.371129 fixed-function and 0.327325 narrow float control, with equal float
+variant image checksums. Repeating through the public benchmark gives
+0.440766 cached and 0.437427 fixed-function. The earlier dynamic program took
+0.775951 versus the narrow control's 0.348062. These are synthetic rendering
+measurements; whole-game gates remain required.
+
+Reproduce from the alpha branch with
+`benchmark-alpha-pipeline.py --baseline-ref 575c2368`. The matrix profile is
+`probe-texture-filtering.py --alpha-states`, and `probe-subpixel-quads.py
+--alpha-test` checks observed vertices with the actual alpha-test state.
+See [the control guide](../tests/fixtures/render-controls/README.md) and the
+[laser report](PORTABLE_LASER_VISUALS.md#alpha-pipeline-candidate-october-15-2026).
+
+Evidence and live workers are under `build/laser-alpha-repair-20261015/`:
+
+- `production-cached*/build-provenance.json`: clean build-start identity,
+  132 hashes, commands and products. Compiler trees are removed.
+- `finalb-frame/` and `finalb-frame-summary.json`: the slower dynamic candidate's
+  actual-frame proof. `candidate-build-provenance.json` binds its separate build;
+  the original source-commit metadata identifies capture tools.
+- `cached-finalb-worker.json` and `check-cached-finalb.py`: wait for the current
+  recording boundary, capture/compare all seven cached Final B frames, then
+  resume the same scheduler PID 653259. Inspect `active` and the actual process
+  before starting another game capture.
+- `cached-api-gates.json`: serial remaining x86_64 filtering and four i386
+  API profiles. Check its live process before starting another compiler.
+- `alpha-benchmark*/report.json`: generated probe, renderer/binary identities,
+  compile commands, raw timings and checksums. The public rerun is in the
+  isolated worktree's `build/cached-alpha-benchmark/`.
+
+Next, inspect those two active workers and their retained reports. Complete
+this seven-frame gate, then choose the remaining cached-candidate scene and
+full-corpus gates. No broad cached-candidate job is queued yet. The original
+workers continue their earlier products after each bounded capture; read their
+live state under `build/laser-sampling-production-20261015/`. Keep all build
+inputs frozen while the relevant pinned gates run.
