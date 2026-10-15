@@ -26,7 +26,8 @@ exposed a one-ULP laser-origin difference at frame 8,400. The ECL sine/cosine
 repair now passes all seven raw packets and 390 paired spawn-input records.
 Its complete 108-recording replay refresh and retained-evidence pass succeed.
 The new i386 product passes its API,
-renderer and Final B checks; its remaining scene and full-corpus gates follow.
+renderer and Final B checks. Its full 108-recording gate and separate
+retained-evidence pass now succeed; the remaining scene refresh is running.
 The [Extra case](#extra-laser-observation-october-15-2026) now passes four paired
 images with exact raw packets. The dated sections preserve each repair's evidence.
 
@@ -975,8 +976,11 @@ ELF32 and fixed-layout ownership checks pass. The extended surface probe
 passes all 640 pinned-D3DX8 API cases, and seven default renderer/FPU contract
 groups pass. All seven Final B image/raw-state checks and all 390 paired spawn
 inputs also pass. Beam errors are identical to the repaired x86_64 product at
-0.003476–0.144060. Other scenes, legacy-context repetitions and the full replay
-corpus remain separate gates. Evidence is under
+0.003476–0.144060. Its full 108-recording replay gate and separate
+retained-evidence pass now succeed: 12,311,460 calculations agree on all
+25 fields, stage-end scores, published fingerprints and natural exits.
+Temporary runtimes are removed, and all equal traces share reference storage.
+The scene refresh continues below. Evidence is under
 `build/laser-i386-refresh-20261014/`; the owned compiler tree has been removed.
 
 This build runs CMake, package discovery and Ninja together in the pinned

@@ -81,8 +81,19 @@ stage-end scores, published fingerprints and natural exits. All temporary
 runtimes are removed; the 108 equal traces share validated reference storage.
 Evidence is under `build/laser-spawn-origin-20261014/x64-suite/` and
 `x64-suite-revalidation.log`. This completed gate supersedes the earlier
-73-recording snapshot. The refreshed i386 product's complete replay and
-remaining scene gates are still running or queued.
+73-recording snapshot.
+
+The refreshed GCC 12 i386 product, SHA-256
+`bd8b148c0ac6a478391ee4c1fea7334ac1f473466418131715cda4e1a900ce40`,
+source `ed8ff8df`, also passes all 108 recordings and a separate
+`--verify-only` pass: 12,311,460 calculations agree on all 25 fields,
+recorded stage-end scores, published fingerprints and natural exits. The
+runner launches fresh serial candidate processes against validated retail
+references, with rasterization disabled. All temporary runtimes are removed;
+all 108 equal traces share reference storage. Evidence is under
+`build/laser-i386-refresh-20261014/full-suite/`, `full-suite-revalidation.log`
+and `full-suite-audit.json`. Its refreshed scene checks follow the complete
+gameplay gate and are recorded in the laser report.
 
 ## Coverage
 

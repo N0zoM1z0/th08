@@ -129,8 +129,12 @@ renderer/FPU contract groups pass in each of the default and forced OpenGL 2.1
 contexts. All seven Final B
 image/raw-state checks and 390 paired spawn inputs pass in each context. The
 `finalb-kaguya` manifest pins the original state file and passes retained checks
-for x86_64 and both i386 contexts. Other laser scenes and the
-complete corpus remain pending. CMake, package discovery and
+for x86_64 and both i386 contexts. The complete 108-recording corpus and
+separate retained-evidence pass also succeed: 12,311,460 calculations agree
+on all 25 fields, scores, fingerprints and natural exits. All temporary
+runtimes are removed; equal traces share reference storage. Evidence is under
+`full-suite/`, `full-suite-revalidation.log` and `full-suite-audit.json` in that
+phase directory. CMake, package discovery and
 Ninja run together inside the borrowed GCC 12 container, limited to one CPU,
 768 MiB and one job. The compiler tree has been removed. Use the container
 commands in [PORTABLE_REPLAY_TESTING.md](PORTABLE_REPLAY_TESTING.md) to reproduce
@@ -138,17 +142,15 @@ that environment.
 The earlier i386 product's results remain in
 [PORTABLE_LASER_VISUALS.md](PORTABLE_LASER_VISUALS.md#i386-refresh-october-14-2026).
 
-A serial worker completed the x86_64 and new native 108-recording gates and
-their retained-evidence passes. It is now capturing the refreshed i386 corpus;
-its retained-evidence verification follows automatically. Product hashes are
+A serial worker completed the x86_64, new native and refreshed i386
+108-recording gates and all three retained-evidence passes. Product hashes are
 pinned. The owned native Wine prefix was removed after native verification,
-before i386 captures began. Progress is under
-`build/laser-i386-refresh-20261014/queued-platform-gates.json`. Continue those
-existing jobs. Four Extra startup/active/despawn frames now pass against
+before i386 captures began. The completed worker's state is under
+`build/laser-i386-refresh-20261014/queued-platform-gates.json`.
+Four Extra startup/active/despawn frames now pass against
 retail, with exact laser/VM packets and beam errors 0.001472–0.004902. The
 `extra-mokou` case pins their retail state hash; evidence is under
-`build/laser-extra-20261014/paired/`. A second serial worker waits for all
-platform gates and their retained-evidence passes, then captures the refreshed
+`build/laser-extra-20261014/paired/`. A second serial worker now captures the refreshed
 i386 Stage 3, Stage 4B, Final A and Extra cases in default and OpenGL 2.1
 contexts. It compares and revalidates each capture against pinned retail
 evidence and stops on the first failure. Candidate, observer, comparator,
