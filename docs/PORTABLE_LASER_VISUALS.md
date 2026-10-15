@@ -24,7 +24,8 @@ product also passes all 108 recordings and retained-evidence verification.
 The added [Final B samples](#final-b-precision-observation-october-14-2026)
 exposed a one-ULP laser-origin difference at frame 8,400. The ECL sine/cosine
 repair now passes all seven raw packets and 390 paired spawn-input records.
-Its complete replay refresh is running. The new i386 product passes its API,
+Its complete 108-recording replay refresh and retained-evidence pass succeed.
+The new i386 product passes its API,
 renderer and Final B checks; its remaining scene and full-corpus gates follow.
 The [Extra case](#extra-laser-observation-october-15-2026) now passes four paired
 images with exact raw packets. The dated sections preserve each repair's evidence.
@@ -1216,8 +1217,12 @@ and comparisons are under `main-finala-paired/` in that phase directory.
 The capture tools are pinned separately from compiled source checkpoint
 `5dfd5197`. Both owned Wine prefixes and temporary runtimes have been removed;
 the retained paired evidence occupies about 5 MiB. The new main product's
-complete native replay gate remains pending before PR/merge. The earlier
-108-recording pass remains tied to its preceding executable.
+complete native replay gate and separate retained-evidence verification now
+pass all 108 recordings and 12,311,460 calculations, including all 25 fields,
+stage-end scores, published fingerprints and completion boundaries. Evidence
+is under `build/laser-native-20261014/main-full-state128/`; temporary runtimes
+and the owned Wine prefix are removed. Earlier passes retain their product
+identities.
 
 Reproduce with a fresh bugfix link and matching map by adding
 `--wine-csmt 0` to the native image command above.
@@ -1277,7 +1282,10 @@ and seven image/packet checks successfully. Its SHA-256 is
 `e0a57a43520524713b70dbaa38329155fd6ab4a09006869b4f09db8dbcc27649`,
 with provenance under `production-final/`. All 132 recorded build-input hashes
 agree with that checkpoint after LF normalization. Its 108-recording refresh
-is running under `x64-suite/`; a retained-evidence pass follows automatically.
+and separate retained-evidence pass both succeed under `x64-suite/`:
+12,311,460 calculations agree on all 25 fields, stage-end scores, fingerprints
+and natural exits. The equal traces share validated reference storage, and
+all temporary runtimes are removed.
 Evidence is under `build/laser-spawn-origin-20261014/`. Both owned compiler
 trees and the superseded initial repair executable are removed; its metadata
 and comparison reports remain.

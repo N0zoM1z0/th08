@@ -91,9 +91,10 @@ after LF normalization. Evidence is under
 
 The ECL opcode 32/33 repair passes 390 paired spawn-input records and seven
 Final B laser/VM packets. All seven images pass the original beam limit.
-The complete 108-recording gate is running under
-`build/laser-spawn-origin-20261014/x64-suite/`, with retained-evidence verification
-queued after it. Continue the existing job and output identity. Earlier
+The complete 108-recording gate and retained-evidence verification pass under
+`build/laser-spawn-origin-20261014/x64-suite/`: 12,311,460 calculations, all
+25 fields, scores, fingerprints and natural exits agree. All temporary
+runtimes are removed, and equal traces share reference storage. Earlier
 full-corpus results apply to their published products, as recorded in
 [REPLAY_RESULTS.md](REPLAY_RESULTS.md).
 
@@ -105,7 +106,10 @@ pass the owner/data/callee checks. The new bugfix product is
 Its five fresh Final A captures at clock rate 1, with rasterization and
 `csmt=0`, have identical retail laser/VM packets and pixel-identical complete
 playfields. The paired 22,590-calculation diagnostic prefix agrees on all
-25 fields. Its full native replay gate remains pending before a main PR/merge.
+25 fields. Its full native replay gate and separate retained-evidence pass
+also pass all 108 recordings and 12,311,460 calculations, with matching fields,
+scores, fingerprints and completion boundaries. The native backport is merged
+in [PR #31](https://github.com/N0zoM1z0/th08/pull/31), main checkpoint `08c7f00f`.
 Products and reports are under `build/laser-native-20261014/main-production/`
 and `main-finala-paired/`.
 
@@ -134,11 +138,11 @@ that environment.
 The earlier i386 product's results remain in
 [PORTABLE_LASER_VISUALS.md](PORTABLE_LASER_VISUALS.md#i386-refresh-october-14-2026).
 
-A serial worker is queued after the current x86_64 capture and retained-evidence
-pass. It runs the new native product's 108-recording gate, revalidates it, then
-runs and revalidates the i386 corpus. Its product hashes are pinned, and its
-owned native Wine prefix is removed immediately after native verification,
-before i386 captures begin. Progress is under
+A serial worker completed the x86_64 and new native 108-recording gates and
+their retained-evidence passes. It is now capturing the refreshed i386 corpus;
+its retained-evidence verification follows automatically. Product hashes are
+pinned. The owned native Wine prefix was removed after native verification,
+before i386 captures began. Progress is under
 `build/laser-i386-refresh-20261014/queued-platform-gates.json`. Continue those
 existing jobs. Four Extra startup/active/despawn frames now pass against
 retail, with exact laser/VM packets and beam errors 0.001472–0.004902. The

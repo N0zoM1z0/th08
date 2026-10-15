@@ -44,8 +44,17 @@ a passing cold 1,106-unit gate. Its new bugfix product
 `9e699dd2c596acb090a5d44e9aa32b6c0bb19f0d5e11fe6a0babb0eb1469fd9b`
 passes five fresh paired Final A images with `csmt=0`: complete playfields are
 pixel-identical, raw laser/VM packets agree, and all 25 fields agree across
-the 22,590-calculation diagnostic prefix. Its complete replay gate remains
-pending; these bounded captures support the stated image and prefix scope.
+the 22,590-calculation diagnostic prefix. Its complete 108-recording replay
+gate and separate retained-evidence pass now also succeed: 12,311,460
+calculations agree on all 25 fields, stage-end scores, published fingerprints
+and replay completion boundaries. The refresh uses serial candidate captures
+against validated retail references, clock rate 128, no rasterization and the
+ptrace observer. Evidence is under
+`build/laser-native-20261014/main-full-state128/`; temporary runtimes and the
+owned Wine prefix are removed.
+
+The main backport is merged in
+[PR #31](https://github.com/N0zoM1z0/th08/pull/31), checkpoint `08c7f00f`.
 
 The [laser investigation](PORTABLE_LASER_VISUALS.md) records the visual
 reproduction, canonical field ownership and image comparisons. Its latest
@@ -60,18 +69,20 @@ Source checkpoint is `183cd755`; evidence is under
 samples exposed a one-ULP laser-origin difference at frame 8,400 in fields
 outside the gameplay trace. The subsequent ECL sine/cosine repair passes all
 seven image/packet checks and 390 paired spawn-input records; its full corpus
-refresh remains separate. The laser guide retains the failed and repaired
+refresh is recorded below. The laser guide retains the failed and repaired
 evidence.
 Earlier portable full-corpus results remain tied to the products listed below.
 
-The subsequent ECL-repaired x86_64 product `e0a57a43…`, source `897decb2`, has
-an independently revalidated 73-recording snapshot: 8,029,533 calculations
-agree on all 25 fields, recorded stage-end scores, published fingerprints and
-natural exits. All 73 temporary runtimes are removed and their equal traces
-share the validated reference storage. Evidence is under
-`build/laser-spawn-origin-20261014/partial-revalidation-summary.json`.
-The full 108-recording capture and its final retained-evidence pass remain
-active; this snapshot supports the stated subset only.
+The subsequent ECL-repaired x86_64 product, SHA-256
+`e0a57a43520524713b70dbaa38329155fd6ab4a09006869b4f09db8dbcc27649`,
+source `897decb2`, passes all 108 recordings and its separate retained-evidence
+verification: 12,311,460 calculations agree on all 25 fields, recorded
+stage-end scores, published fingerprints and natural exits. All temporary
+runtimes are removed; the 108 equal traces share validated reference storage.
+Evidence is under `build/laser-spawn-origin-20261014/x64-suite/` and
+`x64-suite-revalidation.log`. This completed gate supersedes the earlier
+73-recording snapshot. The refreshed i386 product's complete replay and
+remaining scene gates are still running or queued.
 
 ## Coverage
 
