@@ -32,6 +32,9 @@ registered cases in default and OpenGL 2.1 contexts, with 24 selected frames
 per context and exact raw laser/VM packets.
 The [Extra case](#extra-laser-observation-october-15-2026) now passes four paired
 images with exact raw packets. The dated sections preserve each repair's evidence.
+The [October 15 sampling candidate](#production-candidate-october-15-2026)
+passes its API checks and the first eleven Stage 3/Final B game images;
+the other scene and corpus gates remain in progress.
 
 ### Status of the seven initial failures
 
@@ -41,7 +44,7 @@ the surface-filter-repaired x86_64 recorder, SHA-256
 `7eb846a665867ed9e8a1c19484d2c0fe1ee586954f0ecca3b1b756223e0e0853`.
 All raw laser and VM packets still agree exactly with retail.
 
-| Stage | Frame | Baseline mean RGB error | Current mean RGB error | Current result |
+| Stage | Frame | Baseline mean RGB error | Surface-filter checkpoint error | Checkpoint result |
 | --- | ---: | ---: | ---: | --- |
 | 3 | 12,900 | 2.831371 | 0.591680 | Pass |
 | 3 | 14,130 | 2.609911 | 0.263236 | Pass |
@@ -109,6 +112,45 @@ Border Team, Lunatic, Final B recording `lunatic-0-b`:
 
 Phases can overlap across laser slots. The runner requires the selected state
 to be present in each frame. It starts directly at the recorded stage.
+
+## Run all registered scene cases
+
+This Bash loop captures each retail case once and checks both portable context
+profiles against it. It runs one game at a time, stops at the first failure,
+and writes a pixel-region summary for each pair. Use a fresh output root.
+The five cases cover 24 selected frames per portable profile. They complement
+the [full gameplay replay corpus](PORTABLE_REPLAY_TESTING.md); selected image
+checks and gameplay-state checks have different coverage.
+
+```bash
+set -e
+th08_candidate=build/portable-linux-x86_64/th08-modern
+th08_game_data="/path/to/original/TH08 directory"
+th08_scene_root=build/laser-scene-matrix
+test ! -e "$th08_scene_root"
+for scene in stage3-keine stage4b-marisa finala-eirin finalb-kaguya extra-mokou; do
+  python3 scripts/analysis/check-laser-visuals.py \
+    --candidate "$th08_candidate" --game-data-dir "$th08_game_data" \
+    --case "$scene" --retail --output-dir "$th08_scene_root/default/$scene"
+  python3 scripts/analysis/check-laser-visuals.py \
+    --candidate "$th08_candidate" --game-data-dir "$th08_game_data" \
+    --case "$scene" --legacy-gl --output-dir "$th08_scene_root/legacy/$scene"
+  python3 scripts/analysis/compare-laser-visuals.py \
+    --reference "$th08_scene_root/default/$scene/retail" \
+    --candidate "$th08_scene_root/legacy/$scene" \
+    --output "$th08_scene_root/legacy/$scene/comparison.json"
+  for profile in default legacy; do
+    python3 scripts/analysis/summarize-laser-pixels.py \
+      --reference "$th08_scene_root/default/$scene/retail" \
+      --candidate "$th08_scene_root/$profile/$scene" \
+      --output "$th08_scene_root/$profile/$scene/pixel-summary.json"
+  done
+done
+```
+
+Completed captures can be rechecked with the comparator and summary commands
+without launching a game. Preserve their metadata and original hashes when
+moving evidence; keep generated captures under `build/`.
 
 ## Stage 3 observation, October 13, 2026
 
@@ -754,8 +796,8 @@ bottom row. This localizes the edge to rasterization rather than the observed
 input coordinates. A private viewport-only experiment leaves all 34 solid
 cases different; an upper-left clip-origin experiment matches all 34.
 
-The Linux renderer now selects the upper-left clip origin when
-`GL_ARB_clip_control` is available. Its projection retains the existing image
+At that checkpoint the Linux renderer selected the upper-left clip origin when
+`GL_ARB_clip_control` was available. Its projection retained the existing image
 orientation. Presentation and CPU backbuffer uploads use their lower-left
 blit convention explicitly. The first repair kept the older path for contexts
 without clip control; the [legacy gate below](#legacy-opengl-coverage-october-14-2026)
@@ -950,19 +992,95 @@ Evidence is under `build/laser-sampling-refresh-20261015/`, in
 Each report pins inputs and source hashes. The observer pins its Wine DLL,
 entry bytes and matrix words; it changes no target instructions.
 
-Production renderer source is unchanged. This probe covers RHW=1 quads with
-depth disabled and two synthetic materials. The next step is a production
-candidate with depth, other vertex formats, orientation and real-game image
-checks. The selected gameplay images retain their existing passing limits;
-this API result does not close all gameplay image residuals.
+The controls above leave production source unchanged and cover RHW=1 quads
+with depth disabled and two synthetic materials. The production candidate
+below extends the check to other rendering behavior and game frames.
+
+### Production candidate, October 15, 2026
+
+Source checkpoint `2fd6a51b` moves the transformed half-pixel correction into
+the viewport projection and selects the first-vertex convention where the
+OpenGL extension is supported. Both context profiles use the same offscreen
+row orientation. CPU uploads, readback, clears and presentation follow it.
+The production backend passes 68/68 observed-input API images in each context.
+
+The candidate also preserves reciprocal-depth texture interpolation and checks
+depth across vertex formats. Its new `depthrange` contract catches an old
+ordering defect: an XYZRHW quad at Z=0.30 incorrectly covered an XYZ quad at
+Z=0.25 when the viewport range was `(0.2, 0.8)`. The repaired paths agree on
+that range. The contract also checks nonunit RHW, return to XYZ and disabled
+depth with out-of-range Z. It passes the candidate and reproduces the old
+failure at `d44868af`. Default and OpenGL 2.1 checks pass all seven groups
+across locks, perspective, clipping, depth range, fog, edges and orientation;
+the [renderer guide](PORTABLE_RENDERING.md#pixel-contracts-without-game-assets)
+provides commands, including the failure control. Repository CI passes.
+
+The fresh GCC 8 x86_64 Debug product is
+`dcf14c0c8014073a15e9c1df7fcba45ccf5a6e9f1963cc2ff2e17c60fc4ed611`.
+Its provenance pins all 132 build inputs and the clean source checkpoint.
+ELF64/native-global ownership verification passes. The compiler tree and
+completed contract executables have been removed.
+
+Its first four actual Stage 3 frames pass the original image gate, with exact
+laser/VM packets. Outside the title band, the remaining changed laser-mask
+pixels have maximum channel error 4/255:
+
+| Frame | Beam mean RGB error | Changed mask pixels outside title | Maximum channel error outside title |
+| ---: | ---: | ---: | ---: |
+| 12,900 | 0.590982 | 23 | 4 |
+| 14,130 | 0.245659 | 0 | 0 |
+| 14,310 | 0.000687 | 38 | 4 |
+| 14,490 | 0.527065 | 38 | 4 |
+
+The title band retains larger differences. A laser geometry mask includes
+other layers rendered at the same pixels, so these region counts describe
+image locations rather than an isolated laser layer. Reproduce the counts
+with the summary tool; it validates the paired capture and checks that the
+regions reconstruct the strict mask's pixel count and total error:
+
+```bash
+python3 scripts/analysis/summarize-laser-pixels.py \
+  --reference build/laser-retail \
+  --candidate build/laser-portable \
+  --output build/laser-pixel-summary.json
+```
+
+The same product also passes all seven Final B images with exact laser/VM
+packets and a separate retained comparison. Every frame's beam mean improves
+over product `e0a57a43…`:
+
+| Frame | Beam mean RGB error | Changed mask pixels outside title | Maximum channel error outside title |
+| ---: | ---: | ---: | ---: |
+| 8,400 | 0.002173 | 68 | 6 |
+| 11,160 | 0.003768 | 19 | 4 |
+| 11,490 | 0.005141 | 184 | 6 |
+| 12,240 | 0.001058 | 9 | 4 |
+| 14,280 | 0.023551 | 92 | 16 |
+| 16,770 | 0.142039 | 25 | 4 |
+| 17,460 | 0.000296 | 10 | 4 |
+
+At frame 16,770, the outside-title mean is 0.000455; the larger total includes
+title-band differences. Frame 14,280 retains the largest outside-title channel
+error in this set and remains a useful localization target. The region script
+reproduces these counts from `scene-default-finalb-kaguya/` and the pinned
+retail capture. `finalb-pixel-summary.json` retains the strict comparison and
+region measurements.
+
+Evidence is under `build/laser-sampling-production-20261015/`. A serial worker
+is repeating all five scene cases in both context profiles, then the complete
+108-recording corpus and retained-evidence checks. Its state is in
+`serial-gates.json`; a failed comparison stops the queue. These pending gates
+are required before promoting this candidate. Stage 3 and Final B default
+captures have passed; Stage 4B is running. Native products and the earlier
+published corpus results retain their recorded scope.
 
 ## Legacy OpenGL coverage, October 14, 2026
 
 Disabling `GL_ARB_clip_control` reproduces the pre-repair top-edge failure at
-source checkpoint `da521dcf`. The renderer now stores the logical top at the
+source checkpoint `da521dcf`. That repair stores the logical top at the
 lowest FBO row in this mode. Readback, CPU writes, viewport clears, framebuffer
-audit regions, and presentation use the same mapping. The clip-control path
-keeps its existing orientation.
+audit regions, and presentation use the same mapping. At that checkpoint the
+clip-control path kept its existing orientation.
 
 Both default and forced OpenGL 2.1 contexts pass six asset-free renderer
 contract groups, including asymmetric clears and actual Xvfb window pixels.

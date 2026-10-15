@@ -183,8 +183,24 @@ images in default and OpenGL 2.1 contexts. Renderer checks cover texture
 perspective, depth, clipping, fog, edges and window orientation. The new
 viewport-depth contract also checks XYZ/XYZRHW transitions and disabled-depth
 Z clipping; it passes the candidate and reproduces the old ordering defect at
-`d44868af`. Next, build the full product and repeat the real-game image gates
-before promoting this candidate. Production-candidate evidence is under
+`d44868af`. The full GCC 8 x86_64 Debug product is built and passes ELF64 and
+native-global ownership verification. Its SHA-256 is
+`dcf14c0c8014073a15e9c1df7fcba45ccf5a6e9f1963cc2ff2e17c60fc4ed611`,
+from clean checkpoint `2fd6a51b`; all 132 build inputs are pinned. Its first
+four Stage 3 image/state checks and retained comparisons pass. Outside the
+title band, changed laser-mask pixels have maximum channel error 4/255.
+All seven Final B image/state checks and their retained comparison also pass;
+their beam means improve over the preceding x86_64 product. Frame 14,280
+retains maximum outside-title channel error 16/255. The new
+`scripts/analysis/summarize-laser-pixels.py` reproduces the region measurements
+and checks them against the strict mask totals.
+A live serial worker is running Stage 4B and the other scene cases in both contexts,
+followed by the full 108-recording corpus and retained verification. Inspect
+`serial-gates.json` and the worker process before launching another game or
+build. Its initial capture has finished; the worker is independent of that
+process. Complete these gates and refresh i386 before promoting the candidate.
+The compiler tree and completed contract binaries are removed.
+Production-candidate evidence is under
 `build/laser-sampling-production-20261015/`; earlier diagnostic evidence is under
 `build/laser-sampling-refresh-20261015/`; temporary prefixes and probe binaries
 are removed. The selected gameplay images retain their passing thresholds.
