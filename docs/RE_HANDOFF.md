@@ -396,7 +396,7 @@ paired vector accumulation, one RCPPS refinement and multiplication for
 transform coordinates. The old direct division loses the original reciprocal
 rounding even at W=1. A sine-only control leaves both position errors; the
 two D3DX repairs restore all matrix/position words in both standalone samples.
-No actual-game image repair is claimed before the fresh captures.
+The fresh seven-frame image result is recorded below.
 
 The public `scripts/test-portable-d3dx-rounding.py` passes eight attributed
 API goldens. `--baseline-ref d1b5ffe4 --expect-failure` reproduces four old
@@ -410,9 +410,8 @@ links are committed in `tests/fixtures/d3dx-rounding.json`.
 Evidence and diagnostic prototypes remain under
 `build/laser-projection-inputs-20261015/`. The latest source-pinned products and completed focused gates are recorded
 below. Their scene/full-corpus worker is the sole active game queue.
-The geometry-only observer still needs publication as a general capture
-option; the public API probe and ordinary seven-frame capture commands are
-already reproducible.
+The geometry-only observer, public API probe and ordinary seven-frame capture
+commands are now published with calibration and reproduction instructions.
 
 Source checkpoint `d64dafd8` is committed and pushed. Both fresh products pass
 ELF/global ownership verification with 132 commit-attested inputs; only
@@ -474,7 +473,11 @@ binary's ordinary capture. `compare-sprite-geometry.py --check` independently
 verifies identities, complete quad/frame coverage, raw laser/VM packets,
 reference images and observed runtime scope. Thirteen regression tests and the
 existing 42 laser tests pass; target-independent CI passes. Actual new-mode
-validation is next, reusing the retained sincos ordinary quad captures.
+validation also passes against the retained sincos ordinary quad captures:
+469 and 3,087 playfield quads and every raw laser/VM packet agree. The public
+mode takes 54.21 seconds, records `LP_NO_RAST=true` in the inferior and
+produces no frame images. Its retained result is
+`build/geometry-mode-smoke-20261015/` in the D3DX worktree.
 
 The expanded x86_64 default survey has zero below-title playfield error for
 all selected Stage 3 and Final A frames. Stage 4B frame 15,360 has 6,929

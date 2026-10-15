@@ -36,12 +36,13 @@ The [October 15 sampling candidate](#production-candidate-october-15-2026)
 passes its API checks and all 48 selected game images across both context
 profiles. Its partial corpus is retained after retirement in favor of the
 newer D3DX candidate.
-The [sincos follow-up](#sincos-candidate-seven-frame-verification) also repairs
-laser rotation rounding. Its seven Final B frames retain two changed pixels
-inside the outside-title beam masks and 23 across the whole playfield below
-the title band, each at most 1/255. Its unstarted broad queue is now superseded. The
-[orbit investigation](#orbit-particles-d3dx-rounding) traces both residual
-particles to D3DX arithmetic and provides asset-free regression inputs.
+The [sincos follow-up](#sincos-candidate-seven-frame-verification) repairs
+laser rotation rounding. The subsequent
+[D3DX repair](#orbit-particles-d3dx-rounding) resolves all 23 remaining pixels
+below the Final B title band: every RGB pixel in that region matches retail
+at all seven selected frames. Both production architectures pass 264
+original-library arithmetic cases. Their full scene and replay gates remain
+in flight; the completed 108-recording results above describe earlier products.
 
 ### Status of the seven initial failures
 
@@ -1547,6 +1548,13 @@ input hashes and bounded mismatch examples. `geometry-observation.json`
 records the inferior's rasterization environment and frame coverage. Timing
 dependent HUD digits outside the playfield are excluded from vertex pairing.
 Fresh game captures and strict image comparisons provide the final pixel gate.
+
+The published mode passes an actual two-frame calibration against the retained
+sincos product: all 469 and 3,087 playfield quads and raw laser/VM packets
+agree. The capture takes 54.21 seconds and produces no frame images. Evidence
+is in the D3DX worktree's `build/geometry-mode-smoke-20261015/`; elapsed time,
+product and input hashes are recorded with the result. Thirteen regression
+tests cover mismatches, incomplete frames, invalid profiles and CLI guards.
 
 ### Orbit particles: D3DX rounding
 
