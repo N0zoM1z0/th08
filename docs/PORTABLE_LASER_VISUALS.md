@@ -1706,6 +1706,18 @@ paired-capture worker records are under
 `build/stage4b-background-inputs-20261015/`. The ordinary paired images and
 quads are in the D3DX worktree's `build/stage4b-background-paired-20261015/`.
 
+The perspective source checkpoint `e09ae250` has fresh GCC 8 x86_64 and GCC 12
+i386 recorder products. Both pass ELF/global ownership checks with 132
+commit-attested inputs; the adapter is their only changed production input.
+The x86_64 executable SHA-256 is
+`2389e152dcb0a2046db194751afca7a1a5a3c479b9ad93976bca1e094c804a70`,
+and i386 is
+`f3143dc1ae7a947a5bfa994a21e22b9f51d72a4b921135ad0dd2507140dc83ee`.
+Compiler intermediates are removed. The source-bound 525-case API checks and
+both renderer context profiles pass on each architecture. Ordinary Stage 4B
+captures and the separate endpoint-RGB diagnostic are in flight under
+`build/laser-perspective-repair-20261015/`.
+
 ## Legacy OpenGL coverage, October 14, 2026
 
 Disabling `GL_ARB_clip_control` reproduces the pre-repair top-edge failure at

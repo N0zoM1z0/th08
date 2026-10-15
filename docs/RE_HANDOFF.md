@@ -548,6 +548,37 @@ The public math probe now covers LookAt and perspective matrices. It passes
 profiles, with all three target/archive attestations. Baseline `4590feb3`
 with `--expect-perspective-failure` reproduces exactly the three new golden
 failures. Target-independent CI passes. These are numerical API results;
-fresh production builds and actual-image gates are next. Private controls and
+actual-image gates are next. Private controls and
 proofs are under `build/stage4b-background-inputs-20261015/` in the root tree.
 The preceding D3DX production inputs remain frozen while their broad queue runs.
+
+Source checkpoint `e09ae250` is committed and pushed. Both clean production
+builds pass ELF/global ownership verification, with 132 commit-attested inputs
+and only `src/modern/linux/d3dx8_compat.cpp` changed from the preceding product:
+
+- GCC 8 x86_64: `2389e152dcb0a2046db194751afca7a1a5a3c479b9ad93976bca1e094c804a70`.
+- GCC 12 i386: `f3143dc1ae7a947a5bfa994a21e22b9f51d72a4b921135ad0dd2507140dc83ee`.
+
+The phase is `build/laser-perspective-repair-20261015/`. Its build worker is
+terminal with exit code 0. Compiler trees are removed. `api-gates.json` is
+passed: each architecture's 525-case native report matches the exact current
+adapter hash, and renderer contracts pass in default and OpenGL 2.1 contexts.
+The API worker is also terminal with exit code 0.
+
+`stage4b-worker-handle.json` identifies the live normal/control capture worker:
+PID 1275481, process start 95066555, session 80014. It pauses the same older
+controller and nested corpus scheduler at recording boundaries, then resumes
+both on exit. Its current state is `worker.json`. It captures four ordinary
+Stage 4B frames with the new product, followed by a separate frame 15,360 RGB
+experiment. The latter copies only ten zero-alpha endpoint RGB words across
+five billboard submissions, verifies ordinary geometry/UV/alpha correspondence,
+and restores each candidate vertex buffer after submission. The original
+executable stays unmodified. Controlled metadata is marked `renderInputControl`;
+it cannot support an ordinary image gate.
+
+Outputs are `build/perspective-stage4b-normal/`,
+`build/perspective-stage4b-rgb-control/`,
+`build/perspective-stage4b-summary.json` and
+`build/perspective-stage4b-rgb-experiment.json` in this worktree. The ordinary
+capture is still running; no new actual-image repair is claimed yet. Keep
+the pinned source, products and observer scripts unchanged until it exits.
