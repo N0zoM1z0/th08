@@ -373,20 +373,32 @@ executables, raw buffers and owned temporary runtimes.
 
 ## Projection-input observation in progress
 
-A bounded read-only diagnostic is running under
-`build/laser-projection-inputs-20261015/`. It selects frame 11,490 quad 71 and
-frame 17,460 quad 27, records portable VM/view/projection/viewport inputs,
-and observes the target's projection locals at `0x00463B4D`. Canonical bytes
-and the DrawInner/camera-facing return sites are checked before linking the
-facts to a submitted quad. The current production sources remain frozen.
+The diagnostic is under `build/laser-projection-inputs-20261015/`. Its first
+worker is terminal with a failed retail capture and `active: false`; the same
+full-corpus scheduler was resumed. The failure is in observer bookkeeping:
+a fifth enabled hardware breakpoint, GDB's temporary `__file__`, and a
+runtime helper overwriting the selected-frame map. Corrected source passes
+two asset-free observer contracts, including both original failure controls.
+The failed two-frame run is retained as diagnostic evidence, not a completed
+paired gate.
 
-`worker.json` records the live capture and scheduler ownership;
-`worker-handle.json` records PID 915354, process start 94008361, session
-50645. The existing scheduler PID 653259 is paused at a recording boundary.
-The worker resumes that same scheduler in `finally`, including on failure.
-Inspect the actual process and state before starting any other game capture.
-Completed facts and ordinary images will be compared before any new cause
-or fix is claimed. The standalone current-source evaluator records its own
-source/compiler/product hashes and keeps re-evaluation distinct from observed
-intermediate values. These diagnostic prototypes remain under `build/` until
-the capture and method are verified.
+Its completed portable inputs reproduce all eight XY words for frame 11,490
+quad 71 and frame 17,460 quad 27 through current source. The first target
+sample identifies effect slot 349; the only differing recorded input is VM
+position X (`0x438B92AD` versus portable `0x438B92AE`). View/projection,
+viewport and camera-right inputs agree. Re-evaluation with native inputs
+reproduces its recorded projection locals and all target XY words. The
+selected target quad and complete playfield match the earlier retained
+retail frame. Entire submission lists include timing-dependent HUD digits;
+whole-list equality is not claimed. `first-frame-preliminary.json` records
+this bounded result; coordinate generation remains to be investigated.
+
+`confirmation-worker.json` and `confirmation-worker-handle.json` identify a
+fresh retail-only run with the corrected observer, reusing the completed
+portable capture. Worker PID 973159, process start 94171055, session
+59757 waits for a recording boundary, records both target inputs plus effect
+pool/callback context, then compares and evaluates them automatically.
+The existing scheduler PID 653259 is resumed in `finally`, including on
+failure. Inspect the actual process and state before starting another game
+capture. Production build inputs remain frozen. The prototypes stay under
+`build/` until the full observation and method are verified.
