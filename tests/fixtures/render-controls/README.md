@@ -1,10 +1,11 @@
 # Diagnostic rendering controls
 
-These patches isolate viewport arithmetic in the subpixel API probe. They
-apply to the Linux renderer at `02ff72f2` and are experimental inputs, kept
-separate from the production renderer. The unmodified input uses the vertex
-words captured from TH08 Stage 3 frame 12,900.
+These controls isolate viewport arithmetic, interpolation and texture storage.
+Each section records its source checkpoint. The patches are experimental
+inputs, kept separate from the production renderer. The subpixel probe uses
+vertex words captured from TH08 Stage 3 frame 12,900.
 
+The first two patches apply to the Linux renderer at `02ff72f2`.
 The first patch moves the half-pixel adjustment from transformed vertices to
 a floating viewport. The second also uses the D3D viewport dimensions. Both
 retain the production legacy path. On the recorded Wine 9.0/Mesa environment,
@@ -83,3 +84,28 @@ synthetic materials. A production change also needs depth, other vertex
 formats, render-target orientation and real-game regression checks. The
 controls establish the local pixel result; broader renderer behavior remains
 to be verified.
+
+## Packed GPU texture control
+
+`packed-textures.patch` applies to `2fd6a51b`. It selects `GL_RGB5_A1`,
+`GL_RGB565` and `GL_RGBA4` for their corresponding packed D3D texture formats,
+using the existing decoded upload bytes. The default-context filtering probe
+passes 6,144/6,144 pixels with both production and this control. It covers four
+formats, point/linear filters, subpixel phases, three blend modes and repeated
+draws. The control gives no improvement in this experiment.
+
+```bash
+mkdir -p build/packed-texture-control
+git show 2fd6a51b:src/modern/linux/d3d8_compat.cpp \
+  | sed 's/\r$//' > build/packed-texture-control/renderer.cpp
+patch --batch --output build/packed-texture-control/packed.cpp \
+  build/packed-texture-control/renderer.cpp \
+  tests/fixtures/render-controls/packed-textures.patch
+python3 scripts/analysis/probe-texture-filtering.py --check \
+  --renderer-control build/packed-texture-control/packed.cpp \
+  --output-dir build/packed-texture-control/probe
+```
+
+This tests a GPU storage hypothesis for the small Final B residual. The
+[Wine 9.0 format table](https://github.com/wine-mirror/wine/blob/wine-9.0/dlls/wined3d/utils.c#L1574)
+supplies supporting API evidence; it is independent of TH08 function matching.

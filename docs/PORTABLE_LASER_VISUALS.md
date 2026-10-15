@@ -1079,6 +1079,40 @@ The 92 changed pixels outside the title band have channel-error magnitudes
 from 1 to 16, with only one at 16. `finalb-pixel-locations-v2.json` records the
 largest examples; each exported RGB value was checked against its PNG.
 
+A focused ordinary capture records 39 portable draw calls. Its complete
+playfield and laser/VM packet match the earlier frame exactly; full-image
+differences are confined to the FPS display at `(513, 464)`–`(580, 480)`.
+The observer therefore preserves the image region being investigated.
+A second capture omits 18 beam submissions and preserves the raw laser/VM
+packet. Of the 92 changed pixels outside the title, 50 remain unchanged by
+beam omission; 42 change, including 37 by at least eight channel values.
+At `(168, 310)`, beam omission changes the candidate RGB from `(46, 12, 12)`
+to `(41, 15, 14)`. These controls measure portable beam influence while
+retaining the other rendered layers. Evidence is in `focused-finalb-draws/`,
+`focused-finalb-omitted/` and `finalb-14280-attribution.json`.
+
+Those draws use linear texture filtering. A new asset-free API probe checks
+A1R5G5B5, R5G6B5, A4R4G4B4 and A8R8G8B8 with point/linear filtering,
+four subpixel phases, blending disabled, ordinary alpha blending and additive
+blending. Each case draws once or four times and reads 32 pixels: 192 cases,
+6,144 pixel samples. All 6,144 agree with Wine D3D8 in the default context.
+A private control preserving packed GPU texture formats also agrees on all
+6,144 samples. This experiment gives no pixel improvement from changing the
+texture format; production upload code remains unchanged.
+
+```bash
+python3 scripts/analysis/probe-texture-filtering.py \
+  --check --output-dir build/texture-filtering-check
+```
+
+`report.json` pins source, compiler, Wine and binary identities and retains
+every mismatched sample. `--renderer-control` labels a private source copy
+separately; `--compiler`, `--pkg-config` and `--legacy-gl` select other test
+environments. The recorded default run is under `texture-filtering-default/`.
+Temporary Wine prefixes and probe executables are removed. The next
+measurement compares canonical retail and portable sprite vertices for this
+same frame, using `--watch-quads --retail`.
+
 All four Stage 4B default-context image/state checks and retained comparisons
 also pass. Their beam means are 0.004278, 0.000999, 0.003865 and 0.020752 at
 frames 13,140, 13,260, 15,360 and 18,210. The changed laser-mask pixel counts
@@ -1102,9 +1136,10 @@ laser/VM packets. The maximum beam means per case, equal across profiles, are:
 | Extra | 4 | 0.003049 |
 
 The x86_64 corpus worker is running. Its scheduler completed a recording-boundary
-pause for the i386 API preflight and resumed the same suite. A second boundary
-pause is capturing frame 14,280 draw inputs and a beam-omission control;
-`focused-finalb.json` records that diagnostic's progress and its worker
+pause for the i386 API preflight and resumed the same suite. The focused draw,
+beam-omission and filtering captures above are complete. The current boundary
+pause collects paired retail/portable sprite vertices at frame 14,280;
+`paired-finalb-quads.json` records its progress. Each bounded diagnostic worker
 resumes the existing scheduler in `finally`.
 The separate i386 scene/corpus worker waits for x86_64 completion.
 Native products and the earlier published corpus results retain their

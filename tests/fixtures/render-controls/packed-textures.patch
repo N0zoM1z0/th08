@@ -1,0 +1,11 @@
+--- renderer.cpp
++++ renderer.cpp
+@@ -337,3 +337,7 @@
+         glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, surface->width, surface->height, 0,
++        GLint internalFormat = GL_RGBA8;
++        if (surface->format == D3DFMT_A4R4G4B4) internalFormat = GL_RGBA4;
++        else if (surface->format == D3DFMT_A1R5G5B5) internalFormat = GL_RGB5_A1;
++        else if (surface->format == D3DFMT_R5G6B5) internalFormat = GL_RGB565;
++        glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, surface->width, surface->height, 0,
+                      GL_RGBA, GL_UNSIGNED_BYTE, rgba.empty() ? NULL : &rgba[0]);

@@ -197,16 +197,23 @@ and checks them against the strict mask totals.
 The four Stage 4B default images and retained comparisons also pass, with
 exact packets and beam means at most 0.020752. Maximum channel error is 4/255.
 The pixel tool's `--top-pixels 8` option retains coordinates and both RGB
-values. Final B frame 14,280's maximum is at `(168, 310)`; a focused draw or
-beam-omission capture is the next attribution step after the active gates.
+values. Final B frame 14,280's maximum is at `(168, 310)`. Its focused draw
+capture preserves the ordinary playfield and raw packet. Omitting 18 beam
+submissions leaves 50 of the 92 residual pixels unchanged. At the largest
+pixel, ordinary RGB `(46, 12, 12)` becomes `(41, 15, 14)` with beams omitted;
+the retail value is `(30, 2, 2)`. A 6,144-sample packed-texture filtering and
+blending probe passes against Wine D3D8; a private packed-GPU-format control
+gives the same result. Keep production texture upload unchanged. The next
+observation is the paired retail/portable sprite input at this frame.
 All five scene groups now pass in both default and OpenGL 2.1 contexts:
 48 selected images, exact laser/VM packets and retained comparisons. The
 x86_64 worker has entered its full 108-recording corpus and retained gate.
 It completed a recording-boundary pause for the i386 API preflight;
-`i386-preflight.py` resumed that same scheduler in `finally`. A second boundary
-pause is collecting Final B frame 14,280 draw inputs and beam-omission
-evidence; `focused-finalb.py` resumes the scheduler in `finally`. Inspect
-`focused-scheduler.json`, `focused-finalb.json`, `i386-preflight.json` and live process identities
+`i386-preflight.py` resumed that same scheduler in `finally`. The focused draw,
+beam-omission and filtering probes have also finished. The current boundary
+pause collects paired retail/portable sprite input at Final B frame 14,280;
+`paired-finalb-quads.py` resumes the scheduler in `finally`. Inspect
+`quad-scheduler.json`, `paired-finalb-quads.json`, `i386-preflight.json` and live process identities
 before starting another game. Avoid treating a missing uncompressed log as
 a failure: completed captures compress it.
 
