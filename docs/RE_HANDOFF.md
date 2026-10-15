@@ -370,3 +370,23 @@ For the scalar repair, run `python3 scripts/test-portable-sincos.py` from the
 sincos branch, or use `--baseline-ref b4e70194 --expect-failure` for its recorded
 Linux failure control. Both new probes use generated data and remove their
 executables, raw buffers and owned temporary runtimes.
+
+## Projection-input observation in progress
+
+A bounded read-only diagnostic is running under
+`build/laser-projection-inputs-20261015/`. It selects frame 11,490 quad 71 and
+frame 17,460 quad 27, records portable VM/view/projection/viewport inputs,
+and observes the target's projection locals at `0x00463B4D`. Canonical bytes
+and the DrawInner/camera-facing return sites are checked before linking the
+facts to a submitted quad. The current production sources remain frozen.
+
+`worker.json` records the live capture and scheduler ownership;
+`worker-handle.json` records PID 915354, process start 94008361, session
+50645. The existing scheduler PID 653259 is paused at a recording boundary.
+The worker resumes that same scheduler in `finally`, including on failure.
+Inspect the actual process and state before starting any other game capture.
+Completed facts and ordinary images will be compared before any new cause
+or fix is claimed. The standalone current-source evaluator records its own
+source/compiler/product hashes and keeps re-evaluation distinct from observed
+intermediate values. These diagnostic prototypes remain under `build/` until
+the capture and method are verified.
