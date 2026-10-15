@@ -5051,3 +5051,49 @@ callback in the real chain and removes it through `Spellcard::CutChain`.
 The full retail replay now agrees through 37,016 calculations, including the
 complete first two stages; its later independent score divergence is tracked
 in [RT-011](RUNTIME_ISSUES.md#rt-011). The complete route suite is still running.
+
+
+### Spell-background script field ownership — 2026-10-14
+
+Observed target storage `0x004E4B64` is
+`g_Background @ 0x004E4030 + spellVmScriptBase @ 0xB34`.
+`GuiImpl::StartMessage @ 0x0043396D` writes 2 for the later boss stages;
+`GameManager::GameplaySetupThread @ 0x0043ABD7` selects 2 for their spell-practice
+paths; `EffectManager::LoadEffectResources @ 0x004284B0` resets it to 0.
+`Spellcard::StartSpell @ 0x004152A0` reads it as an ANM script base.
+The native baseline link and portable symbol layout prove that the old
+standalone `g_GuiMessageStageMode` was separate from the Background field.
+
+Production writers and the setup probe now use the real field. Gui retains a
+VC7 offset assertion at `0xB34`. The false global ledger entry and Linux32
+fixed-address alias are retired. All three affected functions have zero
+non-relocation differences; all seven changed COFF references use the canonical
+Background base and retain the `0xB34` addend. Focused baseline comparison
+passes 135 accepted units; the final shared-owner cold replay passes all
+1,106 accepted units. Fresh normal and bugfix builds pass linked owner/data/callee
+checks, including seven writes and one read of this field. The new owner guard
+rejects the retained pre-repair native image.
+
+Five portable Final A image cases pass the original 1.0 limit with exact retail
+laser/VM packets. At frame 9,570 the two background quad packets recover exact
+retail words, replacing the baseline's 22 position/UV differences. Evidence and
+build identities are under `build/laser-background-owner-20261014/` and
+`build/laser-stage4a-20261014/`. The [laser result](PORTABLE_LASER_VISUALS.md#spell-background-script-owner-repair)
+records the commands and image measurements. Native visual repetition is RT-014;
+Final B, Extra, revised i386 and refreshed full-corpus checks remain in progress.
+
+The final x86_64 product `34bcdd33…` independently repeats all five image passes
+and keeps the initial repair's playfield pixels. Its complete `lunatic-1-a`
+recording and retained-evidence verification pass 119,685 calculations on all
+25 fields, recorded end scores and natural exit.
+
+
+Native follow-up uses the same `1b8e217a…` bugfix product. Four default-profile
+Final A playfields equal retail pixels; frame 15,090 also equals retail in paired
+CSMT=0 captures. Its default screenshot mismatch retains equal laser packets
+and calculation state, and is isolated to Wine/debugger presentation timing.
+The complete native `lunatic-1-a` recording and cached-evidence check pass
+119,685 calculations, all 25 fields, stage-end scores and natural exit.
+RT-014 is closed for the repaired field path; later routes and the refreshed
+full corpus remain coverage extensions. The [native capture guide](PORTABLE_LASER_VISUALS.md#native-windows-image-capture)
+records both profiles and reproduction commands.

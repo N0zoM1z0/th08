@@ -10,6 +10,10 @@
 #include <errno.h>
 #include <fcntl.h>
 #include <fontconfig/fontconfig.h>
+#include <ft2build.h>
+#include FT_FREETYPE_H
+#include FT_TRUETYPE_TABLES_H
+#include FT_OUTLINE_H
 #include <glob.h>
 #include <iconv.h>
 #include <limits.h>
@@ -109,10 +113,21 @@ struct GdiBitmap : GdiObject
 
 struct GdiFont : GdiObject
 {
-    GdiFont() : font(NULL) { kind = FONT; }
-    explicit GdiFont(TTF_Font *font_) : font(font_) { kind = FONT; }
-    ~GdiFont() { if (font != NULL) TTF_CloseFont(font); }
+    GdiFont() : font(NULL), baselineOffset(0), library(NULL), face(NULL), pixelSize(0), ascent(0), syntheticBold(false) { kind = FONT; }
+    GdiFont(TTF_Font *font_, int baselineOffset_)
+        : font(font_), baselineOffset(baselineOffset_), library(NULL), face(NULL), pixelSize(0), ascent(0), syntheticBold(false) { kind = FONT; }
+    ~GdiFont()
+    {
+        if (font != NULL) TTF_CloseFont(font);
+        if (face != NULL) FT_Done_Face(face);
+        if (library != NULL) FT_Done_FreeType(library);
+    }
     TTF_Font *font;
+    int baselineOffset;
+    FT_Library library;
+    FT_Face face;
+    int pixelSize, ascent;
+    bool syntheticBold;
 };
 
 struct GdiDc
@@ -216,9 +231,64 @@ const char *ResolveJapaneseFont()
     return path.empty() ? NULL : path.c_str();
 }
 
-void PutGdiTextPixel(GdiBitmap *bitmap, int x, int y, COLORREF color, BYTE coverage)
+bool GetGdiFontSize(const char *path, int height, int *pixelSize, int *ascent)
 {
-    if (bitmap == NULL || x < 0 || y < 0 || x >= bitmap->width || y >= bitmap->height || coverage == 0) return;
+    FT_Library library;
+    if (FT_Init_FreeType(&library) != 0) return false;
+    FT_Face face;
+    if (FT_New_Face(library, path, 0, &face) != 0)
+    {
+        FT_Done_FreeType(library);
+        return false;
+    }
+    bool available = FT_IS_SCALABLE(face) && face->units_per_EM != 0;
+    if (available)
+    {
+        const TT_OS2 *metrics = static_cast<const TT_OS2 *>(FT_Get_Sfnt_Table(face, ft_sfnt_os2));
+        FT_Long winAscent = metrics != NULL ? metrics->usWinAscent : face->ascender;
+        FT_Long winDescent = metrics != NULL ? metrics->usWinDescent : -face->descender;
+        if (winAscent + winDescent == 0)
+        {
+            winAscent = face->ascender;
+            winDescent = -face->descender;
+        }
+        const FT_Long cellUnits = winAscent + winDescent;
+        available = cellUnits > 0;
+        if (available)
+        {
+            if (height == 0) height = 16;
+            // Positive GDI height includes internal leading; negative height selects the em square.
+            FT_Long size = height > 0 ? FT_MulDiv(face->units_per_EM, height, cellUnits) : -static_cast<FT_Long>(height);
+            if (height > 0 && size > 1 && FT_MulDiv(cellUnits, size, face->units_per_EM) > height) --size;
+            *pixelSize = static_cast<int>(size > 0 ? size : 1);
+            *ascent = static_cast<int>(FT_MulDiv(winAscent, *pixelSize, face->units_per_EM));
+        }
+    }
+    FT_Done_Face(face);
+    FT_Done_FreeType(library);
+    return available;
+}
+
+BYTE BlendGdiGray(BYTE destination, BYTE text, BYTE level)
+{
+    // Wine GDI's 17 coverage levels use an intensity range around the text color.
+    static const BYTE ramp[] = {0, 77, 104, 124, 140, 154, 167, 178, 189,
+                                199, 208, 217, 225, 233, 240, 248, 255};
+    if (level <= 1 || destination == text) return destination;
+    if (level >= 16) return text;
+    if (destination < text)
+    {
+        const int minimum = ramp[level] * text / 255;
+        return static_cast<BYTE>(text - (text - destination) * (text - minimum) / text);
+    }
+    const int maximum = ramp[16 - level] + (255 - ramp[16 - level]) * text / 255;
+    return static_cast<BYTE>(text + (destination - text) * (maximum - text) / (255 - text));
+}
+
+void PutGdiTextPixel(GdiBitmap *bitmap, int x, int y, COLORREF color, BYTE coverage, bool gdiGray = false)
+{
+    if (bitmap == NULL || x < 0 || y < 0 || x >= bitmap->width || y >= bitmap->height || coverage == 0
+        || (gdiGray && coverage <= 1)) return;
     const int red = color & 0xff;
     const int green = (color >> 8) & 0xff;
     const int blue = (color >> 16) & 0xff;
@@ -227,20 +297,30 @@ void PutGdiTextPixel(GdiBitmap *bitmap, int x, int y, COLORREF color, BYTE cover
     {
         uint16_t packed;
         memcpy(&packed, pixel, sizeof(packed));
-        int oldRed = ((packed >> 10) & 0x1f) * 255 / 31;
-        int oldGreen = ((packed >> 5) & 0x1f) * 255 / 31;
-        int oldBlue = (packed & 0x1f) * 255 / 31;
-        oldRed = (oldRed * (255 - coverage) + red * coverage) / 255;
-        oldGreen = (oldGreen * (255 - coverage) + green * coverage) / 255;
-        oldBlue = (oldBlue * (255 - coverage) + blue * coverage) / 255;
+        const int redBits = (packed >> 10) & 0x1f, greenBits = (packed >> 5) & 0x1f, blueBits = packed & 0x1f;
+        int oldRed = gdiGray ? (redBits << 3) | (redBits >> 2) : redBits * 255 / 31;
+        int oldGreen = gdiGray ? (greenBits << 3) | (greenBits >> 2) : greenBits * 255 / 31;
+        int oldBlue = gdiGray ? (blueBits << 3) | (blueBits >> 2) : blueBits * 255 / 31;
+        const int textRed = ((red >> 3) << 3) | (red >> 5);
+        const int textGreen = ((green >> 3) << 3) | (green >> 5);
+        const int textBlue = ((blue >> 3) << 3) | (blue >> 5);
+        oldRed = gdiGray ? BlendGdiGray(static_cast<BYTE>(oldRed), static_cast<BYTE>(textRed), coverage)
+                        : (oldRed * (255 - coverage) + red * coverage) / 255;
+        oldGreen = gdiGray ? BlendGdiGray(static_cast<BYTE>(oldGreen), static_cast<BYTE>(textGreen), coverage)
+                          : (oldGreen * (255 - coverage) + green * coverage) / 255;
+        oldBlue = gdiGray ? BlendGdiGray(static_cast<BYTE>(oldBlue), static_cast<BYTE>(textBlue), coverage)
+                         : (oldBlue * (255 - coverage) + blue * coverage) / 255;
         packed = static_cast<uint16_t>(((oldRed >> 3) << 10) | ((oldGreen >> 3) << 5) | (oldBlue >> 3));
         memcpy(pixel, &packed, sizeof(packed));
     }
     else if (bitmap->bits == 32)
     {
-        pixel[0] = static_cast<BYTE>((pixel[0] * (255 - coverage) + blue * coverage) / 255);
-        pixel[1] = static_cast<BYTE>((pixel[1] * (255 - coverage) + green * coverage) / 255);
-        pixel[2] = static_cast<BYTE>((pixel[2] * (255 - coverage) + red * coverage) / 255);
+        pixel[0] = gdiGray ? BlendGdiGray(pixel[0], static_cast<BYTE>(blue), coverage)
+                          : static_cast<BYTE>((pixel[0] * (255 - coverage) + blue * coverage) / 255);
+        pixel[1] = gdiGray ? BlendGdiGray(pixel[1], static_cast<BYTE>(green), coverage)
+                          : static_cast<BYTE>((pixel[1] * (255 - coverage) + green * coverage) / 255);
+        pixel[2] = gdiGray ? BlendGdiGray(pixel[2], static_cast<BYTE>(red), coverage)
+                          : static_cast<BYTE>((pixel[2] * (255 - coverage) + red * coverage) / 255);
         pixel[3] = 0;
     }
 }
@@ -633,12 +713,32 @@ HFONT CreateFontA(int height, int, int, int, int weight, DWORD, DWORD, DWORD, DW
 {
     const char *path = ResolveJapaneseFont();
     if (path == NULL) return new GdiFont();
+    GdiFont *outlineFont = new GdiFont();
+    if (FT_Init_FreeType(&outlineFont->library) == 0
+        && FT_New_Face(outlineFont->library, path, 0, &outlineFont->face) == 0
+        && FT_IS_SCALABLE(outlineFont->face))
+    {
+        int pixelSize = height == 0 ? 16 : height < 0 ? -height : height;
+        int ascent = 0;
+        if (GetGdiFontSize(path, height, &pixelSize, &ascent)
+            && FT_Set_Pixel_Sizes(outlineFont->face, 0, pixelSize) == 0)
+        {
+            outlineFont->pixelSize = pixelSize;
+            outlineFont->ascent = ascent;
+            outlineFont->syntheticBold = weight >= FW_SEMIBOLD && !(outlineFont->face->style_flags & FT_STYLE_FLAG_BOLD);
+            return outlineFont;
+        }
+    }
+    delete outlineFont;
     if (!TTF_WasInit() && TTF_Init() != 0)
     {
         fprintf(stderr, "th08-modern: SDL_ttf initialization failed: %s\n", TTF_GetError());
         return new GdiFont();
     }
-    TTF_Font *font = TTF_OpenFont(path, height < 0 ? -height : height);
+    int pixelSize = height < 0 ? -height : height;
+    int ascent = 0;
+    const bool haveMetrics = GetGdiFontSize(path, height, &pixelSize, &ascent);
+    TTF_Font *font = TTF_OpenFont(path, pixelSize);
     if (font == NULL)
     {
         fprintf(stderr, "th08-modern: unable to load Japanese font %s: %s\n", path, TTF_GetError());
@@ -646,7 +746,7 @@ HFONT CreateFontA(int height, int, int, int, int weight, DWORD, DWORD, DWORD, DW
     }
     if (weight >= FW_SEMIBOLD) TTF_SetFontStyle(font, TTF_STYLE_BOLD);
     TTF_SetFontHinting(font, TTF_HINTING_LIGHT);
-    return new GdiFont(font);
+    return new GdiFont(font, haveMetrics ? ascent - TTF_FontAscent(font) : 0);
 }
 HBITMAP CreateDIBSection(HDC, const void *infoRaw, UINT, VOID **pixels, HANDLE, DWORD)
 {
@@ -657,8 +757,51 @@ BOOL TextOutA(HDC dcRaw, int x, int y, LPCSTR text, int length)
 {
     if (dcRaw == NULL || text == NULL || length <= 0) return FALSE;
     GdiDc *dc = static_cast<GdiDc *>(dcRaw);
-    if (dc->bitmap == NULL || dc->font == NULL || dc->font->font == NULL) return FALSE;
+    if (dc->bitmap == NULL || dc->font == NULL) return FALSE;
     std::string utf8 = ConvertCp932ToUtf8(text, static_cast<size_t>(length));
+    if (dc->font->face != NULL)
+    {
+        char *characters = SDL_iconv_string("UTF-32LE", "UTF-8", utf8.c_str(), utf8.size() + 1);
+        if (characters == NULL) return FALSE;
+        bool succeeded = true;
+        for (const unsigned char *position = reinterpret_cast<const unsigned char *>(characters);; position += 4)
+        {
+            const FT_ULong character = position[0] | (static_cast<FT_ULong>(position[1]) << 8)
+                | (static_cast<FT_ULong>(position[2]) << 16) | (static_cast<FT_ULong>(position[3]) << 24);
+            if (character == 0) break;
+            if (FT_Load_Char(dc->font->face, character, FT_LOAD_NO_BITMAP | FT_LOAD_IGNORE_GLOBAL_ADVANCE_WIDTH) != 0)
+            {
+                succeeded = false;
+                break;
+            }
+            FT_GlyphSlot glyph = dc->font->face->glyph;
+            const int advance = static_cast<int>((glyph->advance.x + (dc->font->syntheticBold ? 64 : 0) + 63) >> 6);
+            if (dc->font->syntheticBold
+                && FT_Outline_Embolden(&glyph->outline, FT_MulDiv(dc->font->pixelSize, 64, 24)) != 0)
+            {
+                succeeded = false;
+                break;
+            }
+            if (FT_Render_Glyph(glyph, FT_RENDER_MODE_NORMAL) != 0 || glyph->bitmap.pixel_mode != FT_PIXEL_MODE_GRAY)
+            {
+                succeeded = false;
+                break;
+            }
+            const FT_Bitmap &bitmap = glyph->bitmap;
+            for (unsigned row = 0; row < bitmap.rows; ++row)
+            {
+                const unsigned char *source = bitmap.buffer + static_cast<int>(row) * bitmap.pitch;
+                for (unsigned column = 0; column < bitmap.width; ++column)
+                    PutGdiTextPixel(dc->bitmap, x + glyph->bitmap_left + static_cast<int>(column),
+                                    y + dc->font->ascent - glyph->bitmap_top + static_cast<int>(row),
+                                    dc->color, static_cast<BYTE>(source[column] * 17 / 256), true);
+            }
+            x += advance;
+        }
+        SDL_free(characters);
+        return succeeded ? TRUE : FALSE;
+    }
+    if (dc->font->font == NULL) return FALSE;
     SDL_Color white = {255, 255, 255, 255};
     SDL_Surface *rendered = TTF_RenderUTF8_Blended(dc->font->font, utf8.c_str(), white);
     if (rendered == NULL) return FALSE;
@@ -670,7 +813,7 @@ BOOL TextOutA(HDC dcRaw, int x, int y, LPCSTR text, int length)
     {
         const BYTE *source = static_cast<const BYTE *>(glyph->pixels) + row * glyph->pitch;
         for (int column = 0; column < glyph->w; ++column)
-            PutGdiTextPixel(dc->bitmap, x + column, y + row, dc->color, source[column * 4 + 3]);
+            PutGdiTextPixel(dc->bitmap, x + column, y + row + dc->font->baselineOffset, dc->color, source[column * 4 + 3]);
     }
     if (SDL_MUSTLOCK(glyph)) SDL_UnlockSurface(glyph);
     SDL_FreeSurface(glyph);

@@ -71485,8 +71485,9 @@ target = 0x00437F5C
 [[units.relocations]]
 offset = 0x7B
 type = "DIR32"
-symbol = "?g_GuiMessageStageMode@th08@@3HA"
-target = 0x004E4B64
+symbol = "?g_Background@th08@@3UBackground@1@A"
+target = 0x004E4030
+addend = 0xB34
 
 [[units.relocations]]
 offset = 0x86
@@ -71519,8 +71520,9 @@ addend = 0x2630
 [[units.relocations]]
 offset = 0xA1
 type = "DIR32"
-symbol = "?g_GuiMessageStageMode@th08@@3HA"
-target = 0x004E4B64
+symbol = "?g_Background@th08@@3UBackground@1@A"
+target = 0x004E4030
+addend = 0xB34
 
 [[units.relocations]]
 offset = 0xAD
@@ -71559,8 +71561,9 @@ addend = 0x2630
 [[units.relocations]]
 offset = 0xCF
 type = "DIR32"
-symbol = "?g_GuiMessageStageMode@th08@@3HA"
-target = 0x004E4B64
+symbol = "?g_Background@th08@@3UBackground@1@A"
+target = 0x004E4030
+addend = 0xB34
 
 [[units.relocations]]
 offset = 0xDB
@@ -81314,8 +81317,9 @@ target = 0x0040BB60
 [[units.relocations]]
 offset = 39
 type = "DIR32"
-symbol = "?g_GuiMessageStageMode@th08@@3HA"
-target = 0x004E4B64
+symbol = "?g_Background@th08@@3UBackground@1@A"
+target = 0x004E4030
+addend = 0xB34
 
 [[units.relocations]]
 offset = 0x31
@@ -113141,8 +113145,9 @@ target = 0x0160F508
 [[units.relocations]]
 offset = 0x9EF
 type = "DIR32"
-symbol = "?g_GuiMessageStageMode@th08@@3HA"
-target = 0x004E4B64
+symbol = "?g_Background@th08@@3UBackground@1@A"
+target = 0x004E4030
+addend = 0xB34
 
 [[units.relocations]]
 offset = 0x9FD
@@ -113165,8 +113170,9 @@ target = 0x0160F508
 [[units.relocations]]
 offset = 0xA48
 type = "DIR32"
-symbol = "?g_GuiMessageStageMode@th08@@3HA"
-target = 0x004E4B64
+symbol = "?g_Background@th08@@3UBackground@1@A"
+target = 0x004E4030
+addend = 0xB34
 
 [[units.relocations]]
 offset = 0xA56
@@ -113201,8 +113207,9 @@ target = 0x0160F508
 [[units.relocations]]
 offset = 0xAD0
 type = "DIR32"
-symbol = "?g_GuiMessageStageMode@th08@@3HA"
-target = 0x004E4B64
+symbol = "?g_Background@th08@@3UBackground@1@A"
+target = 0x004E4030
+addend = 0xB34
 
 [[units.relocations]]
 offset = 0xADA

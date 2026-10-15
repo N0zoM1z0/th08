@@ -29,7 +29,7 @@ cmake --build build/portable-replay --parallel 1
 scripts/verify-portable-linux.sh build/portable-replay/th08-modern x86_64
 ```
 
-For i386, install the [multilib development dependencies](PORTING.md#linux)
+For i386, install the [multilib development dependencies](PORTING.md#native-linux)
 and select the 32-bit toolchain and package metadata:
 
 ```bash
@@ -43,6 +43,32 @@ scripts/verify-modern-linux.sh build/i386-replay/th08-modern
 
 Use that executable as `--candidate` in the same suite commands, with a separate
 output directory for each architecture.
+
+For a container build, use the committed [Linux32 image recipe](../containers/linux32.Dockerfile).
+Run CMake and Ninja inside that image so dependency discovery and compilation
+use the same 32-bit libraries:
+
+```bash
+docker build --platform linux/386 -f containers/linux32.Dockerfile \
+  -t th08-modern-linux32 .
+docker run --rm --network none --cpus 1 --memory 768m --pids-limit 128 \
+  --user "$(id -u):$(id -g)" -v "$PWD:$PWD" -w "$PWD" \
+  --entrypoint cmake th08-modern-linux32 \
+  -S . -B build/i386-replay -G Ninja \
+  -DCMAKE_TOOLCHAIN_FILE=cmake/linux-i386-toolchain.cmake \
+  -DCMAKE_BUILD_TYPE=Debug -DTH08_ENABLE_REPLAY_TRACE=ON
+docker run --rm --network none --cpus 1 --memory 768m --pids-limit 128 \
+  --user "$(id -u):$(id -g)" -v "$PWD:$PWD" -w "$PWD" \
+  --entrypoint cmake th08-modern-linux32 \
+  --build build/i386-replay --parallel 1
+scripts/verify-modern-linux.sh build/i386-replay/th08-modern
+```
+
+Record the built image ID, compiler and package versions with the executable
+hash. The image recipe uses Debian's package repositories, so later builds
+can have different dependency versions. Host replay captures require the
+32-bit runtime libraries listed in the multilib instructions above. Keep
+container-built and host-built products in separate capture directories.
 
 Run every accepted recording:
 
@@ -91,6 +117,19 @@ recording per process, limits Mesa worker threads, and gives each capture a
 deadline (`--timeout`, 1,800 seconds by default). Finish the active suite before
 starting another build. Prefix the suite command with `/usr/bin/time -v` to record
 its elapsed time and maximum resident set size.
+
+Inspect a running suite without disturbing playback:
+
+```bash
+python3 scripts/analysis/report-replay-suite.py \
+  --suite build/portable-replay-suite --resources
+```
+
+The report reads the ledger and a bounded log tail. It shows the current
+calculation/stage, game RSS and retained file sizes. Portable processes are
+associated with their capture destination, including isolated runtimes outside
+the suite directory. Shared compressed traces contribute to the listed file
+sizes while retaining their existing storage.
 
 Trace validation and comparison stream the rows, retaining stage boundaries
 and a five-row diagnostic window. On the 126,803-calculation `easy-1-b` pair,

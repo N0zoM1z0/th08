@@ -131,6 +131,7 @@ def main():
     parser.add_argument("--watch-effect", type=int, action="append", default=[],
                         help="Trace this effect ID's lifetime, including inactive slots; repeat as needed")
     parser.add_argument("--display", help="Existing X display; default: a private Xvfb display")
+    parser.add_argument("--trace-fonts", action="store_true", help="Retain Wine's font selection diagnostics")
     parser.add_argument("--clock-rate", type=int, default=1,
                         help="Experimental Wine raw-clock pacing multiplier (1..1024); attest against rate 1 before suite use")
     parser.add_argument("--no-rasterization", action="store_true",
@@ -235,7 +236,9 @@ def main():
                     bgmDataSha256=sha(args.bgm_data),
                     environment=dict(python=platform.python_version(), host=platform.platform(),
                                      wine=subprocess.check_output([args.wine, "--version"], text=True).strip(),
-                                     observerBackend=args.observer_backend),
+                                     observerBackend=args.observer_backend,
+                                     wineDebug="-all,+font" if args.trace_fonts else "-all",
+                                     locale={name: os.environ.get(name) for name in ("LANG", "LC_ALL", "LC_CTYPE")}),
                     muted=True, executableSha256=sha(executable),
                     product="native-vc7-bugfix" if args.candidate else "retail",
                     observer=dict(type="GDB hardware breakpoints",
@@ -265,7 +268,7 @@ def main():
             parser.error("Reusable prefix lacks the replay runner's ownership marker")
         prefix.mkdir(parents=True, exist_ok=True)
         marker.touch()
-    env.update(WINEPREFIX=str(prefix), WINEDEBUG="-all", WINEARCH="win32")
+    env.update(WINEPREFIX=str(prefix), WINEDEBUG="-all,+font" if args.trace_fonts else "-all", WINEARCH="win32")
     # External replays restore their recorded configuration, including volume.
     # Block Wine audio backends as well as muting the startup configuration.
     env["WINEDLLOVERRIDES"] = "winepulse.drv,winealsa.drv,wineoss.drv,winemac.drv=d"

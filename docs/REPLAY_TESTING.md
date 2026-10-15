@@ -48,7 +48,19 @@ Inspect a running or completed batch without opening its capture logs:
 python3 scripts/analysis/report-replay-suite.py --suite build/replay-suite-check
 ```
 
-This reads the ledger and latest capture progress. To verify retained results,
+This reads the ledger and latest capture progress, using a bounded log/trace
+tail. On Linux, add `--resources` to show live game processes owned by the suite,
+their resident memory and retained artifact sizes. Include a shared prefix with:
+
+```bash
+python3 scripts/analysis/report-replay-suite.py \
+  --suite build/replay-suite-check --resources \
+  --wine-prefix build/replay-suite-wine
+```
+
+Archive symlinks are excluded from size totals. The recorded `running` status
+and live game processes are shown separately: startup and final verification
+can proceed between game processes. To verify retained results,
 resume the suite or use the expectation-recording command below.
 
 For a new build, use a fresh output directory and

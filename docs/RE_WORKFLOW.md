@@ -47,6 +47,15 @@ recorded in notes and handoffs.
    agree with the target destination. Normalizing a label's generated name
    preserves this check; replacing its offset with a configured address can
    conceal a different control-flow path.
+   VC7 also changes an anonymous namespace's `?A0x........` discriminator with
+   the checkout path. The comparator normalizes only that namespace component
+   while requiring a unique section-defined function with the same remaining
+   decorated name and signature. Reports retain both configured and actual
+   COFF names. Function extents, relocation offsets and types, addends, local
+   destinations and resolved target bytes keep their ordinary checks.
+   Reproduce the compiler-name control with
+   `python3 scripts/analysis/probe-anonymous-namespaces.py`; its report compares
+   identical source in two paths with fixed compiler output and PDB paths.
 9. Update mapping/progress inputs only to the level proven by the report.
 10. Run `git diff --check` and hand off commands, results, and uncertainty.
 

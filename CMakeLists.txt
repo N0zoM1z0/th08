@@ -189,6 +189,7 @@ elseif(UNIX AND NOT APPLE)
     pkg_check_modules(SDL2_IMAGE REQUIRED IMPORTED_TARGET SDL2_image)
     pkg_check_modules(SDL2_TTF REQUIRED IMPORTED_TARGET SDL2_ttf)
     find_package(Fontconfig REQUIRED)
+    find_package(Freetype REQUIRED)
     # Prefer the broadly deployed libGL.so.1 runtime ABI over GLVND's separate
     # libOpenGL.so.0 dispatch library for the 32-bit portable build.
     set(OpenGL_GL_PREFERENCE LEGACY)
@@ -238,6 +239,7 @@ elseif(UNIX AND NOT APPLE)
         PkgConfig::SDL2_IMAGE
         PkgConfig::SDL2_TTF
         Fontconfig::Fontconfig
+        Freetype::Freetype
         OpenGL::GL
         Threads::Threads
         dl

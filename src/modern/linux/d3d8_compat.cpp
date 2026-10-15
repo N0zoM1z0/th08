@@ -29,6 +29,7 @@ typedef void (APIENTRY *RenderbufferStorageFunction)(GLenum, GLenum, GLsizei, GL
 typedef void (APIENTRY *FramebufferRenderbufferFunction)(GLenum, GLenum, GLenum, GLuint);
 typedef void (APIENTRY *DeleteRenderbuffersFunction)(GLsizei, const GLuint *);
 typedef void (APIENTRY *FogCoordfFunction)(GLfloat);
+typedef void (APIENTRY *ClipControlFunction)(GLenum, GLenum);
 
 struct FramebufferApi
 {
@@ -89,6 +90,18 @@ struct FramebufferApi
 
 FramebufferApi g_framebufferApi;
 FogCoordfFunction g_fogCoordf;
+ClipControlFunction g_clipControl;
+
+void SetClipOrigin(GLenum origin)
+{
+    if (g_clipControl != NULL) g_clipControl(origin, GL_NEGATIVE_ONE_TO_ONE);
+}
+
+int BackbufferY(int height, int top, int rows)
+{
+    // The legacy FBO stores the logical top at OpenGL's lowest row.
+    return g_clipControl != NULL ? height - top - rows : top;
+}
 
 UINT BytesPerPixel(D3DFORMAT format)
 {
@@ -103,6 +116,17 @@ UINT BytesPerPixel(D3DFORMAT format)
     }
 }
 
+// D3D8 expands packed channels by copying their high bits into the low bits.
+BYTE Expand5(UINT value)
+{
+    return static_cast<BYTE>((value << 3) | (value >> 2));
+}
+
+BYTE Expand6(UINT value)
+{
+    return static_cast<BYTE>((value << 2) | (value >> 4));
+}
+
 void DecodePixel(const BYTE *source, D3DFORMAT format, BYTE *rgba)
 {
     WORD pixel;
@@ -112,15 +136,15 @@ void DecodePixel(const BYTE *source, D3DFORMAT format, BYTE *rgba)
         rgba[0] = source[2]; rgba[1] = source[1]; rgba[2] = source[0]; rgba[3] = 255; break;
     case D3DFMT_R5G6B5:
         memcpy(&pixel, source, sizeof(pixel));
-        rgba[0] = static_cast<BYTE>(((pixel >> 11) & 31) * 255 / 31);
-        rgba[1] = static_cast<BYTE>(((pixel >> 5) & 63) * 255 / 63);
-        rgba[2] = static_cast<BYTE>((pixel & 31) * 255 / 31); rgba[3] = 255; break;
+        rgba[0] = Expand5((pixel >> 11) & 31);
+        rgba[1] = Expand6((pixel >> 5) & 63);
+        rgba[2] = Expand5(pixel & 31); rgba[3] = 255; break;
     case D3DFMT_X1R5G5B5:
     case D3DFMT_A1R5G5B5:
         memcpy(&pixel, source, sizeof(pixel));
-        rgba[0] = static_cast<BYTE>(((pixel >> 10) & 31) * 255 / 31);
-        rgba[1] = static_cast<BYTE>(((pixel >> 5) & 31) * 255 / 31);
-        rgba[2] = static_cast<BYTE>((pixel & 31) * 255 / 31);
+        rgba[0] = Expand5((pixel >> 10) & 31);
+        rgba[1] = Expand5((pixel >> 5) & 31);
+        rgba[2] = Expand5(pixel & 31);
         rgba[3] = format == D3DFMT_A1R5G5B5 && !(pixel & 0x8000) ? 0 : 255; break;
     case D3DFMT_A4R4G4B4:
         memcpy(&pixel, source, sizeof(pixel));
@@ -142,14 +166,14 @@ void EncodePixel(BYTE *destination, D3DFORMAT format, const BYTE *rgba)
     case D3DFMT_R8G8B8:
         destination[0] = rgba[2]; destination[1] = rgba[1]; destination[2] = rgba[0]; break;
     case D3DFMT_R5G6B5:
-        pixel = static_cast<WORD>(((rgba[0] * 31 / 255) << 11) |
-                                  ((rgba[1] * 63 / 255) << 5) | (rgba[2] * 31 / 255));
+        pixel = static_cast<WORD>(((rgba[0] >> 3) << 11) |
+                                  ((rgba[1] >> 2) << 5) | (rgba[2] >> 3));
         memcpy(destination, &pixel, sizeof(pixel)); break;
     case D3DFMT_X1R5G5B5:
     case D3DFMT_A1R5G5B5:
         pixel = static_cast<WORD>(((format == D3DFMT_X1R5G5B5 || rgba[3] >= 128) ? 0x8000 : 0) |
-                                  ((rgba[0] * 31 / 255) << 10) |
-                                  ((rgba[1] * 31 / 255) << 5) | (rgba[2] * 31 / 255));
+                                  ((rgba[0] >> 3) << 10) |
+                                  ((rgba[1] >> 3) << 5) | (rgba[2] >> 3));
         memcpy(destination, &pixel, sizeof(pixel)); break;
     case D3DFMT_A4R4G4B4:
         pixel = static_cast<WORD>(((rgba[3] >> 4) << 12) | ((rgba[0] >> 4) << 8) |
@@ -220,7 +244,7 @@ class LinuxSurface : public IDirect3DSurface8
         for (UINT y = 0; y < height; ++y)
             for (UINT x = 0; x < width; ++x)
                 EncodePixel(&pixels[y * pitch + x * bytes], format,
-                            &rgba[((height - 1 - y) * width + x) * 4]);
+                            &rgba[(BackbufferY(height, y, 1) * width + x) * 4]);
         dirty = false;
     }
     void FlushBackbuffer()
@@ -233,6 +257,9 @@ class LinuxSurface : public IDirect3DSurface8
                 DecodePixel(&pixels[y * pitch + x * bytes], format, &rgba[(y * width + x) * 4]);
 
         GLuint name = 0;
+        GLint previousOrigin = GL_LOWER_LEFT;
+        if (g_clipControl != NULL) glGetIntegerv(GL_CLIP_ORIGIN, &previousOrigin);
+        SetClipOrigin(GL_LOWER_LEFT);
         glPushAttrib(GL_ALL_ATTRIB_BITS);
         glDisable(GL_ALPHA_TEST); glDisable(GL_BLEND); glDisable(GL_CULL_FACE);
         glDisable(GL_DEPTH_TEST); glDisable(GL_SCISSOR_TEST);
@@ -247,7 +274,9 @@ class LinuxSurface : public IDirect3DSurface8
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, &rgba[0]);
-        glMatrixMode(GL_PROJECTION); glPushMatrix(); glLoadIdentity(); glOrtho(0.0, width, height, 0.0, -1.0, 1.0);
+        glMatrixMode(GL_PROJECTION); glPushMatrix(); glLoadIdentity();
+        if (g_clipControl != NULL) glOrtho(0.0, width, height, 0.0, -1.0, 1.0);
+        else glOrtho(0.0, width, 0.0, height, -1.0, 1.0);
         glMatrixMode(GL_MODELVIEW); glPushMatrix(); glLoadIdentity();
         glColor4ub(255, 255, 255, 255);
         glBegin(GL_TRIANGLE_STRIP);
@@ -259,6 +288,7 @@ class LinuxSurface : public IDirect3DSurface8
         glPopMatrix(); glMatrixMode(GL_PROJECTION); glPopMatrix(); glMatrixMode(GL_MODELVIEW);
         glDeleteTextures(1, &name);
         glPopAttrib();
+        SetClipOrigin(previousOrigin);
         dirty = false;
     }
     ULONG refs;
@@ -439,6 +469,8 @@ class LinuxDevice : public IDirect3DDevice8
         context = SDL_GL_CreateContext(window);
         if (context == NULL) return;
         SDL_GL_MakeCurrent(window, context);
+        g_clipControl = SDL_GL_ExtensionSupported("GL_ARB_clip_control") ?
+            reinterpret_cast<ClipControlFunction>(SDL_GL_GetProcAddress("glClipControl")) : NULL;
         g_fogCoordf = reinterpret_cast<FogCoordfFunction>(SDL_GL_GetProcAddress("glFogCoordf"));
         if (g_fogCoordf == NULL)
             g_fogCoordf = reinterpret_cast<FogCoordfFunction>(SDL_GL_GetProcAddress("glFogCoordfEXT"));
@@ -484,6 +516,7 @@ class LinuxDevice : public IDirect3DDevice8
         int drawableWidth, drawableHeight;
         SDL_GL_GetDrawableSize(window, &drawableWidth, &drawableHeight);
         g_framebufferApi.bindFramebuffer(GL_FRAMEBUFFER, 0);
+        SetClipOrigin(GL_LOWER_LEFT);
         glDrawBuffer(GL_BACK);
         glViewport(0, 0, drawableWidth, drawableHeight);
 
@@ -500,11 +533,13 @@ class LinuxDevice : public IDirect3DDevice8
         glOrtho(0.0, drawableWidth, drawableHeight, 0.0, -1.0, 1.0);
         glMatrixMode(GL_MODELVIEW); glPushMatrix(); glLoadIdentity();
         glColor4ub(255, 255, 255, 255);
+        const float topV = g_clipControl != NULL ? 1.0f : 0.0f;
+        const float bottomV = 1.0f - topV;
         glBegin(GL_TRIANGLE_STRIP);
-        glTexCoord2f(0.0f, 1.0f); glVertex2f(0.0f, 0.0f);
-        glTexCoord2f(1.0f, 1.0f); glVertex2f(static_cast<float>(drawableWidth), 0.0f);
-        glTexCoord2f(0.0f, 0.0f); glVertex2f(0.0f, static_cast<float>(drawableHeight));
-        glTexCoord2f(1.0f, 0.0f); glVertex2f(static_cast<float>(drawableWidth),
+        glTexCoord2f(0.0f, topV); glVertex2f(0.0f, 0.0f);
+        glTexCoord2f(1.0f, topV); glVertex2f(static_cast<float>(drawableWidth), 0.0f);
+        glTexCoord2f(0.0f, bottomV); glVertex2f(0.0f, static_cast<float>(drawableHeight));
+        glTexCoord2f(1.0f, bottomV); glVertex2f(static_cast<float>(drawableWidth),
                                             static_cast<float>(drawableHeight));
         glEnd();
         glPopMatrix(); glMatrixMode(GL_PROJECTION); glPopMatrix(); glMatrixMode(GL_MODELVIEW);
@@ -603,7 +638,7 @@ class LinuxDevice : public IDirect3DDevice8
         const int targetWidth = backbuffer != NULL ? backbuffer->width : viewport.Width;
         const int targetHeight = backbuffer != NULL ? backbuffer->height : viewport.Height;
         const int left = static_cast<int>(viewport.X);
-        const int bottom = targetHeight - static_cast<int>(viewport.Y + viewport.Height);
+        const int bottom = BackbufferY(targetHeight, viewport.Y, viewport.Height);
         const int width = static_cast<int>(viewport.Width);
         const int height = static_cast<int>(viewport.Height);
         glViewport(0, 0, targetWidth, targetHeight);
@@ -687,7 +722,7 @@ class LinuxDevice : public IDirect3DDevice8
             return false;
 
         probeLeft = left;
-        probeBottom = static_cast<int>(backbuffer->height) - bottom;
+        probeBottom = BackbufferY(backbuffer->height, top, bottom - top);
         probeWidth = right - left;
         probeHeight = bottom - top;
         probePixels.resize(probeWidth * probeHeight * 4);
@@ -860,10 +895,14 @@ class LinuxDevice : public IDirect3DDevice8
         const int drawableHeight = height;
         glEnable(GL_SCISSOR_TEST);
         glScissor(static_cast<int>(viewport.X * drawableWidth / width),
-                  drawableHeight - static_cast<int>((viewport.Y + viewport.Height) * drawableHeight / height),
+                  BackbufferY(drawableHeight, viewport.Y * drawableHeight / height,
+                              viewport.Height * drawableHeight / height),
                   static_cast<int>(viewport.Width * drawableWidth / width),
                   static_cast<int>(viewport.Height * drawableHeight / height));
-        glMatrixMode(GL_PROJECTION); glLoadIdentity(); glOrtho(0.0, width, height, 0.0, -1.0, 1.0);
+        // Both paths map logical top edges to OpenGL's inclusive edge convention.
+        SetClipOrigin(g_clipControl != NULL ? GL_UPPER_LEFT : GL_LOWER_LEFT);
+        glMatrixMode(GL_PROJECTION); glLoadIdentity();
+        glOrtho(0.0, width, 0.0, height, -1.0, 1.0);
         glMatrixMode(GL_MODELVIEW); glLoadIdentity();
         if (renderStates[D3DRS_ALPHABLENDENABLE])
         { glEnable(GL_BLEND); glBlendFunc(BlendFunction(renderStates[D3DRS_SRCBLEND]), BlendFunction(renderStates[D3DRS_DESTBLEND])); }

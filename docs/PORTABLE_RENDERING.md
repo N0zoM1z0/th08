@@ -54,7 +54,53 @@ This compiles the production Linux backend and exercises rendered pixels through
 its D3D8 API. Checks cover flag-0 reads, read-only locks, immediate partial writes,
 subsequent draws, XYZ and XYZRHW texture interpolation, pixel centers, negative-W
 clipping, depth testing, linear fog, and viewport-independent CPU uploads.
+The six groups also check top/left edge inclusion, bottom/right exclusion,
+asymmetric viewport clears, framebuffer audit coordinates, and actual Xvfb
+window pixels after presentation. The window check uses X11 readback and needs
+the `x11` development package alongside SDL2 and OpenGL.
 The x86_64 GitHub build runs these checks without copyrighted game data.
+
+For an i386 host build, select the multilib package directory and a compiler
+wrapper that supplies `-m32`. Include `fpu` to check the device's x87 precision
+and `D3DCREATE_FPU_PRESERVE` behavior:
+
+```bash
+mkdir -p build
+cat > build/renderer-cxx-i386 <<'SH'
+#!/bin/sh
+exec g++ -m32 "$@"
+SH
+chmod +x build/renderer-cxx-i386
+PKG_CONFIG_LIBDIR=/usr/lib/i386-linux-gnu/pkgconfig:/usr/share/pkgconfig \
+  python3 scripts/test-portable-renderer.py \
+    --compiler build/renderer-cxx-i386 \
+    --cases locks,perspective,clipping,fog,edges,orientation,fpu \
+    --output-dir build/renderer-i386
+```
+
+Add `--legacy-gl` with a separate output directory for the older context.
+`--pkg-config` selects an alternative package-metadata command when the compiler
+uses a container or sysroot. Keep the compiler and package metadata on the same
+architecture. The test executable runs on the host; reports identify the actual
+compiler and OpenGL context.
+
+Exercise the OpenGL 2.1 path without clip control:
+
+```bash
+python3 scripts/test-portable-renderer.py --legacy-gl
+python3 scripts/test-portable-renderer.py --legacy-gl \
+  --baseline-ref da521dcf --cases edges --expect-failures \
+  --output-dir build/portable-renderer-legacy-baseline
+```
+
+The runner forces Mesa's 2.1 profile and disables `GL_ARB_clip_control`.
+Each contract reports the actual context version and extension availability.
+`report.json` retains source and binary hashes, compiler identity, and each
+contract's output and exit status. Linux CI runs both profiles and uploads the
+reports.
+The second command reproduces the pre-repair top-edge failure. The repaired
+legacy renderer stores the logical top at the bottom of its OpenGL FBO, then
+maps readback, CPU writes, clears, audit regions, and presentation consistently.
 
 Confirm the tests detect the preceding defects:
 
@@ -89,6 +135,13 @@ ordinary/accelerated captures have identical playfield pixels and camera packets
 Small pixel differences remain, including in text regions; their causes need
 separate measurement. The initial Stage 5 comparison used the diagnostic
 boss-name bypass; repaired captures keep the normal copy.
+
+The [laser visual check](PORTABLE_LASER_VISUALS.md) adds four later Stage 3
+frames and four Marisa Stage 4B frames with matching raw laser and VM state.
+The October 13 baseline failed seven strict beam-region image checks. All eight
+pass after the Linux color, font-height, and edge-coverage repairs, using the
+original 1.0 mean RGB error limit. The page records each repair, remaining font
+and synthetic sampling differences, and the missing-beam control procedure.
 
 All six existing replay windows pass with normal life rules and boss-name copying,
 retaining 8,810 enemy-render samples. The Stage 5 window records nine heuristic

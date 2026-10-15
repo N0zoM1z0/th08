@@ -64,13 +64,34 @@ jobs:
           sudo apt-get install -y \
             ninja-build pkg-config \
             libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev \
-            libfontconfig1-dev libgl-dev xvfb xauth gdb
+            libfontconfig1-dev libgl-dev libx11-dev xvfb xauth gdb
 
       - name: Build and verify native-layout ELF
         run: scripts/build-portable-linux.sh x86_64
 
       - name: Check renderer pixel contracts without game assets
         run: python3 scripts/test-portable-renderer.py
+
+      - name: Check OpenGL 2.1 renderer without clip control
+        run: |
+          python3 scripts/test-portable-renderer.py --legacy-gl \
+            --output-dir build/portable-renderer-legacy-test
+
+      - name: Upload renderer contract reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: th08-renderer-contracts-x86_64
+          path: |
+            build/portable-renderer-test/report.json
+            build/portable-renderer-legacy-test/report.json
+          if-no-files-found: warn
+          retention-days: 14
+
+      - name: Check texture colors and exhaustive surface copies without game assets
+        run: |
+          python3 scripts/analysis/probe-texture-colors.py --check \
+            --output-dir build/texture-color-ci
 
       - name: Check vector precision without game assets
         run: python3 scripts/test-portable-math.py

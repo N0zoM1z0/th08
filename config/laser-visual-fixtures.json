@@ -1,0 +1,75 @@
+{
+  "version": 1,
+  "frameCounter": "GameManager.gameplayFrameCounter after Present",
+  "cases": [
+    {
+      "id": "stage3-keine",
+      "fixture": "lunatic-0-b",
+      "stage": 2,
+      "boss": "Keine",
+      "retailLaserStateSha256": "be8ce47843f9e3d55141c4de2279e2d80beb63393cf16b8c5fa30a14ad74c8d9",
+      "frames": [
+        { "frame": 12900, "phase": "moving beams", "expectedLaserState": 1 },
+        { "frame": 14130, "phase": "stationary startup", "expectedLaserState": 0 },
+        { "frame": 14310, "phase": "stationary active", "expectedLaserState": 1 },
+        { "frame": 14490, "phase": "stationary despawn", "expectedLaserState": 2 }
+      ]
+    },
+    {
+      "id": "stage4b-marisa",
+      "fixture": "lunatic-0-b",
+      "stage": 4,
+      "boss": "Marisa",
+      "retailLaserStateSha256": "adea4722edaf1f07fd87199e04c2bf4f32d9ac3b872d093973f959b1b470e503",
+      "frames": [
+        { "frame": 13140, "phase": "colored stationary startup", "expectedLaserState": 0 },
+        { "frame": 13260, "phase": "colored stationary active", "expectedLaserState": 1 },
+        { "frame": 15360, "phase": "colored stationary despawn", "expectedLaserState": 2 },
+        { "frame": 18210, "phase": "moving beams", "expectedLaserState": 1 }
+      ]
+    },
+    {
+      "id": "finala-eirin",
+      "fixture": "lunatic-1-a",
+      "stage": 6,
+      "boss": "Eirin",
+      "retailLaserStateSha256": "8b072685ec6cfa446961167be9a9608eb2ad102dad0da1c7171c2849f0032a28",
+      "frames": [
+        { "frame": 9570, "phase": "dense stationary attack", "expectedLaserState": 1 },
+        { "frame": 14490, "phase": "stationary startup", "expectedLaserState": 0 },
+        { "frame": 14550, "phase": "stationary active", "expectedLaserState": 1 },
+        { "frame": 15090, "phase": "stationary despawn", "expectedLaserState": 2 },
+        { "frame": 22590, "phase": "late mixed-phase attack", "expectedLaserState": 2 }
+      ]
+    },
+    {
+      "id": "extra-mokou",
+      "fixture": "extra-0-extra",
+      "stage": 8,
+      "boss": "Mokou",
+      "retailLaserStateSha256": "53ceaed3e599c88c709c6275325c2169dc165133985dc6b27e8991a9f938386e",
+      "frames": [
+        {"frame": 24900, "phase": "stationary startup", "expectedLaserState": 0},
+        {"frame": 24960, "phase": "stationary active", "expectedLaserState": 1},
+        {"frame": 25320, "phase": "stationary despawn", "expectedLaserState": 2},
+        {"frame": 25800, "phase": "later stationary active", "expectedLaserState": 1}
+      ]
+    },
+    {
+      "id": "finalb-kaguya",
+      "fixture": "lunatic-0-b",
+      "stage": 7,
+      "boss": "Kaguya",
+      "retailLaserStateSha256": "a45b19508e54a40be9ddc3ee19e64241f9c0d1a9ba8653254a1bea7afe06cb03",
+      "frames": [
+        {"frame": 8400, "phase": "moving active beams", "expectedLaserState": 1},
+        {"frame": 11160, "phase": "stationary startup", "expectedLaserState": 0},
+        {"frame": 11490, "phase": "stationary active", "expectedLaserState": 1},
+        {"frame": 12240, "phase": "stationary despawn", "expectedLaserState": 2},
+        {"frame": 14280, "phase": "later moving active beams", "expectedLaserState": 1},
+        {"frame": 16770, "phase": "later stationary active", "expectedLaserState": 1},
+        {"frame": 17460, "phase": "later stationary despawn", "expectedLaserState": 2}
+      ]
+    }
+  ]
+}

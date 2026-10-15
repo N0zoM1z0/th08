@@ -27,6 +27,74 @@ Separate retained-evidence passes recomputed all native comparisons and all
 portable comparisons. The portable `--verify-only` passes also checked capture
 identities, completion records, saved reports, and suite ledgers.
 
+### Refresh after spell-background ownership repair
+
+The native owner-repair checkpoint `096c5a87` passes the full 108-recording
+corpus again: 12,311,460 calculations agree on all 25 fields, stage-end scores,
+fingerprints and natural exits. Retained-evidence verification also passes.
+Its fresh VC7 bugfix product is SHA-256
+`1b8e217a7fe48b74304b1cbf01600385e78f13273e63a6b90bcc1c32436e45f4`.
+This refresh uses new serial candidate captures against validated retail
+references, clock rate 128, no rasterization and ptrace observations. Evidence
+is under `build/laser-native-20261014/full-state128/`; owned runtimes and the
+shared Wine prefix have been removed.
+
+The main backport checkpoint `5dfd5197` also has fresh normal/bugfix links and
+a passing cold 1,106-unit gate. Its new bugfix product
+`9e699dd2c596acb090a5d44e9aa32b6c0bb19f0d5e11fe6a0babb0eb1469fd9b`
+passes five fresh paired Final A images with `csmt=0`: complete playfields are
+pixel-identical, raw laser/VM packets agree, and all 25 fields agree across
+the 22,590-calculation diagnostic prefix. Its complete 108-recording replay
+gate and separate retained-evidence pass now also succeed: 12,311,460
+calculations agree on all 25 fields, stage-end scores, published fingerprints
+and replay completion boundaries. The refresh uses serial candidate captures
+against validated retail references, clock rate 128, no rasterization and the
+ptrace observer. Evidence is under
+`build/laser-native-20261014/main-full-state128/`; temporary runtimes and the
+owned Wine prefix are removed.
+
+The main backport is merged in
+[PR #31](https://github.com/N0zoM1z0/th08/pull/31), checkpoint `08c7f00f`.
+
+The [laser investigation](PORTABLE_LASER_VISUALS.md) records the visual
+reproduction, canonical field ownership and image comparisons. Its latest
+Linux surface-filter repair passes 640 pinned-D3DX8 API cases and seventeen
+selected images. Its GCC 8 x86_64 product, SHA-256
+`7eb846a665867ed9e8a1c19484d2c0fe1ee586954f0ecca3b1b756223e0e0853`,
+passes all 108 recordings and 12,311,460 calculations with a separate
+retained-evidence pass. This refresh uses fresh serial candidate processes,
+validated retail references and the compiled recorder without rasterization.
+Source checkpoint is `183cd755`; evidence is under
+`build/surface-filter-repair-20261014/x64-suite/`. The added Final B image
+samples exposed a one-ULP laser-origin difference at frame 8,400 in fields
+outside the gameplay trace. The subsequent ECL sine/cosine repair passes all
+seven image/packet checks and 390 paired spawn-input records; its full corpus
+refresh is recorded below. The laser guide retains the failed and repaired
+evidence.
+Earlier portable full-corpus results remain tied to the products listed below.
+
+The subsequent ECL-repaired x86_64 product, SHA-256
+`e0a57a43520524713b70dbaa38329155fd6ab4a09006869b4f09db8dbcc27649`,
+source `897decb2`, passes all 108 recordings and its separate retained-evidence
+verification: 12,311,460 calculations agree on all 25 fields, recorded
+stage-end scores, published fingerprints and natural exits. All temporary
+runtimes are removed; the 108 equal traces share validated reference storage.
+Evidence is under `build/laser-spawn-origin-20261014/x64-suite/` and
+`x64-suite-revalidation.log`. This completed gate supersedes the earlier
+73-recording snapshot.
+
+The refreshed GCC 12 i386 product, SHA-256
+`bd8b148c0ac6a478391ee4c1fea7334ac1f473466418131715cda4e1a900ce40`,
+source `ed8ff8df`, also passes all 108 recordings and a separate
+`--verify-only` pass: 12,311,460 calculations agree on all 25 fields,
+recorded stage-end scores, published fingerprints and natural exits. The
+runner launches fresh serial candidate processes against validated retail
+references, with rasterization disabled. All temporary runtimes are removed;
+all 108 equal traces share reference storage. Evidence is under
+`build/laser-i386-refresh-20261014/full-suite/`, `full-suite-revalidation.log`
+and `full-suite-audit.json`. Its refreshed scene checks follow the complete
+gameplay gate and are recorded in the laser report.
+
 ## Coverage
 
 The [committed corpus](../tests/fixtures/replays/th08-1.00d/README.md) contains
@@ -119,6 +187,17 @@ Stage 5 ordinary/accelerated playfields and camera packets agree exactly.
 The [rendering report](https://github.com/N0zoM1z0/th08/blob/port/portable-64bit/docs/PORTABLE_RENDERING.md)
 records the limits, negative controls, and sanitizer checks.
 
+The [laser visual investigation](PORTABLE_LASER_VISUALS.md)
+adds eight selected Stage 3 and Stage 4B boss frames and a missing-beam control.
+All laser and VM packets agree exactly. The October 13 baseline passed one
+strict beam-region image check and failed seven. After the Linux color, font
+height, and edge-coverage repairs, all eight pass the unchanged 1.0 mean RGB
+error limit. Font rasterization and synthetic texture-sampling differences
+remain documented in that investigation. The revised x86_64 product also passes
+the full corpus as recorded above. The original seven image failures are
+resolved; the added Final B packet difference now has a verified ECL
+sine/cosine repair and its own input regression.
+
 ## Reproduce the results
 
 Use the [native replay procedure](REPLAY_TESTING.md#reproduce-published-results)
@@ -174,7 +253,11 @@ the evidence. Original game assets and generated reports are kept outside Git.
 | Render repairs and subsequent frame regression | `portable-render-fix-20261012/`, `portable-state-20261012/polar-rendering-regression/` |
 
 The portable runs used an x86_64 WSL2 Linux host, Xvfb, and Mesa llvmpipe.
-The candidate compiler was Ubuntu GCC 8.4.0; native captures used Wine 9.0.
+The x86_64 candidate used Ubuntu GCC 8.4.0; the i386 candidate used Debian
+GCC 12.2.0 in the pinned multilib container. Native captures used Wine 9.0.
+The retained i386 provenance originally labeled its compiler as GCC 8.4.0.
+Its build log and ELF `.comment` identify GCC 12.2.0; a local correction
+addendum preserves the original record and both evidence hashes.
 Per-capture metadata preserves host, backend, source, hashes, and playback
 settings. Retain that metadata, `complete.json`, `comparison.json`, `suite.json`,
 compressed rows, the candidate, and build provenance for an independent audit.

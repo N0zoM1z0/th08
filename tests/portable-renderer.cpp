@@ -1,6 +1,9 @@
 #include "modern/linux/linux_compat.hpp"
 #include "modern/linux/d3d8_internal.hpp"
+#include <SDL.h>
+#include <SDL_syswm.h>
 #include <SDL_opengl.h>
+#include <X11/Xutil.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -232,13 +235,79 @@ void CheckFogAndBlit()
     Color(2, 2, 0x00ff00, "presentation preserves CPU upload");
     puts("PASS: fog distance and viewport-independent backbuffer upload");
 }
+
+void CheckEdges()
+{
+    Reset(0xff802080);
+    Solid(16.0f, 32.0f, 96.0f, 40.0f, 0xffffffff);
+    Color(40, 32, 0xffffff, "horizontal top edge covers its pixel center");
+    Color(40, 40, 0x802080, "horizontal bottom edge excludes its pixel center");
+    Color(16, 36, 0xffffff, "left edge covers its pixel center");
+    Color(96, 36, 0x802080, "right edge excludes its pixel center");
+    D3DVIEWPORT8 viewport = {8, 8, 112, 112, 0.0f, 1.0f};
+    device->SetViewport(&viewport);
+    Solid(16.0f, 48.0f, 96.0f, 56.0f, 0xff00ff00);
+    Color(40, 48, 0x00ff00, "offset viewport retains top-edge coverage");
+    Color(40, 56, 0x802080, "offset viewport retains bottom-edge exclusion");
+    device->Present(NULL, NULL, NULL, NULL);
+    Color(40, 48, 0x00ff00, "presentation retains the edge-correct backbuffer");
+    puts("PASS: horizontal and vertical pixel-center edge coverage");
+}
+
+void WindowColor(HWND window, UINT x, UINT y, D3DCOLOR expected, const char *message)
+{
+    SDL_SysWMinfo info;
+    SDL_VERSION(&info.version);
+    Require(SDL_GetWindowWMInfo(reinterpret_cast<SDL_Window *>(window), &info) == SDL_TRUE &&
+            info.subsystem == SDL_SYSWM_X11, "Xvfb window access");
+    glFinish();
+    XSync(info.info.x11.display, False);
+    XWindowAttributes attributes;
+    Require(XGetWindowAttributes(info.info.x11.display, info.info.x11.window, &attributes) != 0,
+            "visible window dimensions");
+    XImage *image = XGetImage(info.info.x11.display, info.info.x11.window,
+                             (x + 0.5f) * attributes.width / 128,
+                             (y + 0.5f) * attributes.height / 128, 1, 1, AllPlanes, ZPixmap);
+    Require(image != NULL && image->red_mask == 0xff0000 && image->green_mask == 0x00ff00 &&
+            image->blue_mask == 0x0000ff, "Xvfb RGB window image");
+    const unsigned long pixel = XGetPixel(image, 0, 0) & 0xffffff;
+    XDestroyImage(image);
+    if (pixel != expected)
+        fprintf(stderr, "Window pixel (%u,%u): %06lx; expected %06lx\n", x, y, pixel,
+                static_cast<unsigned long>(expected));
+    Require(pixel == expected, message);
+}
+
+void CheckOrientation(HWND window)
+{
+    Reset(0xff112233);
+    D3DVIEWPORT8 viewport = {8, 16, 32, 24, 0.0f, 1.0f};
+    device->SetViewport(&viewport);
+    device->Clear(0, NULL, D3DCLEAR_TARGET, 0xffff0000, 1.0f, 0);
+    Color(16, 20, 0xff0000, "asymmetric viewport clear covers the logical top");
+    Color(16, 108, 0x112233, "asymmetric viewport clear preserves the logical bottom");
+    viewport.X = viewport.Y = 0; viewport.Width = viewport.Height = 128;
+    device->SetViewport(&viewport);
+    Require(th08_linux_begin_framebuffer_probe(device, 16, 24, 32, 40), "logical top framebuffer probe");
+    Solid(16, 24, 32, 40, 0xff00ff00);
+    LinuxFramebufferDeltaStats stats;
+    Require(th08_linux_end_framebuffer_probe(device, &stats) && stats.sampledPixels == 256 &&
+            stats.changedPixels == 256, "framebuffer probe measures its logical top rectangle");
+    Solid(16, 100, 32, 116, 0xff00ffff);
+    device->Present(NULL, NULL, NULL, NULL);
+    WindowColor(window, 20, 28, 0x00ff00, "window presentation preserves the logical top");
+    WindowColor(window, 20, 108, 0x00ffff, "window presentation preserves the logical bottom");
+    Color(20, 28, 0x00ff00, "window readback restores the game framebuffer");
+    puts("PASS: asymmetric viewport, framebuffer probe, and visible-window orientation");
+}
 }
 
 int main(int argc, char **argv)
 {
     const char *test = argc == 2 ? argv[1] : "all";
     Require(argc <= 2 && (!strcmp(test, "all") || !strcmp(test, "locks") || !strcmp(test, "perspective") ||
-                          !strcmp(test, "clipping") || !strcmp(test, "fog") || !strcmp(test, "fpu")), "unknown contract case");
+                          !strcmp(test, "clipping") || !strcmp(test, "fog") || !strcmp(test, "fpu") ||
+                          !strcmp(test, "edges") || !strcmp(test, "orientation")), "unknown contract case");
     HWND window = CreateWindowExA(0, "TEST", "TH08 renderer contract", WS_VISIBLE,
                                  0, 0, 640, 480, NULL, NULL, NULL, NULL);
     Require(window != NULL, "SDL window");
@@ -256,11 +325,17 @@ int main(int argc, char **argv)
         return 0;
     }
     Require(d3d->CreateDevice(0, D3DDEVTYPE_HAL, window, 0, &parameters, &device) == S_OK, "OpenGL device");
+    const bool clipControl = SDL_GL_ExtensionSupported("GL_ARB_clip_control") != SDL_FALSE;
+    printf("OpenGL: %s; ARB_clip_control: %s\n", glGetString(GL_VERSION), clipControl ? "available" : "unavailable");
+    if (getenv("TH08_RENDERER_REQUIRE_LEGACY_GL") != NULL)
+        Require(!clipControl, "legacy contract has no clip-control extension");
     device->GetBackBuffer(0, D3DBACKBUFFER_TYPE_MONO, &backbuffer);
     if (!strcmp(test, "all") || !strcmp(test, "locks")) CheckLocks();
     if (!strcmp(test, "all") || !strcmp(test, "perspective")) CheckPerspective();
     if (!strcmp(test, "all") || !strcmp(test, "clipping")) CheckClippingAndDepth();
     if (!strcmp(test, "all") || !strcmp(test, "fog")) CheckFogAndBlit();
+    if (!strcmp(test, "all") || !strcmp(test, "edges")) CheckEdges();
+    if (!strcmp(test, "all") || !strcmp(test, "orientation")) CheckOrientation(window);
     backbuffer->Release(); device->Release(); d3d->Release(); DestroyWindow(window);
     puts("Portable renderer contracts passed.");
     return 0;
