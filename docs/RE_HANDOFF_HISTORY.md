@@ -169,6 +169,8 @@ and their owner/data/callee checks pass. Repository CI and the remote i386,
 x86_64, and AArch64 build jobs pass at `5b537b4c`. This checkpoint is pushed;
 Web work remains deferred.
 
+<a id="native-replay-handoff--2026-10-11"></a>
+
 ### Native replay parity investigation
 
 The 2026-10-11 cold gate is recorded under `build/replay-cold-20261011/`.
