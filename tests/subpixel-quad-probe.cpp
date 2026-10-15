@@ -42,6 +42,11 @@ int main(int argc,char **argv) {
  check(device->SetVertexShader(D3DFVF_XYZRHW|D3DFVF_DIFFUSE|D3DFVF_TEX1));
  check(device->SetRenderState(D3DRS_ZENABLE,FALSE));check(device->SetRenderState(D3DRS_LIGHTING,FALSE));check(device->SetRenderState(D3DRS_CULLMODE,D3DCULL_NONE));
  check(device->SetRenderState(D3DRS_ALPHABLENDENABLE,FALSE));
+#ifdef TH08_SUBPIXEL_ALPHA_TEST
+ check(device->SetRenderState(D3DRS_ALPHATESTENABLE,TRUE));
+ check(device->SetRenderState(D3DRS_ALPHAFUNC,D3DCMP_GREATEREQUAL));
+ check(device->SetRenderState(D3DRS_ALPHAREF,4));
+#endif
  IDirect3DTexture8 *texture;check(device->CreateTexture(256,256,1,0,D3DFMT_A8R8G8B8,D3DPOOL_MANAGED,&texture));
  D3DLOCKED_RECT lock;check(texture->LockRect(0,&lock,NULL,0));
  for(unsigned y=0;y<256;y++)for(unsigned x=0;x<256;x++){DWORD color=x>=33&&x<=35?0xffffffffu:0xff000000u;memcpy((char *)lock.pBits+y*lock.Pitch+x*4,&color,4);}check(texture->UnlockRect(0));

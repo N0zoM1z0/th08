@@ -90,6 +90,7 @@ def main():
     control.add_argument("--constant-u", type=float,
                          help="Synthetic control: set every vertex U to this finite float in both APIs")
     parser.add_argument("--legacy-gl", action="store_true", help="Exercise the portable Mesa OpenGL 2.1 path without clip control")
+    parser.add_argument("--alpha-test", action="store_true", help="Enable the scene's alpha test (>= 4/255) in both APIs")
     parser.add_argument("--baseline-ref", help="Also exercise an immutable pre-repair renderer")
     parser.add_argument("--renderer-control", type=Path,
                         help="Also exercise a private renderer source copy, labeled as a diagnostic control")
@@ -147,12 +148,13 @@ def main():
     elif args.constant_u is not None:
         data, transformation = constant_u(data, args.constant_u)
     (output / "input.bin").write_bytes(data)
+    definitions = ["-DTH08_SUBPIXEL_ALPHA_TEST"] if args.alpha_test else []
     source = ROOT / "tests/subpixel-quad-probe.cpp"
     native = output / "native"
     native.mkdir()
     binary = output / "subpixel.exe"
     with (output / "native-build.log").open("w") as log:
-        subprocess.run(["i686-w64-mingw32-g++", "-O2", "-static", str(source), "-o", str(binary),
+        subprocess.run(["i686-w64-mingw32-g++", "-O2", "-static", *definitions, str(source), "-o", str(binary),
                         "-ld3d8", "-lgdi32", "-luser32"], stdout=log, stderr=subprocess.STDOUT, check=True)
     prefix = Path(tempfile.mkdtemp(prefix="subpixel-wine.", dir=ROOT / "build"))
     (prefix / ".th08-replay-owned").write_text("Owned subpixel quad probe prefix\n")
@@ -218,7 +220,7 @@ def main():
                   observedInputSha256=observed_input_sha, inputTransformation=transformation,
                   referenceShaderTrace=shader_trace,
                   referenceProjectionTrace=projection_trace,
-                  legacyOpenGL=args.legacy_gl,
+                  legacyOpenGL=args.legacy_gl, alphaTest=args.alpha_test,
                   frame=args.frame, selectedIndices=[index for index, _, _ in selected], baselineCommit=baseline,
                   probeSha256=sha(source), runnerSha256=sha(Path(__file__)),
                   rendererSha256={name: sha(path) for name, path in sources.items()}, variants={})
@@ -237,7 +239,7 @@ def main():
         folder = output / name
         folder.mkdir()
         binary = output / ("subpixel-" + name)
-        command = [compiler, "-std=gnu++98", "-O2", "-fno-strict-aliasing", "-pthread",
+        command = [compiler, "-std=gnu++98", "-O2", "-fno-strict-aliasing", "-pthread", *definitions,
                    "-DTH08_MODERN_PORT", "-DTH08_MODERN_LINUX", "-DTH08_PORTABLE_NATIVE_LAYOUT",
                    "-D_FILE_OFFSET_BITS=64", "-D_TIME_BITS=64", "-Isrc", "-Isrc/modern/linux/include",
                    "-include", "src/modern/linux/linux_compat.hpp", "-Isrc/modern/linux", str(source),

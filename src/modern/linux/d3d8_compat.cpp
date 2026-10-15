@@ -9,6 +9,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <vector>
+#include <map>
+#include <string>
 #if defined(__i386__)
 #include <fenv.h>
 #include <fpu_control.h>
@@ -457,36 +459,59 @@ void ConfigureTextureComponent(GLenum combineParameter, GLenum source0Parameter,
 // compatibility vertex pipeline still supplies positions, colors, UVs and fog.
 class AlphaFragmentPipeline
 {
+    struct Program
+    {
+        Program() : id(0), image(-1), reference(-1), factor(-1) {}
+        GLuint id;
+        GLint image, reference, factor;
+    };
+    typedef std::map<std::vector<DWORD>, Program> Programs;
   public:
-    AlphaFragmentPipeline() : program(0), initialized(false) {}
+    AlphaFragmentPipeline() : initialized(false) {}
     bool Bind(const DWORD *render, const DWORD *stage, bool textured, bool fog)
     {
-        if (!initialized && !Initialize()) return false;
-        if (!program) return false;
-        useProgram(program);
-        uniform1i(imageLocation, 0);
-        uniform4i(materialLocation, stage[D3DTSS_COLOROP], stage[D3DTSS_ALPHAOP], textured, fog);
-        uniform4i(argumentsLocation, stage[D3DTSS_COLORARG1], stage[D3DTSS_COLORARG2],
-                  stage[D3DTSS_ALPHAARG1], stage[D3DTSS_ALPHAARG2]);
-        const DWORD factor = render[D3DRS_TEXTUREFACTOR];
-        uniform4f(factorLocation, ((factor >> 16) & 255) / 255.0f,
-                  ((factor >> 8) & 255) / 255.0f, (factor & 255) / 255.0f,
-                  ((factor >> 24) & 255) / 255.0f);
-        uniform1i(comparisonLocation, render[D3DRS_ALPHAFUNC]);
-        uniform1f(referenceLocation, (render[D3DRS_ALPHAREF] & 255) / 255.0f);
+        if (!initialized)
+        {
+            if (!Initialize()) return false;
+            initialized = true;
+        }
+        const DWORD values[] = {stage[D3DTSS_COLOROP], stage[D3DTSS_ALPHAOP],
+            stage[D3DTSS_COLORARG1], stage[D3DTSS_COLORARG2],
+            stage[D3DTSS_ALPHAARG1], stage[D3DTSS_ALPHAARG2],
+            render[D3DRS_ALPHAFUNC], textured ? 1u : 0u, fog ? 1u : 0u};
+        const std::vector<DWORD> key(values, values + 9);
+        Programs::iterator found = programs.find(key);
+        if (found == programs.end())
+        {
+            const Program program = Create(values);
+            if (!program.id) return false;
+            found = programs.insert(std::make_pair(key, program)).first;
+        }
+        const Program &program = found->second;
+        useProgram(program.id);
+        if (program.image >= 0) uniform1i(program.image, 0);
+        if (program.factor >= 0)
+        {
+            const DWORD factor = render[D3DRS_TEXTUREFACTOR];
+            uniform4f(program.factor, ((factor >> 16) & 255) / 255.0f,
+                      ((factor >> 8) & 255) / 255.0f, (factor & 255) / 255.0f,
+                      ((factor >> 24) & 255) / 255.0f);
+        }
+        if (program.reference >= 0)
+            uniform1f(program.reference, (render[D3DRS_ALPHAREF] & 255) / 255.0f);
         glDisable(GL_ALPHA_TEST);
         return true;
     }
     void Unbind() { useProgram(0); }
     void Destroy()
     {
-        if (program) deleteProgram(program);
-        program = 0;
+        for (Programs::iterator it = programs.begin(); it != programs.end(); ++it)
+            deleteProgram(it->second.id);
+        programs.clear();
     }
   private:
     bool Initialize()
     {
-        initialized = true;
 #define LOAD_GL(member, type, spelling) member = reinterpret_cast<type>(SDL_GL_GetProcAddress(spelling)); if (!member) return false
         LOAD_GL(createShader, PFNGLCREATESHADERPROC, "glCreateShader");
         LOAD_GL(shaderSource, PFNGLSHADERSOURCEPROC, "glShaderSource");
@@ -504,66 +529,75 @@ class AlphaFragmentPipeline
         LOAD_GL(getUniformLocation, PFNGLGETUNIFORMLOCATIONPROC, "glGetUniformLocation");
         LOAD_GL(uniform1i, PFNGLUNIFORM1IPROC, "glUniform1i");
         LOAD_GL(uniform1f, PFNGLUNIFORM1FPROC, "glUniform1f");
-        LOAD_GL(uniform4i, PFNGLUNIFORM4IPROC, "glUniform4i");
         LOAD_GL(uniform4f, PFNGLUNIFORM4FPROC, "glUniform4f");
 #undef LOAD_GL
-        const char *source =
-            "#version 120\n"
-            "uniform sampler2D image; uniform ivec4 material, arguments; uniform vec4 factor;"
-            "uniform int comparison; uniform float reference;"
-            "vec4 argument(int selector, vec4 texel) {"
-            "  int base = int(mod(float(selector), 16.0));"
-            "  vec4 result = base == 2 ? texel : (base == 3 ? factor : gl_Color);"
-            "  if (mod(floor(float(selector) / 32.0), 2.0) != 0.0) result = vec4(result.a);"
-            "  if (mod(floor(float(selector) / 16.0), 2.0) != 0.0) result = vec4(1.0) - result;"
-            "  return result; }"
-            "vec4 operation(int op, vec4 a, vec4 b) {"
-            "  if (op == 1) return gl_Color; if (op == 2) return a; if (op == 3) return b; return a * b; }"
-            "bool passes(float a) {"
-            "  if (comparison == 1) return false; if (comparison == 2) return a < reference;"
-            "  if (comparison == 3) return a == reference; if (comparison == 4) return a <= reference;"
-            "  if (comparison == 5) return a > reference; if (comparison == 6) return a != reference;"
-            "  if (comparison == 7) return a >= reference; return true; }"
-            "void main() {"
-            "  vec4 texel = material.z != 0 ? texture2D(image, gl_TexCoord[0].xy) : vec4(1.0);"
-            "  vec4 color = vec4(operation(material.x, argument(arguments.x, texel), argument(arguments.y, texel)).rgb,"
-            "                    operation(material.y, argument(arguments.z, texel), argument(arguments.w, texel)).a);"
-            "  if (!passes(color.a)) discard;"
-            "  if (material.w != 0) {"
-            "    float fog = clamp((gl_Fog.end - gl_FogFragCoord) * gl_Fog.scale, 0.0, 1.0);"
-            "    color.rgb = mix(gl_Fog.color.rgb, color.rgb, fog); }"
-            "  gl_FragColor = color; }";
+        return true;
+    }
+    static std::string Argument(DWORD selector)
+    {
+        const DWORD complement = 0x10, replicateAlpha = 0x20;
+        std::string result;
+        switch (selector & D3DTA_SELECTMASK)
+        {
+        case D3DTA_TEXTURE: result = "texel"; break;
+        case D3DTA_TFACTOR: result = "factor"; break;
+        default: result = "gl_Color"; break;
+        }
+        if (selector & replicateAlpha) result = "(" + result + ").aaaa";
+        if (selector & complement) result = "(vec4(1.0) - " + result + ")";
+        return result;
+    }
+    static std::string Operation(DWORD operation, DWORD first, DWORD second)
+    {
+        const DWORD selectArgument2 = 3;
+        if (operation == D3DTOP_DISABLE) return "gl_Color";
+        if (operation == D3DTOP_SELECTARG1) return Argument(first);
+        if (operation == selectArgument2) return Argument(second);
+        return "(" + Argument(first) + " * " + Argument(second) + ")";
+    }
+    Program Create(const DWORD *key)
+    {
+        std::string source = "#version 120\nuniform sampler2D image; uniform vec4 factor; uniform float reference; void main() {";
+        source += key[7] ? "vec4 texel = texture2D(image, gl_TexCoord[0].xy);" : "vec4 texel = vec4(1.0);";
+        source += "vec4 color = vec4((" + Operation(key[0], key[2], key[3]) + ").rgb,(" +
+                  Operation(key[1], key[4], key[5]) + ").a);";
+        const DWORD comparison = key[6];
+        const char *operators[] = {"", "<", "==", "<=", ">", "!=", ">=", ""};
+        if (comparison == D3DCMP_NEVER) source += "discard;";
+        else if (comparison >= D3DCMP_LESS && comparison <= D3DCMP_GREATEREQUAL)
+            source += std::string("if (!(color.a ") + operators[comparison - 1] + " reference)) discard;";
+        if (key[8]) source += "float fog = clamp((gl_Fog.end - gl_FogFragCoord) * gl_Fog.scale, 0.0, 1.0);"
+                              "color.rgb = mix(gl_Fog.color.rgb, color.rgb, fog);";
+        source += "gl_FragColor = color; }";
+        Program program;
         GLuint shader = createShader(GL_FRAGMENT_SHADER);
-        if (!shader) return false;
-        shaderSource(shader, 1, &source, NULL); compileShader(shader);
+        if (!shader) return program;
+        const char *text = source.c_str();
+        shaderSource(shader, 1, &text, NULL); compileShader(shader);
         GLint success; getShaderiv(shader, GL_COMPILE_STATUS, &success);
         if (!success)
         {
             char log[2048]; GLsizei length; getShaderInfoLog(shader, sizeof(log), &length, log);
             fprintf(stderr, "th08-modern: alpha fragment shader failed: %.*s\n", int(length), log);
-            deleteShader(shader); return false;
+            deleteShader(shader); return program;
         }
-        program = createProgram();
-        if (!program) { deleteShader(shader); return false; }
-        attachShader(program, shader); linkProgram(program); deleteShader(shader);
-        getProgramiv(program, GL_LINK_STATUS, &success);
+        program.id = createProgram();
+        if (!program.id) { deleteShader(shader); return program; }
+        attachShader(program.id, shader); linkProgram(program.id); deleteShader(shader);
+        getProgramiv(program.id, GL_LINK_STATUS, &success);
         if (!success)
         {
-            char log[2048]; GLsizei length; getProgramInfoLog(program, sizeof(log), &length, log);
+            char log[2048]; GLsizei length; getProgramInfoLog(program.id, sizeof(log), &length, log);
             fprintf(stderr, "th08-modern: alpha fragment program failed: %.*s\n", int(length), log);
-            Destroy(); return false;
+            deleteProgram(program.id); program.id = 0; return program;
         }
-        imageLocation = getUniformLocation(program, "image");
-        materialLocation = getUniformLocation(program, "material");
-        argumentsLocation = getUniformLocation(program, "arguments");
-        factorLocation = getUniformLocation(program, "factor");
-        comparisonLocation = getUniformLocation(program, "comparison");
-        referenceLocation = getUniformLocation(program, "reference");
-        return true;
+        program.image = getUniformLocation(program.id, "image");
+        program.factor = getUniformLocation(program.id, "factor");
+        program.reference = getUniformLocation(program.id, "reference");
+        return program;
     }
-    GLuint program;
+    Programs programs;
     bool initialized;
-    GLint imageLocation, materialLocation, argumentsLocation, factorLocation, comparisonLocation, referenceLocation;
     PFNGLCREATESHADERPROC createShader;
     PFNGLSHADERSOURCEPROC shaderSource;
     PFNGLCOMPILESHADERPROC compileShader;
@@ -580,7 +614,6 @@ class AlphaFragmentPipeline
     PFNGLGETUNIFORMLOCATIONPROC getUniformLocation;
     PFNGLUNIFORM1IPROC uniform1i;
     PFNGLUNIFORM1FPROC uniform1f;
-    PFNGLUNIFORM4IPROC uniform4i;
     PFNGLUNIFORM4FPROC uniform4f;
 };
 

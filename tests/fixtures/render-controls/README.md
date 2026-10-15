@@ -170,3 +170,39 @@ materials. A private context-owned fragment-pipeline candidate matches all
 6,144 samples; it remains separate from the frozen replay-gate products.
 The candidate includes the required color/alpha sources, all comparison
 functions and linear fog. Whole-game image gates still determine acceptance.
+
+## Cached alpha pipeline
+
+The production candidate on `fix/portable-alpha-test` specializes each used
+material, alpha comparison and fog mode into a context-owned cached shader.
+The reference and texture-factor values remain uniforms, updated on every
+draw. Its default and GL 2.1 alpha-state matrices match all 6,144 Wine samples.
+The observed Stage 3 quad probe also passes 68/68 images with alpha testing
+enabled in the GL 2.1 context:
+
+```bash
+python3 scripts/analysis/probe-subpixel-quads.py \
+  --capture build/laser-quads --alpha-test --legacy-gl --check-coverage \
+  --output-dir build/alpha-quads-check
+```
+
+`--alpha-test` enables `GREATEREQUAL` with reference 4 in both APIs. The report
+records that state separately from the older alpha-disabled observations.
+
+Compare warmed rendering cost against the preceding fixed-function renderer:
+
+```bash
+python3 scripts/analysis/benchmark-alpha-pipeline.py \
+  --baseline-ref 575c2368 --output-dir build/alpha-pipeline-benchmark
+```
+
+The benchmark interleaves three rounds per variant, after three warmup frames.
+Each timed round draws 20 frames of 12 playfield-sized low-alpha layers.
+`report.json` retains source/binary hashes, compiler commands, checksums and
+all timings. Its clock covers drawing and GPU completion, excluding compilation
+and warmup. `--reference-control` can add an independently generated source
+copy, such as the narrow float-alpha patch above; the candidate must then
+produce the same image checksum. Owned executables are removed after testing.
+The fixed-function baseline keeps the known alpha-test discrepancy, so its
+checksum differs. Timings describe this synthetic software-rendering workload;
+actual scene gates remain required.

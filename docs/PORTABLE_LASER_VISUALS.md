@@ -1198,6 +1198,66 @@ commands, binaries and renderer source hashes. Original texture bytes were
 removed after execution; no original assets are committed. The asset-free
 profile and diagnostic patch are retained in the repository.
 
+### Alpha-pipeline candidate, October 15, 2026
+
+Implementation checkpoint `1514eaed` adds a device-owned fragment program for
+alpha-tested draws. Fixed-function vertex processing continues to supply
+positions, colors, texture coordinates and fog distance. Fragment processing
+handles the used texture/diffuse/texture-factor materials, all eight comparison
+functions and linear fog. The program is unbound after each draw and released
+before its owning context is destroyed.
+
+The GCC 8 x86_64 Debug recorder is
+`4ea6bafc9570de7f8673b671c70ef14482eb2addbee237a5a732b766fb255b1c`.
+The GCC 12 i386 recorder is
+`e8891b50c043f27e3741b479d81e04c634b9cf8d895e3ee4de1f5fd97ad25aab`.
+Both products pin the same 132 build inputs and pass their ELF/global-owner
+checks. The alpha-state matrix and low-alpha filtering profile each match all
+6,144 Wine samples on both architectures, in default and forced GL 2.1
+contexts. The x86_64 renderer's seven existing contract groups also pass.
+
+A fresh x86_64 Final B frame 14,280 now has zero RGB error over all 12,059
+retail beam-mask pixels. All 92 prior changed mask pixels disappear, and the
+maximum residual point is `(30, 2, 2)` on both products. The entire playfield
+below the title band `(32, 64)`–`(416, 464)` is pixel-identical. All raw laser
+and VM words agree. Title text and the HUD retain separate image differences.
+
+Build provenance and capture evidence are under
+`build/laser-alpha-repair-20261015/`: `production*/build-provenance.json`,
+`finalb-frame/`, and `finalb-frame-summary.json`. The capture's added
+`candidate-build-provenance.json` binds the executable to its separate source
+worktree; the original metadata source commit identifies the capture tools.
+Compiler trees are removed, retaining about 10 MiB for the two products.
+
+Reproduce the actual frame after building the candidate from that branch:
+
+```bash
+cmake -S . -B build/alpha-candidate -G Ninja \
+  -DCMAKE_BUILD_TYPE=Debug -DTH08_ENABLE_REPLAY_TRACE=ON
+cmake --build build/alpha-candidate --parallel 1
+python3 scripts/analysis/check-laser-visuals.py \
+  --candidate build/alpha-candidate/th08-modern \
+  --game-data-dir build/modern-runtime \
+  --fixture lunatic-0-b --stage 7 --frames 14280 \
+  --retail --wine-csmt 0 --output-dir build/alpha-finalb-paired
+python3 scripts/analysis/summarize-laser-pixels.py \
+  --reference build/alpha-finalb-paired/retail \
+  --candidate build/alpha-finalb-paired --top-pixels 8 \
+  --output build/alpha-finalb-summary.json
+```
+
+Acceptance still requires the other selected frames and full replay gates.
+The fresh capture took about 658 seconds, versus about 248 seconds for the
+previous same-frame draw observation. A warmed, interleaved three-round benchmark confirms the dynamic pipeline's
+cost. It draws 20 frames with 12 full-playfield low-alpha layers per frame,
+using the same inputs in all variants. Median times are 0.343635 seconds for
+the fixed-function baseline, 0.348062 for the narrow floating-point diagnostic
+and 0.775951 for this general shader. The two floating-point variants have
+identical full-frame checksums. The baseline checksum differs because it
+retains the known alpha-test behavior. Probe source, compile commands, hashes
+and all timings are in `alpha-benchmark/report.json`. A cached shader variant
+is being checked before the next production candidate.
+
 Reproduce the synchronized paired observation and local vertex comparison:
 
 ```bash

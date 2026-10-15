@@ -251,3 +251,18 @@ diffuse and texture-factor materials, all eight alpha comparisons and linear
 fog. Default and forced OpenGL 2.1 alpha-state matrices each match Wine on all
 6,144 samples. The 7 renderer contract groups pass. Whole-game builds and
 fresh actual scene captures remain required before acceptance.
+
+The initial dynamic program fixed actual Final B frame 14,280 completely below
+the title band, including all 12,059 beam-mask pixels. A warmed synthetic
+benchmark exposed a 2.2x cost against the narrow float-alpha control. The
+cached implementation now specializes material operations, comparison and
+fog while retaining reference/factor uniforms. Its x86_64 alpha-state matrix
+passes all 6,144 samples in both GL contexts, and the alpha-enabled observed
+quad probe passes 68/68 legacy images. A three-round benchmark has median
+0.360763 seconds for cached, versus 0.371129 fixed-function and 0.327325 narrow
+float control, with identical floating-point variant image checksums.
+
+`benchmark-alpha-pipeline.py` and `alpha-render-benchmark.cpp` retain the method.
+Build the cached candidate freshly and rerun actual Final B frames, i386 API
+checks and the remaining scene/corpus gates. Keep checkpoint `1514eaed`'s
+products and reports separate; they contain the slower dynamic implementation.
