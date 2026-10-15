@@ -33,8 +33,8 @@ per context and exact raw laser/VM packets.
 The [Extra case](#extra-laser-observation-october-15-2026) now passes four paired
 images with exact raw packets. The dated sections preserve each repair's evidence.
 The [October 15 sampling candidate](#production-candidate-october-15-2026)
-passes its API checks and the first fifteen Stage 3/Stage 4B/Final B game images;
-the other scene and corpus gates remain in progress.
+passes its API checks and all 48 selected game images across both context
+profiles; its complete corpus gates remain in progress.
 
 ### Status of the seven initial failures
 
@@ -1089,9 +1089,38 @@ Evidence is under `build/laser-sampling-production-20261015/`. A serial worker
 is repeating all five scene cases in both context profiles, then the complete
 108-recording corpus and retained-evidence checks. Its state is in
 `serial-gates.json`; a failed comparison stops the queue. These pending gates
-are required before promoting this candidate. Stage 3, Stage 4B and Final B
-default captures have passed; Final A is running. Native products and the earlier
-published corpus results retain their recorded scope.
+are required before promoting this candidate. All five scene cases pass in
+both contexts, including separate retained comparisons: 48 images and exact
+laser/VM packets. The maximum beam means per case, equal across profiles, are:
+
+| Scene | Frames per profile | Maximum beam mean RGB error |
+| --- | ---: | ---: |
+| Stage 3 | 4 | 0.590982 |
+| Stage 4B | 4 | 0.020752 |
+| Final A | 5 | 0.811188 |
+| Final B | 7 | 0.142039 |
+| Extra | 4 | 0.003049 |
+
+The x86_64 corpus worker is running. Its scheduler completed a recording-boundary
+pause for the i386 API preflight and resumed the same suite. A second boundary
+pause is capturing frame 14,280 draw inputs and a beam-omission control;
+`focused-finalb.json` records that diagnostic's progress and its worker
+resumes the existing scheduler in `finally`.
+The separate i386 scene/corpus worker waits for x86_64 completion.
+Native products and the earlier published corpus results retain their
+recorded scope.
+
+The refreshed GCC 12 i386 product is
+`240b3f9a4bae462a73129fe0d6b10b65ad44fe9a036889694e422b71cd42ca98`.
+It passes ELF32/fixed-layout verification. All 132 compiled inputs match
+source checkpoint `bd1f826f` and the x86_64 build inputs. The build used one
+CPU, 768 MiB, no swap and one job. Both context profiles pass eight
+renderer/FPU groups and 68/68 API images. The probe's compiler/package
+wrapper support is exercised by these runs; reports pin wrapper hashes,
+compiler versions and compile commands. All 640 extended surface API cases
+also agree with the pinned D3DX8 reference. Evidence is under `production-i386/`, `i386-contracts-*/`,
+`i386-probe-*/` and `i386-preflight.json` in this phase directory. The compiler
+tree and completed contract executables are removed.
 
 ## Legacy OpenGL coverage, October 14, 2026
 

@@ -199,12 +199,31 @@ exact packets and beam means at most 0.020752. Maximum channel error is 4/255.
 The pixel tool's `--top-pixels 8` option retains coordinates and both RGB
 values. Final B frame 14,280's maximum is at `(168, 310)`; a focused draw or
 beam-omission capture is the next attribution step after the active gates.
-A live serial worker is running Final A and the other scene cases in both contexts,
-followed by the full 108-recording corpus and retained verification. Inspect
-`serial-gates.json` and the worker process before launching another game or
-build. Its initial capture has finished; the worker is independent of that
-process. Complete these gates and refresh i386 before promoting the candidate.
-The compiler tree and completed contract binaries are removed.
+All five scene groups now pass in both default and OpenGL 2.1 contexts:
+48 selected images, exact laser/VM packets and retained comparisons. The
+x86_64 worker has entered its full 108-recording corpus and retained gate.
+It completed a recording-boundary pause for the i386 API preflight;
+`i386-preflight.py` resumed that same scheduler in `finally`. A second boundary
+pause is collecting Final B frame 14,280 draw inputs and beam-omission
+evidence; `focused-finalb.py` resumes the scheduler in `finally`. Inspect
+`focused-scheduler.json`, `focused-finalb.json`, `i386-preflight.json` and live process identities
+before starting another game. Avoid treating a missing uncompressed log as
+a failure: completed captures compress it.
+
+The fresh GCC 12 i386 product is
+`240b3f9a4bae462a73129fe0d6b10b65ad44fe9a036889694e422b71cd42ca98`,
+from source checkpoint `bd1f826f`. ELF32/fixed-global-layout verification passes;
+all 132 build inputs match both that commit and the x86_64 source inputs.
+Its build container used one CPU, 768 MiB, no swap and one compiler job.
+Both context profiles pass all eight renderer/FPU groups and all 68
+observed-quad API images. All 640 surface API cases also pass. The sampling
+probe now accepts `--compiler` and `--pkg-config`; reports preserve command
+file hashes and portable compile commands. The new i386 scene/corpus worker
+waits for the x86_64 worker, then reuses only the matching, passed preflight.
+Its state is in `i386-serial-gates.json`. The earlier idle waiter was stopped
+deliberately; follow the replacement worker's identity rather than restarting
+the old handle. Complete both runtime/corpus gates before promoting this
+candidate. Compiler trees and completed contract binaries are removed.
 Production-candidate evidence is under
 `build/laser-sampling-production-20261015/`; earlier diagnostic evidence is under
 `build/laser-sampling-refresh-20261015/`; temporary prefixes and probe binaries

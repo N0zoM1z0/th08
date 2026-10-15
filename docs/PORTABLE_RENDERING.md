@@ -89,6 +89,21 @@ uses a container or sysroot. Keep the compiler and package metadata on the same
 architecture. The test executable runs on the host; reports identify the actual
 compiler and OpenGL context.
 
+The observed-quad sampling probe accepts the same compiler and package
+commands. With a completed Stage 3 `--watch-quads` capture, use the wrapper
+above to exercise i386:
+
+```bash
+PKG_CONFIG_LIBDIR=/usr/lib/i386-linux-gnu/pkgconfig:/usr/share/pkgconfig \
+  python3 scripts/analysis/probe-subpixel-quads.py \
+    --capture build/laser-quads --compiler build/renderer-cxx-i386 \
+    --check-coverage --output-dir build/subpixel-i386
+```
+
+For a container compiler, also pass its package wrapper with `--pkg-config`.
+The report preserves both command-file hashes, the complete portable compile
+commands and compiler identity. Add `--legacy-gl` to repeat the older profile.
+
 Exercise the OpenGL 2.1 path without clip control:
 
 ```bash

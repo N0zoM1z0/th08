@@ -81,6 +81,9 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--capture", type=Path, required=True, help="Completed laser capture with --watch-quads")
     parser.add_argument("--frame", type=int, default=12900)
+    parser.add_argument("--compiler", default="g++", help="Portable compiler command or wrapper")
+    parser.add_argument("--pkg-config", default="pkg-config",
+                        help="Package metadata command for the portable compiler's target architecture")
     control = parser.add_mutually_exclusive_group()
     control.add_argument("--position-grid", type=int,
                          help="Synthetic control: snap X/Y to this many grid steps per pixel in both APIs")
@@ -116,11 +119,13 @@ def main():
     output = args.output_dir.resolve()
     if output.exists() or not output.is_relative_to(ROOT / "build"):
         parser.error("Output must be a fresh directory under build/")
-    for command in ("g++", "i686-w64-mingw32-g++", "pkg-config", "xvfb-run", "timeout", "wine", "wineserver"):
+    for command in (args.compiler, "i686-w64-mingw32-g++", args.pkg_config, "xvfb-run", "timeout", "wine", "wineserver"):
         if not shutil.which(command):
             parser.error("Required command is missing: " + command)
     if args.trace_wine_projection and not shutil.which("gdb"):
         parser.error("Projection observation requires GDB")
+    compiler = str(Path(shutil.which(args.compiler)).resolve())
+    pkg_config = str(Path(shutil.which(args.pkg_config)).resolve())
     spec = importlib.util.spec_from_file_location("quads", ROOT / "scripts/analysis/compare-sprite-quads.py")
     quads = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(quads)
@@ -206,8 +211,8 @@ def main():
         path = output / "baseline-d3d8.cpp"
         path.write_bytes(subprocess.check_output(["git", "show", baseline + ":src/modern/linux/d3d8_compat.cpp"], cwd=ROOT))
         sources["baseline"] = path
-    flags = shlex.split(subprocess.check_output(["pkg-config", "--cflags", "--libs", "sdl2", "SDL2_image",
-                                                "SDL2_ttf", "fontconfig", "gl"], text=True))
+    package_command = [pkg_config, "--cflags", "--libs", "sdl2", "SDL2_image", "SDL2_ttf", "fontconfig", "gl"]
+    flags = shlex.split(subprocess.check_output(package_command, text=True))
     report = dict(evidenceClass="Wine D3D8 API and portable synthetic materials with identified input transformations",
                   quadCaptureSha256=sha(args.capture / "quads.json"), inputSha256=sha(output / "input.bin"),
                   observedInputSha256=observed_input_sha, inputTransformation=transformation,
@@ -217,8 +222,11 @@ def main():
                   frame=args.frame, selectedIndices=[index for index, _, _ in selected], baselineCommit=baseline,
                   probeSha256=sha(source), runnerSha256=sha(Path(__file__)),
                   rendererSha256={name: sha(path) for name, path in sources.items()}, variants={})
+    report.update(portableCompilerCommand=compiler, packageMetadataCommand=package_command,
+                  toolCommandSha256=dict(portableCompiler=sha(Path(compiler)), packageMetadata=sha(Path(pkg_config))),
+                  compileCommands={})
     report["toolVersions"] = {name: subprocess.check_output(command, text=True).splitlines()[0]
-                              for name, command in (("portableCompiler", ["g++", "--version"]),
+                              for name, command in (("portableCompiler", [compiler, "--version"]),
                                                     ("nativeCompiler", ["i686-w64-mingw32-g++", "--version"]),
                                                     ("wine", ["wine", "--version"]))}
     for name, renderer in sources.items():
@@ -229,12 +237,13 @@ def main():
         folder = output / name
         folder.mkdir()
         binary = output / ("subpixel-" + name)
-        command = ["g++", "-std=gnu++98", "-O2", "-fno-strict-aliasing", "-pthread",
+        command = [compiler, "-std=gnu++98", "-O2", "-fno-strict-aliasing", "-pthread",
                    "-DTH08_MODERN_PORT", "-DTH08_MODERN_LINUX", "-DTH08_PORTABLE_NATIVE_LAYOUT",
                    "-D_FILE_OFFSET_BITS=64", "-D_TIME_BITS=64", "-Isrc", "-Isrc/modern/linux/include",
                    "-include", "src/modern/linux/linux_compat.hpp", "-Isrc/modern/linux", str(source),
                    str(renderer), "src/modern/linux/d3dx8_compat.cpp", "src/modern/linux/linux_compat.cpp",
                    "-o", str(binary), *flags, "-ldl"]
+        report["compileCommands"][name] = command
         with (folder / "build.log").open("w") as log:
             subprocess.run(command, cwd=ROOT, stdout=log, stderr=subprocess.STDOUT, check=True)
         try:
