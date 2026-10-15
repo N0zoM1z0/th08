@@ -136,10 +136,11 @@ void Rotate(Float3 *outVector, Float3 *point, f32 angle);
 } // namespace th08
 
 #ifdef TH08_MODERN_PORT
+// Preserve the trigonometric result until the target's final float stores.
 #define sincos(in, out_sine, out_cosine)                                                                               \
     {                                                                                                                  \
-        out_sine = sinf(in);                                                                                           \
-        out_cosine = cosf(in);                                                                                         \
+        out_sine = static_cast<float>(sin(static_cast<double>(in)));                                                                                           \
+        out_cosine = static_cast<float>(cos(static_cast<double>(in)));                                                                                         \
     }
 #else
 #define sincos(in, out_sine, out_cosine)                                                                               \

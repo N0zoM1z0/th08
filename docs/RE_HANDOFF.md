@@ -308,3 +308,28 @@ prerequisites pass; it stops on a failed prerequisite or comparison. The origina
 workers continue their earlier products after each bounded capture; read their
 live state under `build/laser-sampling-production-20261015/`. Keep all build
 inputs frozen while the relevant pinned gates run.
+
+## Sincos precision follow-up
+
+The next source candidate is isolated in `.analysis/portable-sincos-precision/`,
+branch `fix/portable-sincos-precision`. It changes only the modern sincos macro:
+compute double sine/cosine, then store float, matching the observed target's
+FSINCOS/FSTP behavior. The native VC7 branch remains the original source.
+
+Paired frame 17,460 maps differing quad 1,031 to laser slot 84. Its identical
+VM rotation is `0x3f879c1a`; glibc cosf returns `0x3efa8c2a`, while the target
+coordinate result and 80-digit oracle require `0x3efa8c2b`. The corrected
+calculation restores all eight XY words. Eight independent golden samples,
+the old-header failure control, i386 single-precision mode, and the existing
+10 vector contracts pass. All 82 selected accepted AnmManager comparisons
+pass after rebuilding the affected objects. A complete cold gate and a fresh
+modern game capture are next; no actual-pixel repair is claimed yet.
+
+The other two residual pixels belong to projected particle quads, with small
+scale differences. Their projection inputs still need a bounded observation.
+The preceding cached product's workers retain their frozen source tree and
+continue independently. Current follow-up reports are under
+`build/laser-residual-pixels-20261015/`; paired evidence is in the alpha
+worktree's `build/residual-paired-quads/`. The new precision CLI is
+`python3 scripts/test-portable-sincos.py`; add `--baseline-ref b4e70194
+--expect-failure` for the observed Linux failure control.
