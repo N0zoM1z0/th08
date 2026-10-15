@@ -285,10 +285,11 @@ Evidence and live workers are under `build/laser-alpha-repair-20261015/`:
 - `finalb-frame/` and `finalb-frame-summary.json`: the slower dynamic candidate's
   actual-frame proof. `candidate-build-provenance.json` binds its separate build;
   the original source-commit metadata identifies capture tools.
-- `cached-finalb-worker.json` and `check-cached-finalb.py`: wait for the current
-  recording boundary, capture/compare all seven cached Final B frames, then
-  resume the same scheduler PID 653259. Inspect `active` and the actual process
-  before starting another game capture.
+- `cached-finalb-worker.json` and `cached-finalb-summary.json`: passed all seven
+  cached Final B frames, with exact laser/VM packets. Five outside-title beam
+  masks are pixel-identical; two retain four old pixels, each at most 1/255.
+  The repair resolves 403 of 407 earlier residual pixels. The same scheduler
+  PID 653259 is resumed; `active` is false. Capture time is about 354 seconds.
 - `cached-api-gates.json`: passed remaining x86_64 filtering and four i386
   API profiles. Probe executables and owned Wine prefixes are removed.
 - `queued-cached-gates.json`: waits for the two original platform workers,
@@ -300,7 +301,8 @@ Evidence and live workers are under `build/laser-alpha-repair-20261015/`:
   compile commands, raw timings and checksums. The public rerun is in the
   isolated worktree's `build/cached-alpha-benchmark/`.
 
-Next, inspect the focused capture and retained API reports. The queued worker
+Next, localize the four remaining 1/255 pixels and inspect the retained API
+reports. The queued worker
 will run the remaining cached-candidate scene and full-corpus gates after its
 prerequisites pass; it stops on a failed prerequisite or comparison. The original
 workers continue their earlier products after each bounded capture; read their
