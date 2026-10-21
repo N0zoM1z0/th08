@@ -568,7 +568,7 @@ enter_subroutine:
             memcpy(TH08_ECL_CONTEXT_ENEMY(ctx)->activeEclCallStack +
                        TH08_ECL_CONTEXT_ENEMY(ctx)->activeEclCallStackDepth,
                    &TH08_ECL_CONTEXT_ENEMY(ctx)->mainEclContextStorage,
-                   0x8A * sizeof(i32));
+                   sizeof(EnemyEclContext));
         }
 
         g_EclManager.CallEclSub(
