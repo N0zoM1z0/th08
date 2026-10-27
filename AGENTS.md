@@ -37,21 +37,18 @@ analyze or substitute a localized, patched, trial, or earlier executable.
 
 ## Analysis database safety
 
-IDA MCP is attached to whichever file is open in the GUI and has no reliable
-program selector. Treat all TH08 IDA queries as blocked until the GUI is
-switched to TH08 and the database is attested under `docs/IDA_MCP.md`.
-The canonical SHA-256 applies to `resources/th08.exe`; an IDB or its loader
-metadata can report a different input/container hash. That difference is not
-itself evidence of a different mapped image. In that case, verify the
-canonical file first, then compare IDA bytes at `.text` start, entry point,
-the function being edited, and at least two separated `.text` locations
-against `resources/th08.exe`. Only byte-for-byte agreement plus matching image
-base/entry/.text extent permits IDA semantic evidence. Exact-match claims
-remain reproducible comparisons against the canonical file only.
+The shared Factory MCP's `th08-ida` provider opens a game-bound headless IDAlib
+database. Select it through Factory discovery, confirm the returned TH08 target
+and `database-metadata-only` verification scope, then use bounded exploratory
+queries. It does not depend on the GUI's active database. A GUI switch, full
+mapped-image scan, and complete environment preflight are not prerequisites.
+Analysis remains provisional and grants no exactness credit.
 
-Until then, use read-only `objdump`/`llvm-objdump`, a correctly imported local
-Ghidra project, and the upstream mappings. Do not write TH08 names or types into
-the TH07 database. Never patch target bytes.
+Legacy GUI bridges still query whichever database is open. If using one,
+verify its selected game before analysis as described in `docs/IDA_MCP.md`.
+Do not write TH08 names or types into the TH07 database. Never patch target
+bytes. Exact-match claims still require reproducible comparison against the
+canonical `resources/th08.exe`; headless metadata checks do not replace that.
 
 ## ABI and implementation
 

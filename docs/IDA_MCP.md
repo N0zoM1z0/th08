@@ -1,6 +1,23 @@
 # IDA and analysis safety
 
-## Session boundary
+## Shared Factory MCP
+
+Use the shared Factory MCP's `th08-ida` provider for normal agent exploration.
+It selects a TH08-only headless IDAlib database independently of the desktop GUI.
+Discover the provider and operations, then confirm the returned TH08 target and
+`attestation.verification=database-metadata-only`. No GUI switch or repeated
+whole-image/environment check is required before a bounded query.
+
+This verification compares database metadata with the registered target
+manifest. It does not prove every mapped byte or establish exactness.
+Decompilation, names, types and function extents remain semantic hypotheses;
+exact acceptance requires reproducible comparison with `resources/th08.exe`.
+
+The instructions below apply to the older GUI bridge, not the Factory-native
+provider. Do not block headless Factory work because a desktop database is open
+on a different game.
+
+## Legacy GUI bridge session boundary
 
 The IDA MCP bridge queries the file open in the GUI. Attest that database as
 TH08 before using its responses, and repeat the check after a database switch.
@@ -10,7 +27,7 @@ IDA provides semantic and navigation evidence: decompilation, names, types,
 and proposed function extents. Exact acceptance uses reproducible comparison
 against the canonical `resources/th08.exe`.
 
-## Required IDA preflight
+## Legacy GUI database verification
 
 IDA MCP may be used for TH08 only after the canonical file is verified and the
 active database's mapped image passes one of the two attestation paths below.
