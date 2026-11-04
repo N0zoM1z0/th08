@@ -167,12 +167,11 @@ compressed comparison evidence remain under their recorded phase directories.
 
 ## Next bounded work
 
-The native-layout repair after PR #34 is on `fix/portable-layout-resets`,
-implementation checkpoint `9adebf5c1b203a7042cc7df9c6eddb9bd38ca025`. All seven
-runtime clears use actual sizes and opcode 169 derives its member offset.
-The cold 1,106-unit gate, native normal/bugfix link/data checks and 54 x86_64
-asset-free state-transition checks pass on each of x86_64 and fresh modern
-i386. The selected x86_64 seven-recording gate passes 694,579 calculations;
+The native-layout repair after PR #34 is integrated through
+[PR #36](https://github.com/N0zoM1z0/th08/pull/36), implementation checkpoint
+`9adebf5c1b203a7042cc7df9c6eddb9bd38ca025`. All seven runtime clears use actual sizes and opcode 169 derives its member offset.
+The cold 1,106-unit gate and native normal/bugfix link/data checks pass. Each
+of x86_64 and fresh modern i386 passes 54 asset-free state-transition checks. The selected x86_64 seven-recording gate passes 694,579 calculations;
 the i386 Final A/B gate passes 200,700. Both retained-evidence passes succeed
 on all 25 fields, scores, fingerprints and natural exits. The x86_64 cases
 cover all four teams, two solo characters, Final A/B and Extra. The original
@@ -182,8 +181,8 @@ Production inputs/products and all commands are pinned under
 `build/portable-layout-repair/`. `validation-summary.json` records the final
 scope; `active-gates.json` is terminal and no serial game worker remains.
 Modern product hashes, test helper/runner hashes and i386 container/package
-identity are retained. Source is committed locally on the repair branch;
-merging it remains a separate step. Issue #35 tracks the repair and its limits.
+identity are retained. [Issue #35](https://github.com/N0zoM1z0/th08/issues/35)
+records the completed repair checklist and its validation limits.
 
 The initial native-layout audit after PR #34 used baseline
 `27adcb61a744c29afb121561fb4e277aa1818ef0`. [Issue #35](https://github.com/N0zoM1z0/th08/issues/35)
