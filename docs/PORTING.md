@@ -128,8 +128,6 @@ TH08_LINUX_BINARY=build/modern-linux-container/th08-modern \
 
 The container only compiles. The resulting executable still runs directly on
 the Linux host and needs the corresponding 32-bit runtime libraries.
-Image dependency downloads use the host network so Linux CI does not depend
-on Docker bridge DNS. This does not change the game build configuration.
 
 Every push and pull request runs the same container build in
 `.github/workflows/portable-linux.yml`, verifies that the output is an i386
@@ -137,6 +135,10 @@ fixed-address ELF with the required target-owned layout symbols, and uploads
 `th08-modern-linux-i386.tar.gz`. The archive preserves executable permissions
 and contains the ELF, a standalone `run-th08.sh`, and runtime documentation.
 It contains no original game data.
+
+The i386 job pins its host runner to `ubuntu-24.04`: the Ubuntu 26.04
+`ubuntu-latest` rollout exposed dependency-resolution failures inside this
+32-bit container. The Debian image and game build configuration are unchanged.
 
 To validate only this architecture, manually dispatch `portable-linux.yml`
 with `i386_only=true`. This runs the i386 build, ELF/layout verification,

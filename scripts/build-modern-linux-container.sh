@@ -11,8 +11,7 @@ if [[ "${build_dir}" = /* || "${build_dir}" == *..* ]]; then
     exit 2
 fi
 
-# Dependency downloads need the host resolver on Linux CI runners.
-docker build --network host \
+docker build \
     --platform linux/386 \
     --file "${repo_root}/containers/linux32.Dockerfile" \
     --tag "${image_name}" \
