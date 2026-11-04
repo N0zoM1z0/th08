@@ -4,6 +4,11 @@ on:
   push:
   pull_request:
   workflow_dispatch:
+    inputs:
+      i386_only:
+        description: Run only the i386 build and its focused checks
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -65,6 +70,7 @@ jobs:
           retention-days: 14
 
   build-linux-x86_64:
+    if: ${{ !inputs.i386_only }}
     name: Build Linux x86_64 package
     runs-on: ubuntu-latest
     timeout-minutes: 45
@@ -162,6 +168,7 @@ jobs:
           retention-days: 14
 
   build-linux-aarch64:
+    if: ${{ !inputs.i386_only }}
     name: Build Linux aarch64 package
     runs-on: ubuntu-latest
     timeout-minutes: 45
