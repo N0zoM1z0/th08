@@ -167,16 +167,18 @@ compressed comparison evidence remain under their recorded phase directories.
 
 ## Next bounded work
 
-The i386 CI networking repair is prepared in
+The i386 CI host repair is integrated through
 [PR #37](https://github.com/N0zoM1z0/th08/pull/37), implementation checkpoint
-`845aacf1c7f9d99957e366bd895bbb27d1a54a00`. Dependency-image builds use the
-Linux host network after the default build network repeatedly failed to resolve
-`deb.debian.org`. Shell syntax, workflow configuration and an actual i386
-Docker-build DNS probe pass locally. The
-[i386-only manual run](https://github.com/N0zoM1z0/th08/actions/runs/41865841848)
-is queued for a runner; x86_64 and AArch64 jobs are skipped. No full repository
-CI, exact-unit gate or replay corpus was rerun for this infrastructure change.
-Keep the pending remote result distinct from the completed local checks.
+`be3e947ddbd59390983ad81aff9da763799e8285`. Only the i386 job pins its runner
+to `ubuntu-24.04`, after Ubuntu 26.04 repeatedly failed dependency resolution
+inside the Debian i386 build. Container networking and compiler settings are
+unchanged. Shell syntax and workflow configuration pass locally. The
+[i386-only manual run](https://github.com/N0zoM1z0/th08/actions/runs/41867285648)
+passes image construction, compilation, ELF/layout verification, all 54
+state-transition checks, packaging and artifact upload on Ubuntu 24.04.
+x86_64 and AArch64 jobs are skipped. No full repository CI, exact-unit gate
+or replay corpus was rerun for this infrastructure change. Commits and the
+merge use `[skip ci]` to avoid triggering unrelated automatic jobs.
 
 The native-layout repair after PR #34 is integrated through
 [PR #36](https://github.com/N0zoM1z0/th08/pull/36), implementation checkpoint
