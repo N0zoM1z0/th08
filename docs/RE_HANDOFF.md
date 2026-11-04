@@ -167,6 +167,19 @@ compressed comparison evidence remain under their recorded phase directories.
 
 ## Next bounded work
 
+The i386 CI host repair is integrated through
+[PR #37](https://github.com/N0zoM1z0/th08/pull/37), implementation checkpoint
+`be3e947ddbd59390983ad81aff9da763799e8285`. Only the i386 job pins its runner
+to `ubuntu-24.04`, after Ubuntu 26.04 repeatedly failed dependency resolution
+inside the Debian i386 build. Container networking and compiler settings are
+unchanged. Shell syntax and workflow configuration pass locally. The
+[i386-only manual run](https://github.com/N0zoM1z0/th08/actions/runs/41867285648)
+passes image construction, compilation, ELF/layout verification, all 54
+state-transition checks, packaging and artifact upload on Ubuntu 24.04.
+x86_64 and AArch64 jobs are skipped. No full repository CI, exact-unit gate
+or replay corpus was rerun for this infrastructure change. Commits and the
+merge use `[skip ci]` to avoid triggering unrelated automatic jobs.
+
 The native-layout repair after PR #34 is integrated through
 [PR #36](https://github.com/N0zoM1z0/th08/pull/36), implementation checkpoint
 `9adebf5c1b203a7042cc7df9c6eddb9bd38ca025`. All seven runtime clears use actual sizes and opcode 169 derives its member offset.

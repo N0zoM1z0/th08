@@ -136,6 +136,14 @@ fixed-address ELF with the required target-owned layout symbols, and uploads
 and contains the ELF, a standalone `run-th08.sh`, and runtime documentation.
 It contains no original game data.
 
+The i386 job pins its host runner to `ubuntu-24.04`: the Ubuntu 26.04
+`ubuntu-latest` rollout exposed dependency-resolution failures inside this
+32-bit container. The Debian image and game build configuration are unchanged.
+
+To validate only this architecture, manually dispatch `portable-linux.yml`
+with `i386_only=true`. This runs the i386 build, ELF/layout verification,
+state-transition checks and packaging; x86_64 and AArch64 jobs are skipped.
+
 The executable still needs the legally obtained TH08 game data in its working
 directory. `--data-dir` changes to the selected directory before the original
 relative-file logic runs. The original executable and archives are never
