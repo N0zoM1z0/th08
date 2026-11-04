@@ -510,13 +510,13 @@ void BulletManager::RemoveAllBullets(i32 mode)
         {
             g_ItemManager.SpawnItem(&bullet->position, static_cast<ItemType>(g_Player.bulletCancelItemType),
                                     ITEM_STATE_AUTOCOLLECT);
-            memset(bullet, 0, 0x10B8);
+            memset(bullet, 0, sizeof(*bullet));
         }
         else if (mode != 4)
         {
             g_ItemManager.SpawnItem(&bullet->position,
                                     static_cast<ItemType>(this->cancelItemType), mode);
-            memset(bullet, 0, 0x10B8);
+            memset(bullet, 0, sizeof(*bullet));
         }
         else
         {

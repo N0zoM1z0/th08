@@ -130,7 +130,7 @@ void GuiImpl::StartMessage(i32 messageIndex)
 
     utils::GuiDebugPrint("msg start %d\n\r", messageIndex);
     msgFile = this->message.msgFile;
-    memset(&this->message, 0, 0x1570);
+    memset(&this->message, 0, sizeof(this->message));
     this->message.msgFile = msgFile;
 
     if (messageIndex == 0)

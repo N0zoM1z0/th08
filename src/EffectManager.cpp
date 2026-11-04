@@ -191,7 +191,7 @@ Effect *EffectManager::GetFixedSlotEffect(i32 index)
 // FUNCTION: th08 0x425410
 void EffectManager::ResetEffects()
 {
-    memset(this, 0, 0x8B05C);
+    memset(this, 0, sizeof(*this));
 }
 
 // FUNCTION: th08 0x425430

@@ -167,6 +167,36 @@ compressed comparison evidence remain under their recorded phase directories.
 
 ## Next bounded work
 
+The native-layout repair after PR #34 is integrated through
+[PR #36](https://github.com/N0zoM1z0/th08/pull/36), implementation checkpoint
+`9adebf5c1b203a7042cc7df9c6eddb9bd38ca025`. All seven runtime clears use actual sizes and opcode 169 derives its member offset.
+The cold 1,106-unit gate and native normal/bugfix link/data checks pass. Each
+of x86_64 and fresh modern i386 passes 54 asset-free state-transition checks. The selected x86_64 seven-recording gate passes 694,579 calculations;
+the i386 Final A/B gate passes 200,700. Both retained-evidence passes succeed
+on all 25 fields, scores, fingerprints and natural exits. The x86_64 cases
+cover all four teams, two solo characters, Final A/B and Extra. The original
+108-recording totals are not extended to these new products.
+
+Production inputs/products and all commands are pinned under
+`build/portable-layout-repair/`. `validation-summary.json` records the final
+scope; `active-gates.json` is terminal and no serial game worker remains.
+Modern product hashes, test helper/runner hashes and i386 container/package
+identity are retained. [Issue #35](https://github.com/N0zoM1z0/th08/issues/35)
+records the completed repair checklist and its validation limits.
+
+The initial native-layout audit after PR #34 used baseline
+`27adcb61a744c29afb121561fb4e277aa1818ef0`. [Issue #35](https://github.com/N0zoM1z0/th08/issues/35)
+records five reproduced families: seven i386-sized runtime reset calls across
+EffectManager, BulletManager, GuiMsgVm and player options, plus opcode 169's
+fixed `Enemy+0x2D34` read (native position is `+0x338C`). See the
+[audit](PORTABLE_LAYOUT_AUDIT.md) for scope, exclusions, target addresses and
+the asset-free diagnostic. Six focused VC7 unit comparisons remain exact;
+the portable diagnostic emits six observations, including both bullet clears.
+The original audit's Player observations stopped after memset; the repair's
+asset-free tests now complete all three production initialization paths with
+controlled ANM/callback data. Natural gameplay consequences and any relation
+to the contributor's extended state hashes remain separately scoped.
+
 Continue the measured title and boundary-sampling residuals in
 [the laser report](PORTABLE_LASER_VISUALS.md#remaining-sampling-and-title-error).
 Start with the retained, unmodified quad inputs and their D3D8/OpenGL API

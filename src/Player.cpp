@@ -667,7 +667,7 @@ i32 Player::UpdateMovementAndOptions()
                 option = this->optionStates;
                 for (optionIndex = 0; optionIndex < 4; optionIndex++, option++)
                 {
-                    memset(option, 0, 0x2F4);
+                    memset(option, 0, sizeof(*option));
                     option->updateCallback =
                         g_PlayerOptionUpdateCallbacks[g_GameManager.shotType].callbacks[optionIndex];
                     option->renderCallback =
@@ -737,7 +737,7 @@ i32 Player::UpdateMovementAndOptions()
                         option2->timer = 0;
                     }
                 }
-                memset(option2, 0, 0x2F4);
+                memset(option2, 0, sizeof(*option2));
                 option2->updateCallback =
                     g_PlayerRoute3ExitUpdateCallbacks[route3Index];
                 option2->renderCallback =
@@ -1675,7 +1675,7 @@ ZunResult Player::AddedCallback(Player *player)
         option = player->optionStates;
         for (m = 0; m < 4; ++m, option++)
         {
-            memset(option, 0, 0x2F4);
+            memset(option, 0, sizeof(*option));
             option->updateCallback =
                 g_PlayerOptionUpdateCallbacks[g_GameManager.shotType].callbacks[m];
             option->renderCallback =
