@@ -171,10 +171,19 @@ The native-layout repair after PR #34 is on `fix/portable-layout-resets`,
 implementation checkpoint `9adebf5c1b203a7042cc7df9c6eddb9bd38ca025`. All seven
 runtime clears use actual sizes and opcode 169 derives its member offset.
 The cold 1,106-unit gate, native normal/bugfix link/data checks and 54 x86_64
-asset-free state-transition checks pass. `easy-2-a` passes all 96,825
-calculations and retained verification. Further replay cases and a fresh
-modern i386 product remain in progress. Production inputs/products are pinned
-under `build/portable-layout-repair/`; keep them stable during the game gates.
+asset-free state-transition checks pass on each of x86_64 and fresh modern
+i386. The selected x86_64 seven-recording gate passes 694,579 calculations;
+the i386 Final A/B gate passes 200,700. Both retained-evidence passes succeed
+on all 25 fields, scores, fingerprints and natural exits. The x86_64 cases
+cover all four teams, two solo characters, Final A/B and Extra. The original
+108-recording totals are not extended to these new products.
+
+Production inputs/products and all commands are pinned under
+`build/portable-layout-repair/`. `validation-summary.json` records the final
+scope; `active-gates.json` is terminal and no serial game worker remains.
+Modern product hashes, test helper/runner hashes and i386 container/package
+identity are retained. Source is committed locally on the repair branch;
+merging it remains a separate step. Issue #35 tracks the repair and its limits.
 
 The initial native-layout audit after PR #34 used baseline
 `27adcb61a744c29afb121561fb4e277aa1818ef0`. [Issue #35](https://github.com/N0zoM1z0/th08/issues/35)

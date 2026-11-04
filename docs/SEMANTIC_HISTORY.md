@@ -5097,3 +5097,51 @@ The complete native `lunatic-1-a` recording and cached-evidence check pass
 RT-014 is closed for the repaired field path; later routes and the refreshed
 full corpus remain coverage extensions. The [native capture guide](PORTABLE_LASER_VISUALS.md#native-windows-image-capture)
 records both profiles and reproduction commands.
+
+## 2026-11-04 — Native-layout reset and ECL member-offset repair
+
+Issue [#35](https://github.com/N0zoM1z0/th08/issues/35) follows the complete
+context-copy repair in PR #34. The target is the hash-attested Japanese TH08
+1.00d executable. Target observations, native comparisons and portable
+state-transition results are recorded in the
+[layout audit](PORTABLE_LAYOUT_AUDIT.md).
+
+At implementation checkpoint `9adebf5c1b203a7042cc7df9c6eddb9bd38ca025`,
+seven reset calls use their actual object/member extents:
+`EffectManager::ResetEffects @ 0x00425410`,
+`BulletManager::RemoveAllBullets @ 0x00430830` (both arms),
+`GuiImpl::StartMessage @ 0x0043396D`,
+`Player::UpdateMovementAndOptions @ 0x0044AEC0` (focus and route-3 exit), and
+`Player::AddedCallback @ 0x0044D650`. Their old literals are the original
+complete i386 sizes, but truncate native-layout state.
+
+`RunEcl @ 0x004184B0` retains opcode 169's exact byte-view expression and
+comparison polarity. Its offset now comes from `offsetof(Enemy, position)`;
+the original layout still asserts `0x2D34`. This removes the native read from
+unrelated ECL stack storage without changing the original x87 source shape.
+All sizes/offsets are observed target/runtime facts, not adjacent-game
+inferences. Shared declarations, TU ownership, compiler profiles, mappings and
+acceptance ledgers are unchanged.
+
+The focused EffectManager, BulletManager, Gui and Player object replays pass
+52, 37, 41 and 77 accepted units respectively; RunEcl passes its complete
+27,398-byte comparison. The single-job cold canonical gate passes all 1,106
+accepted authored units. Fresh native normal and bugfix links pass the linked
+runtime-data/owner/callee checks. This repair earns no additional authored or
+exact inventory credit.
+
+Fresh GCC 8.4.0 x86_64 and GCC 12 i386 Debug recorders each pass 54 asset-free
+production state-transition checks. These cover cached effect reloads, both
+bullet clears and real slot reuse, consecutive message starts, opcode 169's
+branch boundaries/offset invariance, four team focus entries, route-3 exit,
+and all eight solo initializers. The Player calls complete with controlled
+empty ANM tables and null option callback data; actual callback/replay behavior
+has its separate game gates. The old x86_64 product reproduces all five defect
+families (40 failing checks out of 54). The CI workflow runs both architectures
+and retains the per-product JSON reports.
+
+Product hashes, all 133 production source/build inputs, container identity,
+package/compiler versions, comparison JSON and replay evidence are retained
+under `build/portable-layout-repair/`. The audit records the final selected
+recording scope; this entry does not extend previous full-corpus, image,
+audio or AArch64 hardware claims to the repaired products.

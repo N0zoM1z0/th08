@@ -31,14 +31,59 @@ The tests include complete Player focus-entry, route-3 exit and all eight solo
 initializers, rather than stopping after memset. They use empty cached ANM
 tables and null option callback data; real game callbacks, assets, stage
 transitions and replay behavior require their separate game checks.
-The x86_64 `easy-2-a` replay and separate retained-evidence verification pass
-all 96,825 calculations. Additional replay cases and the fresh modern i386
-build/tests remain in progress at this checkpoint.
+The fresh GCC 12 i386 recorder also passes the fixed-layout verifier and all
+54 transition checks inside its actual build container, limited to one CPU,
+768 MiB and one job. Both selected replay gates and their separate retained
+verifications are complete:
+
+| Product | Complete recordings | Calculations | Scope |
+| --- | --- | --- | --- |
+| GCC 8 x86_64 | 7 | 694,579 | `easy-0-b`, `easy-1-a`, `easy-2-a`, `easy-3-b`, `easy-7-b`, `easy-11-a`, `extra-2-extra` |
+| GCC 12 i386 | 2 | 200,700 | `easy-2-a`, `easy-3-b` |
+
+Every calculation agrees with a hash-validated retail reference on all 25
+fields. Stage-end scores, published fingerprints and natural replay exits
+agree. The x86_64 selection covers all four teams, Alice/Yuyuko solo startup,
+Final A/B and Extra. The recorded inputs contain focus presses/releases;
+`input-coverage.json` records their counts as input evidence, not instrumented
+function coverage. These repaired products have not been rerun against the
+entire 108-recording corpus or on AArch64 hardware, and this work does not
+attribute the contributor's extended player/item hash differences.
 
 CI now runs the asset-free checks for x86_64 and inside the actual i386
 container, retaining JSON reports. GDB is a build/test dependency in that
 container and is not added to the game package. The original diagnostic below
 remains a reproducer for the unfixed baseline.
+
+The fixed products and hashes are retained under
+`build/portable-layout-repair/products/`:
+
+- `th08-x64`: `0d63babba5fa06a60a7f39a64bc8a9ca94404abfd2c5d8c8373084baa148f286`.
+- `th08-i386`: `e8d46580f16ea302b7be79c396f8162f6d67f6fc937a1252b05a2421ee85918f`.
+- `th08-vc7-normal.exe`: `4aeba158d49dc69681490cd2470beda9463714623f3d865a695df81dec9492be`.
+- `th08-vc7-bugfix.exe`: `e70ac948797a70db901d825d65545ef2a0d02c32b9331137f66f41d2ceefe316`.
+
+`build-provenance.json` pins the 133 production inputs, both compiler profiles,
+the i386 image/package versions and the products. `validation-summary.json`,
+`before-after.json`, `fixed-transitions-*.json`, `all-exact.json` and the two
+`replays-*/` directories retain comparison/state/replay evidence. Only the five
+expected production source files differ from the old control. The CMake
+compiler trees are disposable; the copied products are independent of them.
+
+Recheck fixed postconditions with:
+
+```bash
+python3 scripts/test-portable-layout.py \
+  --candidate build/portable-layout-repair/products/th08-x64
+python3 scripts/test-portable-layout.py \
+  --candidate build/review-pr34/products/candidate-x86_64 --expect-baseline
+```
+
+For the exact i386 dependency environment, run the first command with
+`th08-i386` inside the retained `th08-layout-repair-linux32` image, mounting the
+repository at its identical absolute path. The committed CI workflow shows
+the equivalent command using its ordinary `/src` mount. Its GDB checks were
+also verified with the container's default security policy.
 
 ## Confirmed findings
 
