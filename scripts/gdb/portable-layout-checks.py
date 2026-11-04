@@ -100,9 +100,9 @@ call("th08::g_BulletManager.RemoveAllBullets(4)")
 check("bullet-despawn-control", "control", integer("$bullet->state") == 5 and
       integer("$bullet->collisionDisabled") == 1)
 
-# Reuse the cleared slot through the actual production spawner. Null script
+# Reuse the deactivated slot through the actual production spawner. Null script
 # entries and matching sprite indices avoid texture-dependent sprite selection.
-set_value("$bullet->state = 0")
+call("$bullet->Deactivate()")
 allocate("th08::BulletSpawnDescriptor", "descriptor")
 allocate("th08::BulletTypeSprites", "sprites")
 set_value("$descriptor->templateSprites = $sprites")

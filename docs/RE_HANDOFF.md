@@ -167,8 +167,16 @@ compressed comparison evidence remain under their recorded phase directories.
 
 ## Next bounded work
 
-The initial native-layout audit after PR #34 is complete on local branch
-`review/portable-layout-audit`, baseline
+The native-layout repair after PR #34 is on `fix/portable-layout-resets`,
+implementation checkpoint `9adebf5c1b203a7042cc7df9c6eddb9bd38ca025`. All seven
+runtime clears use actual sizes and opcode 169 derives its member offset.
+The cold 1,106-unit gate, native normal/bugfix link/data checks and 54 x86_64
+asset-free state-transition checks pass. `easy-2-a` passes all 96,825
+calculations and retained verification. Further replay cases and a fresh
+modern i386 product remain in progress. Production inputs/products are pinned
+under `build/portable-layout-repair/`; keep them stable during the game gates.
+
+The initial native-layout audit after PR #34 used baseline
 `27adcb61a744c29afb121561fb4e277aa1818ef0`. [Issue #35](https://github.com/N0zoM1z0/th08/issues/35)
 records five reproduced families: seven i386-sized runtime reset calls across
 EffectManager, BulletManager, GuiMsgVm and player options, plus opcode 169's
@@ -176,10 +184,10 @@ fixed `Enemy+0x2D34` read (native position is `+0x338C`). See the
 [audit](PORTABLE_LAYOUT_AUDIT.md) for scope, exclusions, target addresses and
 the asset-free diagnostic. Six focused VC7 unit comparisons remain exact;
 the portable diagnostic emits six observations, including both bullet clears.
-Production source and acceptance ledgers are unchanged. A future repair should
-select one family and follow the issue's state-transition and comparison gates.
-Player observations stop after memset; natural gameplay consequences and any
-relation to the contributor's extended state hashes remain unverified.
+The original audit's Player observations stopped after memset; the repair's
+asset-free tests now complete all three production initialization paths with
+controlled ANM/callback data. Natural gameplay consequences and any relation
+to the contributor's extended state hashes remain separately scoped.
 
 Continue the measured title and boundary-sampling residuals in
 [the laser report](PORTABLE_LASER_VISUALS.md#remaining-sampling-and-title-error).

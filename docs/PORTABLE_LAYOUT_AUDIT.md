@@ -6,8 +6,39 @@ an English findings record, the complete diagnostic and repair checklists.
 The initial audit of `port/portable-64bit` at
 `27adcb61a744c29afb121561fb4e277aa1818ef0` found five remaining defect
 families: seven runtime reset calls still use their i386 byte counts, and ECL
-opcode 169 still reads a runtime member through its i386 offset. Production
-source, layout declarations, mapping and acceptance ledgers are unchanged.
+opcode 169 still reads a runtime member through its i386 offset. The findings
+below describe that original baseline; the repair checkpoint follows.
+
+## Repair checkpoint
+
+Implementation checkpoint `9adebf5c1b203a7042cc7df9c6eddb9bd38ca025` on
+`fix/portable-layout-resets` replaces all seven reset lengths with the actual
+object/member `sizeof`. Opcode 169 retains its accepted byte-view expression
+tree but derives the offset with `offsetof(Enemy, position)`; the original
+layout still asserts `0x2D34`. Shared layouts, translation-unit ownership,
+compiler profiles, mappings and acceptance ledgers are unchanged.
+
+The single-job cold canonical gate passes all 1,106 accepted units. Fresh
+native normal and bugfix links pass the runtime-data/owner/callee checks.
+The focused object replays pass every accepted unit in EffectManager (52),
+BulletManager (37), Gui (41) and Player (77), plus RunEcl's complete 27,398-byte
+comparison.
+
+The new [production transition checks](../scripts/test-portable-layout.py)
+pass 54/54 cases in the fresh GCC 8.4.0 x86_64 recorder. The retained old
+product reproduces all five defect families (40 failing checks out of 54).
+The tests include complete Player focus-entry, route-3 exit and all eight solo
+initializers, rather than stopping after memset. They use empty cached ANM
+tables and null option callback data; real game callbacks, assets, stage
+transitions and replay behavior require their separate game checks.
+The x86_64 `easy-2-a` replay and separate retained-evidence verification pass
+all 96,825 calculations. Additional replay cases and the fresh modern i386
+build/tests remain in progress at this checkpoint.
+
+CI now runs the asset-free checks for x86_64 and inside the actual i386
+container, retaining JSON reports. GDB is a build/test dependency in that
+container and is not added to the game package. The original diagnostic below
+remains a reproducer for the unfixed baseline.
 
 ## Confirmed findings
 
