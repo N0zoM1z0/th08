@@ -5,6 +5,7 @@ RUN apt-get update \
         build-essential \
         cmake \
         fonts-vlgothic \
+        gdb \
         libgl1-mesa-dev \
         libfontconfig1-dev \
         libsdl2-dev \

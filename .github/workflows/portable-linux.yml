@@ -29,6 +29,24 @@ jobs:
       - name: Verify ELF architecture and fixed layout
         run: scripts/verify-modern-linux.sh build/modern-linux-container/th08-modern
 
+      - name: Check layout-sensitive state transitions without game assets
+        run: |
+          docker run --rm --network none --cpus 1 --memory 768m --pids-limit 128 \
+            --user "$(id -u):$(id -g)" -v "$PWD:/src" -w /src \
+            th08-modern-linux32 \
+            python3 scripts/test-portable-layout.py \
+              --candidate build/modern-linux-container/th08-modern \
+              --report build/layout-checks-i386.json
+
+      - name: Upload layout state-transition report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: th08-layout-state-transitions-i386
+          path: build/layout-checks-i386.json
+          if-no-files-found: warn
+          retention-days: 14
+
       - name: Create portable archive
         run: scripts/package-modern-linux.sh build/modern-linux-container/th08-modern
 
@@ -68,6 +86,21 @@ jobs:
 
       - name: Build and verify native-layout ELF
         run: scripts/build-portable-linux.sh x86_64
+
+      - name: Check layout-sensitive state transitions without game assets
+        run: |
+          python3 scripts/test-portable-layout.py \
+            --candidate build/portable-linux-x86_64/th08-modern \
+            --report build/layout-checks-x86_64.json
+
+      - name: Upload layout state-transition report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: th08-layout-state-transitions-x86_64
+          path: build/layout-checks-x86_64.json
+          if-no-files-found: warn
+          retention-days: 14
 
       - name: Check renderer pixel contracts without game assets
         run: python3 scripts/test-portable-renderer.py

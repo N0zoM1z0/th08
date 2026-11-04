@@ -137,10 +137,10 @@ struct SpawnPacketTyped
     (*reinterpret_cast<type *>( \
         reinterpret_cast<u8 *>(TH08_ECL_CONTEXT_ENEMY(ctx)) + (offset)))
 // RunEcl opcode 169 needs the target's byte-view source shape for its chained
-// x87 comparisons.  Keep the literal behind a semantic constant and pin it to
-// the public Enemy member rather than repeating an anonymous object offset.
-#define TH08_ECL_ENEMY_POSITION_OFFSET 0x2D34
-C_ASSERT(TH08_ECL_ENEMY_POSITION_OFFSET == offsetof(Enemy, position));
+// x87 comparisons. Derive the byte view from the runtime member so the native
+// layout follows pointer growth while VC7 retains the original offset.
+#define TH08_ECL_ENEMY_POSITION_OFFSET offsetof(Enemy, position)
+C_ASSERT(TH08_ECL_ENEMY_POSITION_OFFSET == 0x2D34);
 #define TH08_ECL_RAW_I(ctx, index) \
     (*reinterpret_cast<i32 *>(TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operands + (index) * 4))
 #define TH08_ECL_RAW_F(ctx, index) \
