@@ -8,6 +8,7 @@ import hashlib
 import json
 from pathlib import Path
 import re
+import shlex
 import struct
 import sys
 import tomllib
@@ -16,6 +17,9 @@ from coff import ObjectModule
 from match_literals import real_literal_bytes
 from match_callees import validate_math_callee
 from match_inputs import validate_input_global
+from match_data import DataError, file_identity, literal_bytes, parse_publics
+from match_evidence import build_command, scopes
+from pe_image import PEImage
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -171,8 +175,7 @@ def object_function(
         local_offset = relocation.virtual_address - symbol.value
         if 0 <= local_offset < size:
             referenced = module.symbols[relocation.symbol_table_index]
-            relocations.append(
-                {
+            record = {
                     "offset": local_offset,
                     "type_id": relocation.type,
                     "symbol": referenced.get_name(module.string_table).decode(
@@ -181,7 +184,15 @@ def object_function(
                     "local_symbol_offset": referenced.value - symbol.value
                     if referenced.section_number == symbol.section_number else None,
                 }
-            )
+            if relocation.type == 6:
+                addend = struct.unpack_from("<I", function, local_offset)[0]
+                try:
+                    data = literal_bytes(module, referenced, addend)
+                    if data is not None:
+                        record["literal_hex"] = data.hex()
+                except (ValueError, IndexError, struct.error) as exc:
+                    record["literal_error"] = str(exc)
+            relocations.append(record)
     return function, relocations
 
 
@@ -308,7 +319,7 @@ def attest_relocation_literals(
     return report
 
 
-def compare(unit: dict[str, object], target_path: Path) -> dict[str, object]:
+def compare(unit: dict[str, object], target_path: Path, *, linked=None, details=False) -> dict[str, object]:
     target_data = verify_target(target_path)
     object_path = repository_path(str(unit["object"]))
     coverage_size = int(unit["size"])
@@ -340,6 +351,7 @@ def compare(unit: dict[str, object], target_path: Path) -> dict[str, object]:
     literal_attestations = attest_relocation_literals(
         expected_relocations, target_data
     )
+    raw_code = bytes(code)
     relocations = apply_relocations(
         code,
         actual_relocations,
@@ -355,9 +367,26 @@ def compare(unit: dict[str, object], target_path: Path) -> dict[str, object]:
     coverage_differences = sum(
         int(row["offset"], 0) < coverage_size for row in differences
     )
+    code_result = "exact" if not differences else "mismatch"
+    target_image = PEImage.from_bytes(target_data, target_path)
+    evidence = scopes(unit, target_image, raw_code,
+                      actual_relocations, relocations, code_result, identity["object_symbol"],
+                      linked=linked, details=details)
+    failed = code_result != "exact" or any(evidence[scope]["status"] == "mismatch" for scope in ("data", "linkage"))
+    findings = list(evidence["data"]["findings"])
+    if evidence["linkage"]["status"] in {"mismatch", "partial"}:
+        findings.extend(evidence["linkage"].get("findings", []))
+    next_commands = evidence["data"]["next_commands"] + evidence["linkage"].get("next_commands", [])
+    for proof in evidence["data"]["contracts"]:
+        if proof["result"] != "verified":
+            next_commands.extend([build_command(proof["object"]), ["python3", "scripts/compare-data.py", proof["contract"], "--json"]])
     return {
+        "schema_version": 2,
+        "target_sha256": target_image.sha256,
+        "object_identity": file_identity(object_path),
         "unit": unit["name"],
-        "result": "exact" if not differences else "mismatch",
+        "result": "mismatch" if failed else "exact",
+        "result_scope": "configured code plus performed literal/declared-data/link checks; uncovered dependencies are not passes",
         "target_address": f"0x{target_address:08X}",
         "size": coverage_size,
         "matched_bytes": coverage_size - coverage_differences,
@@ -369,6 +398,9 @@ def compare(unit: dict[str, object], target_path: Path) -> dict[str, object]:
         "relocations": relocations,
         "literal_attestations": literal_attestations,
         "first_differences": differences[:16],
+        "evidence": evidence,
+        "findings": findings,
+        "next_commands": next_commands,
     }
 
 
@@ -376,19 +408,55 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("unit", nargs="?", help="unit name; omit with --list")
     parser.add_argument("--list", action="store_true")
+    parser.add_argument("--filter", help="narrow --list by unit, object or COFF symbol")
+    parser.add_argument("--limit", type=int, help="--list page size; JSON defaults to 40")
+    parser.add_argument("--offset", type=int, default=0, help="--list pagination offset")
     parser.add_argument("--target", type=Path, default=ROOT / "resources" / "th08.exe")
     parser.add_argument("--json", action="store_true")
+    parser.add_argument("--details", action="store_true", help="include every data gap and literal observation")
+    parser.add_argument("--rebuild", type=Path, help="also verify the final linked PE32 function and contracted data")
+    parser.add_argument("--map", dest="map_path", type=Path, help="linker map paired with --rebuild")
+    parser.add_argument("--require-data", action="store_true", help="exit 2 if direct initialized-data coverage is incomplete")
+    parser.add_argument("--require-linkage", action="store_true", help="exit 2 unless linked code and declared data are verified")
     args = parser.parse_args()
+    units = {}
     try:
         units = load_units()
         if args.list:
-            print("\n".join(units))
+            if args.offset < 0 or args.limit is not None and args.limit <= 0:
+                raise DataError("REQUEST_INVALID", "--offset must be nonnegative and --limit positive")
+            query = (args.filter or "").casefold()
+            found = sorted((unit for unit in units.values() if query in " ".join(str(unit[key]) for key in ("name", "object", "symbol")).casefold()), key=lambda unit: (unit["target_address"], unit["name"]))
+            limit = args.limit or (40 if args.json else len(found))
+            page = found[args.offset:args.offset + limit]
+            if args.json:
+                print(json.dumps({"schema_version": 2, "result": "listed", "total": len(found), "offset": args.offset,
+                                  "next_offset": args.offset + len(page) if args.offset + len(page) < len(found) else None,
+                                  "units": [{key: row[key] for key in ("name", "object", "target_address", "size")} for row in page]}, indent=2))
+            else:
+                print("\n".join(row["name"] for row in page))
             return 0
+        if args.filter or args.limit is not None or args.offset:
+            raise DataError("REQUEST_INVALID", "--filter, --limit and --offset are list options")
         if not args.unit or args.unit not in units:
-            raise ValueError(f"unknown or missing unit: {args.unit!r}")
-        report = compare(units[args.unit], args.target.expanduser().resolve())
-    except (OSError, KeyError, TypeError, ValueError, struct.error) as exc:
-        report = {"unit": args.unit, "result": "error", "error": str(exc)}
+            raise DataError("UNIT_UNKNOWN", f"unknown or missing unit: {args.unit!r}")
+        if bool(args.rebuild) != bool(args.map_path):
+            raise DataError("REQUEST_INVALID", "--rebuild and --map must be supplied together")
+        linked = (PEImage(args.rebuild), parse_publics(args.map_path)) if args.rebuild else None
+        report = compare(units[args.unit], args.target.expanduser().resolve(), linked=linked, details=args.details)
+        if linked is not None:
+            report["linked_inputs"] = {"image": file_identity(args.rebuild), "map": file_identity(args.map_path)}
+        if report["result"] == "exact" and (
+            args.require_data and report["evidence"]["data"]["status"] != "verified"
+            or args.require_linkage and report["evidence"]["linkage"]["status"] != "verified"
+        ):
+            report["result"] = "incomplete"
+    except (OSError, KeyError, IndexError, TypeError, ValueError, struct.error) as exc:
+        next_commands = ([build_command(units[args.unit]["object"]), ["python3", "scripts/compare-function.py", args.unit, "--json"]]
+                         if args.unit in units else [["python3", "scripts/compare-function.py", "--list", "--json"]])
+        report = {"schema_version": 2, "unit": args.unit, "result": "error", "error": str(exc),
+                  "findings": [exc.finding if isinstance(exc, DataError) else {"code": "COMPARISON_ERROR", "message": str(exc)}],
+                  "next_commands": next_commands}
     if args.json:
         print(json.dumps(report, indent=2))
     else:
@@ -400,7 +468,15 @@ def main() -> int:
                 else f": {report.get('error', '')}"
             )
         )
-    return 0 if report["result"] == "exact" else 1
+        if "evidence" in report:
+            evidence = report["evidence"]
+            print(f"  code={evidence['code']['status']} data={evidence['data']['status']} linkage={evidence['linkage']['status']}; "
+                  f"{evidence['data']['uncovered_count']} uncovered initialized-data dependencies")
+        for finding in report.get("findings", [])[:3]:
+            print(f"  {finding['code']}: {finding['message']}")
+        for command in report.get("next_commands", [])[:3]:
+            print("  next: " + shlex.join(command))
+    return 0 if report["result"] == "exact" else 2 if report["result"] == "incomplete" else 1
 
 
 if __name__ == "__main__":

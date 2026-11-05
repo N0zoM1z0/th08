@@ -175,9 +175,14 @@ analysis data to clear a compiler cache.
 
 ## Acceptance
 
-An `exact` JSON result proves only the configured function bytes after the
-declared relocations. It does not prove the original object partition, adjacent
-functions, data layout, or a repository-wide percentage. Update shared
+Read `evidence.code`, `evidence.data` and `evidence.linkage` before accepting an
+`exact` JSON result. Literal contents and referenced declared data contracts
+are checked automatically; uncovered initializers remain `partial`, and linked
+evidence starts as `not_checked`. Use `--require-data` / `--require-linkage`
+when those scopes must pass. Follow [the evidence workflow](../../../docs/EXACT_EVIDENCE.md)
+for bounded discovery, contract authoring, paired PE/map checks and exit codes.
+This does not prove the original object partition, adjacent functions, complete
+data closure, or a repository-wide percentage. Update shared
 mapping/match manifests and published status only in a reviewed coherent commit.
 
 Before publishing repository-wide authored totals, cold-build and replay the

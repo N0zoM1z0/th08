@@ -55761,7 +55761,7 @@ target = 0x00437BC4
 [[units.relocations]]
 offset = 0x5C
 type = "DIR32"
-symbol = "??_C@_03JDLEFIHA@GUI?$AA@"
+symbol = "??_C@_0BA@PGNLMIAA@FRScreenImplInf?$AA@"
 target = 0x004B4D44
 
 [[units.relocations]]
@@ -58544,7 +58544,7 @@ target = 0x0043E660
 [[units.relocations]]
 offset = 0x93
 type = "DIR32"
-symbol = "??_C@_0ED@DLLGBJLB@?$IDe?$IDN?$IDX?$ID?$GA?$ID?$ID?5?$CFs?5?$IC?$KK?$IN?l?$JA?$KM?$IC?E?$IC?$KL?$IC?$NM?$IC?$LJ?$IC?q?$IBB@"
+symbol = "??_C@_0ED@LCLAHICL@?$IDe?$IDN?$IDX?$ID?$GA?$ID?$ID?5?$CFs?5?$IC?$KK?$JD?G?$IC?$NN?$IN?$JO?$IC?$NP?$IC?$NM?$IC?$LJ?$IC?q?$IBB@"
 target = 0x004B8510
 
 [[units.relocations]]
@@ -61091,7 +61091,7 @@ target = 0x004B6998
 [[units.relocations]]
 offset = 0x7E
 type = "DIR32"
-symbol = "??_C@_0BO@JIBJEEN@16bit?5?c?$IB?$KP?e?$IP?$JG?c?$IC?$IK?h?$LO?$LM?c?$IC?$IB?c?$IB?$KK?c?$IB?$IE?$AN?6?$AA@"
+symbol = "??_C@_0BH@NNBBNPHN@16bit?5?$IC?M?$IO?f?$IC?h?$IN?$JO?$IC?$NP?$IC?H?$IC?$KC?$AN?6?$AA@"
 target = 0x004B6980
 
 [[units.relocations]]
@@ -61103,7 +61103,7 @@ target = 0x00437CDD
 [[units.relocations]]
 offset = 0x89
 type = "DIR32"
-symbol = "??_C@_0BO@JIBJEEN@16bit?5?c?$IB?$KP?e?$IP?$JG?c?$IC?$IK?h?$LO?$LM?c?$IC?$IB?c?$IB?$KK?c?$IB?$IE?$AN?6?$AA@"
+symbol = "??_C@_0BH@NNBBNPHN@16bit?5?$IC?M?$IO?f?$IC?h?$IN?$JO?$IC?$NP?$IC?H?$IC?$KC?$AN?6?$AA@"
 target = 0x004B6980
 
 [[units.relocations]]
@@ -61127,7 +61127,7 @@ target = 0x004A4269
 [[units.relocations]]
 offset = 0xB8
 type = "DIR32"
-symbol = "??_C@_0CD@JBDDKALF@snapShotScreen?5?3?5?g?$KC?$LK?d?$LP?$JN?c?$IB?$JH?c?$IB?$IP?c?$IC?$IK@"
+symbol = "??_C@_0BO@GCDLGPM@snapShotScreen?5?3?5?$IKm?$JF?$NL?$IC?$LF?$IC?$KN?$IC?h?$AN?6?$AA@"
 target = 0x004B6960
 
 [[units.relocations]]
@@ -61151,7 +61151,7 @@ target = 0x004A4269
 [[units.relocations]]
 offset = 0xF8
 type = "DIR32"
-symbol = "??_C@_0CD@JBDDKALF@snapShotScreen?5?3?5?g?$KC?$LK?d?$LP?$JN?c?$IB?$JH?c?$IB?$IP?c?$IC?$IK@"
+symbol = "??_C@_0BO@GCDLGPM@snapShotScreen?5?3?5?$IKm?$JF?$NL?$IC?$LF?$IC?$KN?$IC?h?$AN?6?$AA@"
 target = 0x004B6960
 
 [[units.relocations]]
@@ -61254,7 +61254,7 @@ target = 0x00476CE0
 [[units.relocations]]
 offset = 0x5B
 type = "DIR32"
-symbol = "??_C@_0BL@EJHIKJBE@DirectInput?5create?5error?$AN?6?$AA@"
+symbol = "??_C@_0BP@IKPEELGB@DirectInput?5?$IC?$KK?$IOg?$JHp?$IC?E?$IC?$KL?$IC?$NM?$IC?$LJ?$IC?q?$AN?6?$AA@"
 target = 0x004B6904
 
 [[units.relocations]]
@@ -61278,7 +61278,7 @@ target = 0x004BD620
 [[units.relocations]]
 offset = 0xBA
 type = "DIR32"
-symbol = "??_C@_0BL@EJHIKJBE@DirectInput?5create?5error?$AN?6?$AA@"
+symbol = "??_C@_0BP@IKPEELGB@DirectInput?5?$IC?$KK?$IOg?$JHp?$IC?E?$IC?$KL?$IC?$NM?$IC?$LJ?$IC?q?$AN?6?$AA@"
 target = 0x004B6904
 
 [[units.relocations]]
@@ -61302,7 +61302,7 @@ target = 0x004B9D9C
 [[units.relocations]]
 offset = 0x132
 type = "DIR32"
-symbol = "??_C@_0BN@CIGCLFJI@keyboard?5data?5format?5error?$AN?6?$AA@"
+symbol = "??_C@_0CN@IIPBJOOG@DirectInput?5SetDataFormat?5?$IC?$KK?$IOg?$JHp@"
 target = 0x004B68D4
 
 [[units.relocations]]
@@ -61320,7 +61320,7 @@ target = 0x0043EA00
 [[units.relocations]]
 offset = 0x1AD
 type = "DIR32"
-symbol = "??_C@_0CD@IGDEOCJO@keyboard?5cooperative?5level?5error@"
+symbol = "??_C@_0DD@HOPPMMBG@DirectInput?5SetCooperativeLevel?5@"
 target = 0x004B68A0
 
 [[units.relocations]]
@@ -61338,7 +61338,7 @@ target = 0x0043EA00
 [[units.relocations]]
 offset = 0x1D8
 type = "DIR32"
-symbol = "??_C@_0O@JNILGCGI@KeyBoard?5OK?$AN?6?$AA@"
+symbol = "??_C@_0CH@HPJOGPFH@DirectInput?5?$IC?M?$JA?$LD?$IP?m?$IC?I?$IP?$IJ?$IK?z?$IJ?$LL?$IC?$LD?$IC?j?$IC?$NM@"
 target = 0x004B6878
 
 [[units.relocations]]
@@ -61386,7 +61386,7 @@ target = 0x00445E3D
 [[units.relocations]]
 offset = 0x27C
 type = "DIR32"
-symbol = "??_C@_0O@HHGMGHGI@JoyStick?5OK?$AN?6?$AA@"
+symbol = "??_C@_0BN@DBPJGDJM@?$JHL?$IM?x?$IC?H?$IDp?$IDb?$IDh?$IC?p?$JE?$KN?$IM?$KJ?$IC?$LF?$IC?$NM?$IC?$LF?$IC?$LN?$AN?6?$AA@"
 target = 0x004B6858
 
 [[units.relocations]]
@@ -63957,7 +63957,7 @@ target = 0x0043E660
 [[units.relocations]]
 offset = 0x34
 type = "DIR32"
-symbol = "??_C@_0FB@HBGBELJH@?c?$IC?$LJ?c?$ID?$IG?c?$ID?$LM?c?$IC?$LI?c?$ID?$IH?c?$ID?$LM?c?$IC?$LP?c?$IB?$IM?h?$KG?$IL?c?$IB?$KE?c?$IB@"
+symbol = "??_C@_0DH@DGPFANG@?$IDX?$IDe?$IB?$FL?$IDW?$IDf?$IB?$FL?$ID?$FO?$IC?$KK?$IM?$KJ?$IC?B?$IC?$KJ?$IC?h?$IC?$NM?$IC?$LJ?$IC?q?$IBB@"
 target = 0x004B4348
 
 [[units.relocations]]
@@ -77048,7 +77048,7 @@ target = 4387504
 [[units.relocations]]
 offset = 658
 type = "DIR32"
-symbol = "??_C@_0O@NJENMALB@Player?5?$DN?5?$CF8d0?$AA@"
+symbol = "??_C@_0N@GMKBBCPD@Player?5?$DN?$CF8d0?$AA@"
 target = 4935312
 
 [[units.relocations]]
@@ -77096,7 +77096,7 @@ target = 4430030
 [[units.relocations]]
 offset = 721
 type = "DIR32"
-symbol = "??_C@_0M@FGJKNCCE@Bomb?5?$DN?5?$CF8d0?$AA@"
+symbol = "??_C@_0O@BHNCOPPC@Bomb?5?5?5?$DN?5?$CF7d0?$AA@"
 target = 4935296
 
 [[units.relocations]]
@@ -77264,7 +77264,7 @@ target = 4430056
 [[units.relocations]]
 offset = 1063
 type = "DIR32"
-symbol = "??_C@_0BD@IJHIIOAC@Rank?5Easy?5?5?5?5?$CI0?45?$CJ?$AA@"
+symbol = "??_C@_0BC@NAJOFFGL@Easy?5Rank?5?5?5?5?$CK0?45?$AA@"
 target = 4935224
 
 [[units.relocations]]
@@ -77294,7 +77294,7 @@ target = 4430056
 [[units.relocations]]
 offset = 1105
 type = "DIR32"
-symbol = "??_C@_0BD@MLFJDFKP@Rank?5Normal?5?5?$CI1?40?$CJ?$AA@"
+symbol = "??_C@_0BC@BEMKGFLF@Normal?5Rank?5?5?$CK1?40?$AA@"
 target = 4935204
 
 [[units.relocations]]
@@ -77324,7 +77324,7 @@ target = 4430056
 [[units.relocations]]
 offset = 1147
 type = "DIR32"
-symbol = "??_C@_0BD@PIGKAEMP@Rank?5Hard?5?5?5?5?$CI1?42?$CJ?$AA@"
+symbol = "??_C@_0BC@MCMMBHPA@Hard?5Rank?5?5?5?5?$CK1?42?$AA@"
 target = 4935184
 
 [[units.relocations]]
@@ -77354,7 +77354,7 @@ target = 4430056
 [[units.relocations]]
 offset = 1186
 type = "DIR32"
-symbol = "??_C@_0BD@INKOALEC@Rank?5Lunatic?5?$CI1?45?$CJ?$AA@"
+symbol = "??_C@_0BC@BPIEOMI@Lunatic?5Rank?5?$CK1?45?$AA@"
 target = 4935164
 
 [[units.relocations]]
@@ -77384,7 +77384,7 @@ target = 4430056
 [[units.relocations]]
 offset = 1225
 type = "DIR32"
-symbol = "??_C@_0BD@OACALBOO@Rank?5Extra?5?5?5?$CI2?40?$CJ?$AA@"
+symbol = "??_C@_0BC@BOLFLDGK@Extra?5Rank?5?5?5?$CK2?40?$AA@"
 target = 4935144
 
 [[units.relocations]]
@@ -77414,7 +77414,7 @@ target = 4430056
 [[units.relocations]]
 offset = 1264
 type = "DIR32"
-symbol = "??_C@_0BD@HAHKDEKB@Rank?5Phantasm?$CI2?40?$CJ?$AA@"
+symbol = "??_C@_0BC@MDKNKKNG@Phantasm?5Rank?$CK2?40?$AA@"
 target = 4935124
 
 [[units.relocations]]
@@ -77468,7 +77468,7 @@ target = 4430056
 [[units.relocations]]
 offset = 1386
 type = "DIR32"
-symbol = "??_C@_0BG@HJOEIGF@Slowdown?5Penalty?550?$CF?$CF?$AA@"
+symbol = "??_C@_0BD@HOCPAMNI@Player?5Penalty?$CK0?45?$AA@"
 target = 4935104
 
 [[units.relocations]]
@@ -77504,7 +77504,7 @@ target = 4430056
 [[units.relocations]]
 offset = 1440
 type = "DIR32"
-symbol = "??_C@_0BG@PPAOIMNE@Slowdown?5Penalty?580?$CF?$CF?$AA@"
+symbol = "??_C@_0BD@DBGOJKBP@Player?5Penalty?$CK0?42?$AA@"
 target = 4935084
 
 [[units.relocations]]
@@ -77540,7 +77540,7 @@ target = 4430056
 [[units.relocations]]
 offset = 1491
 type = "DIR32"
-symbol = "??_C@_0BG@MCGOKFGE@Slowdown?5Penalty?590?$CF?$CF?$AA@"
+symbol = "??_C@_0BD@BKEDMJNM@Player?5Penalty?$CK0?41?$AA@"
 target = 4935064
 
 [[units.relocations]]
@@ -77576,7 +77576,7 @@ target = 4430056
 [[units.relocations]]
 offset = 1542
 type = "DIR32"
-symbol = "??_C@_0BG@PFLAFFFG@Slowdown?5Penalty?595?$CF?$CF?$AA@"
+symbol = "??_C@_0BE@CMIMHFLH@Player?5Penalty?$CK0?405?$AA@"
 target = 4935044
 
 [[units.relocations]]
@@ -77618,7 +77618,7 @@ target = 4430056
 [[units.relocations]]
 offset = 1612
 type = "DIR32"
-symbol = "??_C@_0BC@JJIBDFOG@Total?5?5?5?5?5?5?5?5?$CF8d0?$AA@"
+symbol = "??_C@_0N@DCLPKNKL@Total?5?$DN?5?$CF8d0?$AA@"
 target = 4935028
 
 [[units.relocations]]
@@ -87856,7 +87856,7 @@ target = 0x004B4554
 [[units.relocations]]
 offset = 0x21E
 type = "DIR32"
-symbol = "??_C@_0DL@ELPKNGII@?$JA?$IC?$JC?$LM?$JD?$KP?$IK?z?$IC?$KK?$IO?f?$IC?j?$IC?D?$IC?H?$IC?$KC?$IC?$KJ?$IBA?$ID?$IK?$IDt?$ID?$IM?$IDb@"
+symbol = "??_C@_0DJ@HIOKAIMG@?$JA?$IC?$JC?$LM?$JD?$KP?$IK?z?$IC?$KK?$IO?f?$IC?j?$IC?D?$IC?H?$IC?$KC?$IC?$KJ?$IBA?$ID?$IK?$IDt?$ID?$IM?$IDb@"
 target = 0x004B6738
 
 [[units.relocations]]
@@ -91086,7 +91086,7 @@ target = 0x004A4920
 [[units.relocations]]
 offset = 0x43
 type = "DIR32"
-symbol = "??_C@_0EI@FJIFMHEM@?$CD?5?$JD?$IM?$JF?$PL?$IJi?$JG?i?$IP?$LE?$IB?$EA?$IB?$GA?5Imperishable?5Ni@"
+symbol = "??_C@_0EE@GPILBKHN@?$CD?5?$JD?$IM?$JF?$PL?$IJi?$JG?i?$IP?$LE?$IB?$EA?$IB?$GA?5Imperishable?5Ni@"
 target = 0x004B7918
 
 [[units.relocations]]
@@ -91098,7 +91098,7 @@ target = 0x00454269
 [[units.relocations]]
 offset = 0x55
 type = "DIR32"
-symbol = "??_C@_0DF@KLDAEILF@?$CD?5?$IC?$LB?$IC?L?$IDt?$ID?$EA?$IDC?$ID?$IL?$IC?M?$IBA?$IM?$LL?$IN?$NN?$IC?L?$ILL?$JI?$FO?$IC?p?$ID_@"
+symbol = "??_C@_0DD@JDDBJNID@?$CD?5?$IC?$LB?$IC?L?$IDt?$ID?$EA?$IDC?$ID?$IL?$IC?M?$IBA?$IM?$LL?$IN?$NN?$IC?L?$ILL?$JI?$FO?$IC?p?$ID_@"
 target = 0x004B78E4
 
 [[units.relocations]]
@@ -91110,7 +91110,7 @@ target = 0x00454269
 [[units.relocations]]
 offset = 0x67
 type = "DIR32"
-symbol = "??_C@_0DP@NCLNJOAG@?$CD?5?$IC?$LB?$IC?L?$IDt?$ID?$EA?$IDC?$ID?$IL?$IC?L?$JD?$OA?$JHe?$IC?p?$JF?O?$INX?$IC?$LF?$IC?D?$IC?$OA@"
+symbol = "??_C@_0DN@CDCGKOLC@?$CD?5?$IC?$LB?$IC?L?$IDt?$ID?$EA?$IDC?$ID?$IL?$IC?L?$JD?$OA?$JHe?$IC?p?$JF?O?$INX?$IC?$LF?$IC?D?$IC?$OA@"
 target = 0x004B78A4
 
 [[units.relocations]]
@@ -91122,7 +91122,7 @@ target = 0x00454269
 [[units.relocations]]
 offset = 0x79
 type = "DIR32"
-symbol = "??_C@_0FF@FCGEKDLC@?$CD?5?$IC?$LB?$IC?L?$IDt?$ID?$EA?$IDC?$ID?$IL?$IC?M?$IO?$KJ?$JHR?$IC?I?$JH?$JI?$JHp?$IC?$LF?$IC?$LN?$IC?h@"
+symbol = "??_C@_0FD@KFADDDB@?$CD?5?$IC?$LB?$IC?L?$IDt?$ID?$EA?$IDC?$ID?$IL?$IC?M?$IO?$KJ?$JHR?$IC?I?$JH?$JI?$JHp?$IC?$LF?$IC?$LN?$IC?h@"
 target = 0x004B7850
 
 [[units.relocations]]
@@ -91158,7 +91158,7 @@ target = 0x004A5925
 [[units.relocations]]
 offset = 0xC5
 type = "DIR32"
-symbol = "??_C@_0DC@CNEFMHC@?$CD?5?$IB?$EA?$IB?$EA?$IB?$EA?$IB?$EA?$IB?$EA?$IB?$EA?$IB?$EA?$IB?$EA?$IB?$EA?$IB?$EA?$IB?$EA?$IB?$EA?5?5?5Tim@"
+symbol = "??_C@_0DA@EBOJGALO@?$CD?5?$IB?$EA?$IB?$EA?$IB?$EA?$IB?$EA?$IB?$EA?$IB?$EA?$IB?$EA?$IB?$EA?$IB?$EA?$IB?$EA?$IB?$EA?$IB?$EA?5?5?5Tim@"
 target = 0x004B7808
 
 [[units.relocations]]
@@ -91320,7 +91320,7 @@ target = 0x00454269
 [[units.relocations]]
 offset = 0x321
 type = "DIR32"
-symbol = "??_C@_0BO@NHILGANF@?5?5?5?5?$IP?$II?$JH?$JN?$JH?$IO?$IC?$LP?$JH?$KG?5?5?5?5?5?5?5?$CF?42f?$IB?$JD?$AN?6?$AA@"
+symbol = "??_C@_0BP@NNMCJGCC@?5?5?5?5?$IP?$II?$JH?$JN?$JH?$IO?$IC?$LP?$JH?$KG?5?5?5?5?5?5?5?5?$CF?42f?$IB?$JD?$AN?6?$AA@"
 target = 0x004B772C
 
 [[units.relocations]]
@@ -91368,7 +91368,7 @@ target = 0x00454269
 [[units.relocations]]
 offset = 0x3CE
 type = "DIR32"
-symbol = "??_C@_0BL@GHAIJFBM@?5?5?5?5?$IN?$IP?$JF?$IE?$JA?$JE?5?5?5?5?5?5?5?5?5?$CF6d?$IM?B?$AN?6?$AA@"
+symbol = "??_C@_0BM@NENFKAFL@?5?5?5?5?$IN?$IP?$JF?$IE?$JA?$JE?5?5?5?5?5?5?5?5?5?5?$CF6d?$IM?B?$AN?6?$AA@"
 target = 0x004B76AC
 
 [[units.relocations]]
@@ -91380,7 +91380,7 @@ target = 0x00454269
 [[units.relocations]]
 offset = 0x3F0
 type = "DIR32"
-symbol = "??_C@_0BN@MBAINLPD@?5?5?5?5?$ID?$HO?$IDX?$IJ?q?$JA?$JE?5?5?5?5?5?5?5?5?5?$CF3d?$IJ?q?$AN?6?$AA@"
+symbol = "??_C@_0BP@JGFLGEJK@?5?5?5?5?$ID?$HO?$IDX?$IJ?q?$JA?$JE?5?5?5?5?5?5?5?5?5?5?5?$CF3d?$IJ?q?$AN?6?$AA@"
 target = 0x004B768C
 
 [[units.relocations]]
@@ -91416,7 +91416,7 @@ target = 0x00454269
 [[units.relocations]]
 offset = 0x456
 type = "DIR32"
-symbol = "??_C@_0CA@JHLGPNFE@?5?5?5?5?$ID?$HM?$IB?$FL?$IDY?$IJ?q?$JA?$JE?5?5?5?5?5?5?5?5?5?5?$CF3d?$IJ?q?$AN?6?$AA@"
+symbol = "??_C@_0BP@FEMEDNKE@?5?5?5?5?$ID?$HM?$IB?$FL?$IDY?$IJ?q?$JA?$JE?5?5?5?5?5?5?5?5?5?$CF3d?$IJ?q?$AN?6?$AA@"
 target = 0x004B762C
 
 [[units.relocations]]
@@ -91458,7 +91458,7 @@ target = 0x00454269
 [[units.relocations]]
 offset = 0x4C3
 type = "DIR32"
-symbol = "??_C@_0DF@OPDBNECO@?5?5?5?5?$IO?f?$JD?$LO?$IDX?$IDy?$ID?$IL?$IDJ?$IB?$FL?$IDh?$II?j?$JH?$JH?5?$CI?$JB?$IN?$IO?f?$JD?$LO@"
+symbol = "??_C@_0DD@CCIOOCEE@?5?5?5?5?$IO?f?$JD?$LO?$IDX?$IDy?$ID?$IL?$IDJ?$IB?$FL?$IDh?$II?j?$JH?$JH?5?$CI?$JB?$IN?$IO?f?$JD?$LO@"
 target = 0x004B75B8
 
 [[units.relocations]]
@@ -103758,6 +103758,129 @@ type = "DIR32"
 symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
 target = 0x017CE758
 
+# Configured diagnostic only; absent from matches.csv until a natural source is exact.
+# Ledger name: th08::ReplayManager::PlaybackExtendedInputAndFps
+[[units]]
+name = "replay-manager-playback-extended-input-and-fps"
+object = "build/ReplayManager.obj"
+symbol = "?PlaybackExtendedInputAndFps@ReplayManager@th08@@SI?AW4ChainCallbackResult@2@PAU12@@Z"
+target_address = 0x004526C0
+size = 0x169
+
+[[units.relocations]]
+offset = 0xA
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0x24
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0x3B
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0x5D
+type = "DIR32"
+symbol = "?g_GuiMessageInputCurrent@th08@@3GA"
+target = 0x0164D52C
+
+[[units.relocations]]
+offset = 0x64
+type = "DIR32"
+symbol = "?g_GuiMessageInputPrevious@th08@@3GA"
+target = 0x0164D534
+
+[[units.relocations]]
+offset = 0x74
+type = "DIR32"
+symbol = "?g_GuiMessageInputCurrent@th08@@3GA"
+target = 0x0164D52C
+
+[[units.relocations]]
+offset = 0x8A
+type = "DIR32"
+symbol = "?g_IsEighthFrameOfHeldInput@th08@@3GA"
+target = 0x0164D538
+
+[[units.relocations]]
+offset = 0x93
+type = "DIR32"
+symbol = "?g_GuiMessageInputPrevious@th08@@3GA"
+target = 0x0164D534
+
+[[units.relocations]]
+offset = 0x9A
+type = "DIR32"
+symbol = "?g_GuiMessageInputCurrent@th08@@3GA"
+target = 0x0164D52C
+
+[[units.relocations]]
+offset = 0xA5
+type = "DIR32"
+symbol = "?g_NumOfFramesInputsWereHeld@th08@@3GA"
+target = 0x0164D53C
+
+[[units.relocations]]
+offset = 0xB1
+type = "DIR32"
+symbol = "?g_NumOfFramesInputsWereHeld@th08@@3GA"
+target = 0x0164D53C
+
+[[units.relocations]]
+offset = 0xC8
+type = "DIR32"
+symbol = "?g_IsEighthFrameOfHeldInput@th08@@3GA"
+target = 0x0164D538
+
+[[units.relocations]]
+offset = 0xD1
+type = "DIR32"
+symbol = "?g_NumOfFramesInputsWereHeld@th08@@3GA"
+target = 0x0164D53C
+
+[[units.relocations]]
+offset = 0xDD
+type = "DIR32"
+symbol = "?g_NumOfFramesInputsWereHeld@th08@@3GA"
+target = 0x0164D53C
+
+[[units.relocations]]
+offset = 0xE6
+type = "DIR32"
+symbol = "?g_NumOfFramesInputsWereHeld@th08@@3GA"
+target = 0x0164D53C
+
+[[units.relocations]]
+offset = 0xF1
+type = "DIR32"
+symbol = "?g_NumOfFramesInputsWereHeld@th08@@3GA"
+target = 0x0164D53C
+
+[[units.relocations]]
+offset = 0xFA
+type = "DIR32"
+symbol = "?g_NumOfFramesInputsWereHeld@th08@@3GA"
+target = 0x0164D53C
+
+[[units.relocations]]
+offset = 0x124
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x13A
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
 # Ledger name: th08::ReplayManager::BeginRecordingStage
 [[units]]
 name = "replay-manager-begin-recording-stage"
@@ -112447,7 +112570,7 @@ target = 0x017CE758
 [[units.relocations]]
 offset = 0x232
 type = "DIR32"
-symbol = "??_C@_0CF@CMLLMLNH@error?3?5player?5initialization?5fai@"
+symbol = "??_C@_0CL@ILMGJKPN@error?5?3?5?$IDv?$ID?$IM?$IDC?$ID?$IE?$IB?$FL?$IC?L?$IP?$IJ?$IK?z?$IJ?$LL?$IC?I?$IO?$LI?$JEs@"
 target = 0x004B5930
 
 [[units.relocations]]
@@ -112749,7 +112872,7 @@ target = 0x017CE758
 [[units.relocations]]
 offset = 0x5C2
 type = "DIR32"
-symbol = "??_C@_0CF@CMLLMLNH@error?3?5player?5initialization?5fai@"
+symbol = "??_C@_0CL@ILMGJKPN@error?5?3?5?$IDv?$ID?$IM?$IDC?$ID?$IE?$IB?$FL?$IC?L?$IP?$IJ?$IK?z?$IJ?$LL?$IC?I?$IO?$LI?$JEs@"
 target = 0x004B5930
 
 [[units.relocations]]
@@ -112911,7 +113034,7 @@ target = 0x017CE758
 [[units.relocations]]
 offset = 0x823
 type = "DIR32"
-symbol = "??_C@_0CJ@HFNFAIKF@error?3?5background?5initialization@"
+symbol = "??_C@_0CL@HFFODPIB@error?5?3?5?$JEw?$IMi?$IDf?$IB?$FL?$ID?$FO?$IC?L?$IP?$IJ?$IK?z?$IJ?$LL?$IC?I?$IO?$LI?$JEs@"
 target = 0x004B5904
 
 [[units.relocations]]
@@ -112947,7 +113070,7 @@ target = 0x017CE758
 [[units.relocations]]
 offset = 0x855
 type = "DIR32"
-symbol = "??_C@_0CF@FPCKPGDA@error?3?5bullet?5initialization?5fai@"
+symbol = "??_C@_0CF@GKEIINCM@error?5?3?5?$JDG?$JCe?$IC?L?$IP?$IJ?$IK?z?$IJ?$LL?$IC?I?$IO?$LI?$JEs?$IC?$LF?$IC?$NM?$IC?$LF@"
 target = 0x004B58DC
 
 [[units.relocations]]
@@ -112977,7 +113100,7 @@ target = 0x017CE758
 [[units.relocations]]
 offset = 0x882
 type = "DIR32"
-symbol = "??_C@_0CE@JNOJFPKK@error?3?5enemy?5initialization?5fail@"
+symbol = "??_C@_0CD@CPFCGAAA@error?5?3?5?$JDG?$IC?L?$IP?$IJ?$IK?z?$IJ?$LL?$IC?I?$IO?$LI?$JEs?$IC?$LF?$IC?$NM?$IC?$LF?$IC?$LN@"
 target = 0x004B58B8
 
 [[units.relocations]]
@@ -113007,7 +113130,7 @@ target = 0x017CE758
 [[units.relocations]]
 offset = 0x8AF
 type = "DIR32"
-symbol = "??_C@_0CF@FENMLLMJ@error?3?5effect?5initialization?5fai@"
+symbol = "??_C@_0CL@GJELHILO@error?5?3?5?$IDG?$IDt?$IDF?$IDN?$IDg?$IC?L?$IP?$IJ?$IK?z?$IJ?$LL?$IC?I?$IO?$LI?$JEs@"
 target = 0x004B588C
 
 [[units.relocations]]
@@ -113037,7 +113160,7 @@ target = 0x017CE758
 [[units.relocations]]
 offset = 0x8DC
 type = "DIR32"
-symbol = "??_C@_0CB@PHCJOIOG@error?3?52D?5initialization?5failed?6@"
+symbol = "??_C@_0CH@JEFLKHAP@error?5?3?52D?$JF?2?$IO?$KG?$IC?L?$IP?$IJ?$IK?z?$IJ?$LL?$IC?I?$IO?$LI?$JEs?$IC?$LF?$IC?$NM@"
 target = 0x004B5864
 
 [[units.relocations]]
@@ -113067,7 +113190,7 @@ target = 0x017CE758
 [[units.relocations]]
 offset = 0x909
 type = "DIR32"
-symbol = "??_C@_0CJ@FBCDFIGM@error?3?5spell?5card?5initialization@"
+symbol = "??_C@_0CN@MCHNKAAM@error?5?3?5?$IDX?$IDy?$ID?$IL?$IDJ?$IB?$FL?$IDh?$IC?L?$IP?$IJ?$IK?z?$IJ?$LL?$IC?I?$IO?$LI@"
 target = 0x004B5834
 
 [[units.relocations]]
@@ -118328,7 +118451,7 @@ target = 0x00453CFA
 [[units.relocations]]
 offset = 0x1A7
 type = "DIR32"
-symbol = "??_C@_0CG@ICKEECCF@?$IO?f?$JD?$LO?$JA?$JE?1?$JC?$KH?$JA?m?$JA?$JE?$FL?$IN?E?$IN?$IC?$JD_?$FN?$IB?$EA?$CFs?$IB?$EA?$JBS?$IO?e?$JA@"
+symbol = "??_C@_0CI@CCKPMIHN@?$IO?f?$JD?$LO?$JA?$JE?1?$JC?$KH?$JA?m?$JA?$JE?$FL?$IN?E?$IN?$IC?$JD_?$FN?$IB?$EA?$CFs?$IB?$EA?$JBS?$IO?e?$JA@"
 target = 0x004B9404
 
 [[units.relocations]]
@@ -119985,7 +120108,7 @@ target = 0x0045A5E0
 [[units.relocations]]
 offset = 0xCB
 type = "DIR32"
-symbol = "??_C@_0DO@GPJPNAAF@error?5?3?5?c?$IC?$LJ?c?$IC?$LD?c?$IC?$KC?c?$ID?$JF?c?$IC?$KB?c?$IC?$KE?c?$ID?$KL?c?$IB?$KO@"
+symbol = "??_C@_0DB@PDHAODBA@error?5?3?5?$IDX?$IDR?$IDA?$IDt?$ID?$EA?$IDC?$ID?$IL?$IC?L?$JD?G?$IC?$NN?$IO?f?$IC?h@"
 target = 0x004B5960
 
 [[units.relocations]]

@@ -45,6 +45,7 @@ The [conceptual guide](PROJECT_GUIDE.md) is available for orientation.
 | --- | --- |
 | How do I build and compare one function? | [Build and exact matching](BUILD_MATCHING.md#object-comparison) |
 | What does an accepted result prove? | [Acceptance language](RE_WORKFLOW.md#acceptance-language), [acceptance rules](BUILD_MATCHING.md#acceptance-rules) |
+| How do I verify referenced data and final linkage? | [Exact evidence and agent workflow](EXACT_EVIDENCE.md) |
 | Which command answers my question? | [Tool recipes](TOOLS.md#choose-the-command-by-question) |
 | How do names and types get accepted? | [Semantic reconstruction policy](SEMANTIC_RECONSTRUCTION.md) |
 | How do I reproduce the native Windows prerequisite? | [Windows i386 runtime procedure](WINDOWS_I386_RUNTIME.md) |
@@ -94,6 +95,7 @@ for its recorded scope and checkpoint.
 | Reconstruction method and tool safety | [RE workflow](RE_WORKFLOW.md), [semantic policy](SEMANTIC_RECONSTRUCTION.md), [tools](TOOLS.md), [IDA database attestation](IDA_MCP.md) |
 | Compiler and whole-image reference material | [VC7 patterns](VC7_ZUN_PATTERNS.md), [build/matching corpus](BUILD_MATCHING.md#compiler-pattern-corpus), [whole-image lessons](WHOLE_IMAGE_RECONSTRUCTION.md) |
 | Focused matching notes | [Player](PLAYER_MATCHING.md), [GameManager](GAME_MANAGER_MATCHING.md), [stage menus](STAGE_MENU_MATCHING.md) |
+| Independent reconstruction comparison | [Cirno-Labs reference audit](CIRNO_REFERENCE_AUDIT.md) |
 | Native runtime evidence | [Windows i386 procedure](WINDOWS_I386_RUNTIME.md), [owner audit](OWNER_AUDIT.md), [runtime issues](RUNTIME_ISSUES.md) |
 | Port engineering | [Port scope](PORTING.md), [Linux i386 engineering](LINUX_PORTING.md) |
 | Methods reusable in another title | [Semantic and readability playbook](SEMANTIC_PLAYBOOK.md) |

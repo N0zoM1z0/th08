@@ -1573,7 +1573,7 @@ ZunResult Gui::RegisterChain()
     if (IsInitialStageLoad())
     {
         memset(gui, 0, sizeof(Gui));
-        gui->impl = ZUN_NEW(GuiImpl, "GUI");
+        gui->impl = ZUN_NEW(GuiImpl, "FRScreenImplInf");
     }
 
     g_GuiCalcChain.SetCallback((ChainCallback)Gui::OnUpdate);
@@ -1803,10 +1803,10 @@ void Gui::DrawStageClearScreen()
     {
         stringPos.y += 16.0f;
         g_AsciiManager.SetColor(0xffffff80);
-        g_AsciiManager.AddFormatText(&stringPos, "Player = %8d0", g_GameManager.GetLives() * 2500000);
+        g_AsciiManager.AddFormatText(&stringPos, "Player =%8d0", g_GameManager.GetLives() * 2500000);
         stringPos.y += 16.0f;
         g_AsciiManager.SetColor(0xffffff80);
-        g_AsciiManager.AddFormatText(&stringPos, "Bomb = %8d0", g_GameManager.GetBombsRemaining() * 500000);
+        g_AsciiManager.AddFormatText(&stringPos, "Bomb   = %7d0", g_GameManager.GetBombsRemaining() * 500000);
 
         if (g_GameManager.currentStage == STAGE6B && !g_GameManager.IsPracticeMode() && !g_GameManager.IsReplayPractice())
         {
@@ -1829,27 +1829,27 @@ void Gui::DrawStageClearScreen()
     {
     case EASY:
         g_AsciiManager.SetColor(0xffff8080);
-        g_AsciiManager.AddFormatText(&stringPos, "Rank Easy    (0.5)");
+        g_AsciiManager.AddFormatText(&stringPos, "Easy Rank    *0.5");
         break;
     case NORMAL:
         g_AsciiManager.SetColor(0xffff8080);
-        g_AsciiManager.AddFormatText(&stringPos, "Rank Normal  (1.0)");
+        g_AsciiManager.AddFormatText(&stringPos, "Normal Rank  *1.0");
         break;
     case HARD:
         g_AsciiManager.SetColor(0xffff8080);
-        g_AsciiManager.AddFormatText(&stringPos, "Rank Hard    (1.2)");
+        g_AsciiManager.AddFormatText(&stringPos, "Hard Rank    *1.2");
         break;
     case LUNATIC:
         g_AsciiManager.SetColor(0xffff8080);
-        g_AsciiManager.AddFormatText(&stringPos, "Rank Lunatic (1.5)");
+        g_AsciiManager.AddFormatText(&stringPos, "Lunatic Rank *1.5");
         break;
     case EXTRA:
         g_AsciiManager.SetColor(0xffff8080);
-        g_AsciiManager.AddFormatText(&stringPos, "Rank Extra   (2.0)");
+        g_AsciiManager.AddFormatText(&stringPos, "Extra Rank   *2.0");
         break;
     case PHANTASM:
         g_AsciiManager.SetColor(0xffff8080);
-        g_AsciiManager.AddFormatText(&stringPos, "Rank Phantasm(2.0)");
+        g_AsciiManager.AddFormatText(&stringPos, "Phantasm Rank*2.0");
         break;
     default:
         break;
@@ -1862,22 +1862,22 @@ void Gui::DrawStageClearScreen()
         {
         case 3:
             g_AsciiManager.SetColor(0xffff8080);
-            g_AsciiManager.AddFormatText(&stringPos, "Slowdown Penalty 50%%");
+            g_AsciiManager.AddFormatText(&stringPos, "Player Penalty*0.5");
             stringPos.y += 16.0f;
             break;
         case 4:
             g_AsciiManager.SetColor(0xffff8080);
-            g_AsciiManager.AddFormatText(&stringPos, "Slowdown Penalty 80%%");
+            g_AsciiManager.AddFormatText(&stringPos, "Player Penalty*0.2");
             stringPos.y += 16.0f;
             break;
         case 5:
             g_AsciiManager.SetColor(0xffff8080);
-            g_AsciiManager.AddFormatText(&stringPos, "Slowdown Penalty 90%%");
+            g_AsciiManager.AddFormatText(&stringPos, "Player Penalty*0.1");
             stringPos.y += 16.0f;
             break;
         case 6:
             g_AsciiManager.SetColor(0xffff8080);
-            g_AsciiManager.AddFormatText(&stringPos, "Slowdown Penalty 95%%");
+            g_AsciiManager.AddFormatText(&stringPos, "Player Penalty*0.05");
             stringPos.y += 16.0f;
             break;
         default:
@@ -1888,7 +1888,7 @@ void Gui::DrawStageClearScreen()
     stringPos.y += 16.0f;
     g_AsciiManager.SetColor(0xffffffff);
     g_AsciiManager.AddFormatText(
-        &stringPos, "Total        %8d0",
+        &stringPos, "Total = %8d0",
         this->impl->stageClearBonusTotal);
     g_AsciiManager.SetColor(0xffffffff);
 

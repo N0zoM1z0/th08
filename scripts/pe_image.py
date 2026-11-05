@@ -69,6 +69,16 @@ class PEImage:
         self.sha256 = hashlib.sha256(self.data).hexdigest()
         self._parse_headers()
 
+    @classmethod
+    def from_bytes(cls, data: bytes, path: Path | str = "<memory>") -> PEImage:
+        """Read an already attested image without reopening a mutable file."""
+        image = cls.__new__(cls)
+        image.path = Path(path)
+        image.data = data
+        image.sha256 = hashlib.sha256(data).hexdigest()
+        image._parse_headers()
+        return image
+
     def _need(self, offset: int, size: int, what: str) -> None:
         if offset < 0 or size < 0 or offset + size > len(self.data):
             raise PEFormatError(f"{self.path}: truncated {what}")
