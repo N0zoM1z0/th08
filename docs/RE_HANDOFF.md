@@ -56,6 +56,10 @@ branch. Main's separate cold replay and native link evidence are retained under
 `build/exact-evidence/integration-main/`; Linux i386 packaging uses the PR's
 CI checks. The x86_64 build above belongs to the original portable feature
 checkpoint. Main retains its i386 Linux product and existing runtime history.
+The i386 packaging job uses the Ubuntu 24.04 runner already validated in
+PR #37: the initial PR #39 run reproduced container DNS/dependency failures
+on `ubuntu-latest` before compilation. Native cold replay and fresh normal/
+bugfix links pass; use PR #39's final checks for the packaging result.
 
 The remaining near match at `0x004526C0` and authored exact credit are unchanged.
 These build/comparison checks do not extend the published gameplay, image or
