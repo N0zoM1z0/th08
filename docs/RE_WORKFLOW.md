@@ -56,6 +56,11 @@ recorded in notes and handoffs.
    Reproduce the compiler-name control with
    `python3 scripts/analysis/probe-anonymous-namespaces.py`; its report compares
    identical source in two paths with fixed compiler output and PDB paths.
+   Read the separate code, data and linkage evidence before accepting the
+   result. Compiler strings and explicit data contracts are checked alongside
+   code; uncovered initializers remain partial. Use
+   [the evidence workflow](EXACT_EVIDENCE.md) for focused commands, contracts
+   and final-link checks.
 9. Update mapping/progress inputs only to the level proven by the report.
 10. Run `git diff --check` and hand off commands, results, and uncertainty.
 

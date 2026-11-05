@@ -24,7 +24,9 @@ DIFFABLE_STATIC(ReplayManager *, g_ReplayManager);
 
 namespace
 {
-const char *g_ReplayDifficultyList[] = {"Easy", "Normal", "Hard", "Lunatic", "Extra"};
+// The target table at 0x004C7F30 includes a sixth replay label.
+// This does not add a persisted Difficulty enum value.
+const char *g_ReplayDifficultyList[] = {"Easy", "Normal", "Hard", "Lunatic", "Extra", "LastWord"};
 
 struct ReplayUserDataHeader
 {

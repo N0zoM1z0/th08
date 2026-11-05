@@ -1,4 +1,5 @@
 #include "th_pch.h"
+#include "i18n.hpp"
 #include "GameManager.hpp"
 #include "ResultScreen.hpp"
 #include "ScoreDat.hpp"
@@ -45,7 +46,7 @@ i32 InitializeScoreData()
     scoreDat = ScoreDat::OpenScore("score.dat");
     if (scoreDat == NULL)
     {
-        g_GameErrorContext.Log("error : スコアファイルの作成に失敗しました\r\n");
+        g_GameErrorContext.Log(TH_ERR_GAME_SCORE_READ_FAILED);
         return ZUN_ERROR;
     }
 

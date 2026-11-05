@@ -164,8 +164,12 @@ python3 scripts/compare-function.py item-auto-collect --json
 
 The comparator requires the symbol, target address, size, and every COFF
 relocation to agree with `config/match-units.toml`. Missing or extra
-relocations fail comparison. An exact result covers the configured function
-range. Object and executable identity require their own comparisons.
+relocations fail comparison. Compiler literal contents and referenced explicit
+data contracts are also checked. Read the separate code/data/linkage scopes:
+uncovered initializers remain partial, and final-link evidence requires a paired
+PE/map. See [exact evidence and agent commands](EXACT_EVIDENCE.md) for discovery,
+strict coverage options and contract authoring. Complete object and executable
+identity require their own comparisons.
 
 VC7 may include compiler-owned switch tables in a function's COFF auxiliary
 extent. Such units keep `size` as authored code coverage and use `compare_size`
@@ -742,6 +746,14 @@ The Player closure around `0x44AEC0`, `0x44D650`, and `0x451640` adds several us
   placement, and `#pragma var_order(unused)` all reproduce the same 0x16A
   object.  Do not repeat that syntax matrix; require a new source-shape or TU
   hypothesis that explains the allocator phase before probing again.
+  The [Cirno reference audit](CIRNO_REFERENCE_AUDIT.md#remaining-callback-register-phase-is-explained-source-is-not)
+  supplies a new discarded-expression hypothesis: an empty constant-false
+  conditional or a standard `NDEBUG` assertion between the input read and
+  cursor increment reproduces all target bytes and relocations. These are
+  experimental controls only. The original construct and validation contract
+  remain unknown, and neither control is present in accepted source. Use the
+  configured `replay-manager-playback-extended-input-and-fps` diagnostic unit
+  for subsequent evidence-backed work; it remains outside `matches.csv`.
 - `Gui::FUN_00437dc7 @ 0x437DC7` proves `GuiMsgVm +0x1568` is a one-byte state consumed by replay frame throttling. Promote the byte inside the real `GuiMsgVm` aggregate instead of hard-coding `g_Gui.impl + 0x1568`; the tiny helper is exact in the `/Os` Gui TU and gives later replay code a canonical owner.
 
 ### Gui added-callback: preserve table rank, branch-local validation, and real receiver owners
