@@ -23,6 +23,48 @@ The native VC7 `normal` build serves exact comparisons; `bugfix` serves runtime
 testing. The Windows i386 prerequisite is complete. Modern Windows packaging
 and macOS runtime work have their own platform guides.
 
+## Exact-evidence tooling checkpoint
+
+[Issue #38](https://github.com/N0zoM1z0/th08/issues/38) records the independent
+decomp-tools/oracle analysis and implementation on `feat/exact-evidence`.
+Follow [EXACT_EVIDENCE.md](EXACT_EVIDENCE.md) before accepting a comparison:
+schema-versioned output separates code, initialized-data and final-link scopes,
+with bounded discovery, stable findings and next commands. Automatic compiler
+literal checks supplement three reviewed data contracts shared by COFF and
+linked-PE verification. Uncovered initializers stay partial; no table extent
+is inferred and no unresolved instruction field is masked.
+
+The stronger literal check exposed 11 previously code-exact units with
+incorrect source strings. Target-backed repairs cover 43 literal addresses and
+47 relocation sites, including native encoding, HUD formats, error messages
+and score-dump spacing/newlines. The cold accepted-ledger replay passes all
+1,106 units; 1,011 have verified direct initialized-data coverage and 95 remain
+partial (210 grouped dependency observations, not a whole-program closure).
+All linkage scopes in that COFF-only batch remain unchecked. A fresh normal
+link separately passes `SaveReplay @ 0x004531F0` with required data and linkage;
+normal and bugfix products pass all three data contracts and the retained
+owner/data/callee verifier. The old missing-label COFF and pre-repair linked
+image both fail the new contract as expected. Evidence is under
+`build/exact-evidence/`. All 27 new public data/evidence tests, repository CI,
+tracking/progress checks and matching-skill validation pass. The modern Linux
+x86_64 build and ELF/native-global-ownership check also pass; the workspace is
+restored to a fresh normal VC7 product.
+
+Main integration is tracked in [PR #39](https://github.com/N0zoM1z0/th08/pull/39).
+It selects only the audit/tooling changes from the portable-based feature
+branch. Main's separate cold replay and native link evidence are retained under
+`build/exact-evidence/integration-main/`; Linux i386 packaging uses the PR's
+CI checks. The x86_64 build above belongs to the original portable feature
+checkpoint. Main retains its i386 Linux product and existing runtime history.
+The i386 packaging job uses the Ubuntu 24.04 runner already validated in
+PR #37: the initial PR #39 run reproduced container DNS/dependency failures
+on `ubuntu-latest` before compilation. Native cold replay and fresh normal/
+bugfix links pass; use PR #39's final checks for the packaging result.
+
+The remaining near match at `0x004526C0` and authored exact credit are unchanged.
+These build/comparison checks do not extend the published gameplay, image or
+audio gates below.
+
 ## Completed replay validation
 
 The native VC7, Linux x86_64, and Linux i386 products each pass all 108 credited
@@ -114,6 +156,20 @@ retain the stage, route, recording, frame, and comparison evidence. For exact
 reconstruction, resume the authored near match or one bounded whole-link/library
 dependency. The ANM semantic queue keeps opcodes 25, 31, and 88 neutral until
 complete TH08 consumer evidence supports a shared-layout rename.
+
+The [Cirno-Labs reference audit](CIRNO_REFERENCE_AUDIT.md) on
+`audit/cirno-reference` pins reference commit `b8a68cf` under
+`_reference/cirno-th08/`. It restores the target's sixth replay difficulty label
+and extends the native linked-data verifier to follow all six strings. The
+repaired source retains all 1,106 accepted units after a cold build; normal
+and bugfix links pass the extended owner/data/callee checks. Function inventory
+starts and extents agree across both repositories. The remaining callback at
+`0x004526C0` now has a configured, unaccepted diagnostic unit. Isolated empty-if
+and release-assert controls explain its register phase, but the original
+discarded source construct and its purpose remain unknown. Both controls are
+removed; do not accept a placeholder assertion or empty branch as recovery.
+Generated evidence is under `build/cirno-audit/`. This data repair does not
+extend the existing replay/runtime gate claims.
 
 <a id="documentation-batch-for-local-review"></a>
 

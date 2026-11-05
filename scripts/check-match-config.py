@@ -9,6 +9,8 @@ import re
 import sys
 import tomllib
 
+from match_data import load_contracts, stable_symbol
+
 
 ROOT = Path(__file__).resolve().parents[1]
 RECCMP = ROOT / "reccmp-project.yml"
@@ -89,6 +91,14 @@ def main() -> int:
             target = tomllib.load(stream)["target"]
         validate_reccmp(target)
         validate_objdiff()
+        contracts = load_contracts()
+        with (ROOT / "config/match-units.toml").open("rb") as stream:
+            units = tomllib.load(stream)["units"]
+        bindings = {(stable_symbol(row["symbol"]), row["target"])
+                    for unit in units for row in unit.get("relocations", []) if row["type"] == "DIR32"}
+        for contract in contracts:
+            if (stable_symbol(contract["symbol"]), contract["target_address"]) not in bindings:
+                fail(f"data contract {contract['name']} is not bound to a canonical DIR32 symbol/address")
     except (
         OSError,
         KeyError,
@@ -100,7 +110,7 @@ def main() -> int:
         print(f"error: match configuration: {exc}", file=sys.stderr)
         return 1
     print(
-        "match configuration OK: reccmp target and objdiff units are internally consistent"
+        f"match configuration OK: reccmp/objdiff consistent; {len(contracts)} data contracts structurally valid and bound (target data not read)"
     )
     return 0
 

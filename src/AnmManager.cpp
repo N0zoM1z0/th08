@@ -2468,7 +2468,7 @@ i32 AnmManager::LoadExternalTextureData(AnmLoaded *anmLoaded, i32 entryNumber, i
             fileData = FileSystem::OpenFile(path, &fileSize, TRUE);
             if (fileData == NULL)
             {
-                g_GameErrorContext.Fatal(TH_ERR_ANMMANAGER_EXTERN_TEXTURE_CORRUPTED, path);
+                g_GameErrorContext.Fatal(TH_ERR_ANMMANAGER_EXTERNAL_TEXTURE_LOAD_FAILED, path);
                 return ZUN_ERROR;
             }
             anmLoaded->textures[entryNumber].size = fileSize;

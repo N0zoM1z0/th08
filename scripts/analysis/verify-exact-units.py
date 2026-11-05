@@ -8,6 +8,7 @@ import csv
 import importlib.util
 import json
 from pathlib import Path
+import struct
 import subprocess
 import sys
 import tomllib
@@ -154,14 +155,17 @@ def main() -> int:
         subprocess.CalledProcessError,
         tomllib.TOMLDecodeError,
     ) as exc:
-        print(f"error: exact-unit batch: {exc}")
+        failure = {"schema_version": 2, "result": "error", "error": str(exc),
+                   "findings": [{"code": "BATCH_INPUT_INVALID", "message": str(exc)}],
+                   "next_commands": [["python3", "scripts/compare-function.py", "--list", "--json"]]}
+        print(json.dumps(failure, indent=2) if args.json else f"error: exact-unit batch: {exc}")
         return 1
 
     reports: list[dict[str, object]] = []
     for index, unit in enumerate(selected, start=1):
         try:
             report = comparator.compare(unit, target)
-        except (OSError, KeyError, TypeError, ValueError) as exc:
+        except (OSError, KeyError, IndexError, TypeError, ValueError, struct.error) as exc:
             report = {"unit": unit["name"], "result": "error", "error": str(exc)}
         reports.append(report)
         if not args.json:
@@ -176,6 +180,7 @@ def main() -> int:
 
     failures = [report for report in reports if report.get("result") != "exact"]
     payload = {
+        "schema_version": 2,
         "result": "exact" if not failures and len(reports) == len(selected) else "failed",
         "build": (
             "reused"
@@ -186,6 +191,15 @@ def main() -> int:
         "checked": len(reports),
         "exact": len(reports) - len(failures),
         "failures": failures,
+        "evidence_summary": {
+            "scope": "configured code, automatic literals and declared data contracts; not complete runtime/data closure",
+            "data_verified_units": sum(report.get("evidence", {}).get("data", {}).get("status") == "verified" for report in reports),
+            "data_partial_units": sum(report.get("evidence", {}).get("data", {}).get("status") == "partial" for report in reports),
+            "uncovered_initialized_references": sum(report.get("evidence", {}).get("data", {}).get("uncovered_count", 0) for report in reports),
+            "linkage_not_checked_units": sum(report.get("evidence", {}).get("linkage", {}).get("status") == "not_checked" for report in reports),
+            "next_commands": [["python3", "scripts/compare-function.py", report["unit"], "--json", "--details"]
+                              for report in reports if report.get("evidence", {}).get("data", {}).get("status") == "partial"][:12],
+        },
     }
     if args.json:
         print(json.dumps(payload, indent=2))

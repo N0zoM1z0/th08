@@ -57,6 +57,8 @@ def main() -> int:
         run("Test math callee validation", [sys.executable, "scripts/test-match-callees.py"])
         run("Test replay input binding validation", [sys.executable, "scripts/test-match-inputs.py"])
         run("Test local relocation validation", [sys.executable, "scripts/test-match-local-relocations.py"])
+        run("Test initialized-data and evidence oracles", [sys.executable, "scripts/test-match-data.py"])
+        run("Validate explicit data contracts", [sys.executable, "scripts/compare-data.py", "--validate-only"])
         run("Test replay trace comparison", [sys.executable, "scripts/test-replay-trace-comparison.py"])
         run("Test replay file validation", [sys.executable, "scripts/test-replay-file.py"])
         run("Test replay capture cleanup", [sys.executable, "scripts/test-replay-capture-cleanup.py"])

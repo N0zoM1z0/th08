@@ -9,6 +9,9 @@ For a first read, use the [documentation index](README.md) or
 starting writable reconstruction work; the question table routes individual
 read-only investigations as well.
 
+For code/data/linkage statuses, bounded JSON discovery, strict coverage exits,
+and data-contract repairs, follow [the exact evidence workflow](EXACT_EVIDENCE.md).
+
 ## Start every writable session
 
 ```bash

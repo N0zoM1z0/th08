@@ -1,4 +1,5 @@
 #include "th_pch.h"
+#include "i18n.hpp"
 
 #include "GameManager.hpp"
 #include "AnmManager.hpp"
@@ -757,7 +758,7 @@ void __fastcall GameManager::GameplaySetupThread(void *unused)
         {
             if (g_Supervisor.subthreadCloseRequestActive)
                 goto thread_done;
-            g_GameErrorContext.Log("error: player initialization failed\n");
+            g_GameErrorContext.Log(TH_ERR_GAME_PLAYER_INIT_FAILED);
             goto setup_error;
         }
 
@@ -862,7 +863,7 @@ void __fastcall GameManager::GameplaySetupThread(void *unused)
         {
             if (g_Supervisor.subthreadCloseRequestActive)
                 goto thread_done;
-            g_GameErrorContext.Log("error: player initialization failed\n");
+            g_GameErrorContext.Log(TH_ERR_GAME_PLAYER_INIT_FAILED);
             goto setup_error;
         }
     }
@@ -940,42 +941,42 @@ void __fastcall GameManager::GameplaySetupThread(void *unused)
     {
         if (g_Supervisor.subthreadCloseRequestActive)
             goto thread_done;
-        g_GameErrorContext.Log("error: background initialization failed\n");
+        g_GameErrorContext.Log(TH_ERR_GAME_BACKGROUND_INIT_FAILED);
         goto setup_error;
     }
     if (BulletManager::RegisterChain(const_cast<char *>("etama.anm")))
     {
         if (g_Supervisor.subthreadCloseRequestActive)
             goto thread_done;
-        g_GameErrorContext.Log("error: bullet initialization failed\n");
+        g_GameErrorContext.Log(TH_ERR_GAME_BULLET_INIT_FAILED);
         goto setup_error;
     }
     if (EnemyManager::RegisterChain())
     {
         if (g_Supervisor.subthreadCloseRequestActive)
             goto thread_done;
-        g_GameErrorContext.Log("error: enemy initialization failed\n");
+        g_GameErrorContext.Log(TH_ERR_GAME_ENEMY_INIT_FAILED);
         goto setup_error;
     }
     if (EffectManager::RegisterChain())
     {
         if (g_Supervisor.subthreadCloseRequestActive)
             goto thread_done;
-        g_GameErrorContext.Log("error: effect initialization failed\n");
+        g_GameErrorContext.Log(TH_ERR_GAME_EFFECT_INIT_FAILED);
         goto setup_error;
     }
     if (Gui::RegisterChain())
     {
         if (g_Supervisor.subthreadCloseRequestActive)
             goto thread_done;
-        g_GameErrorContext.Log("error: 2D initialization failed\n");
+        g_GameErrorContext.Log(TH_ERR_GAME_2D_INIT_FAILED);
         goto setup_error;
     }
     if (Spellcard::RegisterChain())
     {
         if (g_Supervisor.subthreadCloseRequestActive)
             goto thread_done;
-        g_GameErrorContext.Log("error: spell card initialization failed\n");
+        g_GameErrorContext.Log(TH_ERR_GAME_SPELL_INIT_FAILED);
         goto setup_error;
     }
 
@@ -1175,7 +1176,7 @@ i32 InitializeScoreData()
     scoreDat = ScoreDat::OpenScore("score.dat");
     if (scoreDat == NULL)
     {
-        g_GameErrorContext.Log("error : スコアファイルの作成に失敗しました\r\n");
+        g_GameErrorContext.Log(TH_ERR_GAME_SCORE_READ_FAILED);
         return ZUN_ERROR;
     }
 

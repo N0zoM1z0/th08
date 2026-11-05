@@ -49,7 +49,7 @@ void TitleScreen::FormatSpellCardInfo()
     if (this->currentScreenState == TitleCurrentScreenState_Init)
     {
         g_AnmManager->DrawTextLeft(&this->spellCardInfoVms[2], COLOR_TEXT_WHITE, 0,
-            "\x8E\xE6\x93\xBE\x90\x94/\x92\xA7\x90\xED\x90\x94[\x8D\xC5\x8D\x82\x93\x5F]\x81\x40%s\x81\x40\x91\x53\x8E\xE5\x90\x6C\x8C\x87\x8C\x76",
+            TH_TITLE_SPELL_CAPTURE_ALL_FORMAT,
             ResultScreen::GetCharacterName(g_GameManager.shotType));
     }
 
