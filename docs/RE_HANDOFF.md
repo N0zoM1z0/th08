@@ -61,6 +61,14 @@ PR #37: the initial PR #39 run reproduced container DNS/dependency failures
 on `ubuntu-latest` before compilation. Native cold replay and fresh normal/
 bugfix links pass; use PR #39's final checks for the packaging result.
 
+Portable integration imports the merged main PR #39 while preserving the
+existing native-layout, renderer and replay changes. Source, configuration and
+tool inputs agree with the original `57315aed` portable feature checkpoint;
+handoff documentation records the integration separately. Branch-specific
+cold/link and portable-build evidence is under
+`build/exact-evidence/integration-port/`. Portable state-transition/package CI
+retains its own scope alongside these exact comparisons.
+
 The remaining near match at `0x004526C0` and authored exact credit are unchanged.
 These build/comparison checks do not extend the published gameplay, image or
 audio gates below.
