@@ -50,6 +50,13 @@ tracking/progress checks and matching-skill validation pass. The modern Linux
 x86_64 build and ELF/native-global-ownership check also pass; the workspace is
 restored to a fresh normal VC7 product.
 
+Main integration is tracked in [PR #39](https://github.com/N0zoM1z0/th08/pull/39).
+It selects only the audit/tooling changes from the portable-based feature
+branch. Main's separate cold replay and native link evidence are retained under
+`build/exact-evidence/integration-main/`; Linux i386 packaging uses the PR's
+CI checks. The x86_64 build above belongs to the original portable feature
+checkpoint. Main retains its i386 Linux product and existing runtime history.
+
 The remaining near match at `0x004526C0` and authored exact credit are unchanged.
 These build/comparison checks do not extend the published gameplay, image or
 audio gates below.
