@@ -41,6 +41,7 @@ ledgers.
 | Pause/retry stage menus | [STAGE_MENU_MATCHING.md](STAGE_MENU_MATCHING.md) | Known draw/update family and probe ownership. |
 | GUI/title/replay source shapes | [Compiler-pattern corpus](BUILD_MATCHING.md#compiler-pattern-corpus), then the symbol or address | Includes switch-table extents, inline ownership, table dimensionality, and frame-shape cases. |
 | Independent TH08 reference comparison | [Cirno-Labs audit](CIRNO_REFERENCE_AUDIT.md) | Pinned inventory crosswalk, replay data repair, discarded-expression controls, and reviewed source/readability differences. |
+| Code, initialized-data and final-link evidence scopes | [Exact evidence workflow](EXACT_EVIDENCE.md) | Reviewed data contracts, automatic literal checks, structured findings, coverage gaps and oracle mutation tests; issue #38. |
 | Function boundaries, COFF aux extents, relocations | [Object comparison](BUILD_MATCHING.md#object-comparison) | Search for `compare_size`, `COMDAT`, `REL32`, or `DIR32`. |
 | Relocated VC7 floating literals | [BUILD_MATCHING.md](BUILD_MATCHING.md), [scripts/match_literals.py](../scripts/match_literals.py) | Every `__real@...` symbol is decoded and target-checked; `data_hex` records reviewed high-risk values explicitly. |
 | Generic VC7 declaration/branch/local patterns | [VC7_ZUN_PATTERNS.md](VC7_ZUN_PATTERNS.md) | Search this before creating expression or `#pragma var_order` matrices. |

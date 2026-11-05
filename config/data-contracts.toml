@@ -1,0 +1,39 @@
+schema_version = 1
+target_sha256 = "330fbdbf58a710829d65277b4f312cfbb38d5448b3df523e79350b879213d924"
+
+[[contracts]]
+name = "last-spell-count"
+kind = "bytes"
+object = "build/SpellCard.obj"
+symbol = "?g_LastSpellCount@th08@@3HA"
+target_address = 0x004C6C3C
+size = 4
+data_hex = "2b000000"
+evidence = "Observed target scalar and native owner audit; docs/OWNER_AUDIT.md."
+
+[[contracts]]
+name = "gui-stage-clear-bonuses"
+kind = "bytes"
+object = "build/Gui.obj"
+symbol = "?g_GuiStageClearBonuses@th08@@3PAHA"
+target_address = 0x004C7158
+size = 36
+data_hex = "40420f0060e3160080841e00a0252600a0252600c0c62d0000093d00808d5b00a09f6500"
+evidence = "Observed nine-dword target table and native owner audit; docs/OWNER_AUDIT.md."
+
+[[contracts]]
+name = "replay-difficulty-labels"
+kind = "pointer_array"
+object = "build/ReplayManager.obj"
+symbol = "?g_ReplayDifficultyList@?A0xb3f6a42d@th08@@3PAPBDA"
+target_address = 0x004C7F30
+size = 24
+evidence = "Observed six target pointers and terminated strings; docs/CIRNO_REFERENCE_AUDIT.md."
+entries = [
+    { kind = "cstring", target = 0x004B704C, data_hex = "4561737900", symbol = "??_C@_04ICBOFLAL@Easy?$AA@", addend = 0 },
+    { kind = "cstring", target = 0x004B7044, data_hex = "4e6f726d616c00", symbol = "??_C@_06EFAGIKOH@Normal?$AA@", addend = 0 },
+    { kind = "cstring", target = 0x004B703C, data_hex = "4861726400", symbol = "??_C@_04IECAJJJB@Hard?$AA@", addend = 0 },
+    { kind = "cstring", target = 0x004B7034, data_hex = "4c756e6174696300", symbol = "??_C@_07CBJIMHGP@Lunatic?$AA@", addend = 0 },
+    { kind = "cstring", target = 0x004B702C, data_hex = "457874726100", symbol = "??_C@_05BHMELPJO@Extra?$AA@", addend = 0 },
+    { kind = "cstring", target = 0x004B7020, data_hex = "4c617374576f726400", symbol = "??_C@_08MPLANIBF@LastWord?$AA@", addend = 0 },
+]

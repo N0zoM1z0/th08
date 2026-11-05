@@ -23,6 +23,37 @@ The native VC7 `normal` build serves exact comparisons; `bugfix` serves runtime
 testing. The Windows i386 prerequisite is complete. Modern Windows packaging
 and macOS runtime work have their own platform guides.
 
+## Exact-evidence tooling checkpoint
+
+[Issue #38](https://github.com/N0zoM1z0/th08/issues/38) records the independent
+decomp-tools/oracle analysis and implementation on `feat/exact-evidence`.
+Follow [EXACT_EVIDENCE.md](EXACT_EVIDENCE.md) before accepting a comparison:
+schema-versioned output separates code, initialized-data and final-link scopes,
+with bounded discovery, stable findings and next commands. Automatic compiler
+literal checks supplement three reviewed data contracts shared by COFF and
+linked-PE verification. Uncovered initializers stay partial; no table extent
+is inferred and no unresolved instruction field is masked.
+
+The stronger literal check exposed 11 previously code-exact units with
+incorrect source strings. Target-backed repairs cover 43 literal addresses and
+47 relocation sites, including native encoding, HUD formats, error messages
+and score-dump spacing/newlines. The cold accepted-ledger replay passes all
+1,106 units; 1,011 have verified direct initialized-data coverage and 95 remain
+partial (210 grouped dependency observations, not a whole-program closure).
+All linkage scopes in that COFF-only batch remain unchecked. A fresh normal
+link separately passes `SaveReplay @ 0x004531F0` with required data and linkage;
+normal and bugfix products pass all three data contracts and the retained
+owner/data/callee verifier. The old missing-label COFF and pre-repair linked
+image both fail the new contract as expected. Evidence is under
+`build/exact-evidence/`. All 27 new public data/evidence tests, repository CI,
+tracking/progress checks and matching-skill validation pass. The modern Linux
+x86_64 build and ELF/native-global-ownership check also pass; the workspace is
+restored to a fresh normal VC7 product.
+
+The remaining near match at `0x004526C0` and authored exact credit are unchanged.
+These build/comparison checks do not extend the published gameplay, image or
+audio gates below.
+
 ## Completed replay validation
 
 The native VC7, Linux x86_64, and Linux i386 products each pass all 108 credited

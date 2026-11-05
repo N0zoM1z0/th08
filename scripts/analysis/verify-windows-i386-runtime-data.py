@@ -27,15 +27,12 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "scripts"))
 
 from pe_image import PEImage  # noqa: E402
+from match_data import check as check_data_contract, load_contracts  # noqa: E402
 
 
 EFFECT_TEMPLATES_VA = 0x004C6D30
 EFFECT_TEMPLATE_COUNT = 66
-LAST_SPELL_COUNT_VA = 0x004C6C3C
-GUI_STAGE_CLEAR_BONUSES_VA = 0x004C7158
 GUI_MESSAGE_TEXT_COLORS_VA = 0x004C7180
-REPLAY_DIFFICULTY_NAMES_VA = 0x004C7F30
-REPLAY_DIFFICULTY_NAMES = ("Easy", "Normal", "Hard", "Lunatic", "Extra", "LastWord")
 GUI_COPY_ENEMY_NAME_TEXTURE_VA = 0x00437F5C
 GUI_COPY_ENEMY_NAME_TEXTURE_SIZE = 0xEA
 GUI_FRONT_ANM_OFFSET = 0x0C
@@ -220,27 +217,14 @@ def verify_plain_data(
         )
 
 
-def verify_replay_difficulty_names(
+def verify_reviewed_data_contracts(
     target: PEImage, rebuild: PEImage, publics: dict[str, set[int]]
 ) -> None:
-    """Follow all six pointers; matching SaveReplay does not attest this data."""
-    rebuilt_va = public_va(publics, "g_ReplayDifficultyList")
-    for label, image, table_va in (
-        ("target", target, REPLAY_DIFFICULTY_NAMES_VA),
-        ("rebuild", rebuild, rebuilt_va),
-    ):
-        pointers = struct.unpack("<6I", read_va(image, table_va, 6 * 4))
-        for index, (pointer, expected) in enumerate(zip(pointers, REPLAY_DIFFICULTY_NAMES)):
-            try:
-                actual = image.c_string_at_rva(pointer - image.image_base)
-            except ValueError as exc:
-                raise ValueError(
-                    f"{label} replay difficulty name {index} has invalid pointer {pointer:#010x}"
-                ) from exc
-            if actual != expected:
-                raise ValueError(
-                    f"{label} replay difficulty name {index}: expected {expected!r}, got {actual!r}"
-                )
+    """Use the same explicit contracts as focused COFF comparison."""
+    for contract in load_contracts():
+        report = check_data_contract(contract, target, linked=(rebuild, publics))
+        if report["result"] != "verified":
+            raise ValueError(f"{contract['name']}: {report['findings']}")
 
 
 def verify_gui_enemy_name_owner(
@@ -744,19 +728,8 @@ def main() -> int:
                 + "\n  ".join(candidates)
             )
 
-        verify_plain_data(
-            target, rebuild, publics, LAST_SPELL_COUNT_VA, "g_LastSpellCount", 4
-        )
+        verify_reviewed_data_contracts(target, rebuild, publics)
         verify_effect_templates(target, rebuild, publics)
-        verify_replay_difficulty_names(target, rebuild, publics)
-        verify_plain_data(
-            target,
-            rebuild,
-            publics,
-            GUI_STAGE_CLEAR_BONUSES_VA,
-            "g_GuiStageClearBonuses",
-            9 * 4,
-        )
         verify_plain_data(
             target,
             rebuild,

@@ -686,7 +686,7 @@ i32 Supervisor::CheckFps()
 
         if (average > 160.0f)
         {
-            g_GameErrorContext.Log("\x90\x82\x92\xBC\x93\xAF\x8A\xFA\x82\xAA\x8E\xE6\x82\xEA\x82\xC4\x82\xC8\x82\xA2\x82\xA9\x81\x41\x83\x8A\x83\x74\x83\x8C\x83\x62\x83\x56\x83\x85\x83\x8C\x81\x5B\x83\x67\x82\xAA\x8D\x82\x82\xB7\x82\xAC\x82\xDC\x82\xB7\x81\x42\r\n");
+            g_GameErrorContext.Log(TH_ERR_VSYNC_REFRESH_RATE);
             g_GameErrorContext.Log("\x8B\xAD\x90\xA7\x82\x55\x82\x4F\x83\x74\x83\x8C\x81\x5B\x83\x80\x83\x82\x81\x5B\x83\x68\x82\xC5\x93\xAE\x8D\xEC\x82\xB5\x82\xDC\x82\xB7\r\n");
             g_Supervisor.disableVsync = true;
             return -2;
@@ -694,7 +694,7 @@ i32 Supervisor::CheckFps()
 
         if (average >= 65.0f)
         {
-            g_GameErrorContext.Log("\x90\x82\x92\xBC\x93\xAF\x8A\xFA\x82\xAA\x8E\xE6\x82\xEA\x82\xC4\x82\xC8\x82\xA2\x82\xA9\x81\x41\x83\x8A\x83\x74\x83\x8C\x83\x62\x83\x56\x83\x85\x83\x8C\x81\x5B\x83\x67\x82\xAA\x8D\x82\x82\xB7\x82\xAC\x82\xDC\x82\xB7\x81\x42\r\n");
+            g_GameErrorContext.Log(TH_ERR_VSYNC_REFRESH_RATE_WITH_PERIOD);
             g_GameErrorContext.Log("\x8B\xAD\x90\xA7\x82\x55\x82\x4F\x83\x74\x83\x8C\x81\x5B\x83\x80\x83\x82\x81\x5B\x83\x68\x82\xC5\x93\xAE\x8D\xEC\x82\xB5\x82\xDC\x82\xB7\r\n");
             g_Supervisor.disableVsync = true;
             return -2;
@@ -903,7 +903,7 @@ ZunResult Supervisor::SetupDInput()
     if (DirectInput8Create(instance, DIRECTINPUT_VERSION, IID_IDirectInput8A, (void **)&this->dInputIface, NULL) < 0)
     {
         this->dInputIface = NULL;
-        g_GameErrorContext.Log("DirectInput create error\r\n");
+        g_GameErrorContext.Log(TH_ERR_INPUT_CREATE_FAILED);
         return ZUN_ERROR;
     }
 
@@ -914,7 +914,7 @@ ZunResult Supervisor::SetupDInput()
             this->dInputIface->Release();
             this->dInputIface = NULL;
         }
-        g_GameErrorContext.Log("DirectInput create error\r\n");
+        g_GameErrorContext.Log(TH_ERR_INPUT_CREATE_FAILED);
         return ZUN_ERROR;
     }
 
@@ -930,7 +930,7 @@ ZunResult Supervisor::SetupDInput()
             this->dInputIface->Release();
             this->dInputIface = NULL;
         }
-        g_GameErrorContext.Log("keyboard data format error\r\n");
+        g_GameErrorContext.Log(TH_ERR_INPUT_DATA_FORMAT_FAILED);
         return ZUN_ERROR;
     }
 
@@ -946,12 +946,12 @@ ZunResult Supervisor::SetupDInput()
             this->dInputIface->Release();
             this->dInputIface = NULL;
         }
-        g_GameErrorContext.Log("keyboard cooperative level error\r\n");
+        g_GameErrorContext.Log(TH_ERR_INPUT_COOPERATIVE_LEVEL_FAILED);
         return ZUN_ERROR;
     }
 
     this->keyboard->Acquire();
-    g_GameErrorContext.Log("KeyBoard OK\r\n");
+    g_GameErrorContext.Log(TH_DBG_INPUT_READY);
     this->dInputIface->EnumDevices(4, Supervisor::EnumGameControllersCb, NULL, DIEDFL_ATTACHEDONLY);
 
     if (this->controller != NULL)
@@ -961,7 +961,7 @@ ZunResult Supervisor::SetupDInput()
         g_Supervisor.controllerCaps.dwSize = sizeof(DIDEVCAPS);
         this->controller->GetCapabilities(&g_Supervisor.controllerCaps);
         this->controller->EnumObjects(Supervisor::ControllerCallback, NULL, NULL);
-        g_GameErrorContext.Log("JoyStick OK\r\n");
+        g_GameErrorContext.Log(TH_DBG_INPUT_PAD_FOUND);
     }
 
     return ZUN_SUCCESS;
@@ -1273,8 +1273,8 @@ ZunBool Supervisor::TakeSnapshot(const char *filePath)
     switch (this->presentParameters.BackBufferFormat)
     {
     case D3DFMT_R5G6B5:
-        utils::GuiDebugPrint("16bit は取り込めない\r\n");
-        g_GameErrorContext.Log("16bit は取り込めない\r\n");
+        utils::GuiDebugPrint(TH_ERR_SNAPSHOT_COLOR_MODE);
+        g_GameErrorContext.Log(TH_ERR_SNAPSHOT_COLOR_MODE);
         goto cleanup;
 
     case D3DFMT_X8R8G8B8:
@@ -1282,7 +1282,7 @@ ZunBool Supervisor::TakeSnapshot(const char *filePath)
         infoHeader = (BITMAPINFOHEADER *)malloc(allocSize);
         if (infoHeader == NULL)
         {
-            g_GameErrorContext.Log("snapShotScreen : 確保しくり\r\n");
+            g_GameErrorContext.Log(TH_ERR_SNAPSHOT_ALLOCATION);
             goto cleanup;
         }
         memset(infoHeader, 0, 0x2C);
@@ -1290,7 +1290,7 @@ ZunBool Supervisor::TakeSnapshot(const char *filePath)
         pixels = (u8 *)malloc(widthBytes * 0x1E0);
         if (pixels == NULL)
         {
-            g_GameErrorContext.Log("snapShotScreen : 確保しくり\r\n");
+            g_GameErrorContext.Log(TH_ERR_SNAPSHOT_ALLOCATION);
             goto cleanup;
         }
         fileHeader.size += widthBytes * 0x1E0;

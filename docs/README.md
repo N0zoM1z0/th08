@@ -43,6 +43,7 @@ The [conceptual guide](PROJECT_GUIDE.md) is available for orientation.
 | --- | --- |
 | How do I build and compare one function? | [Build and exact matching](BUILD_MATCHING.md#object-comparison) |
 | What does an accepted result prove? | [Acceptance language](RE_WORKFLOW.md#acceptance-language), [acceptance rules](BUILD_MATCHING.md#acceptance-rules) |
+| How do I verify referenced data and final linkage? | [Exact evidence and agent workflow](EXACT_EVIDENCE.md) |
 | Which command answers my question? | [Tool recipes](TOOLS.md#choose-the-command-by-question) |
 | How do names and types get accepted? | [Semantic reconstruction policy](SEMANTIC_RECONSTRUCTION.md) |
 | How do I reproduce the native Windows prerequisite? | [Windows i386 runtime procedure](WINDOWS_I386_RUNTIME.md) |

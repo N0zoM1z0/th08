@@ -1,4 +1,5 @@
 #include "th_pch.h"
+#include "i18n.hpp"
 
 #include "AnmManager.hpp"
 #include "Background.hpp"
@@ -1079,7 +1080,7 @@ ZunResult Background::LoadStageData(const char *path)
         this->stageData = reinterpret_cast<RawStageHeader *>(FileSystem::OpenFile(path, NULL, 0));
         if (this->stageData == NULL)
         {
-            g_GameErrorContext.Log("ステージデータが見つかりません。データが壊れています\r\n");
+            g_GameErrorContext.Log(TH_ERR_STAGE_DATA_CORRUPTED);
             return ZUN_ERROR;
         }
     }

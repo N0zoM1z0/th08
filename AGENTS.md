@@ -34,6 +34,10 @@ analyze or substitute a localized, patched, trial, or earlier executable.
   `config/reccmp-functions.csv` is a mapping, not a matching claim.
 - Only a reproducible reccmp/objdiff result against the exact target may support
   an exact-match claim. Do not invent or manually transcribe progress numbers.
+- Read the code, data and linkage scopes in comparator output before extending
+  an exact claim. Follow `docs/EXACT_EVIDENCE.md`: declared data failures are
+  failures, uncovered initializers are not passes, and final linkage requires
+  the paired rebuilt PE/map. Never mask a gap or infer a table extent to clear it.
 
 ## Analysis database safety
 
