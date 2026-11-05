@@ -115,6 +115,20 @@ reconstruction, resume the authored near match or one bounded whole-link/library
 dependency. The ANM semantic queue keeps opcodes 25, 31, and 88 neutral until
 complete TH08 consumer evidence supports a shared-layout rename.
 
+The [Cirno-Labs reference audit](CIRNO_REFERENCE_AUDIT.md) on
+`audit/cirno-reference` pins reference commit `b8a68cf` under
+`_reference/cirno-th08/`. It restores the target's sixth replay difficulty label
+and extends the native linked-data verifier to follow all six strings. The
+repaired source retains all 1,106 accepted units after a cold build; normal
+and bugfix links pass the extended owner/data/callee checks. Function inventory
+starts and extents agree across both repositories. The remaining callback at
+`0x004526C0` now has a configured, unaccepted diagnostic unit. Isolated empty-if
+and release-assert controls explain its register phase, but the original
+discarded source construct and its purpose remain unknown. Both controls are
+removed; do not accept a placeholder assertion or empty branch as recovery.
+Generated evidence is under `build/cirno-audit/`. This data repair does not
+extend the existing replay/runtime gate claims.
+
 <a id="documentation-batch-for-local-review"></a>
 
 The completed human/agent documentation batch and earlier repair investigations

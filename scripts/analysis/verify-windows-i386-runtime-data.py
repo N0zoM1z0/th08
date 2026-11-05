@@ -3,8 +3,9 @@
 
 This is a whole-link runtime prerequisite check, not an authored-function
 comparison and not a source of exact-match credit.  It verifies the canonical
-Japanese TH08 1.00d target, then checks that the rebuilt PE owns the four data
-families recovered during native Windows playtesting, selects the correct
+Japanese TH08 1.00d target, then checks that the rebuilt PE owns the data
+families recovered during native Windows playtesting and the replay-label
+audit, selects the correct
 aggregate fields in the enemy-name and spell-background paths, and calls the
 correct GUI predicate from the Background draw gates.  Function pointers in
 the Effect table are compared through linker-map symbols instead of preferred
@@ -33,6 +34,8 @@ EFFECT_TEMPLATE_COUNT = 66
 LAST_SPELL_COUNT_VA = 0x004C6C3C
 GUI_STAGE_CLEAR_BONUSES_VA = 0x004C7158
 GUI_MESSAGE_TEXT_COLORS_VA = 0x004C7180
+REPLAY_DIFFICULTY_NAMES_VA = 0x004C7F30
+REPLAY_DIFFICULTY_NAMES = ("Easy", "Normal", "Hard", "Lunatic", "Extra", "LastWord")
 GUI_COPY_ENEMY_NAME_TEXTURE_VA = 0x00437F5C
 GUI_COPY_ENEMY_NAME_TEXTURE_SIZE = 0xEA
 GUI_FRONT_ANM_OFFSET = 0x0C
@@ -215,6 +218,29 @@ def verify_plain_data(
             f"{rebuild_name} differs from target {target_va:#010x} "
             f"({size:#x} bytes)"
         )
+
+
+def verify_replay_difficulty_names(
+    target: PEImage, rebuild: PEImage, publics: dict[str, set[int]]
+) -> None:
+    """Follow all six pointers; matching SaveReplay does not attest this data."""
+    rebuilt_va = public_va(publics, "g_ReplayDifficultyList")
+    for label, image, table_va in (
+        ("target", target, REPLAY_DIFFICULTY_NAMES_VA),
+        ("rebuild", rebuild, rebuilt_va),
+    ):
+        pointers = struct.unpack("<6I", read_va(image, table_va, 6 * 4))
+        for index, (pointer, expected) in enumerate(zip(pointers, REPLAY_DIFFICULTY_NAMES)):
+            try:
+                actual = image.c_string_at_rva(pointer - image.image_base)
+            except ValueError as exc:
+                raise ValueError(
+                    f"{label} replay difficulty name {index} has invalid pointer {pointer:#010x}"
+                ) from exc
+            if actual != expected:
+                raise ValueError(
+                    f"{label} replay difficulty name {index}: expected {expected!r}, got {actual!r}"
+                )
 
 
 def verify_gui_enemy_name_owner(
@@ -722,6 +748,7 @@ def main() -> int:
             target, rebuild, publics, LAST_SPELL_COUNT_VA, "g_LastSpellCount", 4
         )
         verify_effect_templates(target, rebuild, publics)
+        verify_replay_difficulty_names(target, rebuild, publics)
         verify_plain_data(
             target,
             rebuild,
@@ -755,8 +782,8 @@ def main() -> int:
 
     print(
         "Windows i386 runtime data OK: 0 raw-data zero-owner candidates; "
-        "Last Spell count, 66 Effect templates, 9 stage bonuses, and "
-        "12 dialogue palettes match the target; enemy-name copy selects "
+        "Last Spell count, 66 Effect templates, 9 stage bonuses, "
+        "12 dialogue palettes, and all 6 replay difficulty names match the target; enemy-name copy selects "
         "Gui::frontAnm in all 8 linked loads; spell backgrounds select "
         "EffectManager::stageEffectAnm; all 7 spell-background script writes and "
         "the spell-start read share Background::spellVmScriptBase; spellcard cleanup selects its registered "

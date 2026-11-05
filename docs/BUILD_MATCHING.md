@@ -742,6 +742,14 @@ The Player closure around `0x44AEC0`, `0x44D650`, and `0x451640` adds several us
   placement, and `#pragma var_order(unused)` all reproduce the same 0x16A
   object.  Do not repeat that syntax matrix; require a new source-shape or TU
   hypothesis that explains the allocator phase before probing again.
+  The [Cirno reference audit](CIRNO_REFERENCE_AUDIT.md#remaining-callback-register-phase-is-explained-source-is-not)
+  supplies a new discarded-expression hypothesis: an empty constant-false
+  conditional or a standard `NDEBUG` assertion between the input read and
+  cursor increment reproduces all target bytes and relocations. These are
+  experimental controls only. The original construct and validation contract
+  remain unknown, and neither control is present in accepted source. Use the
+  configured `replay-manager-playback-extended-input-and-fps` diagnostic unit
+  for subsequent evidence-backed work; it remains outside `matches.csv`.
 - `Gui::FUN_00437dc7 @ 0x437DC7` proves `GuiMsgVm +0x1568` is a one-byte state consumed by replay frame throttling. Promote the byte inside the real `GuiMsgVm` aggregate instead of hard-coding `g_Gui.impl + 0x1568`; the tiny helper is exact in the `/Os` Gui TU and gives later replay code a canonical owner.
 
 ### Gui added-callback: preserve table rank, branch-local validation, and real receiver owners
