@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
+# Resolve Wine through Factory while retaining repository-owned state.
+factory_repo_root=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)
+export PATH="$factory_repo_root/.tools/factory-bin:$PATH"
 
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
-# Allow overriding the wine binary used by providing the WINE environment
-# variable.
-WINE=${WINE:-wine}
 
 # Reconstruction tooling is command-line only.  Do not let Wine route compiler
 # or build invocations through WSLg/X11, and suppress the desktop integration
@@ -12,7 +12,7 @@ WINE=${WINE:-wine}
 unset DISPLAY WAYLAND_DISPLAY
 export WINEDLLOVERRIDES="winemenubuilder.exe=d;${WINEDLLOVERRIDES:-}"
 
-export WINEPREFIX=$HOME/.wineth08
+unset WINEPREFIX WINEARCH
 
 MAIN_DRIVE_PATH=$SCRIPT_DIR/prefix
 export WINEPATH="$SCRIPT_DIR;$WINEPATH"
@@ -21,4 +21,6 @@ export WINEPATH="$SCRIPT_DIR;$WINEPATH"
 export WINEDEBUG=-all
 #export LANG=ja_JP.UTF-8
 
-exec "$WINE" "$@" 2> >(grep -v "preloader: Warning: failed to reserve range 0000000000010000-0000000000110000" 1>&2)
+prefix_args=()
+if [[ -n "${TH08_WINEPREFIX:-}" ]]; then prefix_args=(--prefix "$TH08_WINEPREFIX"); fi
+exec "$factory_repo_root/scripts/shared_runtime.py" "${prefix_args[@]}" wine -- "$@" 2> >(grep -v "preloader: Warning: failed to reserve range 0000000000010000-0000000000110000" 1>&2)
