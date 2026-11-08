@@ -1,5 +1,11 @@
 # Tool selection and command recipes
 
+> Current workflow: follow the **Highest priority** section in `AGENTS.md`.
+> Prefer affected exact comparisons and useful Markdown knowledge. Ordinary
+> notes do not require full CI, native replay or document-hash/pin refreshes.
+> Older broad validation instructions apply only when their impact is relevant.
+
+
 Use this page to choose an entry point. Public scripts are named by outcome;
 build-internal generators are invoked by Ninja and normally should not be run
 by hand.
