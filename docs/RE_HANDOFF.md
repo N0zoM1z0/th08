@@ -1,177 +1,75 @@
 # Current reconstruction handoff
 
-Use this page for the current phase and next task. Detailed runtime results are
-in [Replay validation results](REPLAY_RESULTS.md); dated investigation notes
-are in [RE_HANDOFF_HISTORY.md](RE_HANDOFF_HISTORY.md).
+Follow the lightweight workflow in [AGENTS.md](../AGENTS.md). README and the
+[documentation index](README.md) remain the navigation entry points.
 
-## Current status
+## Branches and current work
 
-The target is the original Japanese TH08 1.00d executable, size 840,704 bytes,
-SHA-256 `330fbdbf58a710829d65277b4f312cfbb38d5448b3df523e79350b879213d924`.
+`main` carries the VC7 reconstruction and i386 port. `port/portable-64bit`
+adds native layouts and the Linux x86_64/AArch64 paths. The completed
+`semantic/readability-protocols` branch is already an ancestor of both;
+its source and useful findings are incorporated. Keep these branches and
+replay each branch's affected comparisons when moving source changes.
 
-Authored source covers 1,107 / 1,107 functions; the accepted exact ledger covers
-1,106 / 1,107. The sole authored near match remains
-`ReplayManager::PlaybackExtendedInputAndFps @ 0x004526C0`. Read live figures
-from the ledgers:
+This checkout follows `main`, with the exact reconstruction and i386 builds.
+The `.analysis/portable-perspective-rounding` worktree contains uncommitted
+billboard/transparent-quad tools and notes. Preserve that entire worktree and
+its inputs. Other experiment branches remain available through Git.
+
+Read live reconstruction state from the ledgers:
 
 ```bash
 python3 scripts/analysis/report-reconstruction-status.py --summary
 ```
 
-Whole-executable layout and target-linked library recovery remain in progress.
-The native VC7 `normal` build serves exact comparisons; `bugfix` serves runtime
-testing. The Windows i386 prerequisite is complete. Modern Windows packaging
-and macOS runtime work have their own platform guides.
+The only authored near match is
+`ReplayManager::PlaybackExtendedInputAndFps @ 0x004526C0`.
+The [reference investigation](CIRNO_REFERENCE_AUDIT.md#remaining-callback-register-phase-is-explained-source-is-not)
+explains its register phase, but the missing original source construct is
+unknown. Empty branches and placeholder assertions are rejected approaches.
+The diagnostic unit remains unaccepted.
 
-## Exact-evidence tooling checkpoint
+Whole-image layout and target-linked library work should start from a concrete
+link difference; see [WHOLE_IMAGE_RECONSTRUCTION.md](WHOLE_IMAGE_RECONSTRUCTION.md).
+Do not resume broad library scanning merely to increase coverage.
 
-[Issue #38](https://github.com/N0zoM1z0/th08/issues/38) records the independent
-decomp-tools/oracle analysis and implementation on `feat/exact-evidence`.
-Follow [EXACT_EVIDENCE.md](EXACT_EVIDENCE.md) before accepting a comparison:
-schema-versioned output separates code, initialized-data and final-link scopes,
-with bounded discovery, stable findings and next commands. Automatic compiler
-literal checks supplement three reviewed data contracts shared by COFF and
-linked-PE verification. Uncovered initializers stay partial; no table extent
-is inferred and no unresolved instruction field is masked.
+## Verified conclusions and open runtime work
 
-The stronger literal check exposed 11 previously code-exact units with
-incorrect source strings. Target-backed repairs cover 43 literal addresses and
-47 relocation sites, including native encoding, HUD formats, error messages
-and score-dump spacing/newlines. The cold accepted-ledger replay passes all
-1,106 units; 1,011 have verified direct initialized-data coverage and 95 remain
-partial (210 grouped dependency observations, not a whole-program closure).
-All linkage scopes in that COFF-only batch remain unchecked. A fresh normal
-link separately passes `SaveReplay @ 0x004531F0` with required data and linkage;
-normal and bugfix products pass all three data contracts and the retained
-owner/data/callee verifier. The old missing-label COFF and pre-repair linked
-image both fail the new contract as expected. Evidence is under
-`build/exact-evidence/`. All 27 new public data/evidence tests, repository CI,
-tracking/progress checks and matching-skill validation pass. The modern Linux
-x86_64 build and ELF/native-global-ownership check also pass; the workspace is
-restored to a fresh normal VC7 product.
+The [exact-evidence workflow](EXACT_EVIDENCE.md) checks complete owned code,
+relocations, compiler literals and declared data contracts. Read code, data
+and linkage scopes separately. The latest integration is main PR #39 and
+portable PR #40; it repaired target strings and added initialized-data checks.
+A COFF match with partial data or unchecked linkage keeps those limitations.
 
-Main integration is tracked in [PR #39](https://github.com/N0zoM1z0/th08/pull/39).
-It selects only the audit/tooling changes from the portable-based feature
-branch. Main's separate cold replay and native link evidence are retained under
-`build/exact-evidence/integration-main/`; Linux i386 packaging uses the PR's
-CI checks. The x86_64 build above belongs to the original portable feature
-checkpoint. Main retains its i386 Linux product and existing runtime history.
-The i386 packaging job uses the Ubuntu 24.04 runner already validated in
-PR #37: the initial PR #39 run reproduced container DNS/dependency failures
-on `ubuntu-latest` before compilation. Native cold replay and fresh normal/
-bugfix links pass; use PR #39's final checks for the packaging result.
+[Replay results](REPLAY_RESULTS.md) record the completed native, x86_64 and
+i386 corpus gates and their tested revisions. Later
+[native-layout repairs](https://github.com/N0zoM1z0/th08/blob/port/portable-64bit/docs/PORTABLE_LAYOUT_AUDIT.md) passed their narrower
+state-transition and replay checks. Those historical results do not establish
+that an arbitrary newly built product passed the full corpus.
 
-The remaining near match at `0x004526C0` and authored exact credit are unchanged.
-These build/comparison checks do not extend the published gameplay, image or
-audio gates below.
+Remaining work is the measured title/boundary sampling residual in
+[PORTABLE_LASER_VISUALS.md](https://github.com/N0zoM1z0/th08/blob/port/portable-64bit/docs/PORTABLE_LASER_VISUALS.md#remaining-sampling-and-title-error),
+the unconfirmed Stage 5 color observations, native
+[RT-007](RUNTIME_ISSUES.md#rt-007), AArch64 hardware gameplay and audio.
+ANM opcodes 25, 31 and 88 keep neutral names until all consumers support a
+shared-layout interpretation. Web work lives in the separate `th08-web` repo.
 
-## Completed replay validation
+## Build, checks and local state
 
-The native VC7, Linux x86_64, and Linux i386 products each pass all 108 credited
-recordings and 12,311,460 calculations. All 25 fields, recorded stage-end
-scores, natural replay exits, and published fingerprints agree with retail.
-The native gate used fresh cold builds and fresh paired captures. Both portable
-gates launched isolated processes and reused validated retail references.
-Retained-evidence verification also passes for all three products.
+Use [Factory tools](SHARED_TOOLS.md), the pinned VC7 compiler/SDK libraries
+under `scripts/prefix`, and this game's independent Wine prefix. The target
+identity is in `config/target.toml`; verify it before target-dependent work.
+`normal` is the exact-comparison build; `bugfix` is the native runtime build.
 
-The native changes are merged in
-[PR #26](https://github.com/N0zoM1z0/th08/pull/26). The portable branch includes
-those repairs through [PR #27](https://github.com/N0zoM1z0/th08/pull/27) and the
-renderer, precision, and replay-tooling changes through
-[PR #28](https://github.com/N0zoM1z0/th08/pull/28). Portable gameplay source
-checkpoint `af9cb1d3` retains all 1,106 accepted VC7 units after a cold build,
-with fresh normal/bugfix links and owner/data/callee checks.
+`python3 scripts/ci.py` checks the whole checkout's syntax, public ledgers,
+Ninja configurations and accidental private artifacts. It needs Python 3.11+
+and PyYAML, without the target or private compiler. Comparator and runtime tests
+are selected by the change; `--full` opts into the broad public suite.
+The Linux packaging workflow is manually dispatched when those products need
+validation. Documentation edits need diff review, not a compiler or replay.
 
-The native ordinary-paced, rasterized demo gate passes all three demos:
-16,080 frames and all 22 fields. Portable checks include four retail frames,
-four renderer contract groups, actual HOME screenshots in both display modes,
-six bounded replay/render windows, focused GDB controls, and sanitizer smoke
-and Stage 5 audits. The results page records each check's scope and artifacts.
-
-Use [REPLAY_TESTING.md](REPLAY_TESTING.md) for native reproduction and the
-[portable replay guide](https://github.com/N0zoM1z0/th08/blob/port/portable-64bit/docs/PORTABLE_REPLAY_TESTING.md)
-for Linux reproduction and `--verify-only`. Generated evidence stays under
-`build/`; credited recordings, provenance, and published expectations are
-committed.
-
-## Remaining runtime evidence
-
-Small portable pixel differences and nine unconfirmed Stage 5 color suspects
-remain in the
-[rendering report](https://github.com/N0zoM1z0/th08/blob/port/portable-64bit/docs/PORTABLE_RENDERING.md).
-The color observations are heuristic; same-frame review found no obvious
-anomaly in the initial sample. Native
-[RT-007](RUNTIME_ISSUES.md#rt-007) still needs the reported visual interaction
-repeated. Gameplay trace equality alone does not close that image-evidence task.
-
-AArch64 has cross-build and initialization evidence; hardware gameplay remains
-to be exercised. Replay tests ran muted, so audio output needs its own checks.
-Web work is deferred and lives in the separate `th08-web` repository.
-
-## Session and resource rules
-
-Start at [the documentation index](README.md#agent-session-route), check
-`git status`, and run the status command above. Before reconstruction changes,
-follow [AGENTS.md](../AGENTS.md), [ARCHITECTURE.md](ARCHITECTURE.md), and
-[RE_WORKFLOW.md](RE_WORKFLOW.md).
-
-Use one writable session, one bounded task, and serial captures/builds.
-Preserve tested binaries and their provenance before cold builds clear link
-outputs. Keep completed metadata, comparison reports, and compressed traces;
-remove owned temporary runtimes and compiler trees after their checks finish.
-A changed executable, observer, schema, assets, or playback profile requires a
-new replay output directory.
-
-## Next bounded work
-
-The native spell-background owner repair is prepared on
-`fix/native-spell-background-owner`, based on main checkpoint `4fe9ce61`.
-Canonical target observations show seven writes and one read at
-`Background + 0xB34 = 0x004E4B64`. Source and relocation entries now select
-that shared field. All three affected units and the full 1,106-unit cold
-comparison pass. Fresh normal and bugfix links pass the seven-write/one-read
-owner guard and the existing linked-data/callee checks.
-
-The independent worktree exposed VC7 anonymous-namespace names that change
-with source paths. The comparator now preserves complete decorated signatures
-while normalizing only the generated namespace discriminator; ambiguous
-matches are rejected. Both this worktree and the portable source checkpoint
-pass cold comparisons. A controlled two-path compiler probe confirms identical
-source and function bytes with different discriminators. The new bugfix product
-`9e699dd2c596acb090a5d44e9aa32b6c0bb19f0d5e11fe6a0babb0eb1469fd9b`
-passes five fresh paired Final A captures at clock rate 1 with rasterization
-and `csmt=0`. All raw laser/VM packets agree, and all five complete playfields
-are pixel-identical to retail. The 22,590-calculation diagnostic prefix agrees
-on all 25 fields. Its full native replay gate and separate retained-evidence
-verification now pass all 108 recordings and 12,311,460 calculations. All
-25 fields, published fingerprints, stage-end scores and replay completion
-boundaries agree with retail. Captures use clock rate 128, no rasterization,
-and the ptrace observer against validated retail references. Evidence is under
-`build/laser-native-20261014/main-full-state128/`; temporary runtimes and the
-owned Wine prefix are removed. Keep these products distinct from the earlier
-published binaries.
-
-For runtime work, select a concrete remaining visual or hardware scenario and
-retain the stage, route, recording, frame, and comparison evidence. For exact
-reconstruction, resume the authored near match or one bounded whole-link/library
-dependency. The ANM semantic queue keeps opcodes 25, 31, and 88 neutral until
-complete TH08 consumer evidence supports a shared-layout rename.
-
-The [Cirno-Labs reference audit](CIRNO_REFERENCE_AUDIT.md) on
-`audit/cirno-reference` pins reference commit `b8a68cf` under
-`_reference/cirno-th08/`. It restores the target's sixth replay difficulty label
-and extends the native linked-data verifier to follow all six strings. The
-repaired source retains all 1,106 accepted units after a cold build; normal
-and bugfix links pass the extended owner/data/callee checks. Function inventory
-starts and extents agree across both repositories. The remaining callback at
-`0x004526C0` now has a configured, unaccepted diagnostic unit. Isolated empty-if
-and release-assert controls explain its register phase, but the original
-discarded source construct and its purpose remain unknown. Both controls are
-removed; do not accept a placeholder assertion or empty branch as recovery.
-Generated evidence is under `build/cirno-audit/`. This data repair does not
-extend the existing replay/runtime gate claims.
-
-<a id="documentation-batch-for-local-review"></a>
-
-The completed human/agent documentation batch and earlier repair investigations
-are retained in the [handoff archive](RE_HANDOFF_HISTORY.md#native-replay-handoff--2026-10-11).
+Generated comparisons, traces, archives and trial builds are disposable after
+useful conclusions are recorded. Retain only a current input or an unresolved
+experiment whose compiler/runtime context is expensive to reproduce. Historical
+paths in older notes are not a reason to retain generated files. New probes
+use temporary outputs and must not replace canonical objects or receipts.

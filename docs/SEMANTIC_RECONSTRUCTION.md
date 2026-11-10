@@ -1,5 +1,11 @@
 # Semantic reconstruction
 
+> Current workflow: follow the **Highest priority** section in `AGENTS.md`.
+> Prefer affected exact comparisons and useful Markdown knowledge. Ordinary
+> notes do not require full CI, native replay or document-hash/pin refreshes.
+> Older broad validation instructions apply only when their impact is relevant.
+
+
 Semantic reconstruction replaces layout-shaped source—raw object offsets,
 anonymous storage, protocol numbers, and provisional identifiers—with
 evidence-backed C++ while preserving both the accepted VC7 bytes and playable

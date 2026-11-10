@@ -1,0 +1,156 @@
+#!/usr/bin/env python3
+"""Run the optional broad target-independent suite (ci.py --full).
+
+This entry point deliberately does not build or compare TH08: public CI lacks
+the copyrighted target and the pinned local VC7 environment.  Run
+``scripts/verify-target.py`` plus the normal/object builds locally for binary
+claims.
+"""
+
+from __future__ import annotations
+
+import argparse
+import os
+from pathlib import Path
+import subprocess
+import sys
+import tempfile
+
+
+ROOT = Path(__file__).resolve().parents[1]
+
+
+def tracked(pattern: str) -> list[str]:
+    result = subprocess.run(
+        ["git", "ls-files", "-z", pattern],
+        cwd=ROOT,
+        check=True,
+        stdout=subprocess.PIPE,
+    )
+    return [entry.decode() for entry in result.stdout.split(b"\0") if entry]
+
+
+def run(label: str, command: list[str]) -> None:
+    print(f"\n==> {label}", flush=True)
+    environment = os.environ.copy()
+    environment["PYTHONPYCACHEPREFIX"] = str(ROOT / "build" / "pycache")
+    subprocess.run(command, cwd=ROOT, check=True, env=environment)
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(
+        description=__doc__,
+        epilog="Example:\n  python3 scripts/ci.py --full",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+    )
+    parser.parse_args()
+
+    try:
+        python_files = tracked("scripts/*.py")
+        if not python_files:
+            raise RuntimeError("no tracked Python scripts found")
+        run("Compile tracked Python", [sys.executable, "-m", "py_compile", *python_files])
+        run(
+            "Test relocation literal validation",
+            [sys.executable, "scripts/test-match-literals.py"],
+        )
+        run("Test math callee validation", [sys.executable, "scripts/test-match-callees.py"])
+        run("Test replay input binding validation", [sys.executable, "scripts/test-match-inputs.py"])
+        run("Test local relocation validation", [sys.executable, "scripts/test-match-local-relocations.py"])
+        run("Test initialized-data and evidence oracles", [sys.executable, "scripts/test-match-data.py"])
+        run("Validate explicit data contracts", [sys.executable, "scripts/compare-data.py", "--validate-only"])
+        run("Test replay trace comparison", [sys.executable, "scripts/test-replay-trace-comparison.py"])
+        run("Test replay file validation", [sys.executable, "scripts/test-replay-file.py"])
+        run("Test replay capture cleanup", [sys.executable, "scripts/test-replay-capture-cleanup.py"])
+        run("Validate replay route coverage", [sys.executable, "scripts/validate-replay-fixtures.py"])
+        run(
+            "Test semantic protocol guards",
+            [sys.executable, "scripts/test-semantic-protocols.py"],
+        )
+
+        shell_files = tracked("scripts/*.sh")
+        shell_files.extend(
+            path
+            for path in ("scripts/create_th08_prefix", "scripts/wineth08")
+            if (ROOT / path).is_file()
+        )
+        if shell_files:
+            for path in sorted(set(shell_files)):
+                run("Check shell syntax", ["bash", "-n", path])
+
+        run(
+            "Validate static reconstruction ledgers",
+            [sys.executable, "scripts/validate-tracking.py", "--skip-target-bytes"],
+        )
+        run("Validate exact-match configuration", [sys.executable, "scripts/check-match-config.py"])
+        run("Validate library reconstruction ledgers", [sys.executable, "scripts/validate-library.py"])
+        run("Check generated progress", [sys.executable, "scripts/progress.py", "--check"])
+        run("Check generated library progress", [sys.executable, "scripts/library-progress.py", "--check"])
+        run("Check tracked documentation", [sys.executable, "scripts/check-docs.py"])
+        run(
+            "Smoke-test status reporting",
+            [
+                sys.executable,
+                "scripts/analysis/report-reconstruction-status.py",
+                "--summary",
+            ],
+        )
+        run(
+            "Smoke-test library missing-size routing",
+            [
+                sys.executable,
+                "scripts/analysis/report-reconstruction-status.py",
+                "--category",
+                "library",
+                "--state",
+                "missing-size",
+                "--sort",
+                "address",
+            ],
+        )
+        run(
+            "Smoke-test whole-image CLI routing",
+            [sys.executable, "scripts/compare-whole-image.py", "--help"],
+        )
+        run(
+            "Smoke-test import-provenance CLI routing",
+            [sys.executable, "scripts/analysis/report-import-provenance.py", "--help"],
+        )
+        run(
+            "Smoke-test TU partition candidate CLI routing",
+            [sys.executable, "scripts/analysis/report-tu-partition-candidates.py", "--help"],
+        )
+        run(
+            "Smoke-test semantic-debt CLI routing",
+            [sys.executable, "scripts/analysis/report-semantic-debt.py", "--help"],
+        )
+        run(
+            "Check semantic protocol readability",
+            [sys.executable, "scripts/check-semantic-protocols.py"],
+        )
+        with tempfile.TemporaryDirectory(prefix="th08-ci-icon-") as directory:
+            generated_icon = Path(directory) / "icon.ico"
+            run(
+                "Smoke-test deterministic resource icon generation",
+                [
+                    sys.executable,
+                    "scripts/prepare-icon.py",
+                    "resources/placeholder.ico",
+                    str(generated_icon),
+                ],
+            )
+            if generated_icon.stat().st_size != 3262:
+                raise RuntimeError(
+                    "prepared 32x32 24-bit icon has unexpected size: "
+                    f"{generated_icon.stat().st_size}"
+                )
+        run("Check whitespace", ["git", "diff", "--check"])
+    except (OSError, RuntimeError, subprocess.CalledProcessError) as exc:
+        print(f"error: CI validation failed: {exc}", file=sys.stderr)
+        return 1
+    print("\nTH08 target-independent CI checks passed")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
