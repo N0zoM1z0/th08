@@ -238,19 +238,12 @@ those files against committed checkpoint `af9cb1d3`, using the repository's
 checkout line endings. The artifact hashes above identify the binaries actually
 exercised.
 
-### Local evidence and resources
+### Reproduction environment
 
-These are maintainer-local generated directories; the procedures above regenerate
-the evidence. Original game assets and generated reports are kept outside Git.
-
-| Evidence | Location under `build/` |
-| --- | --- |
-| Fresh retail/native pairs and archived executable/map | `replay-cold-20261011/matrix/`, `replay-cold-20261011/candidate/` |
-| Ordinary-paced native demos | `replay-cold-20261011/demos/` |
-| Linux x86_64 full suite and binary provenance | `portable-state-20261012/matrix-final/`, `portable-state-20261012/final-x86_64-candidate/` |
-| Linux i386 full suite and binary provenance | `portable-state-20261012/i386-matrix-fpu/`, `portable-state-20261012/fpu-i386-candidate/` |
-| Comparator revalidation and memory measurements | `portable-state-20261012/streaming-comparison/` |
-| Render repairs and subsequent frame regression | `portable-render-fix-20261012/`, `portable-state-20261012/polar-rendering-regression/` |
+The commands above regenerate the comparisons from the committed corpus and
+expectations. Completed captures and archived products are disposable; record
+a tested source revision, compiler/profile and relevant result before removing
+them. Original game assets remain private inputs.
 
 The portable runs used an x86_64 WSL2 Linux host, Xvfb, and Mesa llvmpipe.
 The x86_64 candidate used Ubuntu GCC 8.4.0; the i386 candidate used Debian
@@ -258,9 +251,9 @@ GCC 12.2.0 in the pinned multilib container. Native captures used Wine 9.0.
 The retained i386 provenance originally labeled its compiler as GCC 8.4.0.
 Its build log and ELF `.comment` identify GCC 12.2.0; a local correction
 addendum preserves the original record and both evidence hashes.
-Per-capture metadata preserves host, backend, source, hashes, and playback
-settings. Retain that metadata, `complete.json`, `comparison.json`, `suite.json`,
-compressed rows, the candidate, and build provenance for an independent audit.
+Per-capture metadata records host, backend, source, hashes and playback
+settings. Keep a capture while diagnosing an unresolved difference or sharing
+a specific result; routine successes need only a short useful conclusion.
 
 | Portable operation | Elapsed time on this host | Peak resident memory |
 | --- | --- | ---: |
@@ -273,7 +266,7 @@ Trace comparison streams rows. On the 126,803-calculation `easy-1-b` pair,
 its peak memory fell from 227 MiB to 17.5 MiB, with identical comparison output.
 Equal compressed traces share storage only after their decompressed bytes
 have been checked. Temporary runtimes, owned Wine prefixes, and completed
-compiler trees were removed; tested binaries and useful evidence were retained.
+compiler trees were removed; useful conclusions were recorded.
 
 ## Scope of the conclusion
 

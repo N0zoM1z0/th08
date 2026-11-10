@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run the target-independent validation suite used by GitHub Actions.
+"""Run the optional broad target-independent suite (ci.py --full).
 
 This entry point deliberately does not build or compare TH08: public CI lacks
 the copyrighted target and the pinned local VC7 environment.  Run
@@ -40,7 +40,7 @@ def run(label: str, command: list[str]) -> None:
 def main() -> int:
     parser = argparse.ArgumentParser(
         description=__doc__,
-        epilog="Example:\n  python3 scripts/ci.py",
+        epilog="Example:\n  python3 scripts/ci.py --full",
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
     parser.parse_args()
@@ -106,7 +106,8 @@ def main() -> int:
             if (ROOT / path).is_file()
         )
         if shell_files:
-            run("Check shell syntax", ["bash", "-n", *sorted(set(shell_files))])
+            for path in sorted(set(shell_files)):
+                run("Check shell syntax", ["bash", "-n", path])
 
         run(
             "Validate static reconstruction ledgers",

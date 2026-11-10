@@ -70,7 +70,6 @@ fullscreen mismatch observed under Xvfb.
 
 The 2026-10-12 checkpoint uses source `59e239b4` and portable executable SHA-256
 `cc5e11da46bbdcb237d1b9218992432787aa085db78253112084f01bbcee5d07`.
-Local evidence is in `build/background-perspective-20261012/`.
 This initial checkpoint used the cosmetic boss-name copy bypass. The later
 runtime review also exercises the normal copy path.
 
@@ -92,8 +91,7 @@ At frame 6,166:
 
 The earlier native VC7 comparison at this same frame has zero differing
 playfield pixels against retail. Its fresh 6,166-calculation prefix agrees on
-all 25 recorded fields. That evidence is in
-`build/replay-stage5-screenshot-20261012/`; the broader native replay gate is
+all 25 recorded fields. The broader native replay gate is
 documented in [REPLAY_TESTING.md](REPLAY_TESTING.md).
 
 ## Cause

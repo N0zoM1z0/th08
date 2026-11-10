@@ -40,3 +40,13 @@ recorded game-specific prefix/profile.
 Read-only source access to other registered games remains available through
 Factory for cross-reference. Shared tools do not grant writes to their mutable
 state. Ordinary analysis and source browsing do not require a full replay.
+
+The local compiler is VC7 (.NET 2002); Factory's v141 installation cannot
+replace it. Retain its compiler, headers, libraries and runtime DLLs, plus the
+DX8 include/lib directories and command-line Python/Ninja. SDK samples,
+documentation, development/redist installers and Python's test/IDLE/Tcl trees
+are unnecessary for this build. Removing them preserved a fresh PCH build,
+all 16 ScreenEffect units (complete extents and 167 relocations), icon/resource
+processing, and a linked static-CRT/D3DX8 program running under this game's
+Wine prefix. These checks do not cover SDK GUI tools or the full game runtime.
+Installation download caches can be recreated by `create_devenv.py`.

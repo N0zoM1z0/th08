@@ -154,8 +154,7 @@ The fresh AddressSanitizer artifact passes a 60-second title/demo smoke and a
 these bounded runs. The launcher rejects sanitizer reports and nonzero GDB
 inferior exits, including zero-prefixed exit codes.
 
-Local evidence is in `build/portable-render-fix-20261012/`. The ordinary portable
-executable SHA-256 is
+The tested portable executable SHA-256 was
 `a58ae75e570ad7bb650206a768284592b49ef0249d5bd39248553d987f28dc81`.
 The source changes are confined to the Linux platform backend; target-facing
 reconstruction source, layouts, and mapping ledgers retain the preceding native

@@ -1,8 +1,6 @@
 name: Portable Linux build
 
 on:
-  push:
-  pull_request:
   workflow_dispatch:
     inputs:
       i386_only:

@@ -55,40 +55,22 @@ container, retaining JSON reports. GDB is a build/test dependency in that
 container and is not added to the game package. The original diagnostic below
 remains a reproducer for the unfixed baseline.
 
-The fixed products and hashes are retained under
-`build/portable-layout-repair/products/`:
-
-- `th08-x64`: `0d63babba5fa06a60a7f39a64bc8a9ca94404abfd2c5d8c8373084baa148f286`.
-- `th08-i386`: `e8d46580f16ea302b7be79c396f8162f6d67f6fc937a1252b05a2421ee85918f`.
-- `th08-vc7-normal.exe`: `4aeba158d49dc69681490cd2470beda9463714623f3d865a695df81dec9492be`.
-- `th08-vc7-bugfix.exe`: `e70ac948797a70db901d825d65545ef2a0d02c32b9331137f66f41d2ceefe316`.
-
-`build-provenance.json` pins the 133 production inputs, both compiler profiles,
-the i386 image/package versions and the products. `validation-summary.json`,
-`before-after.json`, `fixed-transitions-*.json`, `all-exact.json` and the two
-`replays-*/` directories retain comparison/state/replay evidence. Only the five
-expected production source files differ from the old control. The CMake
-compiler trees are disposable; the copied products are independent of them.
-
-Recheck fixed postconditions with:
+Reproduce the repaired state-transition checks with a fresh product:
 
 ```bash
+scripts/build-portable-linux.sh x86_64
 python3 scripts/test-portable-layout.py \
-  --candidate build/portable-layout-repair/products/th08-x64
-python3 scripts/test-portable-layout.py \
-  --candidate build/review-pr34/products/candidate-x86_64 --expect-baseline
+  --candidate build/portable-linux-x86_64/th08-modern
 ```
 
-For the exact i386 dependency environment, run the first command with
-`th08-i386` inside the retained `th08-layout-repair-linux32` image, mounting the
-repository at its identical absolute path. The committed CI workflow shows
-the equivalent command using its ordinary `/src` mount. Its GDB checks were
-also verified with the container's default security policy.
+To repeat the negative control, build baseline `27adcb61` in an isolated
+worktree and pass that product with `--expect-baseline`. The manual Linux
+workflow contains the corresponding i386 container build and GDB checks.
 
 ## Confirmed findings
 
 These are runtime objects, not serialized wire records. The sizes below are
-observed in the retained GCC 8.4.0 x86_64 Debug product.
+observed in the tested GCC 8.4.0 x86_64 Debug product.
 
 | Family and source | i386 constant | x86_64 layout | Reproduction |
 | --- | --- | --- | --- |
@@ -203,12 +185,8 @@ tests were not run for this read-only audit.
 
 ## Reproduction and provenance
 
-The retained product is
-`build/review-pr34/products/candidate-x86_64`, SHA-256
+The audit used baseline `27adcb61`; the tested product SHA-256 was
 `65e497660ae951e28d430c63a6eed87eb45d7d9dedbb49ebc50bb3a21e59ec0f`.
-All 133 recorded production source/build inputs agree with the audited tree.
-Private inventories, target disassembly, six diagnostic records, product/input
-provenance and focused comparison JSON are under `build/portable-layout-audit/`.
 
 The [asset-free GDB diagnostic](../scripts/gdb/portable-layout-audit.gdb)
 contains the complete setup and calls. It diagnoses the unfixed baseline and

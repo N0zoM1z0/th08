@@ -58,7 +58,7 @@ target analysis or compiler-shape probes.
 | Are there exact candidates in current objects? | `python3 scripts/analysis/propose-exact-units.py --object build/NAME.obj --output .analysis/proposed-units.toml` | Read-only review artifact; accept reviewed units through `compare-function.py`. |
 | What is inside the generated VC7 PDB? | `python3 scripts/analysis/inspect-pdb-streams.py build/vc70.pdb` | Lists MSF streams. Extraction requires explicit `--extract`; output defaults to `.analysis/`. |
 | Are mapping overlaps explicitly classified? | `python3 scripts/validate-tracking.py --require-target` | Validates `config/mapping-overlaps.csv`; accepted nested funclets are reported separately and stale/unclassified overlap state is rejected or warned. |
-| Is tracked repository state CI-clean? | `python3 scripts/ci.py` | Public, target-independent schema, documentation, and syntax checks. |
+| Is tracked repository state CI-clean? | `python3 scripts/ci.py` | Fast whole-tree syntax, private-artifact, ledger and Ninja-configuration checks; Python 3.11+ and PyYAML. |
 | How do I verify the active IDA database? | Follow [IDA_MCP.md](IDA_MCP.md). | Attest the GUI database before TH08 queries. |
 
 Every public entry point supports `--help` and includes copyable examples.
@@ -104,5 +104,20 @@ compiler flags, PCH inputs, or object graph, run
 `verify-exact-units.py --all`; its default cold build is part of the evidence.
 `--reuse-build` exists only for quick diagnosis. Then run
 `validate-tracking.py --require-target`, `progress.py --check`, and
-`git diff --check`. Before a documentation/tooling commit, run `scripts/ci.py`.
+`git diff --check`. Documentation changes need diff review. Tool changes run
+`scripts/ci.py` and the affected positive/negative cases.
 Library acceptance uses its own reviewed units, ledger, and comparator.
+
+## Fast public CI
+
+Install the small YAML parser with `python3 -m pip install PyYAML`, then run
+`python3 scripts/ci.py`. It checks every controlled machine input, including a
+clean or shallow checkout, so earlier PR commits are covered without a base-ref
+fetch. New local files are also checked. It never reads the private target or
+compiler and generates trial Ninja graphs in a temporary directory.
+
+Run relevant comparator tests directly when their inputs or implementation
+change, for example `python3 scripts/test-match-local-relocations.py`.
+`python3 scripts/ci.py --full` opts into the broader public suite, which also
+needs Pillow. The Linux build workflow is manual; select the required platform
+checks when packaging, layouts or backend code change.

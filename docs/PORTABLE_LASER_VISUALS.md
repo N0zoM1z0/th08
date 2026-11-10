@@ -135,8 +135,7 @@ the [localization below](#error-localization) identifies the color-conversion
 contribution and remaining title/edge pixels. These observations cover selected frames; later bosses,
 other routes and difficulties, and Linux i386 images remain to be checked.
 
-Local evidence is in `build/laser-visual-20261013/stage3-aligned/`. The existing
-x86_64 Debug recorder artifact has SHA-256
+The tested x86_64 Debug recorder artifact had SHA-256
 `d74a574ac983d2df7c7a52cd421a868a01b90c34471881802ed83cea9e5b802f`;
 recorder hooks were inactive for these GDB captures. The tested gameplay source
 is the previously validated `af9cb1d3` checkpoint. These October 13 baseline
@@ -160,14 +159,12 @@ Both `lasers.json` files have SHA-256
 Corresponding colored and moving beams are visible in the paired images.
 The despawn frame passes the strict pixel limit; the
 [color experiment](#error-localization) accounts for the other three failures.
-Evidence is in
-`build/laser-visual-20261013/stage4b-marisa/`. To reproduce this selection, use
+To reproduce this selection, use
 `--case stage4b-marisa` with the capture command above.
 
 The paired missing-beam control omits 10 on-screen quad submissions while
 preserving the identical laser-state packet. Beam-region errors rise to
 42.524421, 39.223917, 61.727536, and 63.994869; all four omission checks pass.
-Control evidence is in `build/laser-visual-20261013/stage4b-control/`.
 
 ## Error localization
 
@@ -222,7 +219,6 @@ beam-edge residual: 49 pixels with mean RGB error above 32 within
 [subsequent vertex/origin investigation](#horizontal-edge-regression-october-14-2026)
 localizes and repairs this edge residual.
 
-The counterfactual evidence is retained under `build/laser-visual-20261013/`.
 The following checks exercise the repair in repository source.
 
 ### Production color repair, October 14, 2026
@@ -251,23 +247,17 @@ published binaries in [the replay results](REPLAY_RESULTS.md).
 
 The tested x86_64 Debug recorder has SHA-256
 `f7be8742dd9e7edd4d5a4a161e5b94fde0aba7fa238b49e639493838d9e18fd7`.
-Its executable, source hashes, compiler identity, and build configuration are
-retained in `build/laser-codec-repair-20261014/production-x86_64/`; completed
-compiler outputs were removed. The images and comparisons are in
-`stage3-keine/` and `stage4b-marisa/` under the same investigation directory.
-The full-recording evidence is in `x86_64-suite/lunatic-0-b/`; use
-`scripts/test-portable-replay-suite.py --cases lunatic-0-b` with the portable
-replay guide's normal capture and retained-evidence commands.
+Reproduce the full-recording check with
+`scripts/test-portable-replay-suite.py --cases lunatic-0-b`, following the
+portable replay guide's capture and verification commands.
 
 The initial isolated font API probe uses the game's Japanese face name and semibold,
 Shift-JIS, antialiased, fixed-pitch parameters. In a fresh Wine32 prefix it
 selects Droid Sans Fallback; portable selects VL Gothic. At requested height
 30, Wine reports ascent/descent 24/6 and a 151-pixel width for `Stage 3`;
 direct SDL_ttf reports 26/4 and 126 pixels. This measures substitution and
-point-size metrics independently of the GDI adapter. The initial probe source
-and measurements are in `font-metrics/`;
-the committed runner reproduces all six heights in `final-font-metrics/`
-under the same investigation directory.
+point-size metrics independently of the GDI adapter. The committed font-metrics
+runner reproduces all six heights.
 
 Repeat the isolated measurement with the committed probe:
 
@@ -281,9 +271,7 @@ records the portable font file and hash, API parameters, locale, source hashes,
 and compiler/Wine versions. `TH08_FONT` selects the portable font as it does in the
 game. The temporary Wine prefix and probe executable are removed after use.
 
-Local evidence is in `build/laser-codec-repair-20261014/color-contracts/`,
-`final-color-contracts/`, and `renderer-contracts/`. Run the asset-free
-regression gate:
+Run the asset-free color regression gate:
 
 ```bash
 python3 scripts/analysis/probe-texture-colors.py --check \
@@ -402,17 +390,13 @@ libraries. It converts PPM evidence to verified lossless PNGs and removes the
 temporary Wine prefix and probe executables. It records the actual Wine face,
 font file hash, locale, compilers, adapter/source hashes, and image identities.
 
-Local evidence is under `build/laser-font-20261014/`: the original-game font
-trace is in `stage3-droid-paired/retail/`; repaired captures are in
-`stage3-cell-height-default/` and `stage3-cell-height-droid/`. API images and
-old-source controls are in `final-font-pixels/`. The tested x86_64 recorder
-has SHA-256 `75f785111922b27bedb71a2d8142a23b71f6c98cd0ac854a47d5b978539fc566`,
-retained with source hashes and build configuration in `cell-height-build/`.
-The completed compiler tree was removed. Fresh default-font Stage 4B captures
+The tested x86_64 recorder had SHA-256
+`75f785111922b27bedb71a2d8142a23b71f6c98cd0ac854a47d5b978539fc566`.
+Fresh default-font Stage 4B captures
 pass all four checks with the color-repair errors unchanged. The default-font
 image gate now passes seven of eight frames. The complete `lunatic-0-b`
-recording passes 113,221 calculations on all 25 fields with a natural exit;
-its evidence is in `x86_64-suite/`. These results cover the selected x86_64
+recording passes 113,221 calculations on all 25 fields with a natural exit.
+These results cover the selected x86_64
 product; refreshed i386 images and later-boss cases remain to be exercised.
 Retained-evidence verification, four renderer contract groups, 297 color
 samples, and all 196,608 surface copies also pass with the height repair.
@@ -601,7 +585,7 @@ python3 scripts/analysis/probe-font-blending.py \
 The blending probe needs MinGW, the Linux build dependencies, Wine32 and Xvfb.
 Both captures run muted and serially. It removes temporary executables and
 its owned Wine prefix, compresses raw bitmaps, and records all pixel differences
-and source hashes. Evidence is under `build/font-production-20261014/`.
+and source hashes.
 
 ### Remaining title texture scaling
 
@@ -665,12 +649,10 @@ python3 scripts/analysis/probe-surface-scaling.py \
 
 The runner checks the target and archive hashes, records source, probe,
 compiler, executable and linker-map hashes, and removes its owned Wine prefix
-and compiled products. It retains pixel records and compressed logs under
-`build/`. After a filter repair, `--check` requires all 160 API cases to agree.
+and compiled products. It writes pixel records and compressed logs to the
+chosen output directory. After a filter repair, `--check` requires all 160 API
+cases to agree.
 Current API evidence is under `build/surface-scaling-20261014/repro-final/`.
-Earlier title evidence is under
-`build/font-production-20261014/title-glyph-controls/` and
-`surface-filter-observation.json` in the same phase directory.
 
 #### Production surface-filter repair
 
@@ -893,8 +875,6 @@ Frame 12,900's outside-header mean is 0.003639, with no pixels above mean RGB
 error 32. The context observed through GDB is `2.1 Mesa 25.2.8-0ubuntu0.24.04.2`,
 with a null clip-control function pointer. The tested x86_64 Debug recorder has
 SHA-256 `62386854ab8e486a8ad742c97f27b7f2063d39e008aefc4af8600dd083b9aecc`.
-Its build identity, captures, and API controls are under
-`build/laser-legacy-20261014/`.
 The same binary's complete `lunatic-0-b` recording passes 113,221 calculations
 on all 25 fields with a natural replay exit. Retained-evidence verification
 passes. Forced-profile checks also match all 297 color samples and preserve all
@@ -950,11 +930,7 @@ difference to RGB retained by the target's zero-alpha far-fog vertices, using
 same-source products and an isolated color substitution. The earlier
 default-profile x86_64 reference precedes the legacy source repair.
 
-Evidence is under `build/laser-i386-20261014/`: the four named stage/profile
-directories retain images, raw state and comparisons; `renderer-default-final/`
-and `renderer-legacy-final/` retain the seven-group API results. Build provenance records
-the container image, actual compiler, ELF `.comment`, configuration and source
-hashes. Capturing on i386 also exposed a GDB call with an unknown `free` return
+Capturing on i386 also exposed a GDB call with an unknown `free` return
 type; the observer now declares its void return explicitly. This changes the
 capture tool only.
 
@@ -1103,10 +1079,7 @@ python3 scripts/analysis/check-laser-visuals.py \
   --case finala-eirin --retail --output-dir build/laser-finala
 ```
 
-The retained paired evidence is under
-`build/laser-stage4a-20261014/finala-paired/`. The ordinary-paced image and draw
-inputs are in `finala-paced-draws/`, with `finala-pacing-comparison.json` in the
-parent directory. The manifest pins all five frames and their retail state hash,
+The case manifest pins all five frames and their retail state hash,
 including the failing image cases.
 
 ### Spell-background script owner repair
@@ -1143,16 +1116,15 @@ The initial repaired x86_64 product `c421597e…` passes all five original limit
 | 15,090 | 15.289389 | 0.862803 |
 | 22,590 | 12.120407 | 0.003248 |
 
-Its laser/VM packet retains the pinned retail hash. Evidence is under
-`build/laser-background-owner-20261014/finala-repaired/`; build identities are
-in `production-portable-bridge/`. The final shared-owner x86_64 product has
+Its laser/VM packet retains the pinned retail hash. The final shared-owner
+x86_64 product had
 SHA-256 `34bcdd33b2d31a52e418e9f806314fb00c68ac2fd5cea2bad8259f6a5de9fab9`.
 Its allocated ELF sections equal the initial repaired product, with debug
-sections and the GNU build ID excluded. All five fresh captures in `finala-final/`
+sections and the GNU build ID excluded. All five fresh captures
 pass the same image limits and have pixel-identical playfields to the initial
 repair captures. The final product's complete `lunatic-1-a` recording passes
 119,685 calculations on all 25 fields, all recorded end scores and natural exit;
-retained-evidence verification passes too. Its suite is in `x64-suite/`.
+retained-evidence verification passes too.
 Remaining checks cover Final B, Extra, refreshed i386, native images and the
 full corpus for the revised products. The original eight Stage 3/4B results
 remain scoped to their earlier binaries.
@@ -1299,8 +1271,7 @@ A private counterfactual kept double-precision trigonometric results through
 the radius multiplication in both handlers. Its fresh seven-frame capture
 retains the same four differing fields at 8,400; the other six packets agree.
 That experiment does not explain this failure, and its source changes were
-reverted. The patch, native RunEcl comparison and failed capture remain under
-`build/ecl-polar-laser-20261014/`.
+reverted.
 
 ### Spawn-input evidence and repair
 
@@ -1484,9 +1455,8 @@ submissions fail validation.
 The October 13 control suppresses 170 beam submissions across the four frames
 and preserves the identical raw laser-state packet. Errors rise from
 2.831371, 2.609911, 1.324700, and 2.085793 to 93.506351, 93.319568, 90.584128,
-and 75.029646. All four omission checks pass. Evidence is retained under
-`build/laser-visual-20261013/stage3-control/`; the normal strict pixel gate
-continues to report the smaller differences listed above.
+and 75.029646. All four omission checks pass. The normal strict pixel gate
+reports the smaller differences listed above.
 
 The target-independent checks exercise missing-beam detection and reject wrong
 executable/archive identities, frame counters, incomplete or nonrasterized

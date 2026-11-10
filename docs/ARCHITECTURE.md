@@ -112,8 +112,9 @@ boundaries.
 `docs/PROGRESS.md`. Its SVG uses authored exact bytes for the progress bar and
 adds explicitly separate playable-platform delivery cards. Source presence
 comes from `config/implemented.csv`; exact coverage counts only accepted rows
-in `config/matches.csv`. CI checks these generated files but cannot replay
-private target comparisons.
+in `config/matches.csv`. Regenerate these views when the ledgers change. Public
+CI checks ledger consistency; private target comparisons run locally for
+affected source.
 
 The `library` rows in `config/reccmp-functions.csv` describe code linked into
 the original TH08 image, principally VC7 CRT/runtime and D3DX bodies.

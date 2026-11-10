@@ -41,9 +41,19 @@ actual exactness, target identity, natural-source and state-isolation rules.
 - Keep handoff focused on current work, evidence references, blockers and the
   next useful action. Generate progress from canonical ledgers; avoid manual
   duplicate counts, recurring full reports and unrelated documentation chores.
-- Preserve dirty/untracked work, targets, useful evidence, game-specific Wine
-  prefixes and analyzer projects. Exactness still requires a complete strict
-  comparison; knowledge and successful commands alone confer no exact credit.
+- Preserve required inputs, source, exact ledgers, useful conclusions and
+  unfinished work across branches/worktrees. Keep the active independent Wine
+  prefix and analyzer project. Old archives, duplicate evidence and completed
+  trial outputs are disposable; a document reference is not a retention reason.
+- Keep only toolchain components used by the current build/runtime. Reuse
+  identical Factory tools while isolating writable state. Move uncertain
+  components aside, test affected paths with temporary outputs, then delete
+  them or restore them. Do not retain the temporary backup after validation.
+- Default CI stays fast and target/toolchain independent: check whole-tree
+  syntax, ledgers, build configuration and accidental private artifacts.
+  Select comparator/runtime tests by the change. Keep README's existing design.
+  Exactness still requires complete strict comparisons; notes and successful
+  commands alone confer no exact credit.
 
 
 This repository reconstructs one exact binary: the original Japanese TH08

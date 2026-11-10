@@ -109,8 +109,7 @@ in metadata.
 
 ## Evidence and coverage
 
-Local evidence is in `build/portable-runtime-audit-20261012/`. The ordinary
-portable executable has SHA-256
+The tested portable executable had SHA-256
 `cc5e11da46bbdcb237d1b9218992432787aa085db78253112084f01bbcee5d07`.
 The `lunatic-0-b` fixture is pinned and credited in the
 [replay corpus](../tests/fixtures/replays/th08-1.00d/README.md).

@@ -20,7 +20,7 @@ jobs:
       - uses: actions/setup-python@v7
         with:
           python-version: "3.12"
-      - name: Install image comparison dependency
-        run: python3 -m pip install Pillow
-      - name: Run repository-owned validation
+      - name: Install YAML parser
+        run: python3 -m pip install PyYAML
+      - name: Run basic repository checks
         run: python3 scripts/ci.py

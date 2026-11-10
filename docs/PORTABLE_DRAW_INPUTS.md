@@ -66,8 +66,7 @@ vertex alpha is zero.
 The observation is inherited from the target's alpha-only path. Reconstruction
 source and target bytes remain unchanged. This is separate from the repaired
 packed-color and raster-edge defects; it supports no new exact-match claim.
-Local evidence is under `build/draw-state-20261014/`, including the target-safe
-disassembly, both ordinary captures, input comparison and color control.
+
 
 ## Reproduce the color control
 
