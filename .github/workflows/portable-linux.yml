@@ -25,7 +25,8 @@ jobs:
       - uses: actions/checkout@v7
 
       - name: Validate launcher scripts
-        run: bash -n scripts/*modern-linux*.sh
+        run: |
+          for script in scripts/*modern-linux*.sh; do bash -n "$script"; done
 
       - name: Build in the repository i386 environment
         run: scripts/build-modern-linux-container.sh
@@ -78,7 +79,7 @@ jobs:
 
       - name: Validate native-layout scripts
         run: |
-          bash -n scripts/*portable-linux*.sh
+          for script in scripts/*portable-linux*.sh; do bash -n "$script"; done
           bash -n scripts/audit-render-replay-linux.sh
 
       - name: Install x86_64 development libraries
@@ -182,7 +183,8 @@ jobs:
       - uses: actions/checkout@v7
 
       - name: Validate native-layout scripts
-        run: bash -n scripts/*portable-linux*.sh
+        run: |
+          for script in scripts/*portable-linux*.sh; do bash -n "$script"; done
 
       - name: Install AArch64 cross-development libraries
         run: |
