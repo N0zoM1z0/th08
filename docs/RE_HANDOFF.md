@@ -11,7 +11,7 @@ adds native layouts and the Linux x86_64/AArch64 paths. The completed
 its source and useful findings are incorporated. Keep these branches and
 replay each branch's affected comparisons when moving source changes.
 
-The current maintenance branch is based on `port/portable-64bit`.
+This checkout follows the native-layout `port/portable-64bit` branch.
 The `.analysis/portable-perspective-rounding` worktree contains uncommitted
 billboard/transparent-quad tools and notes. Preserve that entire worktree and
 its inputs. Other experiment branches remain available through Git.

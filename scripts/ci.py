@@ -8,6 +8,7 @@ from pathlib import Path
 import argparse
 import ast
 import json
+import os
 import subprocess
 import sys
 import tempfile
@@ -25,6 +26,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--full", action="store_true", help="also run the broad public suite")
     args = parser.parse_args()
+    os.chdir(ROOT)
     try:
         import yaml
 
@@ -40,7 +42,7 @@ def main():
             if path.suffix.lower() in {
                 ".exe", ".dll", ".obj", ".o", ".lib", ".a", ".pch", ".pdb",
                 ".idb", ".i64", ".gpr", ".dat", ".msi", ".key", ".pem", ".token",
-            } or any(part.endswith(".rep") for part in path.parts):
+            } or any(part.lower().endswith(".rep") for part in path.parts):
                 raise ValueError(f"private/build artifact tracked: {name}")
             if not path.is_file() or path.is_symlink():
                 continue
