@@ -197,7 +197,6 @@ void __fastcall ShiftStageEffectOrigins(Float3 *delta);
 DIFFABLE_EXTERN(ChainElem, g_EffectManagerCalcChain);
 DIFFABLE_EXTERN(ChainElem, g_EffectManagerDrawChain);
 
-DIFFABLE_EXTERN(u32, g_EclGameTimeScaleFlags);
 
 // TH08 1.00d ECL instruction protocol.  Every value is explicit because the
 // serialized opcode number is part of the on-disk format; names describe the

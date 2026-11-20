@@ -23,8 +23,6 @@ namespace th08
 // far before the main Player implementation that begins at 0x00449CA0. Its
 // production definitions live in PlayerBomb.cpp.
 DIFFABLE_STATIC(Player, g_Player);
-DIFFABLE_STATIC(i32, g_PlayerNormalBombCount);
-DIFFABLE_STATIC(i32, g_PlayerDeathbombCount);
 
 DIFFABLE_STATIC_ARRAY_ASSIGN(const char *, 12, g_PlayerAnmFilenames) = {
     "player00.anm", "player01.anm", "player02.anm", "player03.anm",
@@ -1239,11 +1237,11 @@ acceptBomb:
                     g_GameManager.AddToBombCount(-2);
                 }
             }
-            ++g_PlayerDeathbombCount;
+            ++g_GameManager.hscr.numLastSpells;
         }
         else
         {
-            ++g_PlayerNormalBombCount;
+            ++g_GameManager.hscr.numBombsUsed;
             g_GameManager.AddToBombCount(-1);
         }
         g_GameManager.AddToBombsUsed(1);

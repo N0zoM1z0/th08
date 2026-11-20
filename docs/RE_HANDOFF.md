@@ -13,9 +13,9 @@ replay each branch's affected comparisons when moving source changes.
 
 `reconstruction/position-independence` starts from `main`. Its
 [PI acceptance checks](POSITION_INDEPENDENCE.md) cover symbolic references,
-shared storage, and behavior after moving linked objects. The ECL runtime
-reset now has one owner. Next are the Supervisor and score field aliases,
-followed by the Linux i386 fixed-address arena.
+shared storage, and behavior after moving linked objects. The ECL reset,
+Supervisor countdown and flags, and HSCR counters now use their containing
+objects. The remaining Linux i386 fixed-address arena is the next batch.
 
 The `.analysis/portable-perspective-rounding` worktree contains uncommitted
 billboard/transparent-quad tools and notes. Preserve that entire worktree and

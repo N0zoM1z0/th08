@@ -97,7 +97,6 @@ DIFFABLE_STATIC_ARRAY_ASSIGN(EclExInstructionCallback, 32, g_EclExInsn) = {
     &SpawnBombOrExtendItem,
 };
 
-DIFFABLE_STATIC(u32, g_EclGameTimeScaleFlags);
 DIFFABLE_STATIC(EclRuntimeState, g_EclRuntime);
 
 } // namespace th08

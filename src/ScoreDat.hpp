@@ -266,7 +266,10 @@ struct Hscr
 
 C_ASSERT(sizeof(Hscr) == 0x168);
 C_ASSERT(offsetof(Hscr, reserved27) == 0x27);
+C_ASSERT(offsetof(Hscr, numPointItemsCollected) == 0x68);
 C_ASSERT(offsetof(Hscr, unconsumedDword6C) == 0x6C);
+C_ASSERT(offsetof(Hscr, numBombsUsed) == 0x74);
+C_ASSERT(offsetof(Hscr, numLastSpells) == 0x78);
 C_ASSERT(offsetof(Hscr, defaultScoreMarker) == 0x166);
 C_ASSERT(offsetof(Hscr, reservedTail167) == 0x167);
 

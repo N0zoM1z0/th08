@@ -24,11 +24,9 @@ namespace th08
 DIFFABLE_STATIC(Gui, g_Gui);
 DIFFABLE_STATIC(ChainElem, g_GuiCalcChain);
 DIFFABLE_STATIC(ChainElem, g_GuiDrawChain);
-DIFFABLE_STATIC(i32, g_GuiFullPowerModeFrames);
 C_ASSERT(offsetof(Background, spellVmScriptBase) == 0xB34);
 DIFFABLE_STATIC(u16, g_GuiMessageInputCurrent);
 DIFFABLE_STATIC(u16, g_GuiMessageInputPrevious);
-DIFFABLE_STATIC(i32, g_GuiMessageScreenEffectDuration);
 // Target .data 0x004C7158: the per-stage clear-bonus production owner.
 DIFFABLE_STATIC_ARRAY_ASSIGN(i32, MAX_STAGES, g_GuiStageClearBonuses) = {
     1000000, 1500000, 2000000, 2500000, 2500000, 3000000, 4000000, 6000000, 6660000,
@@ -101,8 +99,8 @@ ChainCallbackResult Gui::OnUpdate(Gui *gui)
 
     gui->UpdateStageElements();
     gui->impl->RunMsg();
-    if ((g_CurFrameInput & TH_BUTTON_SKIP) && g_GuiMessageScreenEffectDuration < 8)
-        g_GuiMessageScreenEffectDuration = 8;
+    if ((g_CurFrameInput & TH_BUTTON_SKIP) && g_Supervisor.screenTransitionCountdown < 8)
+        g_Supervisor.screenTransitionCountdown = 8;
     gui->frameCounter++;
     return CHAIN_CALLBACK_RESULT_CONTINUE;
 }
@@ -735,7 +733,7 @@ i32 GuiImpl::RunMsg()
         case GUI_MSG_FADE_SCREEN:
             ScreenEffect::RegisterChain(
                 SCREEN_EFFECT_FULL_FADE_OUT, 442, 0xffffff, 0, 0, CHAIN_PRIO_DRAW_SCREENEFFECT);
-            g_GuiMessageScreenEffectDuration = 442;
+            g_Supervisor.screenTransitionCountdown = 442;
             break;
         case GUI_MSG_END_STAGE:
             if (g_GameManager.currentStage == STAGE6A || g_GameManager.currentStage == STAGE6B ||
@@ -1204,7 +1202,7 @@ void Gui::DrawGameScene()
     }
 
     vm = &this->impl->frontVms[13];
-    if (g_Supervisor.IsHUDRedrawEnabled() || vm->currentInstruction != NULL || g_GuiFullPowerModeFrames != 0)
+    if (g_Supervisor.IsHUDRedrawEnabled() || vm->currentInstruction != NULL || g_Supervisor.screenTransitionCountdown != 0)
     {
         for (yPos = 0.0f; yPos < 464.0f; yPos += 32.0f)
         {
@@ -1617,7 +1615,7 @@ void Gui::ShowBonusScore(i32 value)
     this->impl->bonusPopup.displayMode = 1;
     this->impl->bonusPopup.timer = 0;
     this->impl->bonusPopup.value = value;
-    g_GuiFullPowerModeFrames = 2;
+    g_Supervisor.screenTransitionCountdown = 2;
 }
 
 // FUNCTION: th08 0x437e5d
@@ -1627,7 +1625,7 @@ void Gui::ShowPopupText(i32 value, i32 displayMode)
     this->impl->statusPopup.displayMode = displayMode;
     this->impl->statusPopup.timer = 0;
     this->impl->statusPopup.value = value;
-    g_GuiFullPowerModeFrames = 2;
+    g_Supervisor.screenTransitionCountdown = 2;
 }
 
 // FUNCTION: th08 0x437edc
@@ -1637,7 +1635,7 @@ void Gui::ShowSpellcardBonus(i32 value)
     this->impl->spellcardBonusPopup.displayMode = 1;
     this->impl->spellcardBonusPopup.timer = 0;
     this->impl->spellcardBonusPopup.value = value;
-    g_GuiFullPowerModeFrames = 2;
+    g_Supervisor.screenTransitionCountdown = 2;
 }
 
 // FUNCTION: th08 0x437f5c
@@ -2173,7 +2171,7 @@ ZunResult Gui::ActualAddedCallback()
     this->flags.timeDisplayUpdateFrames = 2;
 
     g_AsciiManager.asciiAnm->SetAndExecuteScriptIdx(&this->impl->stageRankVm, 3);
-    g_GuiMessageScreenEffectDuration = 16;
+    g_Supervisor.screenTransitionCountdown = 16;
     this->impl->stageClear.clockDisplayCurrent = 0;
 
     return ZUN_SUCCESS;

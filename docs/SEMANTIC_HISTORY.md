@@ -10,6 +10,25 @@ reproduce affected comparisons for new source changes.
 
 ## Completed batches
 
+### Supervisor and HSCR field ownership — 2026-11-20
+
+Retail dialogue and HUD use `0x017CE8CC`, the same word that
+`GameWindow::Present @ 0x00442060` decrements at `Supervisor + 0x174`.
+`ExitScaledBulletTime @ 0x00425290` writes the timer-step bit in the flag
+word at `Supervisor + 0x1A4`. These paths now use their Supervisor fields.
+`Item::CollectPoint @ 0x00440E40` and `Player::UpdateBombState @ 0x0044C650`
+increment three words inside `GameManager::hscr`. The record copied by the
+results screen now receives those increments. The obsolete independent
+symbols and i386 linker bindings are gone. Member offsets are asserted.
+
+The affected object replay and cold `verify-exact-units.py --all` pass. The
+normal PE/map verifies the linked GUI callback, Present, ECL flag writer,
+point collection, and bomb update. For objdiff-renamed functions, the linked
+check uses the production COFF body after checking its bytes and relocation
+positions against the exact wrapper. Linux i386 GDB calls confirmed that a
+GUI popup writes the Supervisor countdown, a timer consumes the ECL flag,
+and point collection increments the HSCR field.
+
 ### ECL runtime reset owner — 2026-11-20
 
 `EnemyManager::AddedCallback @ 0x0042EBF0` clears `0x188` bytes from

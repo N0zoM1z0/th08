@@ -55057,14 +55057,16 @@ target = 0x0160F508
 [[units.relocations]]
 offset = 0x1BC
 type = "DIR32"
-symbol = "?g_MaxValuePointItemsCollected@th08@@3HA"
-target = 0x0164CF9C
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DA94
 
 [[units.relocations]]
 offset = 0x1C4
 type = "DIR32"
-symbol = "?g_MaxValuePointItemsCollected@th08@@3HA"
-target = 0x0164CF9C
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DA94
 
 [[units.relocations]]
 offset = 0x1C9
@@ -57155,8 +57157,9 @@ target = 0x004065F0
 [[units.relocations]]
 offset = 0x71
 type = "DIR32"
-symbol = "?g_GuiFullPowerModeFrames@th08@@3HA"
-target = 0x017CE8CC
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x174
 
 [[units]]
 name = "item-collect-power-small"
@@ -67466,8 +67469,9 @@ target = 0x0045D550
 [[units.relocations]]
 offset = 0x191
 type = "DIR32"
-symbol = "?g_GuiFullPowerModeFrames@th08@@3HA"
-target = 0x017CE8CC
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x174
 
 # Spellcard exact candidate 0x00416B10
 [[units]]
@@ -68238,8 +68242,9 @@ target = 0x0045D550
 [[units.relocations]]
 offset = 0x220
 type = "DIR32"
-symbol = "?g_GuiFullPowerModeFrames@th08@@3HA"
-target = 0x017CE8CC
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x174
 
 # Ledger name: th08::Enemy::ResetBulletRankInfluence
 [[units]]
@@ -68302,8 +68307,9 @@ target = 0x004065F0
 [[units.relocations]]
 offset = 0x72
 type = "DIR32"
-symbol = "?g_GuiFullPowerModeFrames@th08@@3HA"
-target = 0x017CE8CC
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x174
 
 # Ledger name: th08::Spellcard::StartSpell
 # Evidence: VC7 COFF auxiliary extent is 0x9B3 and ends at the target ret 0x20.
@@ -68601,8 +68607,9 @@ target = 0x004065F0
 [[units.relocations]]
 offset = 0x72
 type = "DIR32"
-symbol = "?g_GuiFullPowerModeFrames@th08@@3HA"
-target = 0x017CE8CC
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x174
 
 
 # Ledger name: th08::Enemy::DetachFromParentChain
@@ -72942,8 +72949,9 @@ target = 4569264
 [[units.relocations]]
 offset = 5154
 type = "DIR32"
-symbol = "?g_GuiMessageScreenEffectDuration@th08@@3HA"
-target = 24963276
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x174
 
 [[units.relocations]]
 offset = 5166
@@ -73603,8 +73611,9 @@ target = 4426353
 [[units.relocations]]
 offset = 880
 type = "DIR32"
-symbol = "th08::g_GuiFullPowerModeFrames"
-target = 24963276
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x174
 
 [[units.relocations]]
 offset = 903
@@ -76097,14 +76106,16 @@ target = 23385384
 [[units.relocations]]
 offset = 60
 type = "DIR32"
-symbol = "?g_GuiMessageScreenEffectDuration@th08@@3HA"
-target = 24963276
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x174
 
 [[units.relocations]]
 offset = 69
 type = "DIR32"
-symbol = "?g_GuiMessageScreenEffectDuration@th08@@3HA"
-target = 24963276
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x174
 
 [[units]]
 name = "gui-draw-dialogue"
@@ -83016,26 +83027,30 @@ target = 0x00439883
 [[units.relocations]]
 offset = 1077
 type = "DIR32"
-symbol = "?g_PlayerDeathbombCount@th08@@3HA"
-target = 0x0164CFAC
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DAA4
 
 [[units.relocations]]
 offset = 1086
 type = "DIR32"
-symbol = "?g_PlayerDeathbombCount@th08@@3HA"
-target = 0x0164CFAC
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DAA4
 
 [[units.relocations]]
 offset = 1094
 type = "DIR32"
-symbol = "?g_PlayerNormalBombCount@th08@@3HA"
-target = 0x0164CFA8
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DAA0
 
 [[units.relocations]]
 offset = 1103
 type = "DIR32"
-symbol = "?g_PlayerNormalBombCount@th08@@3HA"
-target = 0x0164CFA8
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DAA0
 
 [[units.relocations]]
 offset = 1110
@@ -105156,8 +105171,9 @@ target = 0x004069F0
 [[units.relocations]]
 offset = 0x5B0
 type = "DIR32"
-symbol = "?g_GuiMessageScreenEffectDuration@th08@@3HA"
-target = 0x017CE8CC
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x174
 
 # Ledger name: th08::Gui::InitStageClearScreen
 
@@ -111789,14 +111805,16 @@ target = 0x004B4338
 [[units.relocations]]
 offset = 0xCC
 type = "DIR32"
-symbol = "?g_EclGameTimeScaleFlags@th08@@3IA"
-target = 0x017CE8FC
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x1A4
 
 [[units.relocations]]
 offset = 0xD5
 type = "DIR32"
-symbol = "?g_EclGameTimeScaleFlags@th08@@3IA"
-target = 0x017CE8FC
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x1A4
 
 [[units.relocations]]
 offset = 0xDB
@@ -120473,8 +120491,9 @@ target = 0x017CE758
 [[units.relocations]]
 offset = 0x86
 type = "DIR32"
-symbol = "?g_EclGameTimeScaleFlags@th08@@3IA"
-target = 0x017CE8FC
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x1A4
 
 [[units.relocations]]
 offset = 0xD1
@@ -120623,8 +120642,9 @@ target = 0x017CE758
 [[units.relocations]]
 offset = 0x7E
 type = "DIR32"
-symbol = "?g_EclGameTimeScaleFlags@th08@@3IA"
-target = 0x017CE8FC
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x1A4
 
 [[units.relocations]]
 offset = 0xA8

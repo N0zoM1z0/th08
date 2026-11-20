@@ -43,7 +43,7 @@ void PauseMenuProbe::OnDraw()
         g_Supervisor.viewport.Width = g_GameManager.arcadeRegionSize.x;
         g_Supervisor.viewport.Height = g_GameManager.arcadeRegionSize.y;
         g_Supervisor.d3dDevice->SetViewport(&g_Supervisor.viewport);
-        if (((g_EclGameTimeScaleFlags >> 1) & 1) != 0 && this->curState != 0)
+        if (((reinterpret_cast<u32 &>(g_Supervisor.flags) >> 1) & 1) != 0 && this->curState != 0)
         {
             AnmVm menuBackground = this->menuBackground;
             menuBackground.zWriteDisabled = TRUE;
@@ -69,7 +69,7 @@ void RetryMenuProbe::OnDraw()
         g_Supervisor.viewport.Width = g_GameManager.arcadeRegionSize.x;
         g_Supervisor.viewport.Height = g_GameManager.arcadeRegionSize.y;
         g_Supervisor.d3dDevice->SetViewport(&g_Supervisor.viewport);
-        if (((g_EclGameTimeScaleFlags >> 1) & 1) != 0 && (this->curState != 0 || this->numFrames > 2))
+        if (((reinterpret_cast<u32 &>(g_Supervisor.flags) >> 1) & 1) != 0 && (this->curState != 0 || this->numFrames > 2))
             g_AnmManager->DrawNoRotation(&this->menuBackground);
 
         if (!g_GameManager.IsPracticeMode() && g_GameManager.difficulty < EXTRA)

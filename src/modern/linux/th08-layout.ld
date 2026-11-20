@@ -53,9 +53,6 @@ SECTIONS
     _ZN4th0814g_GuiDrawChainE = 0x0160f4c4;
     _ZN4th0814g_GuiCalcChainE = 0x0160f4e4;
     _ZN4th0813g_GameManagerE = 0x0160f508;
-    _ZN4th0823g_PlayerNormalBombCountE = 0x0164cfa8;
-    _ZN4th0822g_PlayerDeathbombCountE = 0x0164cfac;
-    _ZN4th0829g_MaxValuePointItemsCollectedE = 0x0164cf9c;
     _ZN4th0822g_GameManagerCalcChainE = 0x0164d344;
     _ZN4th0822g_GameManagerDrawChainE = 0x0164d364;
     _ZN4th0814g_JoystickCapsE = 0x0164d388;
@@ -79,11 +76,8 @@ SECTIONS
     _ZN4th0834g_DummyMidiTimerPerformanceCounterE = 0x017ce744;
     _ZN4th0824g_SupervisorScreenEffectE = 0x017ce750;
     _ZN4th0812g_SupervisorE = 0x017ce758;
-    _ZN4th0824g_GuiFullPowerModeFramesE = 0x017ce8cc;
-    _ZN4th0832g_GuiMessageScreenEffectDurationE = 0x017ce8cc;
 
     /* These target globals are overlapping views into aggregate owners. */
-    _ZN4th0823g_EclGameTimeScaleFlagsE = 0x017ce8fc;
     _ZN4th088g_PlayerE = 0x017d5ef8;
 
     _ZN4th0822g_SupervisorLoadingVmsE = 0x017ceac0;

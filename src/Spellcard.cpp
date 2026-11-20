@@ -392,7 +392,6 @@ Spellcard::Spellcard()
 }
 
 
-DIFFABLE_EXTERN(i32, g_GuiFullPowerModeFrames);
 
 // FUNCTION: th08 0x4144d0
 #pragma var_order(difficulty, i)
@@ -938,7 +937,7 @@ void Spellcard::CutInPlayer(i32 playerFace, const char *name, i32 sprite)
     this->playerSpellNameWidth = strlen(name) * 0xf / 2.0f + 16;
     this->playerSpellNameFrameVm.SetInterrupt(1);
     g_SoundPlayer.PlaySoundByIdx(SOUND_CAT, 0);
-    g_GuiFullPowerModeFrames = 2;
+    g_Supervisor.screenTransitionCountdown = 2;
 }
 
 // FUNCTION: th08 0x415f00
@@ -976,7 +975,7 @@ void Spellcard::CutInEnemy(i32 enemyFace, const char *name, i32 sprite)
         this->spellBonusFrameVm.SetInterrupt(1);
     }
     g_SoundPlayer.PlaySoundByIdx(SOUND_CAT, 0);
-    g_GuiFullPowerModeFrames = 2;
+    g_Supervisor.screenTransitionCountdown = 2;
 }
 
 // FUNCTION: th08 0x416130
