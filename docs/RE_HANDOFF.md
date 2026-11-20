@@ -11,7 +11,7 @@ adds native layouts and the Linux x86_64/AArch64 paths. The completed
 its source and useful findings are incorporated. Keep these branches and
 replay each branch's affected comparisons when moving source changes.
 
-`reconstruction/position-independence` starts from `main`. Its
+`main` includes the position-independence changes for its i386 builds. The
 [PI acceptance checks](POSITION_INDEPENDENCE.md) cover symbolic references,
 shared storage, and behavior after moving linked objects. The ECL reset,
 Supervisor countdown and flags, and HSCR counters now use their containing
