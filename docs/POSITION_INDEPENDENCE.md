@@ -136,3 +136,19 @@ seconds and each peaked below 74 MiB across its process tree. The local
 replays, retail traces, comparison reports, and measurements are under
 `build/solver-replay-audit/`. The x86_64 captures are in the same relative
 directory in the portable worktree.
+
+## Silent Selene replay validation
+
+Ten selected Silent Selene replays covered all five difficulties, both
+Stage 4 branches, Final A, Final B, Extra, and a tool-assisted Extra run.
+The original 1.00d executable and the same reordered VC7 and x86_64 builds
+used above agreed on all 25 recorded fields over 769,880 calculations.
+All ten reached their natural end and matched every recorded stage-end
+score. The selection, hashes, and per-replay results are in the local
+`build/silent-selene/summary.json`.
+
+Four runs ended at game over with four or five input records remaining in
+the final stage. The original executable produced the same complete trace
+on a second capture for each file. Those checks pinned the observed tail
+length to each replay hash. The repository's published replay corpus keeps
+its existing acceptance rules.
