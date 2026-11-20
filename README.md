@@ -169,7 +169,7 @@ whenever exact emission depends on it.
 Every semantic batch is checked in both directions. The VC7 comparison makes
 sure accepted target bytes stay exact; the modern builds make sure the same
 source still works as portable C++. Shared changes are rebuilt on Linux and
-checked against the fixed-layout verifier, with relevant runtime tests used
+checked with the ELF verifier, with relevant runtime tests used
 when they are available.
 
 To measure the semantic pass, we audited the repository against

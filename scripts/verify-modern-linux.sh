@@ -31,10 +31,12 @@ done
 
 file_description="$(LC_ALL=C file -L "${binary}")"
 elf_header="$(LC_ALL=C readelf --file-header "${binary}")"
+elf_sections="$(LC_ALL=C readelf --wide --section-headers "${binary}")"
+elf_dynamic="$(LC_ALL=C readelf --dynamic "${binary}")"
 symbols="$(LC_ALL=C nm --defined-only --demangle "${binary}")"
 
-if [[ "${file_description}" != *"ELF 32-bit LSB executable, Intel 80386"* ]]; then
-    echo "Expected a 32-bit i386 ELF executable:" >&2
+if [[ "${file_description}" != *"ELF 32-bit LSB pie executable, Intel 80386"* ]]; then
+    echo "Expected a 32-bit i386 PIE executable:" >&2
     echo "  ${file_description}" >&2
     exit 1
 fi
@@ -42,8 +44,8 @@ if ! grep -Eq '^[[:space:]]*Class:[[:space:]]+ELF32$' <<<"${elf_header}"; then
     echo "ELF header is not ELF32." >&2
     exit 1
 fi
-if ! grep -Eq '^[[:space:]]*Type:[[:space:]]+EXEC ' <<<"${elf_header}"; then
-    echo "ELF is not a fixed-address executable (ET_EXEC)." >&2
+if ! grep -Eq '^[[:space:]]*Type:[[:space:]]+DYN ' <<<"${elf_header}"; then
+    echo "Expected ELF type ET_DYN." >&2
     exit 1
 fi
 if ! grep -Eq '^[[:space:]]*Machine:[[:space:]]+Intel 80386$' <<<"${elf_header}"; then
@@ -51,29 +53,23 @@ if ! grep -Eq '^[[:space:]]*Machine:[[:space:]]+Intel 80386$' <<<"${elf_header}"
     exit 1
 fi
 
-check_absolute_symbol() {
-    local expected_address="$1"
-    local symbol_name="$2"
-    local symbol_line
-    local actual_address
+if grep -Eq '[[:space:]]\.th08_target_data[[:space:]]' <<<"${elf_sections}" ||
+   grep -Eq '^[[:xdigit:]]+[[:space:]]+A[[:space:]]+th08::' <<<"${symbols}"; then
+    echo "Found a fixed-address TH08 section or symbol." >&2
+    exit 1
+fi
+if grep -Eq '(^|[[:space:](])TEXTREL([[:space:])]|$)' <<<"${elf_dynamic}"; then
+    echo "Found text relocations in the Linux executable." >&2
+    exit 1
+fi
 
-    symbol_line="$(grep -E "^[0-9a-fA-F]+[[:space:]]+A[[:space:]]+${symbol_name}$" <<<"${symbols}" || true)"
-    if [[ -z "${symbol_line}" ]]; then
-        echo "Required absolute layout symbol is missing: ${symbol_name}" >&2
+for symbol_name in g_Spellcard g_GameManager g_Chain g_AnmManager; do
+    if ! grep -Eq "^[[:xdigit:]]+[[:space:]]+[BD][[:space:]]+th08::${symbol_name}$" <<<"${symbols}"; then
+        echo "Required runtime global has no native storage: ${symbol_name}" >&2
         exit 1
     fi
-    actual_address="${symbol_line%% *}"
-    if [[ "${actual_address,,}" != "${expected_address,,}" ]]; then
-        echo "Unexpected address for ${symbol_name}: ${actual_address} (expected ${expected_address})" >&2
-        exit 1
-    fi
-}
-
-check_absolute_symbol 004ea670 'th08::g_Spellcard'
-check_absolute_symbol 0160f508 'th08::g_GameManager'
-check_absolute_symbol 0164f548 'th08::g_Chain'
-check_absolute_symbol 018bdc90 'th08::g_AnmManager'
+done
 
 echo "Verified portable Linux executable:"
 echo "  ${file_description}"
-echo "  fixed target-owned layout symbols: OK"
+echo "  ELF32 PIE and section-backed TH08 symbols: OK"

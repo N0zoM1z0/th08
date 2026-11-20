@@ -15,7 +15,9 @@ replay each branch's affected comparisons when moving source changes.
 [PI acceptance checks](POSITION_INDEPENDENCE.md) cover symbolic references,
 shared storage, and behavior after moving linked objects. The ECL reset,
 Supervisor countdown and flags, and HSCR counters now use their containing
-objects. The remaining Linux i386 fixed-address arena is the next batch.
+objects. The Linux i386 build uses native storage and passes the Stage 5
+demo smoke with both ordinary and reversed object link order. Continue with
+the remaining PE relocation bindings and linked runtime checks.
 
 The `.analysis/portable-perspective-rounding` worktree contains uncommitted
 billboard/transparent-quad tools and notes. Preserve that entire worktree and

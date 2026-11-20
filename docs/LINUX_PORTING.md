@@ -77,8 +77,8 @@ fixed exit.
 
 `.github/workflows/portable-linux.yml` builds the same source in the
 repository-owned i386 container on every push and pull request. Before upload,
-the workflow verifies the ELF class, machine, fixed-address executable type,
-and representative target-owned layout aliases. It then publishes a compressed
+the workflow verifies the ELF class, machine, PIE executable type, and native
+storage for representative TH08 globals. It then publishes a compressed
 archive plus SHA-256 checksum as the `th08-modern-linux-i386` Actions artifact.
 The Docker build context is allowlisted to the container recipe itself; local
 targets, DAT files, analysis state, and the source tree are not sent into the
@@ -105,8 +105,8 @@ locally from any verified `th08-modern` ELF.
 Automatic package installation currently supports Debian and Ubuntu on x86 or
 x86-64 hosts. Other distributions need equivalent i386 multilib development
 packages for SDL2, SDL2_image, SDL2_ttf, Fontconfig, and OpenGL. The port is a
-32-bit x86 program because reconstructed object layouts and target-owned data
-addresses still depend on the original pointer width.
+32-bit x86 program because reconstructed object layouts still depend on the
+original pointer width.
 
 An optional container can isolate compilation:
 
@@ -141,8 +141,8 @@ under `src/modern/linux/` and selected only by the independent CMake product:
 - fixed-function OpenGL implements the Direct3D 8 device surface;
 - SDL_ttf, Fontconfig, and CP932-to-UTF-8 conversion implement the GDI text
   boundary used for Japanese dialogue and dynamic labels;
-- a non-PIE i386 ELF plus `th08-layout.ld` preserves target-owned data
-  addresses that reconstructed source still references directly.
+- the i386 executable links as PIE with ordinary C++ definitions for its
+  game state and initialized tables.
 
 Implement backend fixes at the platform API or link boundary where possible,
 so the recovered gameplay source stays shared with VC7 builds.
@@ -167,20 +167,17 @@ The failure mode is much wider than the incorrectly split symbol:
 - later stages can stall or exit even though the immediate callback looks
   correct.
 
-The Linux linker script therefore aliases every target-owned manager, chain,
-and known field-view symbol to the original address. A useful audit is that no
-such runtime global remains as an unintended ordinary ELF `B` symbol. When a
-new alias is added, verify both the aggregate address and the field offset.
+The original fixed-layout port kept these aliases in a linker script. The
+current build uses the containing objects directly. Verify that producers and
+consumers follow the same object when its linked address changes. The
+[position independence checks](POSITION_INDEPENDENCE.md) describe the scope.
 
 ### Rebuild target-initialized data explicitly
 
-Some exact source expressions refer to tables and strings that the original PE
-loader mapped at fixed addresses. A modern ELF cannot obtain those bytes from
-the copyrighted executable. The Linux runtime initializes the evidence-backed
-tables and string data needed by authored code, while the linker reserves the
-target data arena as `NOLOAD` so it does not inflate the executable.
-
-Keep this initialization at the port boundary and document its provenance.
+The gameplay translation units define the stage music contexts, bonus table,
+message palettes, and effect callbacks. The compiler and linker populate their
+native sections, including the function pointers in the effect table. This
+gives both Linux and VC7 one source for each initializer.
 
 ### Do not compensate for a wrong target callee in the renderer
 

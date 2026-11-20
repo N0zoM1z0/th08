@@ -131,8 +131,7 @@ if(MINGW)
         -static
         -static-libgcc
         -static-libstdc++
-        # Some reconstructed data references still use target absolute VAs.
-        # Keep the original image base until every such owner is symbolic.
+        # Keep the Windows bring-up profile's image-loading policy.
         -Wl,--disable-dynamicbase
     )
     target_link_libraries(th08-modern PRIVATE
@@ -186,18 +185,11 @@ elseif(UNIX AND NOT APPLE)
         -fpermissive
         -fdata-sections
         -fno-omit-frame-pointer
-        -fno-pie
+        -fPIE
         -Wno-write-strings
         "-include${CMAKE_SOURCE_DIR}/src/modern/linux/linux_compat.hpp"
     )
-    target_link_options(th08-modern PRIVATE
-        -no-pie
-        -rdynamic
-        "-Wl,-T,${CMAKE_SOURCE_DIR}/src/modern/linux/th08-layout.ld"
-    )
-    set_property(TARGET th08-modern APPEND PROPERTY LINK_DEPENDS
-        "${CMAKE_SOURCE_DIR}/src/modern/linux/th08-layout.ld"
-    )
+    target_link_options(th08-modern PRIVATE -pie -rdynamic)
     target_include_directories(th08-modern BEFORE PRIVATE
         "${CMAKE_SOURCE_DIR}/src/modern/linux/include"
     )

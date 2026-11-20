@@ -7,9 +7,8 @@ authored game sources for platform testing and play.
 
 ## Scope and products
 
-This page describes the **i386 source builds on `main`**. Its CMake commands,
-fixed-address Linux layout, and 32-bit dependency requirements apply to that
-development path.
+This page describes the **i386 source builds on `main`**. Its CMake commands
+and 32-bit dependency requirements apply to that development path.
 
 The [Linux player guide](PLAY_LINUX.md) covers published packages, including
 native x86_64 and experimental AArch64 products developed on
@@ -27,9 +26,9 @@ The [Web port](https://github.com/N0zoM1z0/th08-web) has its own repository.
 | macOS | **In progress** | Platform backend and packaging are pending |
 
 The modern builds on this branch compile the production-authored game sources
-with a 32-bit target because their layouts and target-owned global addresses
-depend on the original x86 pointer width. The separate 64-bit branch adapts
-those assumptions for its architectures.
+with a 32-bit target because their object layouts depend on the original x86
+pointer width. The separate 64-bit branch adapts those layouts for its
+architectures.
 
 ### Native Windows
 
@@ -116,7 +115,7 @@ the Linux host and needs the corresponding 32-bit runtime libraries.
 
 Every push and pull request runs the same container build in
 `.github/workflows/portable-linux.yml`, verifies that the output is an i386
-fixed-address ELF with the required target-owned layout symbols, and uploads
+PIE with the required native globals, and uploads
 `th08-modern-linux-i386.tar.gz`. The archive preserves executable permissions
 and contains the ELF, a standalone `run-th08.sh`, and runtime documentation.
 It contains no original game data.

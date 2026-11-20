@@ -56,3 +56,27 @@ native 64-bit port has its own build and layout evidence.
 | GUI and Supervisor at retail `0x017CE8CC` | Dialogue writes, HUD reads, and the frame countdown use the same storage. |
 | `GameManager::hscr` counters at retail `0x0164CF9C`, `0x0164CFA8`, and `0x0164CFAC` | The collection and bomb paths update the fields that the results screen copies. |
 | Linux i386 stage music contexts at retail `0x004C7240` | The initialized song numbers reach the music unlock path when the table is moved. |
+
+## Linux i386 link experiment
+
+The Linux product now links native game globals and tables through the ELF
+sections. The stage music table uses its `Gui.cpp` initializer, which restores
+the song numbers omitted by the old fixed-address startup path. The effect
+table uses the gameplay definitions for its callback pointers.
+
+The ordinary container build and a second link with the same objects in
+reverse order both pass `scripts/verify-modern-linux.sh`. To repeat the second
+link, take the link command from `ninja -t commands th08-modern` in the i386
+build directory. Reverse its game object arguments, keep the libraries in
+their original order, and write the result to a separate output. In the
+observed build, `g_EclRuntime` moved from `0x007C9FE0` to `0x00E25140`, the
+stage music table moved from `0x000F0160` to `0x000F1100`, and the enemy
+registration callback moved from `0x00064B20` to `0x0009F7A2`. These are ELF
+symbol values before load bias.
+
+Both links passed the asset-free ECL reset and shared-field checks. Before
+`main`, all 27 stage music entries matched the original table, and sampled
+spell, bonus, dialogue, and effect data had their expected values. Both
+executables ran from the title into the bundled Stage 5 demo and loaded its
+SHT, STD, ECL, and message files. The verifier rejects the original fixed
+layout and a PIE carrying an absolute TH08 symbol.

@@ -26,7 +26,7 @@ jobs:
       - name: Build in the repository i386 environment
         run: scripts/build-modern-linux-container.sh
 
-      - name: Verify ELF architecture and fixed layout
+      - name: Verify i386 PIE and native symbols
         run: scripts/verify-modern-linux.sh build/modern-linux-container/th08-modern
 
       - name: Create portable archive
