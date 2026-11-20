@@ -72,7 +72,8 @@ jobs:
   build-linux-x86_64:
     if: ${{ !inputs.i386_only }}
     name: Build Linux x86_64 package
-    runs-on: ubuntu-latest
+    # Keep release binaries compatible with the Ubuntu 24.04 runtime.
+    runs-on: ubuntu-24.04
     timeout-minutes: 45
     steps:
       - uses: actions/checkout@v7
