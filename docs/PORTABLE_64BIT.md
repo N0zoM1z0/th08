@@ -1,9 +1,10 @@
 # Native 64-bit Linux port
 
-TH08 now has a native-layout 64-bit Linux build alongside the original
-fixed-layout i386 port. Both products compile the reconstructed authored game
-sources and use the repository SDL2/OpenGL backend. Supply your own original
-game data to run them.
+TH08 ships native-layout x86_64 and experimental AArch64 Linux packages from
+this branch. The release i386 package comes from `main`, where it uses an ELF
+PIE with native game storage. All three compile the reconstructed game sources
+and use the repository SDL2/OpenGL backend. Supply your own original game data
+to run them.
 
 Stable packages are available from the
 [latest TH08 release](https://github.com/N0zoM1z0/th08/releases/latest).

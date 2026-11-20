@@ -26,8 +26,8 @@ paths; whole-executable identity is still in progress.
 > [!IMPORTANT]
 > 🌙 The authored reconstruction is complete, and native Linux play now covers
 > both i386 and x86_64. Download
-> [TH08 Reconstruction v0.2.1 — Linux Runtime Refresh](https://github.com/N0zoM1z0/th08/releases/latest);
-> active ELF64 source lives on
+> the [latest native Linux release](https://github.com/N0zoM1z0/th08/releases/latest).
+> Active ELF64 source lives on
 > [`port/portable-64bit`](https://github.com/N0zoM1z0/th08/tree/port/portable-64bit).
 > Windows and macOS ports remain in progress.
 

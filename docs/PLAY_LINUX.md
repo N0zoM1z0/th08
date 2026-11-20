@@ -5,12 +5,9 @@ release lane includes the established 32-bit x86 product and a native-layout
 x86_64 product; an AArch64 build is available for hardware validation. Wine,
 Docker, and the original `th08.exe` are not runtime requirements.
 
-Release v0.2.1 refreshes all three packages after the native Windows i386
-prerequisite recovered shared source-ownership and initialization defects. It
-also adds bounded optimization and memory-safety repairs to the handwritten
-native-layout compatibility code. These changes do not alter the exact-facing
-VC7 source path or make the experimental AArch64 package a gameplay-validated
-product.
+The release builds the i386 package from `main`, which now uses native game
+storage and an ELF PIE. The x86_64 and experimental AArch64 packages use the
+native layouts on `port/portable-64bit`.
 
 This is the release-package guide. The
 [source-checkout instructions](#build-and-run-from-a-source-checkout) below
