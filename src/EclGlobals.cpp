@@ -98,11 +98,6 @@ DIFFABLE_STATIC_ARRAY_ASSIGN(EclExInstructionCallback, 32, g_EclExInsn) = {
 };
 
 DIFFABLE_STATIC(u32, g_EclGameTimeScaleFlags);
-DIFFABLE_STATIC(EclManager, g_EclManager);
-
-namespace EclRunLow
-{
-DIFFABLE_STATIC(EclCallParameterCopy, g_EclCallParameters);
-} // namespace EclRunLow
+DIFFABLE_STATIC(EclRuntimeState, g_EclRuntime);
 
 } // namespace th08

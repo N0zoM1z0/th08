@@ -677,6 +677,23 @@ struct EclManager
 C_ASSERT(sizeof(EclManager) == 0x168);
 C_ASSERT(offsetof(EclManager, timelineState) == 0x8);
 
-DIFFABLE_EXTERN(EclManager, g_EclManager);
+struct EclCallParameters
+{
+    i32 ints[4];
+    f32 floats[4];
+};
+C_ASSERT(sizeof(EclCallParameters) == 0x20);
+
+// Both parts are cleared together when the enemy chain is registered.
+struct EclRuntimeState
+{
+    EclManager manager;
+    EclCallParameters callParameters;
+};
+C_ASSERT(offsetof(EclRuntimeState, manager) == 0);
+C_ASSERT(offsetof(EclRuntimeState, callParameters) == 0x168);
+C_ASSERT(sizeof(EclRuntimeState) == 0x188);
+
+DIFFABLE_EXTERN(EclRuntimeState, g_EclRuntime);
 
 } // namespace th08

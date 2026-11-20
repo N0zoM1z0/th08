@@ -103,8 +103,7 @@ th08::g_Background,0x4e4030,global
 th08::g_BackgroundDrawChainLowPrio,0x4ea630,global
 th08::g_BackgroundCalcChain,0x4ea650,global
 th08::g_Spellcard,0x4ea670,global
-th08::g_EclManager,0x4eccb8,global
-th08::EclRunLow::g_EclCallParameters,0x4ece20,global
+th08::g_EclRuntime,0x4eccb8,global
 th08::g_EffectManager,0x4ece60,global
 th08::g_EffectManagerCalcChain,0x577ebc,global
 th08::g_EffectManagerDrawChain,0x577edc,global

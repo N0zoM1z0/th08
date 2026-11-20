@@ -11,7 +11,12 @@ adds native layouts and the Linux x86_64/AArch64 paths. The completed
 its source and useful findings are incorporated. Keep these branches and
 replay each branch's affected comparisons when moving source changes.
 
-This checkout follows `main`, with the exact reconstruction and i386 builds.
+`reconstruction/position-independence` starts from `main`. Its
+[PI acceptance checks](POSITION_INDEPENDENCE.md) cover symbolic references,
+shared storage, and behavior after moving linked objects. The ECL runtime
+reset now has one owner. Next are the Supervisor and score field aliases,
+followed by the Linux i386 fixed-address arena.
+
 The `.analysis/portable-perspective-rounding` worktree contains uncommitted
 billboard/transparent-quad tools and notes. Preserve that entire worktree and
 its inputs. Other experiment branches remain available through Git.

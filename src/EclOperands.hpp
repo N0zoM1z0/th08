@@ -15,13 +15,4 @@ f32 *__fastcall ResolveFloatLValue(Enemy *enemy, f32 *operand, u16 flags, i32 fl
 
 } // namespace EclOperands
 
-namespace EclRunLow
-{
-struct EclCallParameterCopy
-{
-    i32 ints[4];
-    f32 floats[4];
-};
-extern EclCallParameterCopy g_EclCallParameters;
-} // namespace EclRunLow
 } // namespace th08

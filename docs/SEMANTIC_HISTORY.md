@@ -10,6 +10,24 @@ reproduce affected comparisons for new source changes.
 
 ## Completed batches
 
+### ECL runtime reset owner — 2026-11-20
+
+`EnemyManager::AddedCallback @ 0x0042EBF0` clears `0x188` bytes from
+`0x004ECCB8` in both resource branches. In retail, the range contains the
+`0x168`-byte manager and the `0x20`-byte shared call parameters at
+`0x004ECE20`. In the prior VC7 link it reached 32 bytes into `g_EffectManager`.
+The aggregate `g_EclRuntime` owns the complete range and leaves the
+`EclManager` type at its original size. ECL parameter readers and the copy at
+`0x00421BD0` use the member at `+0x168`. The comparison manifests now resolve
+those references against the aggregate with their member addends.
+
+The affected object replay and cold `verify-exact-units.py --all` pass. The
+normal PE/map verifies the callback linkage. The callback retains partial
+initialized-data coverage. The Linux i386 link places `g_EclRuntime` outside
+the retail arena. In GDB, the resource-reuse path preserved the file and
+subtable pointers, cleared seeded timeline and call-parameter values, and
+left a seeded `g_EffectManager.nextEffectIndex` unchanged.
+
 ### ANM player-bullet draw-mode protocol — 2026-09-19
 
 Scope: `AnmManager::ExecuteScript @ 0x0045EA00`,

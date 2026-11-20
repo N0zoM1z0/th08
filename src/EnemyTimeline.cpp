@@ -37,9 +37,9 @@ Enemy *EnemyManager::SpawnEnemy1(i32 eclSubroutineId, const D3DXVECTOR3 *positio
         if (life >= 0)
             enemy->life = life;
         enemy->position = *FLOAT3_CONST_PTR(position);
-        g_EclManager.CallEclSub(
+        g_EclRuntime.manager.CallEclSub(
             &enemy->mainEclContextStorage, (i16)eclSubroutineId);
-        if (g_EclManager.RunEcl(enemy) == ZUN_ERROR)
+        if (g_EclRuntime.manager.RunEcl(enemy) == ZUN_ERROR)
         {
             reinterpret_cast<EnemyFlag1Bits *>(&enemy->flags1)->active = 0;
             i = 480;
@@ -88,12 +88,12 @@ Enemy *EnemyManager::SpawnEnemy2(i32 eclSubroutineId, const D3DXVECTOR3 *positio
         if (life >= 0)
             enemy->life = life;
         enemy->position = *FLOAT3_CONST_PTR(position);
-        g_EclManager.CallEclSub(
+        g_EclRuntime.manager.CallEclSub(
             &enemy->mainEclContextStorage, (i16)eclSubroutineId);
         *reinterpret_cast<EnemyContextCopy *>(
             enemy->mainEclContextStorage.intVariables) =
             *reinterpret_cast<const EnemyContextCopy *>(contextInts);
-        if (g_EclManager.RunEcl(enemy) == ZUN_ERROR)
+        if (g_EclRuntime.manager.RunEcl(enemy) == ZUN_ERROR)
         {
             reinterpret_cast<EnemyFlag1Bits *>(&enemy->flags1)->active = 0;
             i = 480;

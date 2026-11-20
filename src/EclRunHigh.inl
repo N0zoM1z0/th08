@@ -571,7 +571,7 @@ enter_subroutine:
                    0x8A * sizeof(i32));
         }
 
-        g_EclManager.CallEclSub(
+        g_EclRuntime.manager.CallEclSub(
             reinterpret_cast<EnemyEclContext *>(
                 &TH08_ECL_CONTEXT_ENEMY(ctx)->mainEclContextStorage),
             TH08_ECL_CONTEXT_ENEMY(ctx)->eclSubroutineIds[
@@ -663,7 +663,7 @@ enter_subroutine:
                     0, sizeof(EnemyChildEclBlock));
                 TH08_ECL_CONTEXT_ENEMY(ctx)->childEclBlocks[lhsInt]->subId =
                     TH08_ECL_READ_I(ctx, 1);
-                g_EclManager.CallEclSub(
+                g_EclRuntime.manager.CallEclSub(
                     &(TH08_ECL_CONTEXT_ENEMY(ctx)
                           ->childEclBlocks[lhsInt]
                           ->eclContext),

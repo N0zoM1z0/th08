@@ -108,11 +108,11 @@ i32 EnemyManager::OnUpdate()
     this->drawGroupHeads[1] = 0;
     this->drawGroupHeads[0] = 0;
 
-    for (enemyIndex = 0; enemyIndex < g_EclManager.GetTimelineCount(); ++enemyIndex)
+    for (enemyIndex = 0; enemyIndex < g_EclRuntime.manager.GetTimelineCount(); ++enemyIndex)
     {
         if (this->timelines[enemyIndex].instruction == 0)
         {
-            this->timelines[enemyIndex].instruction = g_EclManager.GetTimeline(enemyIndex);
+            this->timelines[enemyIndex].instruction = g_EclRuntime.manager.GetTimeline(enemyIndex);
         }
         this->timelines[enemyIndex].Run();
     }
@@ -154,7 +154,7 @@ i32 EnemyManager::OnUpdate()
             enemy->UpdateYoukaiAlignment();
 
     run_enemy_ecl_after_pause:
-        if (g_EclManager.RunEcl(enemy) == -1)
+        if (g_EclRuntime.manager.RunEcl(enemy) == -1)
         {
             enemy->flags1 &= ~ENEMY_FLAG_ACTIVE;
             enemy->Despawn();
@@ -589,7 +589,7 @@ i32 EnemyManager::OnUpdate()
                        &g_EnemyManager.spawnTemplate.bulletSpawnDescriptor,
                        sizeof(BulletSpawnDescriptor));
                 enemy->shootIntervalFrames = 0;
-                g_EclManager.CallEclSub(
+                g_EclRuntime.manager.CallEclSub(
                     reinterpret_cast<EnemyEclContext *>(
                         &enemy->mainEclContextStorage),
                     enemy->deathCallbackSubId);
