@@ -1,11 +1,51 @@
 # Cirno-Labs reference audit
 
-This audit on `audit/cirno-reference`, based on `bcddaa2c`, found and repaired
-one initialized-data omission. It did not add authored exact credit. The
-remaining replay callback has a new compiler explanation, but its missing
-source construct is still unknown.
+The initial audit on `audit/cirno-reference`, based on `bcddaa2c`, restored
+the missing sixth replay difficulty label and explained the register phase
+of the remaining replay callback. The follow-up below checks the newer
+reference's standalone build and the current state of the callback.
 
-## Pinned inputs and scope
+## Follow-up at Cirno-Labs a90b279
+
+The ignored checkout at `_reference/cirno-th08/` is now at
+[`a90b279730ce`](https://github.com/Cirno-Labs/th08/commit/a90b279730cef11a66feb90535948d2d7b091689),
+with decomp-tools at `e9a0d190f742`. The target checksum and all 1,116 starts
+and extents in the game-code range still agree.
+
+Cirno still uses the [empty constant-false conditional](https://github.com/Cirno-Labs/th08/blob/a90b279730cef11a66feb90535948d2d7b091689/src/replay.cpp#L313-L337)
+in `PlayOnUpdateWithSeeds @ 0x004526C0`. A cold VC7 build of our `68d31a8c`
+passed every accepted authored unit. The focused comparison of our
+`PlaybackExtendedInputAndFps` still reports `0x16A` against the target's
+`0x169`. The [earlier controls](#remaining-callback-register-phase-is-explained-source-is-not)
+explain that difference. The original source that produced this register
+sequence is still unknown.
+
+The reference also corrected [key-config switch indexes 3–8](https://github.com/Cirno-Labs/th08/commit/9b214750316d5bc9d458b406a0cd0f8662b02481)
+during the standalone link work. Our `OnUpdateKeyConfig @ 0x00469636`
+already maps Skip to 3 and Pause to 4. Its strict comparison passes through
+`0x973` bytes, including all nine jump-table entries.
+
+We built Cirno's standalone target serially with the repository's VC7
+13.00.9466 and SDK inputs, using DirectX 8.0 headers first and VC7's
+prerelease DirectX libraries at link time. `tools/project.py check-exe`
+and an independent `cmp` matched all 840,704 bytes of the canonical PE.
+The link map places `PlayOnUpdateWithSeeds` at `0x004526C0`, and all 361
+linked bytes there match. Cirno's layout checker also passed for the
+recorded game functions, writable globals and readonly COMDATs.
+
+The [link notes](https://github.com/Cirno-Labs/th08/blob/a90b279730cef11a66feb90535948d2d7b091689/docs/exe-parity.md)
+explain the recovered `/ORDER`
+placement for code and constants, original import and CRT load order, and
+the target's identical-COMDAT folding choices. The result with
+`/OPT:REF` depends on Cirno's object graph, including dead functions
+that affect which COMDATs are folded and inferred source splits.
+The build extracts the resource tree and copies the link timestamp from
+the original. It compiles and links the program code and data.
+The standalone build compiled 51 source translation units and reproduced
+the Rich header's count of 63 for C++ build 9466. Treat the Rich count as
+a link-level observation when reasoning about source splits.
+
+## Initial audit inputs and scope
 
 - Canonical Japanese TH08 1.00d: 840,704 bytes, SHA-256
   `330fbdbf58a710829d65277b4f312cfbb38d5448b3df523e79350b879213d924`.
@@ -148,9 +188,9 @@ environment. Generated source copies were converted from UTF-8 to CP932 under
 `build/cirno-audit/reference/`; reference source remained unchanged. Compilation
 used the reference's `/Od /Gr /GX /Oi /Gy /GF`, per-file `// cflags:` overrides,
 `TH08_EXE=1`, and an explicit `/I scripts/prefix/mssdk/include` before the
-ordinary include paths. This selects DX8's 20-byte `D3DXIMAGE_INFO` rather than
-the prerelease Platform SDK's incompatible definition. No reference executable
-was linked or playtested.
+ordinary include paths. This selects DX8's 20-byte `D3DXIMAGE_INFO`. The
+prerelease Platform SDK defines a larger struct. That pass stopped at the
+object files.
 
 Screening joined 82 initialized owners by canonical target address using
 reference symbols and our relocation manifests. Scalar bytes, resolved pointer

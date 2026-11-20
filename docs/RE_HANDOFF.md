@@ -40,6 +40,8 @@ The diagnostic unit remains unaccepted.
 
 Whole-image layout and target-linked library work should start from a concrete
 link difference; see [WHOLE_IMAGE_RECONSTRUCTION.md](WHOLE_IMAGE_RECONSTRUCTION.md).
+The [Cirno follow-up](CIRNO_REFERENCE_AUDIT.md#follow-up-at-cirno-labs-a90b279)
+reproduces a byte-identical PE and records the independent build's link inputs.
 Do not resume broad library scanning merely to increase coverage.
 
 ## Verified conclusions and open runtime work
