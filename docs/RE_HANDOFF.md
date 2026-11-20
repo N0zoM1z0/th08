@@ -12,6 +12,11 @@ its source and useful findings are incorporated. Keep these branches and
 replay each branch's affected comparisons when moving source changes.
 
 This checkout follows the native-layout `port/portable-64bit` branch.
+This branch includes the shared storage and GameManager field fixes from `main`. The
+[64-bit validation record](SEMANTIC_HISTORY.md#shared-pi-ownership-in-the-64-bit-port--2026-11-20)
+covers the reordered x86_64 link, Final B and Extra replays, and a
+`score.dat` round trip.
+
 The `.analysis/portable-perspective-rounding` worktree contains uncommitted
 billboard/transparent-quad tools and notes. Preserve that entire worktree and
 its inputs. Other experiment branches remain available through Git.
