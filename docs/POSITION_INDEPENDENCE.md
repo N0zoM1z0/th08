@@ -108,3 +108,47 @@ the reordered executable and its paired map to repeat the comparison.
 These experiments cover the listed owners, data contracts, and exercised
 runtime paths. A whole-image PI claim requires evidence for the remaining
 initialized data and linked library paths.
+
+## Solver replay validation
+
+`th08-solver` at `bf782474` generated two Magic Team Lunatic Stage 1
+Practice replays with the existing seed `23035`. One run used item guidance
+and required all captures. The other disabled item guidance and made
+captures optional. Both re-executed their input tapes to the same terminal
+state in a fresh solver process. The published Scarlet Team Extra replay
+with seed `9098` supplied a separate route with a different shot and seed.
+
+All three replays reached their natural end on retail 1.00d, the reordered
+VC7 `bugfix` build from `3669a7fb`, the reordered x86_64 build from `633e81ee`,
+and the solver's headless playback. Each agreed with retail on all 25
+recorded fields, including the exact float bits, and on the stage-end score.
+
+| Replay | Calculations |
+| --- | ---: |
+| Stage 1 with item guidance | 11,068 |
+| Stage 1 without item guidance | 13,508 |
+| Published Scarlet Extra | 76,721 |
+
+The solver used GCC 13. A standalone `std::filesystem::absolute` program
+reproduced the startup crash seen with the host's GCC 8 build. Generation
+used one CPU with a 4 GiB hard memory cap. The two runs took 96 and 120
+seconds and each peaked below 74 MiB across its process tree. The local
+replays, retail traces, comparison reports, and measurements are under
+`build/solver-replay-audit/`. The x86_64 captures are in the same relative
+directory in the portable worktree.
+
+## Silent Selene replay validation
+
+Ten selected Silent Selene replays covered all five difficulties, both
+Stage 4 branches, Final A, Final B, Extra, and a tool-assisted Extra run.
+The original 1.00d executable and the same reordered VC7 and x86_64 builds
+used above agreed on all 25 recorded fields over 769,880 calculations.
+All ten reached their natural end and matched every recorded stage-end
+score. The selection, hashes, and per-replay results are in the local
+`build/silent-selene/summary.json`.
+
+Four runs ended at game over with four or five input records remaining in
+the final stage. The original executable produced the same complete trace
+on a second capture for each file. Those checks pinned the observed tail
+length to each replay hash. The repository's published replay corpus keeps
+its existing acceptance rules.
