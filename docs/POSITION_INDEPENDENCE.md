@@ -74,9 +74,37 @@ stage music table moved from `0x000F0160` to `0x000F1100`, and the enemy
 registration callback moved from `0x00064B20` to `0x0009F7A2`. These are ELF
 symbol values before load bias.
 
-Both links passed the asset-free ECL reset and shared-field checks. Before
-`main`, all 27 stage music entries matched the original table, and sampled
+Both links passed the asset-free ECL reset and shared-field checks. At entry
+to `main`, all 27 stage music entries matched the original table, and sampled
 spell, bonus, dialogue, and effect data had their expected values. Both
 executables ran from the title into the bundled Stage 5 demo and loaded its
 SHT, STD, ECL, and message files. The verifier rejects the original fixed
 layout and a PIE carrying an absolute TH08 symbol.
+
+## Windows i386 link experiment
+
+The normal VC7 build passes the cold accepted-unit replay. The playable
+VC7 `bugfix` build was also linked with its game objects in reverse order,
+using the same libraries. The `/out` argument of the Ninja link command
+selected a separate PE and map. The regular and reordered links moved code,
+initialized data, and mutable state within the image.
+
+| Symbol | Regular link | Reordered link |
+| --- | --- | --- |
+| `EnemyManager::AddedCallback` | `0x00420160` | `0x0045AE60` |
+| `g_GuiStageMusicContexts` | `0x004D45B0` | `0x004D4300` |
+| `g_EclRuntime` | `0x004F9F18` | `0x018C4FE0` |
+| `g_EffectManager` | `0x004FA0A0` | `0x01839F40` |
+| `g_GameManager` | `0x0161C790` | `0x00764AF0` |
+
+The normal PE and both `bugfix` links resolve the checked ECL, Supervisor,
+and GameManager operands to their owning objects and members. The ECL reset
+range stays disjoint from the effect manager. All declared initialized-data
+contracts pass in the reordered PE. Under Wine, the reordered build completed
+`easy-0-b` through Final B and agreed with the attested retail recording on all
+25 recorded fields for 107,296 calculations. Use `test-replay-suite.py` with
+the reordered executable and its paired map to repeat the comparison.
+
+These experiments cover the listed owners, data contracts, and exercised
+runtime paths. A whole-image PI claim requires evidence for the remaining
+initialized data and linked library paths.
