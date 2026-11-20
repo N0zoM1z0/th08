@@ -910,7 +910,7 @@ void __fastcall ExitScaledBulletTime(Enemy *enemy, EclExInstruction *instruction
     g_Supervisor.framerateMultiplier =
         1.0f / static_cast<f32>(instruction->value);
     if (g_Supervisor.framerateMultiplier < 1.0f)
-        g_EclGameTimeScaleFlags |= 0x20U;
+        reinterpret_cast<u32 &>(g_Supervisor.flags) |= 0x20U;
     g_Supervisor.framerateMultiplier = 1.0f;
     g_Background.spellVms[0].SetInterrupt(1);
     g_Background.spellVms[1].SetInterrupt(1);

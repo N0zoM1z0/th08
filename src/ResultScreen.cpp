@@ -539,7 +539,7 @@ void ResultScreen::LogScoreDataToFile(ResultScreen *resultScreen)
         g_GameManager.plst.playDataByDifficulty[HARD].continues,
         g_GameManager.plst.playDataByDifficulty[LUNATIC].continues,
         g_GameManager.plst.playDataByDifficulty[EXTRA].continues,
-        g_GameManager.plst.playDataByDifficulty[MAX_DIFFICULTIES].continues);
+        g_GameManager.plst.playDataTotals.continues);
     outputCursor = AppendLogFormat(outputCursor, TH_RESULT_PRACTICE_COUNT "\r\n",
         g_GameManager.plst.playDataByDifficulty[EASY].practices,
         g_GameManager.plst.playDataByDifficulty[NORMAL].practices,

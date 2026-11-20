@@ -1204,7 +1204,7 @@ i32 InitializeScoreData()
                 .highScores[g_GameManager.currentStage][g_GameManager.difficulty];
         g_GameManager.pscrData[g_GameManager.shotType]
             .attempts[g_GameManager.currentStage][g_GameManager.difficulty]++;
-        g_GameManager.pscrData[g_GameManager.shotType].shotNumber = 1;
+        g_GameManager.pscrData[g_GameManager.shotType].shouldSerialize = 1;
     }
 
     ScoreDat::ReleaseScore(scoreDat);

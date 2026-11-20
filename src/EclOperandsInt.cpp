@@ -86,14 +86,14 @@ i32 __fastcall ResolveInt(Enemy *enemy, i32 operand)
     case ECL_OPERAND_CALL_FLOAT_1: return (i32)ECL_CONTEXT->callParameterFloats[1];
     case ECL_OPERAND_CALL_FLOAT_2: return (i32)ECL_CONTEXT->callParameterFloats[2];
     case ECL_OPERAND_CALL_FLOAT_3: return (i32)ECL_CONTEXT->callParameterFloats[3];
-    case ECL_OPERAND_SHARED_CALL_INT_0: return EclRunLow::g_EclCallParameters.ints[0];
-    case ECL_OPERAND_SHARED_CALL_INT_1: return EclRunLow::g_EclCallParameters.ints[1];
-    case ECL_OPERAND_SHARED_CALL_INT_2: return EclRunLow::g_EclCallParameters.ints[2];
-    case ECL_OPERAND_SHARED_CALL_INT_3: return EclRunLow::g_EclCallParameters.ints[3];
-    case ECL_OPERAND_SHARED_CALL_FLOAT_0: return (i32)EclRunLow::g_EclCallParameters.floats[0];
-    case ECL_OPERAND_SHARED_CALL_FLOAT_1: return (i32)EclRunLow::g_EclCallParameters.floats[1];
-    case ECL_OPERAND_SHARED_CALL_FLOAT_2: return (i32)EclRunLow::g_EclCallParameters.floats[2];
-    case ECL_OPERAND_SHARED_CALL_FLOAT_3: return (i32)EclRunLow::g_EclCallParameters.floats[3];
+    case ECL_OPERAND_SHARED_CALL_INT_0: return g_EclRuntime.callParameters.ints[0];
+    case ECL_OPERAND_SHARED_CALL_INT_1: return g_EclRuntime.callParameters.ints[1];
+    case ECL_OPERAND_SHARED_CALL_INT_2: return g_EclRuntime.callParameters.ints[2];
+    case ECL_OPERAND_SHARED_CALL_INT_3: return g_EclRuntime.callParameters.ints[3];
+    case ECL_OPERAND_SHARED_CALL_FLOAT_0: return (i32)g_EclRuntime.callParameters.floats[0];
+    case ECL_OPERAND_SHARED_CALL_FLOAT_1: return (i32)g_EclRuntime.callParameters.floats[1];
+    case ECL_OPERAND_SHARED_CALL_FLOAT_2: return (i32)g_EclRuntime.callParameters.floats[2];
+    case ECL_OPERAND_SHARED_CALL_FLOAT_3: return (i32)g_EclRuntime.callParameters.floats[3];
     case ECL_OPERAND_ENEMY_POSITION_X: return (i32)enemy->worldPosition.x;
     case ECL_OPERAND_ENEMY_POSITION_Y: return (i32)enemy->worldPosition.y;
     case ECL_OPERAND_ENEMY_POSITION_Z: return (i32)enemy->worldPosition.z;
@@ -192,10 +192,10 @@ i32 *__fastcall ResolveIntLValue(Enemy *enemy, i32 *operand, u16 flags, i32 flag
     case ECL_OPERAND_LIFE: return &enemy->life;
     case ECL_OPERAND_ITEM_DROP_TYPE: return &enemy->itemDropType;
     case ECL_OPERAND_SCORE: return &enemy->score;
-    case ECL_OPERAND_SHARED_CALL_INT_0: return &EclRunLow::g_EclCallParameters.ints[0];
-    case ECL_OPERAND_SHARED_CALL_INT_1: return &EclRunLow::g_EclCallParameters.ints[1];
-    case ECL_OPERAND_SHARED_CALL_INT_2: return &EclRunLow::g_EclCallParameters.ints[2];
-    case ECL_OPERAND_SHARED_CALL_INT_3: return &EclRunLow::g_EclCallParameters.ints[3];
+    case ECL_OPERAND_SHARED_CALL_INT_0: return &g_EclRuntime.callParameters.ints[0];
+    case ECL_OPERAND_SHARED_CALL_INT_1: return &g_EclRuntime.callParameters.ints[1];
+    case ECL_OPERAND_SHARED_CALL_INT_2: return &g_EclRuntime.callParameters.ints[2];
+    case ECL_OPERAND_SHARED_CALL_INT_3: return &g_EclRuntime.callParameters.ints[3];
     default: return operand;
     }
 }

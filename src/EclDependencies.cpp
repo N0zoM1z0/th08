@@ -473,7 +473,7 @@ void __fastcall SetPrimaryAnmScripts(
 }
 
 
-C_ASSERT(sizeof(EclCallParameterCopy) == 0x20);
+C_ASSERT(sizeof(EclCallParameters) == 0x20);
 
 // FUNCTION: th08 0x421bd0
 void __fastcall CallSubOnEnemy(
@@ -491,13 +491,13 @@ void __fastcall CallSubOnEnemy(
             *enemy->activeEclContext;
     }
 
-    g_EclManager.CallEclSub(
+    g_EclRuntime.manager.CallEclSub(
         enemy->activeEclContext,
         static_cast<i16>(rawSubId));
 
-    *reinterpret_cast<EclCallParameterCopy *>(
+    *reinterpret_cast<EclCallParameters *>(
         &enemy->activeEclContext->callParameterInts[0]) =
-        g_EclCallParameters;
+        g_EclRuntime.callParameters;
 
     if (((enemy->flags1 >>
           ENEMY_FLAG_DISABLE_ECL_CALL_STACK_SHIFT) & 1) == 0 &&

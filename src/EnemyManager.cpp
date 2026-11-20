@@ -455,7 +455,7 @@ i32 Enemy::HandleLifeCallback()
         {
             this->life = this->lifeCallbackThresholds[i];
             this->phaseStartingLife = this->life;
-            g_EclManager.CallEclSub(
+            g_EclRuntime.manager.CallEclSub(
                 &this->mainEclContextStorage,
                 *reinterpret_cast<i16 *>(&this->lifeCallbackSubIds[i]));
             this->lifeCallbackThresholds[i] = -1;
@@ -490,7 +490,7 @@ i32 Enemy::HandleLifeCallback()
                 enemyCursor->life = 0;
                 if (enemyCursor->deathCallbackSubId >= 0)
                 {
-                    g_EclManager.CallEclSub(
+                    g_EclRuntime.manager.CallEclSub(
                         &enemyCursor->mainEclContextStorage,
                         enemyCursor->deathCallbackSubId);
                     enemyCursor->deathCallbackSubId = -1;
@@ -625,7 +625,7 @@ i32 Enemy::HandleTimerCallback()
         this->lifeCallbackThresholds[selectedOrK] = -1;
     }
 
-    g_EclManager.CallEclSub(
+    g_EclRuntime.manager.CallEclSub(
         &this->mainEclContextStorage,
         *reinterpret_cast<i16 *>(&this->timerCallbackSubId));
     this->timerCallbackThresholdFrames = -1;
@@ -657,7 +657,7 @@ i32 Enemy::HandleTimerCallback()
         enemyCursor->life = 0;
         if (enemyCursor->deathCallbackSubId >= 0)
         {
-            g_EclManager.CallEclSub(
+            g_EclRuntime.manager.CallEclSub(
                 &enemyCursor->mainEclContextStorage,
                 enemyCursor->deathCallbackSubId);
             enemyCursor->deathCallbackSubId = -1;
@@ -1363,17 +1363,10 @@ ZunResult EnemyManager::AddedCallback(EnemyManager *enemyManager)
 
     if (!IsDisableResourceReload())
     {
-#ifdef TH08_MODERN_PORT
-        memset(&g_EclManager, 0, sizeof(g_EclManager));
-        memset(&EclRunLow::g_EclCallParameters, 0,
-               sizeof(EclRunLow::g_EclCallParameters));
-#else
-        memset(&g_EclManager, 0,
-               sizeof(g_EclManager) + sizeof(EclRunLow::g_EclCallParameters));
-#endif
+        memset(&g_EclRuntime, 0, sizeof(g_EclRuntime));
         if (!g_GameManager.flags.isSpellPractice)
         {
-            if (g_EclManager.Load(const_cast<char *>(g_StageEclFiles[g_GameManager.currentStage])) !=
+            if (g_EclRuntime.manager.Load(const_cast<char *>(g_StageEclFiles[g_GameManager.currentStage])) !=
                 ZUN_SUCCESS)
             {
                 return ZUN_ERROR;
@@ -1381,7 +1374,7 @@ ZunResult EnemyManager::AddedCallback(EnemyManager *enemyManager)
         }
         else if (g_GameManager.currentSpellCardNumber >= 0xCD)
         {
-            if (g_EclManager.Load(const_cast<char *>(g_SpellEclFiles[
+            if (g_EclRuntime.manager.Load(const_cast<char *>(g_SpellEclFiles[
                     g_GameManager.currentSpellCardNumber - 0xCD])) !=
                 ZUN_SUCCESS)
             {
@@ -1390,7 +1383,7 @@ ZunResult EnemyManager::AddedCallback(EnemyManager *enemyManager)
         }
         else
         {
-            if (g_EclManager.Load(const_cast<char *>(g_StageSpellEclFiles[g_GameManager.currentStage])) !=
+            if (g_EclRuntime.manager.Load(const_cast<char *>(g_StageSpellEclFiles[g_GameManager.currentStage])) !=
                 ZUN_SUCCESS)
             {
                 return ZUN_ERROR;
@@ -1399,18 +1392,11 @@ ZunResult EnemyManager::AddedCallback(EnemyManager *enemyManager)
     }
     else
     {
-        savedEclFile = g_EclManager.eclFile;
-        savedSubTable = g_EclManager.subTable;
-#ifdef TH08_MODERN_PORT
-        memset(&g_EclManager, 0, sizeof(g_EclManager));
-        memset(&EclRunLow::g_EclCallParameters, 0,
-               sizeof(EclRunLow::g_EclCallParameters));
-#else
-        memset(&g_EclManager, 0,
-               sizeof(g_EclManager) + sizeof(EclRunLow::g_EclCallParameters));
-#endif
-        g_EclManager.eclFile = savedEclFile;
-        g_EclManager.subTable = savedSubTable;
+        savedEclFile = g_EclRuntime.manager.eclFile;
+        savedSubTable = g_EclRuntime.manager.subTable;
+        memset(&g_EclRuntime, 0, sizeof(g_EclRuntime));
+        g_EclRuntime.manager.eclFile = savedEclFile;
+        g_EclRuntime.manager.subTable = savedSubTable;
     }
 
     enemyManager->enemyDropCounter = g_Rng.GetRandomU16InRange(3);
@@ -1445,7 +1431,7 @@ ZunResult EnemyManager::DeletedCallback(EnemyManager *enemyManager)
     }
     if (!IsDisableResourceReload())
     {
-        g_EclManager.Unload();
+        g_EclRuntime.manager.Unload();
     }
 
     D3DXVECTOR3 markerPosition(-999.0f, -999.0f, -999.0f);
@@ -1533,7 +1519,7 @@ i32 EnemyManager::KillAllNonBossEnemies(i32 maxScore, i32 initialScore)
         enemy->DetachFromParentChain();
         if (enemy->deathCallbackSubId >= 0)
         {
-            g_EclManager.CallEclSub(
+            g_EclRuntime.manager.CallEclSub(
                 &enemy->mainEclContextStorage,
                 enemy->deathCallbackSubId);
             enemy->deathCallbackSubId = -1;
