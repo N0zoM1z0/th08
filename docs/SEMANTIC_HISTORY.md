@@ -10,6 +10,30 @@ reproduce affected comparisons for new source changes.
 
 ## Completed batches
 
+### GameManager field relocation bases — 2026-11-20
+
+Nine relocations used alternate retail bases for `g_GameManager`. Those bases
+compensated for incorrect member offsets during comparison. The prior linked
+PE confirmed that all nine instructions reached different bytes from the
+retail members. The manifest now uses the mapped base `0x0160F508` and each
+instruction's actual member addend.
+
+| Retail instruction field | Linked member |
+| --- | --- |
+| `0x0041D6C9`, `0x0041D6D5` | ECL opcode 148 adds 1,800 to `stagePlayTimeAll` at `+0x3DE04`. |
+| `0x0045360E` | Replay text uses `currentStage` at `+0x3DDC4`. |
+| `0x004483AA`, `0x004483C4` | Total play time carries `plst.totalSeconds` at `+0x3D818`. |
+| `0x0044851F`, `0x00448539` | Game play time carries `plst.gameSeconds` at `+0x3D828`. |
+| `0x00454BB7` | Score output reads `plst.playDataTotals.continues` at `+0x3DA04`. |
+| `0x0043BDAF` | Practice initialization sets `pscrData[].shouldSerialize` from the indexed base at `+0x3C7D9`. |
+
+The affected objects and cold exact-unit replay pass. The normal PE and both
+bugfix links use the expected nine member addresses. The configuration
+checker accepts the repaired manifest and rejects the prior GameManager
+bases. The ordinary and reordered Linux links also pass a synthetic opcode
+148 check and both seconds-carry checks. The stage music table has a
+separate 108-byte data contract which passes in COFF and in the linked PE.
+
 ### Supervisor and HSCR field ownership — 2026-11-20
 
 Retail dialogue and HUD use `0x017CE8CC`, the same word that
@@ -2144,9 +2168,10 @@ stage 6B.  Player and ScreenEffect reads of `0x0164D2C8` are
 explicit `i32` casts.  `Player::UpdateShooting` also proves the target's
 singleton-shaped `g_Player.bombState.isInUse` read and the GUI shoot input at
 `g_GuiMessageInputCurrent`.  Target `0x018B8A24` is
-`g_Player.damageAccumulatorThreshold @ +0xE2B2C`.  ECL opcode 148 addresses
-`g_GameManager.catkData[SPELLCARD_ST2_BOSS_3L].inGameHistory.maxBonus[SHOT_MARISA_ALICE]`;
-layout assertions pin each nested offset.  ANM visibility/alpha tests, the
+`g_Player.damageAccumulatorThreshold @ +0xE2B2C`. A later linked-owner
+review established that ECL opcode 148 updates `g_GameManager.stagePlayTimeAll`.
+See [the relocation evidence](#gamemanager-field-relocation-bases--2026-11-20).
+ANM visibility/alpha tests, the
 Enemy VM color write, Spellcard time remaining/limit, and the Item collection
 box now use their asserted owners as well.
 

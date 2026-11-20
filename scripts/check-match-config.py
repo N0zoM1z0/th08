@@ -96,6 +96,9 @@ def main() -> int:
             units = tomllib.load(stream)["units"]
         bindings = {(stable_symbol(row["symbol"]), row["target"])
                     for unit in units for row in unit.get("relocations", []) if row["type"] == "DIR32"}
+        for symbol, address in sorted(bindings):
+            if symbol in {"?g_GameManager@th08@@3UGameManager@1@A", "th08::g_GameManager"} and address != 0x0160F508:
+                fail(f"{symbol} must use target base 0x0160F508 and a member addend, found {address:#010x}")
         for contract in contracts:
             if (stable_symbol(contract["symbol"]), contract["target_address"]) not in bindings:
                 fail(f"data contract {contract['name']} is not bound to a canonical DIR32 symbol/address")

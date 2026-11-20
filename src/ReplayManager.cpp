@@ -802,7 +802,7 @@ void ReplayManager::SaveReplay(const char *replayPath, const char *replayName)
     else
     {
         infoCursor = AppendFormat(infoCursor, TH_REPLAY_INFO_FINAL_STAGE,
-                                  g_GameManager.flags.gameCleared ? "Clear" : ResultScreen::GetStageName(g_GameManager.stageAtStart));
+                                  g_GameManager.flags.gameCleared ? "Clear" : ResultScreen::GetStageName(g_GameManager.currentStage));
     }
 
     infoCursor = AppendFormat(infoCursor, TH_REPLAY_INFO_DEATHS, g_GameManager.GetDeaths());

@@ -777,8 +777,7 @@ enter_subroutine:
     case ECL_OPCODE_SET_BACKGROUND_SCRIPT_LABEL: g_Background.pendingStageScriptLabel = TH08_ECL_READ_I(ctx, 0); break;
     case ECL_OPCODE_SET_BOSS_LIFE_MARKER_COUNT:
         g_Gui.SetBossLifeMarkerCount(TH08_ECL_READ_I(ctx, 0));
-        g_GameManager.catkData[SPELLCARD_ST2_BOSS_3L]
-            .inGameHistory.maxBonus[SHOT_MARISA_ALICE] += 0x708;
+        g_GameManager.stagePlayTimeAll += 1800;
         break;
     case ECL_OPCODE_SPAWN_ENEMY_AT_POSITION:
         if (TH08_ECL_CONTEXT_ENEMY(ctx)->life > 0)

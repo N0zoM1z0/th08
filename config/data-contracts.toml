@@ -22,6 +22,16 @@ data_hex = "40420f0060e3160080841e00a0252600a0252600c0c62d0000093d00808d5b00a09f
 evidence = "Observed nine-dword target table and native owner audit; docs/OWNER_AUDIT.md."
 
 [[contracts]]
+name = "gui-stage-music-contexts"
+kind = "bytes"
+object = "build/Gui.obj"
+symbol = "?g_GuiStageMusicContexts@th08@@3PAUGuiStageMusicContextSet@1@A"
+target_address = 0x004C7240
+size = 108
+data_hex = "0100000002000000000000000300000004000000000000000500000006000000000000000700000008000000000000000700000009000000000000000a0000000b000000000000000c0000000d0000000f0000000c0000000e0000000f000000100000001100000000000000"
+evidence = "Nine three-dword retail rows consumed by gameplay setup and GUI music dispatch; docs/POSITION_INDEPENDENCE.md."
+
+[[contracts]]
 name = "replay-difficulty-labels"
 kind = "pointer_array"
 object = "build/ReplayManager.obj"
