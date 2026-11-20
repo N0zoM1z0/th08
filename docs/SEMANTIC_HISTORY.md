@@ -42,6 +42,13 @@ and its `--verify-only` pass check all 25 fields over 107,296 and 44,106
 calculations respectively, including the recorded stage-end scores. The
 Final B laser observer also resolves the new ECL owner during a live capture.
 
+The same reordered x86_64 binary also matched retail on three solver
+replays and ten Silent Selene replays. The two groups covered 101,297 and
+769,880 calculations respectively. All 25 recorded fields and the
+stage-end scores agreed through natural replay completion. The four
+Silent Selene game-over cases used the final input tail measured on two
+independent retail runs of each replay.
+
 ### ANM player-bullet draw-mode protocol — 2026-09-19
 
 Scope: `AnmManager::ExecuteScript @ 0x0045EA00`,
