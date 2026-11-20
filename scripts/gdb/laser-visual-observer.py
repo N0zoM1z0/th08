@@ -147,7 +147,8 @@ class LaserSpawn(gdb.Breakpoint):
             item["ecl.floatVariables"] = list(struct.unpack("<8I", bytes(gdb.selected_inferior().read_memory(context["floatVariables"].address, 32))))
             sub_id = item["ecl.subId"]
             if sub_id not in spawn_subroutines:
-                manager = value("th08::g_EclManager")
+                runtime = gdb.lookup_global_symbol("th08::g_EclRuntime")
+                manager = runtime.value()["manager"] if runtime else value("th08::g_EclManager")
                 count = int(manager["eclFile"].dereference()["subCount"])
                 if not 0 <= sub_id < count <= 4096:
                     raise RuntimeError("Spawn context has an invalid ECL subroutine index")

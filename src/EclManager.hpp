@@ -197,11 +197,6 @@ void __fastcall ShiftStageEffectOrigins(Float3 *delta);
 DIFFABLE_EXTERN(ChainElem, g_EffectManagerCalcChain);
 DIFFABLE_EXTERN(ChainElem, g_EffectManagerDrawChain);
 
-#ifdef TH08_PORTABLE_NATIVE_LAYOUT
-#define g_EclGameTimeScaleFlags reinterpret_cast<u32 &>(g_Supervisor.flags)
-#else
-DIFFABLE_EXTERN(u32, g_EclGameTimeScaleFlags);
-#endif
 
 // TH08 1.00d ECL instruction protocol.  Every value is explicit because the
 // serialized opcode number is part of the on-disk format; names describe the
@@ -687,6 +682,23 @@ struct EclManager
 C_ASSERT(sizeof(EclManager) == 0x168);
 C_ASSERT(offsetof(EclManager, timelineState) == 0x8);
 
-DIFFABLE_EXTERN(EclManager, g_EclManager);
+struct EclCallParameters
+{
+    i32 ints[4];
+    f32 floats[4];
+};
+C_ASSERT(sizeof(EclCallParameters) == 0x20);
+
+// Both parts are cleared together when the enemy chain is registered.
+struct EclRuntimeState
+{
+    EclManager manager;
+    EclCallParameters callParameters;
+};
+C_ASSERT(offsetof(EclRuntimeState, manager) == 0);
+C_ASSERT(offsetof(EclRuntimeState, callParameters) == 0x168);
+C_ASSERT(sizeof(EclRuntimeState) == 0x188);
+
+DIFFABLE_EXTERN(EclRuntimeState, g_EclRuntime);
 
 } // namespace th08

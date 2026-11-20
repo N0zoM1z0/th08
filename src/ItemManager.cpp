@@ -13,7 +13,6 @@ namespace th08
 {
 
 DIFFABLE_STATIC(ItemManager, g_ItemManager);
-DIFFABLE_STATIC(i32, g_MaxValuePointItemsCollected);
 DIFFABLE_STATIC_ARRAY_ASSIGN(i32, 6, g_PowerUpThresholds) = {8, 24, 48, 80, 128, 999};
 
 // FUNCTION: th08 0x441830
@@ -507,7 +506,7 @@ void Item::CollectPoint()
         }
     }
 
-    g_MaxValuePointItemsCollected++;
+    g_GameManager.hscr.numPointItemsCollected++;
     g_GameManager.UpdateAntiTamper();
 }
 

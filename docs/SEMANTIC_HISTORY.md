@@ -10,6 +10,45 @@ reproduce affected comparisons for new source changes.
 
 ## Completed batches
 
+### Shared PI ownership in the 64-bit port — 2026-11-20
+
+The port shares the retail storage owners established by `12dde807`,
+`831a5719`, and `3669a7fb`. `EnemyManager::AddedCallback` at `0x0042EBF0`
+clears the ECL manager and call parameters as one object, retaining native
+ECL pointers during cached stage reloads. GUI transitions use the Supervisor
+countdown, and point items, bombs, and deathbombs update the HSCR record
+copied by the results screen. The GameManager changes bind opcode 148,
+clock carry, replay labels, practice serialization, and total continues
+to their retail fields. The port's i386 build still uses its existing
+linker script for the remaining fixed-address owners.
+
+On `633e81ee`, a cold VC7 build matched all 1,106 accepted units.
+The normal PE and its map pass the four initialized-data contracts and
+confirm the nine corrected GameManager operands. The i386 Linux build
+passes its layout check and reaches the Stage 5 demo.
+
+Both x86_64 links pass the 54 production layout checks in
+`scripts/test-portable-layout.py`. Reversing the game objects moves
+`g_EclRuntime` from `0x0081F200` to `0x00F3C2A0` and
+`EnemyManager::AddedCallback` from `0x000665F4` to `0x000A2F62`, before
+load bias. The reordered build passes focused checks for cached ECL reset,
+GUI and HSCR writes, opcode 148, and both clock carries. The practice
+attempt survives a `score.dat` round trip, the score report reads the total
+continue count, and an unfinished replay labels the stage where it ended.
+
+With the recorder enabled, the reordered x86_64 executable matches retail
+through the natural end of `easy-0-b` and `extra-1-extra`. The portable suite
+and its `--verify-only` pass check all 25 fields over 107,296 and 44,106
+calculations respectively, including the recorded stage-end scores. The
+Final B laser observer also resolves the new ECL owner during a live capture.
+
+The same reordered x86_64 binary also matched retail on three solver
+replays and ten Silent Selene replays. The two groups covered 101,297 and
+769,880 calculations respectively. All 25 recorded fields and the
+stage-end scores agreed through natural replay completion. The four
+Silent Selene game-over cases used the final input tail measured on two
+independent retail runs of each replay.
+
 ### ANM player-bullet draw-mode protocol — 2026-09-19
 
 Scope: `AnmManager::ExecuteScript @ 0x0045EA00`,

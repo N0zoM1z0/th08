@@ -296,8 +296,7 @@ struct Supervisor
     i32 releaseResourcesOnRestart;
     i32 keepStageResources;
     i32 unconsumedDword170;
-    i32 screenTransitionCountdown; // Commonly set for screen transitions and decremented once per frame, but never actually used for
-                // anything
+    i32 screenTransitionCountdown;
     i32 suppressFpsDisplay;
     BOOL disableVsync;
     ZunBool couldSetRefreshRate;
@@ -344,6 +343,7 @@ C_ASSERT(sizeof(Supervisor) == 0x364);
 C_ASSERT(offsetof(Supervisor, isInitialStageLoad) == 0x164);
 C_ASSERT(offsetof(Supervisor, releaseResourcesOnRestart) == 0x168);
 C_ASSERT(offsetof(Supervisor, keepStageResources) == 0x16c);
+C_ASSERT(offsetof(Supervisor, screenTransitionCountdown) == 0x174);
 C_ASSERT(offsetof(Supervisor, suppressFpsDisplay) == 0x178);
 C_ASSERT(offsetof(Supervisor, framerateMultiplier) == 0x188);
 C_ASSERT(offsetof(Supervisor, recordedFps) == 0x198);

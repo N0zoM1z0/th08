@@ -61,14 +61,14 @@ f32 Enemy::ResolveFloat(f32 operand)
     case ECL_OPERAND_SHOT_TYPE: return (f32)::th08::g_GameManager.shotType;
     case ECL_OPERAND_ITEM_DROP_TYPE: return (f32)this->itemDropType;
     case ECL_OPERAND_SCORE: return (f32)this->score;
-    case ECL_OPERAND_SHARED_CALL_INT_0: return (f32)EclRunLow::g_EclCallParameters.ints[0];
-    case ECL_OPERAND_SHARED_CALL_INT_1: return (f32)EclRunLow::g_EclCallParameters.ints[1];
-    case ECL_OPERAND_SHARED_CALL_INT_2: return (f32)EclRunLow::g_EclCallParameters.ints[2];
-    case ECL_OPERAND_SHARED_CALL_INT_3: return (f32)EclRunLow::g_EclCallParameters.ints[3];
-    case ECL_OPERAND_SHARED_CALL_FLOAT_0: return EclRunLow::g_EclCallParameters.floats[0];
-    case ECL_OPERAND_SHARED_CALL_FLOAT_1: return EclRunLow::g_EclCallParameters.floats[1];
-    case ECL_OPERAND_SHARED_CALL_FLOAT_2: return EclRunLow::g_EclCallParameters.floats[2];
-    case ECL_OPERAND_SHARED_CALL_FLOAT_3: return EclRunLow::g_EclCallParameters.floats[3];
+    case ECL_OPERAND_SHARED_CALL_INT_0: return (f32)g_EclRuntime.callParameters.ints[0];
+    case ECL_OPERAND_SHARED_CALL_INT_1: return (f32)g_EclRuntime.callParameters.ints[1];
+    case ECL_OPERAND_SHARED_CALL_INT_2: return (f32)g_EclRuntime.callParameters.ints[2];
+    case ECL_OPERAND_SHARED_CALL_INT_3: return (f32)g_EclRuntime.callParameters.ints[3];
+    case ECL_OPERAND_SHARED_CALL_FLOAT_0: return g_EclRuntime.callParameters.floats[0];
+    case ECL_OPERAND_SHARED_CALL_FLOAT_1: return g_EclRuntime.callParameters.floats[1];
+    case ECL_OPERAND_SHARED_CALL_FLOAT_2: return g_EclRuntime.callParameters.floats[2];
+    case ECL_OPERAND_SHARED_CALL_FLOAT_3: return g_EclRuntime.callParameters.floats[3];
 
     case ECL_OPERAND_LOCAL_FLOAT_0: return ECL_CONTEXT(this)->floatVariables[0];
     case ECL_OPERAND_LOCAL_FLOAT_1: return ECL_CONTEXT(this)->floatVariables[1];
@@ -188,10 +188,10 @@ f32 *__fastcall ResolveFloatLValue(Enemy *enemy, f32 *operand, u16 flags, i32 fl
     case ECL_OPERAND_PLAYER_POSITION_Z: return &g_Player.position.z;
     case ECL_OPERAND_EXTRA_FLOAT_0: return &ECL_CONTEXT(enemy)->extraFloatVariables[0];
     case ECL_OPERAND_EXTRA_FLOAT_1: return &ECL_CONTEXT(enemy)->extraFloatVariables[1];
-    case ECL_OPERAND_SHARED_CALL_FLOAT_0: return &EclRunLow::g_EclCallParameters.floats[0];
-    case ECL_OPERAND_SHARED_CALL_FLOAT_1: return &EclRunLow::g_EclCallParameters.floats[1];
-    case ECL_OPERAND_SHARED_CALL_FLOAT_2: return &EclRunLow::g_EclCallParameters.floats[2];
-    case ECL_OPERAND_SHARED_CALL_FLOAT_3: return &EclRunLow::g_EclCallParameters.floats[3];
+    case ECL_OPERAND_SHARED_CALL_FLOAT_0: return &g_EclRuntime.callParameters.floats[0];
+    case ECL_OPERAND_SHARED_CALL_FLOAT_1: return &g_EclRuntime.callParameters.floats[1];
+    case ECL_OPERAND_SHARED_CALL_FLOAT_2: return &g_EclRuntime.callParameters.floats[2];
+    case ECL_OPERAND_SHARED_CALL_FLOAT_3: return &g_EclRuntime.callParameters.floats[3];
 
     case ECL_OPERAND_INTERPOLATION_ORIGIN_X: return &enemy->movementInterpolationOrigin.x;
     case ECL_OPERAND_INTERPOLATION_ORIGIN_Y: return &enemy->movementInterpolationOrigin.y;

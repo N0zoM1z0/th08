@@ -4204,7 +4204,7 @@ target = 0x0041F420
 [[units.relocations]]
 offset = 0x4450
 type = "DIR32"
-symbol = "?g_EclManager@th08@@3UEclManager@1@A"
+symbol = "?g_EclRuntime@th08@@3UEclRuntimeState@1@A"
 target = 0x004ECCB8
 
 [[units.relocations]]
@@ -4442,7 +4442,7 @@ target = 0x0041F420
 [[units.relocations]]
 offset = 0x4AA5
 type = "DIR32"
-symbol = "?g_EclManager@th08@@3UEclManager@1@A"
+symbol = "?g_EclRuntime@th08@@3UEclRuntimeState@1@A"
 target = 0x004ECCB8
 
 [[units.relocations]]
@@ -4839,13 +4839,15 @@ target = 0x00423130
 offset = 0x5219
 type = "DIR32"
 symbol = "?g_GameManager@th08@@3UGameManager@1@A"
-target = 0x01649508
+target = 0x0160F508
+addend = 0x3DE04
 
 [[units.relocations]]
 offset = 0x5225
 type = "DIR32"
 symbol = "?g_GameManager@th08@@3UGameManager@1@A"
-target = 0x01649508
+target = 0x0160F508
+addend = 0x3DE04
 
 [[units.relocations]]
 offset = 0x5245
@@ -7143,36 +7145,37 @@ target = 0x004A3E70
 [[units.relocations]]
 offset = 0x413
 type = "DIR32"
-symbol = "?g_EclCallParameters@EclRunLow@th08@@3UEclCallParameterCopy@12@A"
-target = 0x004ECE20
+symbol = "?g_EclRuntime@th08@@3UEclRuntimeState@1@A"
+target = 0x004ECCB8
+addend = 0x168
 
 [[units.relocations]]
 offset = 0x41D
 type = "DIR32"
-symbol = "?g_EclCallParameters@EclRunLow@th08@@3UEclCallParameterCopy@12@A"
-target = 0x004ECE20
-addend = 0x4
+symbol = "?g_EclRuntime@th08@@3UEclRuntimeState@1@A"
+target = 0x004ECCB8
+addend = 0x16C
 
 [[units.relocations]]
 offset = 0x427
 type = "DIR32"
-symbol = "?g_EclCallParameters@EclRunLow@th08@@3UEclCallParameterCopy@12@A"
-target = 0x004ECE20
-addend = 0x8
+symbol = "?g_EclRuntime@th08@@3UEclRuntimeState@1@A"
+target = 0x004ECCB8
+addend = 0x170
 
 [[units.relocations]]
 offset = 0x431
 type = "DIR32"
-symbol = "?g_EclCallParameters@EclRunLow@th08@@3UEclCallParameterCopy@12@A"
-target = 0x004ECE20
-addend = 0xC
+symbol = "?g_EclRuntime@th08@@3UEclRuntimeState@1@A"
+target = 0x004ECCB8
+addend = 0x174
 
 [[units.relocations]]
 offset = 0x43C
 type = "DIR32"
-symbol = "?g_EclCallParameters@EclRunLow@th08@@3UEclCallParameterCopy@12@A"
-target = 0x004ECE20
-addend = 0x10
+symbol = "?g_EclRuntime@th08@@3UEclRuntimeState@1@A"
+target = 0x004ECCB8
+addend = 0x178
 
 [[units.relocations]]
 offset = 0x441
@@ -7183,9 +7186,9 @@ target = 0x004A3E70
 [[units.relocations]]
 offset = 0x44C
 type = "DIR32"
-symbol = "?g_EclCallParameters@EclRunLow@th08@@3UEclCallParameterCopy@12@A"
-target = 0x004ECE20
-addend = 0x14
+symbol = "?g_EclRuntime@th08@@3UEclRuntimeState@1@A"
+target = 0x004ECCB8
+addend = 0x17C
 
 [[units.relocations]]
 offset = 0x451
@@ -7196,9 +7199,9 @@ target = 0x004A3E70
 [[units.relocations]]
 offset = 0x45C
 type = "DIR32"
-symbol = "?g_EclCallParameters@EclRunLow@th08@@3UEclCallParameterCopy@12@A"
-target = 0x004ECE20
-addend = 0x18
+symbol = "?g_EclRuntime@th08@@3UEclRuntimeState@1@A"
+target = 0x004ECCB8
+addend = 0x180
 
 [[units.relocations]]
 offset = 0x461
@@ -7209,9 +7212,9 @@ target = 0x004A3E70
 [[units.relocations]]
 offset = 0x46C
 type = "DIR32"
-symbol = "?g_EclCallParameters@EclRunLow@th08@@3UEclCallParameterCopy@12@A"
-target = 0x004ECE20
-addend = 0x1C
+symbol = "?g_EclRuntime@th08@@3UEclRuntimeState@1@A"
+target = 0x004ECCB8
+addend = 0x184
 
 [[units.relocations]]
 offset = 0x471
@@ -8172,29 +8175,30 @@ addend = 0x3DE2C
 [[units.relocations]]
 offset = 0x200
 type = "DIR32"
-symbol = "?g_EclCallParameters@EclRunLow@th08@@3UEclCallParameterCopy@12@A"
-target = 0x004ECE20
+symbol = "?g_EclRuntime@th08@@3UEclRuntimeState@1@A"
+target = 0x004ECCB8
+addend = 0x168
 
 [[units.relocations]]
 offset = 0x207
 type = "DIR32"
-symbol = "?g_EclCallParameters@EclRunLow@th08@@3UEclCallParameterCopy@12@A"
-target = 0x004ECE20
-addend = 0x4
+symbol = "?g_EclRuntime@th08@@3UEclRuntimeState@1@A"
+target = 0x004ECCB8
+addend = 0x16C
 
 [[units.relocations]]
 offset = 0x20E
 type = "DIR32"
-symbol = "?g_EclCallParameters@EclRunLow@th08@@3UEclCallParameterCopy@12@A"
-target = 0x004ECE20
-addend = 0x8
+symbol = "?g_EclRuntime@th08@@3UEclRuntimeState@1@A"
+target = 0x004ECCB8
+addend = 0x170
 
 [[units.relocations]]
 offset = 0x215
 type = "DIR32"
-symbol = "?g_EclCallParameters@EclRunLow@th08@@3UEclCallParameterCopy@12@A"
-target = 0x004ECE20
-addend = 0xC
+symbol = "?g_EclRuntime@th08@@3UEclRuntimeState@1@A"
+target = 0x004ECCB8
+addend = 0x174
 
 [[units.relocations]]
 offset = 0x224
@@ -8516,57 +8520,58 @@ addend = 0x3DBA9
 [[units.relocations]]
 offset = 0x283
 type = "DIR32"
-symbol = "?g_EclCallParameters@EclRunLow@th08@@3UEclCallParameterCopy@12@A"
-target = 0x004ECE20
+symbol = "?g_EclRuntime@th08@@3UEclRuntimeState@1@A"
+target = 0x004ECCB8
+addend = 0x168
 
 [[units.relocations]]
 offset = 0x28E
 type = "DIR32"
-symbol = "?g_EclCallParameters@EclRunLow@th08@@3UEclCallParameterCopy@12@A"
-target = 0x004ECE20
-addend = 0x4
+symbol = "?g_EclRuntime@th08@@3UEclRuntimeState@1@A"
+target = 0x004ECCB8
+addend = 0x16C
 
 [[units.relocations]]
 offset = 0x299
 type = "DIR32"
-symbol = "?g_EclCallParameters@EclRunLow@th08@@3UEclCallParameterCopy@12@A"
-target = 0x004ECE20
-addend = 0x8
+symbol = "?g_EclRuntime@th08@@3UEclRuntimeState@1@A"
+target = 0x004ECCB8
+addend = 0x170
 
 [[units.relocations]]
 offset = 0x2A4
 type = "DIR32"
-symbol = "?g_EclCallParameters@EclRunLow@th08@@3UEclCallParameterCopy@12@A"
-target = 0x004ECE20
-addend = 0xC
+symbol = "?g_EclRuntime@th08@@3UEclRuntimeState@1@A"
+target = 0x004ECCB8
+addend = 0x174
 
 [[units.relocations]]
 offset = 0x2AF
 type = "DIR32"
-symbol = "?g_EclCallParameters@EclRunLow@th08@@3UEclCallParameterCopy@12@A"
-target = 0x004ECE20
-addend = 0x10
+symbol = "?g_EclRuntime@th08@@3UEclRuntimeState@1@A"
+target = 0x004ECCB8
+addend = 0x178
 
 [[units.relocations]]
 offset = 0x2BA
 type = "DIR32"
-symbol = "?g_EclCallParameters@EclRunLow@th08@@3UEclCallParameterCopy@12@A"
-target = 0x004ECE20
-addend = 0x14
+symbol = "?g_EclRuntime@th08@@3UEclRuntimeState@1@A"
+target = 0x004ECCB8
+addend = 0x17C
 
 [[units.relocations]]
 offset = 0x2C5
 type = "DIR32"
-symbol = "?g_EclCallParameters@EclRunLow@th08@@3UEclCallParameterCopy@12@A"
-target = 0x004ECE20
-addend = 0x18
+symbol = "?g_EclRuntime@th08@@3UEclRuntimeState@1@A"
+target = 0x004ECCB8
+addend = 0x180
 
 [[units.relocations]]
 offset = 0x2D0
 type = "DIR32"
-symbol = "?g_EclCallParameters@EclRunLow@th08@@3UEclCallParameterCopy@12@A"
-target = 0x004ECE20
-addend = 0x1C
+symbol = "?g_EclRuntime@th08@@3UEclRuntimeState@1@A"
+target = 0x004ECCB8
+addend = 0x184
 
 [[units.relocations]]
 offset = 0x44D
@@ -9342,30 +9347,30 @@ addend = 0x2B4
 [[units.relocations]]
 offset = 0x206
 type = "DIR32"
-symbol = "?g_EclCallParameters@EclRunLow@th08@@3UEclCallParameterCopy@12@A"
-target = 0x004ECE20
-addend = 0x10
+symbol = "?g_EclRuntime@th08@@3UEclRuntimeState@1@A"
+target = 0x004ECCB8
+addend = 0x178
 
 [[units.relocations]]
 offset = 0x210
 type = "DIR32"
-symbol = "?g_EclCallParameters@EclRunLow@th08@@3UEclCallParameterCopy@12@A"
-target = 0x004ECE20
-addend = 0x14
+symbol = "?g_EclRuntime@th08@@3UEclRuntimeState@1@A"
+target = 0x004ECCB8
+addend = 0x17C
 
 [[units.relocations]]
 offset = 0x21A
 type = "DIR32"
-symbol = "?g_EclCallParameters@EclRunLow@th08@@3UEclCallParameterCopy@12@A"
-target = 0x004ECE20
-addend = 0x18
+symbol = "?g_EclRuntime@th08@@3UEclRuntimeState@1@A"
+target = 0x004ECCB8
+addend = 0x180
 
 [[units.relocations]]
 offset = 0x224
 type = "DIR32"
-symbol = "?g_EclCallParameters@EclRunLow@th08@@3UEclCallParameterCopy@12@A"
-target = 0x004ECE20
-addend = 0x1C
+symbol = "?g_EclRuntime@th08@@3UEclRuntimeState@1@A"
+target = 0x004ECCB8
+addend = 0x184
 
 [[units.relocations]]
 offset = 0x2B8
@@ -9782,7 +9787,7 @@ target = 0x0042C3B0
 [[units.relocations]]
 offset = 0x176
 type = "DIR32"
-symbol = "?g_EclManager@th08@@3UEclManager@1@A"
+symbol = "?g_EclRuntime@th08@@3UEclRuntimeState@1@A"
 target = 0x004ECCB8
 
 [[units.relocations]]
@@ -9794,7 +9799,7 @@ target = 0x0042DFB0
 [[units.relocations]]
 offset = 0x19F
 type = "DIR32"
-symbol = "?g_EclManager@th08@@3UEclManager@1@A"
+symbol = "?g_EclRuntime@th08@@3UEclRuntimeState@1@A"
 target = 0x004ECCB8
 
 [[units.relocations]]
@@ -9857,7 +9862,7 @@ target = 0x0042C420
 [[units.relocations]]
 offset = 0x334
 type = "DIR32"
-symbol = "?g_EclManager@th08@@3UEclManager@1@A"
+symbol = "?g_EclRuntime@th08@@3UEclRuntimeState@1@A"
 target = 0x004ECCB8
 
 [[units.relocations]]
@@ -10782,7 +10787,7 @@ addend = 0x2E24
 [[units.relocations]]
 offset = 0x1496
 type = "DIR32"
-symbol = "?g_EclManager@th08@@3UEclManager@1@A"
+symbol = "?g_EclRuntime@th08@@3UEclRuntimeState@1@A"
 target = 0x004ECCB8
 
 [[units.relocations]]
@@ -14372,7 +14377,8 @@ target = 0x004B7108
 offset = 0x41E
 type = "DIR32"
 symbol = "?g_GameManager@th08@@3UGameManager@1@A"
-target = 0x0160F504
+target = 0x0160F508
+addend = 0x3DDC4
 
 [[units.relocations]]
 offset = 0x423
@@ -19968,7 +19974,8 @@ target = 0x0160F508
 offset = 0x109
 type = "DIR32"
 symbol = "?g_GameManager@th08@@3UGameManager@1@A"
-target = 0x0160F504
+target = 0x0160F508
+addend = 0x3D818
 
 [[units.relocations]]
 offset = 0x116
@@ -19986,7 +19993,8 @@ target = 0x0160F508
 offset = 0x123
 type = "DIR32"
 symbol = "?g_GameManager@th08@@3UGameManager@1@A"
-target = 0x0160F504
+target = 0x0160F508
+addend = 0x3D818
 
 [[units.relocations]]
 offset = 0x130
@@ -20143,7 +20151,8 @@ target = 0x0160F508
 offset = 0x107
 type = "DIR32"
 symbol = "?g_GameManager@th08@@3UGameManager@1@A"
-target = 0x0160F504
+target = 0x0160F508
+addend = 0x3D828
 
 [[units.relocations]]
 offset = 0x114
@@ -20161,7 +20170,8 @@ target = 0x0160F508
 offset = 0x121
 type = "DIR32"
 symbol = "?g_GameManager@th08@@3UGameManager@1@A"
-target = 0x0160F504
+target = 0x0160F508
+addend = 0x3D828
 
 [[units.relocations]]
 offset = 0x12E
@@ -55054,14 +55064,16 @@ target = 0x0160F508
 [[units.relocations]]
 offset = 0x1BC
 type = "DIR32"
-symbol = "?g_MaxValuePointItemsCollected@th08@@3HA"
-target = 0x0164CF9C
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DA94
 
 [[units.relocations]]
 offset = 0x1C4
 type = "DIR32"
-symbol = "?g_MaxValuePointItemsCollected@th08@@3HA"
-target = 0x0164CF9C
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DA94
 
 [[units.relocations]]
 offset = 0x1C9
@@ -57152,8 +57164,9 @@ target = 0x004065F0
 [[units.relocations]]
 offset = 0x71
 type = "DIR32"
-symbol = "?g_GuiFullPowerModeFrames@th08@@3HA"
-target = 0x017CE8CC
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x174
 
 [[units]]
 name = "item-collect-power-small"
@@ -58789,7 +58802,7 @@ target = 0x0040B900
 [[units.relocations]]
 offset = 0x7B
 type = "DIR32"
-symbol = "?g_EclManager@th08@@3UEclManager@1@A"
+symbol = "?g_EclRuntime@th08@@3UEclRuntimeState@1@A"
 target = 0x004ECCB8
 
 [[units.relocations]]
@@ -60675,7 +60688,7 @@ target = 0x0040B900
 [[units.relocations]]
 offset = 0x130
 type = "DIR32"
-symbol = "?g_EclManager@th08@@3UEclManager@1@A"
+symbol = "?g_EclRuntime@th08@@3UEclRuntimeState@1@A"
 target = 0x004ECCB8
 
 [[units.relocations]]
@@ -60699,7 +60712,7 @@ target = 0x004C73CC
 [[units.relocations]]
 offset = 0x154
 type = "DIR32"
-symbol = "?g_EclManager@th08@@3UEclManager@1@A"
+symbol = "?g_EclRuntime@th08@@3UEclRuntimeState@1@A"
 target = 0x004ECCB8
 
 [[units.relocations]]
@@ -60729,7 +60742,7 @@ target = 0x004C7418
 [[units.relocations]]
 offset = 0x18A
 type = "DIR32"
-symbol = "?g_EclManager@th08@@3UEclManager@1@A"
+symbol = "?g_EclRuntime@th08@@3UEclRuntimeState@1@A"
 target = 0x004ECCB8
 
 [[units.relocations]]
@@ -60753,7 +60766,7 @@ target = 0x004C73F0
 [[units.relocations]]
 offset = 0x1B0
 type = "DIR32"
-symbol = "?g_EclManager@th08@@3UEclManager@1@A"
+symbol = "?g_EclRuntime@th08@@3UEclRuntimeState@1@A"
 target = 0x004ECCB8
 
 [[units.relocations]]
@@ -60765,32 +60778,32 @@ target = 0x00418330
 [[units.relocations]]
 offset = 0x1C9
 type = "DIR32"
-symbol = "?g_EclManager@th08@@3UEclManager@1@A"
+symbol = "?g_EclRuntime@th08@@3UEclRuntimeState@1@A"
 target = 0x004ECCB8
 
 [[units.relocations]]
 offset = 0x1D2
 type = "DIR32"
-symbol = "?g_EclManager@th08@@3UEclManager@1@A"
+symbol = "?g_EclRuntime@th08@@3UEclRuntimeState@1@A"
 target = 0x004ECCB8
 addend = 0x4
 
 [[units.relocations]]
 offset = 0x1E1
 type = "DIR32"
-symbol = "?g_EclManager@th08@@3UEclManager@1@A"
+symbol = "?g_EclRuntime@th08@@3UEclRuntimeState@1@A"
 target = 0x004ECCB8
 
 [[units.relocations]]
 offset = 0x1EB
 type = "DIR32"
-symbol = "?g_EclManager@th08@@3UEclManager@1@A"
+symbol = "?g_EclRuntime@th08@@3UEclRuntimeState@1@A"
 target = 0x004ECCB8
 
 [[units.relocations]]
 offset = 0x1F4
 type = "DIR32"
-symbol = "?g_EclManager@th08@@3UEclManager@1@A"
+symbol = "?g_EclRuntime@th08@@3UEclRuntimeState@1@A"
 target = 0x004ECCB8
 addend = 0x4
 
@@ -67463,8 +67476,9 @@ target = 0x0045D550
 [[units.relocations]]
 offset = 0x191
 type = "DIR32"
-symbol = "?g_GuiFullPowerModeFrames@th08@@3HA"
-target = 0x017CE8CC
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x174
 
 # Spellcard exact candidate 0x00416B10
 [[units]]
@@ -68235,8 +68249,9 @@ target = 0x0045D550
 [[units.relocations]]
 offset = 0x220
 type = "DIR32"
-symbol = "?g_GuiFullPowerModeFrames@th08@@3HA"
-target = 0x017CE8CC
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x174
 
 # Ledger name: th08::Enemy::ResetBulletRankInfluence
 [[units]]
@@ -68299,8 +68314,9 @@ target = 0x004065F0
 [[units.relocations]]
 offset = 0x72
 type = "DIR32"
-symbol = "?g_GuiFullPowerModeFrames@th08@@3HA"
-target = 0x017CE8CC
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x174
 
 # Ledger name: th08::Spellcard::StartSpell
 # Evidence: VC7 COFF auxiliary extent is 0x9B3 and ends at the target ret 0x20.
@@ -68598,8 +68614,9 @@ target = 0x004065F0
 [[units.relocations]]
 offset = 0x72
 type = "DIR32"
-symbol = "?g_GuiFullPowerModeFrames@th08@@3HA"
-target = 0x017CE8CC
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x174
 
 
 # Ledger name: th08::Enemy::DetachFromParentChain
@@ -68688,7 +68705,7 @@ target = 0x0042B2F0
 [[units.relocations]]
 offset = 0x21C
 type = "DIR32"
-symbol = "?g_EclManager@th08@@3UEclManager@1@A"
+symbol = "?g_EclRuntime@th08@@3UEclRuntimeState@1@A"
 target = 0x004ECCB8
 
 [[units.relocations]]
@@ -72939,8 +72956,9 @@ target = 4569264
 [[units.relocations]]
 offset = 5154
 type = "DIR32"
-symbol = "?g_GuiMessageScreenEffectDuration@th08@@3HA"
-target = 24963276
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x174
 
 [[units.relocations]]
 offset = 5166
@@ -73600,8 +73618,9 @@ target = 4426353
 [[units.relocations]]
 offset = 880
 type = "DIR32"
-symbol = "th08::g_GuiFullPowerModeFrames"
-target = 24963276
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x174
 
 [[units.relocations]]
 offset = 903
@@ -76094,14 +76113,16 @@ target = 23385384
 [[units.relocations]]
 offset = 60
 type = "DIR32"
-symbol = "?g_GuiMessageScreenEffectDuration@th08@@3HA"
-target = 24963276
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x174
 
 [[units.relocations]]
 offset = 69
 type = "DIR32"
-symbol = "?g_GuiMessageScreenEffectDuration@th08@@3HA"
-target = 24963276
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x174
 
 [[units]]
 name = "gui-draw-dialogue"
@@ -83013,26 +83034,30 @@ target = 0x00439883
 [[units.relocations]]
 offset = 1077
 type = "DIR32"
-symbol = "?g_PlayerDeathbombCount@th08@@3HA"
-target = 0x0164CFAC
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DAA4
 
 [[units.relocations]]
 offset = 1086
 type = "DIR32"
-symbol = "?g_PlayerDeathbombCount@th08@@3HA"
-target = 0x0164CFAC
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DAA4
 
 [[units.relocations]]
 offset = 1094
 type = "DIR32"
-symbol = "?g_PlayerNormalBombCount@th08@@3HA"
-target = 0x0164CFA8
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DAA0
 
 [[units.relocations]]
 offset = 1103
 type = "DIR32"
-symbol = "?g_PlayerNormalBombCount@th08@@3HA"
-target = 0x0164CFA8
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DAA0
 
 [[units.relocations]]
 offset = 1110
@@ -91909,7 +91934,8 @@ target = 0x00454269
 offset = 0x91F
 type = "DIR32"
 symbol = "?g_GameManager@th08@@3UGameManager@1@A"
-target = 0x0160F54C
+target = 0x0160F508
+addend = 0x3DA04
 
 [[units.relocations]]
 offset = 0x925
@@ -102847,7 +102873,7 @@ size = 0x49C
 [[units.relocations]]
 offset = 0xC3
 type = "DIR32"
-symbol = "?g_EclManager@th08@@3UEclManager@1@A"
+symbol = "?g_EclRuntime@th08@@3UEclRuntimeState@1@A"
 target = 0x004ECCB8
 
 [[units.relocations]]
@@ -102901,7 +102927,7 @@ target = 0x00577F20
 [[units.relocations]]
 offset = 0x242
 type = "DIR32"
-symbol = "?g_EclManager@th08@@3UEclManager@1@A"
+symbol = "?g_EclRuntime@th08@@3UEclRuntimeState@1@A"
 target = 0x004ECCB8
 
 [[units.relocations]]
@@ -103005,7 +103031,7 @@ target = 0x0040B8E0
 [[units.relocations]]
 offset = 0x135
 type = "DIR32"
-symbol = "?g_EclManager@th08@@3UEclManager@1@A"
+symbol = "?g_EclRuntime@th08@@3UEclRuntimeState@1@A"
 target = 0x004ECCB8
 
 [[units.relocations]]
@@ -103084,7 +103110,7 @@ target = 0x00577F20
 [[units.relocations]]
 offset = 0x255
 type = "DIR32"
-symbol = "?g_EclManager@th08@@3UEclManager@1@A"
+symbol = "?g_EclRuntime@th08@@3UEclRuntimeState@1@A"
 target = 0x004ECCB8
 
 [[units.relocations]]
@@ -105153,8 +105179,9 @@ target = 0x004069F0
 [[units.relocations]]
 offset = 0x5B0
 type = "DIR32"
-symbol = "?g_GuiMessageScreenEffectDuration@th08@@3HA"
-target = 0x017CE8CC
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x174
 
 # Ledger name: th08::Gui::InitStageClearScreen
 
@@ -105384,7 +105411,7 @@ target = 0x018B8A28
 [[units.relocations]]
 offset = 0xEA
 type = "DIR32"
-symbol = "?g_EclManager@th08@@3UEclManager@1@A"
+symbol = "?g_EclRuntime@th08@@3UEclRuntimeState@1@A"
 target = 0x004ECCB8
 
 [[units.relocations]]
@@ -105396,7 +105423,7 @@ target = 0x00418450
 [[units.relocations]]
 offset = 0xF8
 type = "DIR32"
-symbol = "?g_EclManager@th08@@3UEclManager@1@A"
+symbol = "?g_EclRuntime@th08@@3UEclRuntimeState@1@A"
 target = 0x004ECCB8
 
 [[units.relocations]]
@@ -105429,7 +105456,7 @@ target = 0x018B8A28
 [[units.relocations]]
 offset = 0xC9
 type = "DIR32"
-symbol = "?g_EclManager@th08@@3UEclManager@1@A"
+symbol = "?g_EclRuntime@th08@@3UEclRuntimeState@1@A"
 target = 0x004ECCB8
 
 [[units.relocations]]
@@ -105441,7 +105468,7 @@ target = 0x00418450
 [[units.relocations]]
 offset = 0xEA
 type = "DIR32"
-symbol = "?g_EclManager@th08@@3UEclManager@1@A"
+symbol = "?g_EclRuntime@th08@@3UEclRuntimeState@1@A"
 target = 0x004ECCB8
 
 [[units.relocations]]
@@ -107316,7 +107343,7 @@ size = 0xD6
 [[units.relocations]]
 offset = 0x73
 type = "DIR32"
-symbol = "?g_EclManager@th08@@3UEclManager@1@A"
+symbol = "?g_EclRuntime@th08@@3UEclRuntimeState@1@A"
 target = 0x004ECCB8
 
 [[units.relocations]]
@@ -107328,8 +107355,9 @@ target = 0x00418450
 [[units.relocations]]
 offset = 0x8E
 type = "DIR32"
-symbol = "?g_EclCallParameters@EclRunLow@th08@@3UEclCallParameterCopy@12@A"
-target = 0x004ECE20
+symbol = "?g_EclRuntime@th08@@3UEclRuntimeState@1@A"
+target = 0x004ECCB8
+addend = 0x168
 
 [[units]]
 name = "ecl-pop-context-00421cb0"
@@ -111785,14 +111813,16 @@ target = 0x004B4338
 [[units.relocations]]
 offset = 0xCC
 type = "DIR32"
-symbol = "?g_EclGameTimeScaleFlags@th08@@3IA"
-target = 0x017CE8FC
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x1A4
 
 [[units.relocations]]
 offset = 0xD5
 type = "DIR32"
-symbol = "?g_EclGameTimeScaleFlags@th08@@3IA"
-target = 0x017CE8FC
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x1A4
 
 [[units.relocations]]
 offset = 0xDB
@@ -120283,7 +120313,8 @@ target = 0x0160F508
 offset = 0x1CE
 type = "DIR32"
 symbol = "?g_GameManager@th08@@3UGameManager@1@A"
-target = 0x0160F509
+target = 0x0160F508
+addend = 0x3C7D9
 
 [[units.relocations]]
 offset = 0x1D7
@@ -120469,8 +120500,9 @@ target = 0x017CE758
 [[units.relocations]]
 offset = 0x86
 type = "DIR32"
-symbol = "?g_EclGameTimeScaleFlags@th08@@3IA"
-target = 0x017CE8FC
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x1A4
 
 [[units.relocations]]
 offset = 0xD1
@@ -120619,8 +120651,9 @@ target = 0x017CE758
 [[units.relocations]]
 offset = 0x7E
 type = "DIR32"
-symbol = "?g_EclGameTimeScaleFlags@th08@@3IA"
-target = 0x017CE8FC
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x1A4
 
 [[units.relocations]]
 offset = 0xA8

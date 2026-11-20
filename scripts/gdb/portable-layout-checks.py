@@ -156,6 +156,8 @@ for iteration in range(2):
 set_value("$enemy = &th08::g_EnemyManager.enemies[0]")
 enemy = integer("$enemy")
 stream = integer("(void*)malloc(32)")
+manager = ("th08::g_EclRuntime.manager" if gdb.lookup_global_symbol("th08::g_EclRuntime")
+           else "th08::g_EclManager")
 outputs = {}
 pairs = [(100.0, x) for x in (80.0, 96.0, 97.0, 288.0, 289.0, 320.0)]
 pairs += [(0.0, 96.0), (0.0, 97.0), (300.0, 288.0), (300.0, 289.0)]
@@ -173,7 +175,7 @@ for player_x, x in pairs:
         set_value("$enemy->mainEclContextStorage.currentInstr = "
                   "(th08::EclRawInstruction*)%d" % stream)
         zero("th08::g_Rng")
-        call("th08::g_EclManager.RunEcl($enemy)")
+        call(manager + ".RunEcl($enemy)")
         angle = float(gdb.parse_and_eval("$enemy->mainEclContextStorage.floatVariables[0]"))
         outputs[player_x, x, raw] = angle
         left_branch = (player_x < x and 96 < x) or 288 < x

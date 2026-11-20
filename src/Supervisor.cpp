@@ -1771,8 +1771,8 @@ void Supervisor::UpdatePlayTime()
     }
     if (g_GameManager.plst.totalSeconds >= 60)
     {
-        g_GameManager.plst.totalMinutes += (g_GameManager.plst.totalMilliseconds / 60);
-        g_GameManager.plst.totalSeconds = (g_GameManager.plst.totalMilliseconds % 60);
+        g_GameManager.plst.totalMinutes += (g_GameManager.plst.totalSeconds / 60);
+        g_GameManager.plst.totalSeconds = (g_GameManager.plst.totalSeconds % 60);
     }
     if (g_GameManager.plst.totalMinutes >= 60)
     {
@@ -1813,8 +1813,8 @@ void Supervisor::UpdateGameTime()
     }
     if (g_GameManager.plst.gameSeconds >= 60)
     {
-        g_GameManager.plst.gameMinutes += (g_GameManager.plst.gameMilliseconds / 60);
-        g_GameManager.plst.gameSeconds = (g_GameManager.plst.gameMilliseconds % 60);
+        g_GameManager.plst.gameMinutes += (g_GameManager.plst.gameSeconds / 60);
+        g_GameManager.plst.gameSeconds = (g_GameManager.plst.gameSeconds % 60);
     }
     if (g_GameManager.plst.gameMinutes >= 60)
     {
